@@ -8,18 +8,6 @@
 	</head>
 	<body>
 		<aside>
-			<form id="viewoptions">
-				<select name="view">
-					<option value="0">Ansicht 1</option>
-					<option value="1">Ansicht 2</option>
-					<option value="2">Ansicht 3</option>
-				</select>
-				<fieldset>
-					<legend>Sichtbarkeiten</legend>
-					<input type="checkbox" name="showBla" id="showBla" /><label for="showBla">Sehenswürdigkeiten</label>
-					<input type="checkbox" name="showFasel" id="showFasel" /><label for="showFasel">Bla fasel blubber</label>
-				</fieldset>
-			</form>
 			<section id="flags">
 				<form name="search">
 					<input type="search" id="usersearch" placeholder="Nach Routen eines Benutzers suchen" />
@@ -41,9 +29,22 @@
 				<button>Speichern</button>
 			</section>
 			<form id="viewpreferences" name="viewpreferences">
-				<input type="range" name="zoomlevel" min="0" max="10" step="1" />
-				<input type="image" name="da-muss-noch-ein-guter-name-rein" src="http://placekitten.com/20/20" />
-				<output for="zoomlevel" form="viewpreferences"></output>
+				<ul id="choosemap">
+					<li>Ansicht 1</li>
+					<li class="active">Ansicht 2</li>
+					<li>Ansicht 3</li>	
+				</ul>
+				<fieldset>
+					<legend>Sichtbarkeiten</legend>
+					<input type="checkbox" name="showBla" id="showBla" /><label for="showBla">Sehenswürdigkeiten</label>
+					<input type="checkbox" name="showFasel" id="showFasel" /><label for="showFasel">Bla fasel blubber</label>
+				</fieldset>
+				<fieldset>
+					<legend>Ansichten</legend>
+					<input type="range" name="zoomlevel" min="0" max="10" step="0.1" />
+					<input type="image" name="da-muss-noch-ein-guter-name-rein" src="http://placekitten.com/20/20" />
+					<output for="zoomlevel" form="viewpreferences"></output>
+				</fieldset>
 			</form>
 		</aside>
 		<section id="mapcontainer">

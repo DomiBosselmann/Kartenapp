@@ -12,16 +12,9 @@
 			<xsl:attribute name="xmlns">http://www.w3.org/2000/svg</xsl:attribute>
 			<xsl:element name="g">
 				<xsl:element name="g">
-					<xsl:attribute name="style">fill:none;stroke:deeppink;stroke-width:1</xsl:attribute>
-					<xsl:attribute name="transform">scale(100) translate(-47 -7)</xsl:attribute>
+					<xsl:attribute name="style">fill:none;stroke-width:1</xsl:attribute>
+					<xsl:attribute name="transform">scale(1) translate(-24000 -4200)</xsl:attribute>
 					<xsl:apply-templates select="way" />
-				</xsl:element>
-				<xsl:element name="g">
-					<xsl:attribute name="style">fill:none;stroke:deeppink;stroke-width:1</xsl:attribute>
-					<xsl:attribute name="transform">scale(5) translate(-5 -5)</xsl:attribute>
-					<polyline
-						points="29.212345,17.712345 37.212345,28.712345 48.212345,39.712345 28.412345,78.312345 68.012345,57.912345 78.912345,67.312345 89.112345,77.112345 18.812345,28.512345" />
-					<polyline points="20,20 40,25 60,40 80,120 120,140 200,180" />
 				</xsl:element>
 			</xsl:element>
 			<!-- <xsl:element name="g"> <xsl:element name="g"> <xsl:attribute name="fill">none</xsl:attribute> 
@@ -68,9 +61,9 @@
 	</xsl:template>
 
 	<xsl:template match="node">
-		<xsl:value-of select="@lat" />
+		<xsl:value-of select="@lat * 500" />
 		<xsl:text>,</xsl:text>
-		<xsl:value-of select="@lon" />
+		<xsl:value-of select="@lon * 500" />
 	</xsl:template>
 
 	<xsl:template match="tag">

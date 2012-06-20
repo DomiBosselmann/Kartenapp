@@ -1,6 +1,7 @@
 body {
 	height: 100%;
 	overflow: hidden;
+	font-family: "Corbel";
 }
 
 aside {
@@ -14,12 +15,9 @@ aside {
 	background: -ms-linear-gradient(rgb(202, 219, 229), rgb(219, 231, 237));
 	background: -o-linear-gradient(rgb(202, 219, 229), rgb(219, 231, 237));
 	z-index: 0;
-	resize: horizontal;
-}
-
-#viewoptions {
-	background: aqua;
-	padding: 20px 10px;
+	border-right: 1px solid black;
+	font-family: "Lucida Grande";
+	font-size: 12px;
 }
 
 #flags {
@@ -35,7 +33,6 @@ aside {
 	left: 0;
 	right: 0;
 	bottom: 0;
-	padding: 20px 10px;
 	border-top: 1px solid rgba(255,255,255,0.2);
 	background: rgb(202, 219, 229);
 }
@@ -51,6 +48,37 @@ aside {
 	box-shadow: 0 0 12px rgba(0,0,0,0.35);
 	border-radius: 200px/10px;
 	z-index: -2;
+}
+
+#viewpreferences fieldset {
+	border: none;
+}
+
+#viewpreferences legend {
+	display: none;
+}
+
+#choosemap {
+	list-style: none;
+	background: rgba(69, 94, 109, 0.15);
+	padding: 0 10px;
+	overflow: hidden;
+	display: -webkit-box;
+	margin-bottom: 20px;
+}
+
+#choosemap li {
+	-webkit-box-flex: 1;
+	text-align: center;
+	line-height: 3;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	cursor: default;
+}
+
+#choosemap li.active {
+	background: rgba(0, 0, 0, 0.2);
 }
 
 #mapcontainer {

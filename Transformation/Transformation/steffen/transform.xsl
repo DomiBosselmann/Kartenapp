@@ -18,7 +18,7 @@
 				</xsl:element>
 				<xsl:element name="g">
 					<xsl:attribute name="style">fill:none;stroke:deeppink;stroke-width:1</xsl:attribute>
-					<xsl:attribute name="transform">scale(20) translate(-7 -7)</xsl:attribute>
+					<xsl:attribute name="transform">scale(5) translate(-5 -5)</xsl:attribute>
 					<polyline
 						points="29.212345,17.712345 37.212345,28.712345 48.212345,39.712345 28.412345,78.312345 68.012345,57.912345 78.912345,67.312345 89.112345,77.112345 18.812345,28.512345" />
 					<polyline points="20,20 40,25 60,40 80,120 120,140 200,180" />
@@ -34,15 +34,28 @@
 
 	<xsl:template match="way">
 		<xsl:element name="polyline">
-			<!-- <xsl:attribute name="id"><xsl:value-of select="@id" /></xsl:attribute> <xsl:attribute name="stroke"> 
-				<xsl:variable name="posi" select="position() mod 16" /> <xsl:choose> <xsl:when test="$posi = 0">sandybrown</xsl:when> 
-				<xsl:when test="$posi = 1">blue</xsl:when> <xsl:when test="$posi = 2">green</xsl:when> <xsl:when test="$posi 
-				= 3">yellow</xsl:when> <xsl:when test="$posi = 4">orange</xsl:when> <xsl:when test="$posi = 5">grey</xsl:when> 
-				<xsl:when test="$posi = 6">violet</xsl:when> <xsl:when test="$posi = 7">aquamarine</xsl:when> <xsl:when 
-				test="$posi = 8">brown</xsl:when> <xsl:when test="$posi = 9">cyan</xsl:when> <xsl:when test="$posi = 
-				10">lawngreen</xsl:when> <xsl:when test="$posi = 11">hotpink</xsl:when> <xsl:when test="$posi = 12">orangered</xsl:when> 
-				<xsl:when test="$posi = 13">salmon</xsl:when> <xsl:when test="$posi = 14">black</xsl:when> <xsl:when 
-				test="$posi = 15">olivedrab</xsl:when> </xsl:choose> </xsl:attribute> -->
+			<xsl:attribute name="id"><xsl:value-of select="@id" /></xsl:attribute>
+			<xsl:attribute name="stroke"> 
+				<xsl:variable name="posi" select="position() mod 16" />
+				<xsl:choose>
+				<xsl:when test="$posi = 0">sandybrown</xsl:when> 
+				<xsl:when test="$posi = 1">blue</xsl:when> 
+				<xsl:when test="$posi = 2">green</xsl:when> 
+				<xsl:when test="$posi = 3">yellow</xsl:when> 
+				<xsl:when test="$posi = 4">orange</xsl:when> 
+				<xsl:when test="$posi = 5">grey</xsl:when> 
+				<xsl:when test="$posi = 6">violet</xsl:when> 
+				<xsl:when test="$posi = 7">aquamarine</xsl:when> 
+				<xsl:when test="$posi = 8">brown</xsl:when> 
+				<xsl:when test="$posi = 9">cyan</xsl:when> 
+				<xsl:when test="$posi = 10">lawngreen</xsl:when> 
+				<xsl:when test="$posi = 11">hotpink</xsl:when> 
+				<xsl:when test="$posi = 12">orangered</xsl:when> 
+				<xsl:when test="$posi = 13">salmon</xsl:when> 
+				<xsl:when test="$posi = 14">black</xsl:when> 
+				<xsl:when test="$posi = 15">olivedrab</xsl:when>
+				 </xsl:choose>
+				  </xsl:attribute>
 			<xsl:attribute name="points">
 					<xsl:for-each select="nd">
 						<xsl:variable name="ref" select="@ref" />

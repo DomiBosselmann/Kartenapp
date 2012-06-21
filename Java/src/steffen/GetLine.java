@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class GetLine {
 	private static String	sourceFilePath	= "bawu.xml";
-	private static String	searchedString	= "boundary";
+	private static String	searchedString	= "v=\"city\"";
 	
 	public static void main(String[] args) {
 		// create

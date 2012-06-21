@@ -24,11 +24,28 @@ if (isset($_GET['lon2'])) {
 	$lon2 = 99999;
 }
 
-$xmlfile = 'boundary2.xml';
+switch ($_GET[l]) {
+	case 'm':
+		{
+			$xmlfile = 'motorway.xml';
+			break;
+		}
+	case 'b':
+		{
+			$xmlfile = 'boundary.xml';
+			break;
+		}
+	default:
+		{
+			$xmlfile = 'boundary2.xml';
+			break;
+		}
+}
+
 $xml = simplexml_load_file($xmlfile);
 
 echo "<osm>\n";
-$nodes = array(0 => false);
+$nodes = array();
 
 foreach ($xml as $node0 => $value0) {
 	switch ($node0) {
@@ -41,25 +58,19 @@ foreach ($xml as $node0 => $value0) {
 					switch ($attributeskey0) {
 						case 'id':
 							{
-								$line .= $attributeskey0 . '="' . $attributesvalue0 . '" ';
 								$id = $attributesvalue0;
-								break;
 							}
 						case 'lat':
 							{
 								if (($attributesvalue0 >= $lat1) && ($attributesvalue0 <= $lat2)) {
-									$line .= 'lat="' . $attributesvalue0 . '" ';
 									$print1 = true;
 								}
-								break;
 							}
 						case 'lon':
 							{
 								if (($attributesvalue0 >= $lon1) && ($attributesvalue0 <= $lon2)) {
-									$line .= 'lon="' . $attributesvalue0 . '" ';
 									$print2 = true;
 								}
-								break;
 							}
 						default:
 							{
@@ -82,9 +93,7 @@ foreach ($xml as $node0 => $value0) {
 					switch ($attributeskey0) {
 						case 'id':
 							{
-								$line .= $attributeskey0 . '="' . $attributesvalue0 . '" ';
 								$id = $attributesvalue0;
-								break;
 							}
 						default:
 							{
@@ -104,9 +113,7 @@ foreach ($xml as $node0 => $value0) {
 									switch ($attributeskey1) {
 										case 'ref':
 											{
-												$line .= $attributeskey1 . '="' . $attributesvalue1 . '" ';
 												$ref = $attributesvalue1;
-												break;
 											}
 										default:
 											{
@@ -132,7 +139,7 @@ foreach ($xml as $node0 => $value0) {
 							}
 					}
 				}
-				echo "</way>\n";
+				echo "</$node0>\n";
 				break;
 			}
 		default:

@@ -7,7 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class GetLineCount {
-	private static String	sourceFilePath	= "LayerGrenzen.osm";
+	private static String	sourceFilePath	= "boundary2.xml";
 	
 	public static void main(String[] args) throws IOException {
 		// create

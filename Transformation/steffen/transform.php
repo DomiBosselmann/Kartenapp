@@ -1,29 +1,22 @@
 <?php
 
 // Load the XML
+$xmlfile = "http://www.schteffens.de/karte/pretransform.php?";
 $xml = new DOMDocument;
-$layer = $_GET[l];
-switch ($layer) {
-	case 'b':
-		{
-			$xmlfile = 'boundary.xml';
-			break;
-		}
-	case 'b2':
-		{
-			$xmlfile = 'boundary2.xml';
-			break;
-		}
-	case 'h':
-		{
-			$xmlfile = 'highway.xml';
-			break;
-		}
-	default:
-		{
-			$xmlfile = 'highway.xml';
-			break;
-		}
+if ($_GET['l']) {
+	$xmlfile .= "l=" . $_GET['l'] . "&";
+}
+if ($_GET['lat1']) {
+	$xmlfile .= "lat1=" . $_GET['lat1'] . "&";
+}
+if ($_GET['lat2']) {
+	$xmlfile .= "lat2=" . $_GET['lat2'] . "&";
+}
+if ($_GET['lon1']) {
+	$xmlfile .= "lon1=" . $_GET['lon1'] . "&";
+}
+if ($_GET['lon2']) {
+	$xmlfile .= "lon2=" . $_GET['lon2'] . "&";
 }
 $xml->load($xmlfile);
 

@@ -12,7 +12,7 @@ public class EnableXSL {
 	private static String	sourceFilePath	= "bawu highway motorway.xml";
 	private static String	targetFilePath	= "bawu highway motorway xsl.xml";
 	private static String	xslFileName		= "highway.xsl";
-	
+	 
 	public static void main(String[] args) {
 		// create
 		File file1 = new File(sourceFilePath);

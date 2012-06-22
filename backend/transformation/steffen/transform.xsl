@@ -10,18 +10,24 @@
 	<xsl:template match="osm">
 		<xsl:element name="svg">
 			<xsl:attribute name="xmlns">http://www.w3.org/2000/svg</xsl:attribute>
+			<xsl:element name="defs">
+				<xsl:element name="g">
+					<xsl:apply-templates select="way" />
+				</xsl:element>
+			</xsl:element>
 			<xsl:element name="g">
 				<xsl:element name="g">
 					<xsl:attribute name="style">fill:none;stroke-width:1</xsl:attribute>
 					<xsl:attribute name="transform">scale(1) translate(-4400 -700)</xsl:attribute>
-					<xsl:apply-templates select="way" />
+					<xsl:for-each select="way">
+						<xsl:element name="g">
+							<xsl:element name="use">
+								<xsl:attribute name="xlink:href">#<xsl:value-of select="@id" /></xsl:attribute>
+							</xsl:element>
+						</xsl:element>
+					</xsl:for-each>
 				</xsl:element>
 			</xsl:element>
-			<!-- <xsl:element name="g"> <xsl:element name="g"> <xsl:attribute name="fill">none</xsl:attribute> 
-				<xsl:attribute name="stroke-width">1</xsl:attribute> <xsl:attribute name="transform">scale(100) translate(-47 
-				-7)</xsl:attribute> <xsl:for-each select="way"> <xsl:element name="g"> <xsl:element name="use"> <xsl:attribute 
-				name="xlink:href">#<xsl:value-of select="@id" /></xsl:attribute> </xsl:element> </xsl:element> </xsl:for-each> 
-				</xsl:element> </xsl:element> -->
 		</xsl:element>
 	</xsl:template>
 

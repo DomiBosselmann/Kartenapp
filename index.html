@@ -2,16 +2,20 @@
 <html>
 	<head>
 		<title>Die Karte</title>
-		<link rel="stylesheet" href="main.css" />
-		<script type="application/javascript" src="map.js"></script>
+		<link rel="stylesheet" href="styles/main.css" />
+		<script type="application/javascript" src="scripts/map.js"></script>
 		<meta charset="utf-8" />
 	</head>
 	<body>
 		<aside>
 			<section id="flags">
-				<form name="search">
-					<input type="search" id="usersearch" placeholder="Nach Routen eines Benutzers suchen" />
-				</form>
+				<section id="toolbar">
+					<button title="Route oder Punkt hinzufügen">+</button>
+					<button title="Exportieren" class="rightside"><img src="images/export.svg" alt="Exportieren" height="15" /></button>
+					<button title="Importieren" class="rightside"><img src="images/import.svg" alt="Importieren" height="15" /></button>
+					<button title="Sichern" class="rightside"><img src="images/save.svg" alt="Sichern" height="15" /></button>
+					<button title="Suchen" class="rightside"><img src="images/search.svg" alt="Suchen" height="15" /></button>
+				</section>
 				<h1>Strecken</h1>
 				<ul id="routes">
 					<li>Bla</li>
@@ -24,9 +28,6 @@
 					<li>Fasel</li>
 					<li>Blubber</li>
 				</ul>
-				<button>Exportieren</button>
-				<button>Importieren</button>
-				<button>Speichern</button>
 			</section>
 			<form id="viewpreferences" name="viewpreferences">
 				<ul id="choosemap">
@@ -34,10 +35,16 @@
 					<li class="active">Ansicht 2</li>
 					<li>Ansicht 3</li>	
 				</ul>
-				<fieldset>
+				<fieldset id="wurschd">
 					<legend>Sichtbarkeiten</legend>
-					<input type="checkbox" name="showBla" id="showBla" /><label for="showBla">Sehenswürdigkeiten</label>
-					<input type="checkbox" name="showFasel" id="showFasel" /><label for="showFasel">Bla fasel blubber</label>
+					<p><input type="checkbox" name="showBla" id="showBla" /><label for="showBla">Sehenswürdigkeiten</label></p>
+					<p><input type="checkbox" name="showFasel" id="showFasel" /><label for="showFasel">Bla fasel blubber</label></p>
+					<p><input type="checkbox" name="showBla" id="showBla" /><label for="showBla">Sehenswürdigkeiten</label></p>
+					<p><input type="checkbox" name="showFasel" id="showFasel" /><label for="showFasel">Bla fasel blubber</label></p>
+					<p><input type="checkbox" name="showBla" id="showBla" /><label for="showBla">Sehenswürdigkeiten</label></p>
+					<p><input type="checkbox" name="showFasel" id="showFasel" /><label for="showFasel">Bla fasel blubber</label></p>
+					<p><input type="checkbox" name="showBla" id="showBla" /><label for="showBla">Sehenswürdigkeiten</label></p>
+					<p><input type="checkbox" name="showFasel" id="showFasel" /><label for="showFasel">Bla fasel blubber</label></p>
 				</fieldset>
 				<fieldset>
 					<legend>Ansichten</legend>

@@ -16,7 +16,8 @@ public class DouglasPeuker {
 		return epsilon;
 	}
 	
-	public Punkt[] linienGlaetten(Punkt[] nodes){
+	public Punkt[] linienGlaetten(Punkt[] nodes, double e){
+		setEpsilon(e);
 		return linienGlaetten(nodes, 0, nodes.length-1);
 	}
 	
@@ -32,11 +33,14 @@ public class DouglasPeuker {
 				if (abstandGeradePunkt(nodes[indexEntferntesterPunkt], verbindung) > epsilon){
 					nodes = linienGlaetten(nodes, minIndex, indexEntferntesterPunkt);
 					nodes = linienGlaetten(nodes, indexEntferntesterPunkt, maxIndex);
+				}else{
+					for (int i = minIndex+1; i < maxIndex; i++){
+						nodes[i] = null;
+					}
 				}
 		}
+		
 		return nodes;
-		
-		
 	}
 
 	public double abstandGeradePunkt(Punkt p, Gerade g){

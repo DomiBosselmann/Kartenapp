@@ -95,6 +95,14 @@ aside {
 	height: 100%;
 }
 
+#wurschd {
+	-webkit-column-count: 2;
+}
+
+#wurschd p {
+	margin: 0;
+}
+
 #toolbar {
 	height: 30px;
 	/*background: -webkit-linear-gradient(rgb(212, 154, 37), rgb(212, 154, 37));*/

@@ -12,5 +12,12 @@ public class douglasPeuker {
 		return epsilon;
 	}
 	
+	public punkt[] linienGlaetten(punkt[] nodes){
+		return linienGlaetten(nodes, 0, nodes.length);
+	}
 	
+	public punkt[] linienGlaetten(punkt[] nodes, int minIndex, int maxIndex){
+		
+		start
+	}
 }

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $xmlfile = "http://www.schteffens.de/karte/pretransform.php?";
 if ($_GET['l']) {
@@ -18,107 +18,55 @@ if ($_GET['lon2']) {
 }
 
 $xml = simplexml_load_file($xmlfile);
+$xml2 = simplexml_load_file($xmlfile);
 
-echo "<vsg>\n<g style=\"fill:none;stroke-width:1\" transform=\"scale(1) translate(-4400 -700)\" >\n";
+echo "<svg xmlns=\"http://www.w3.org/2000/svg\">\n<g style=\"fill:none;stroke-width:1;\" transform=\"scale(1) translate(-4400 -700)\" >\n";
 
 foreach ($xml as $node0 => $value0) {
 	switch ($node0) {
-		/*	case "node":
-			{
-		$print1 = false;
-		$print2 = false;
-		$line = '<' . $node0 . ' ';
-		foreach ($value0->attributes() as $attributeskey0 => $attributesvalue0) {
-		switch ($attributeskey0) {
-		case 'id':
-		{
-		$id = $attributesvalue0;
-		}
-		case 'lat':
-		{
-		if (($attributesvalue0 >= $lat1) && ($attributesvalue0 <= $lat2)) {
-		$print1 = true;
-		}
-		}
-		case 'lon':
-		{
-		if (($attributesvalue0 >= $lon1) && ($attributesvalue0 <= $lon2)) {
-		$print2 = true;
-		}
-		}
-		default:
-		{
-		$line .= $attributeskey0 . '="' . $attributesvalue0 . '" ';
-		break;
-		}
-		}
-		}
-		$line .= "/>";
-		if ($print1 && $print2) {
-		$nodes[''.$id] = true;
-		echo $line . "\n";
-		}
-		break;
-		}  */
 		case "way":
 			{
-				$line = "<path d=\""
+				$line = "<polyline stroke=\"black\" points=\"";
 
-
-				/*	foreach ($value0->attributes() as $attributeskey0 => $attributesvalue0) {
-					switch ($attributeskey0) {
-				case 'id':
-				{
-				$id = $attributesvalue0;
-				}
-				default:
-				{
-				$line .= $attributeskey0 . '="' . $attributesvalue0 . '" ';
-				break;
-				}
-				}
-				}
-				$line .= '>';
-				echo $line . "\n";
 				foreach ($value0->children() as $childkey0 => $childvalue0) {
-				$line = "<" . $childkey0 . " ";
-				switch ($childkey0) {
-				case 'nd':
-				{
-				foreach ($childvalue0->attributes() as $attributeskey1 => $attributesvalue1) {
-				switch ($attributeskey1) {
-				case 'ref':
-				{
-				$ref = $attributesvalue1;
+					switch ($childkey0) {
+						case 'nd':
+							{
+								foreach ($childvalue0->attributes() as $attributeskey0 => $attributesvalue0) {
+									switch ($attributeskey0) {
+										case 'ref':
+											{
+												foreach ($xml2 as $node1 => $value1) {
+													if ($node1 == 'node') {
+														foreach ($value1->attributes() as $attributeskey1 => $attributesvalue1) {
+															if ($attributeskey1 == 'id') {
+																if (''.$attributesvalue1 == ''.$attributesvalue0){
+																	foreach ($value1->attributes() as $attributeskey2 => $attributesvalue2) {
+																		if ($attributeskey2 == 'lat') {
+																			$lat = (double) $attributesvalue2;
+																			$line .= "" . $lat * 100.0 . ",";
+																		} else {
+																			if ($attributeskey2 == 'lon') {
+																				$lon = (double) $attributesvalue2;
+																				$line .= "" . $lon * 100.0 . " ";
+																			}
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+												break;
+											}
+									}
+								}
+								break;
+							}
+					}
 				}
-				default:
-				{
-				$line .= $attributeskey1 . '="' . $attributesvalue1 . '" ';
-				break;
-				}
-				}
-				}
-				$line .= "/>";
-				if ($nodes[''.$ref]) {
+				$line .= "\" />";
 				echo $line . "\n";
-				}
-				break;
-				}
-				default:
-				{
-				foreach ($childvalue0->attributes() as $attributeskey1 => $attributesvalue1) {
-				$line .= $attributeskey1 . '="' . $attributesvalue1 . '" ';
-				}
-				$line .= "/>";
-				echo $line . "\n";
-				break;
-				}
-				}
-				}
-				echo "</$node0>\n";
-				*/
-
-				echo line . "/>";
 				break;
 			}
 		default:
@@ -128,6 +76,6 @@ foreach ($xml as $node0 => $value0) {
 	}
 }
 
-echo "</g>\n</vsg>\n";
+echo "</g>\n</svg>\n";
 
 ?>

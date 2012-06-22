@@ -9,8 +9,8 @@ import java.io.IOException;
 import steffen.WrapNodes;
 
 public class CleanLayerBoundary {
-	private static String	sourceFile	= "bawu boundary2.xml";
-	private static String	targetFile	= "bawu boundary3.xml";
+	private static String	sourceFile	= "boundary2.xml";
+	private static String	targetFile	= "boundary3.xml";
 	private static String[]	tagsToKeep	= { "k=\"admin_level\"", "k=\"boundary\"", "k=\"border_type\"" };
 	
 	public static void main(String[] args) throws IOException {

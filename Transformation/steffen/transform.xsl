@@ -29,8 +29,7 @@
 		<xsl:element name="polyline">
 			<xsl:attribute name="id"><xsl:value-of select="@id" /></xsl:attribute>
 			<xsl:attribute name="stroke"> 
-			black
-			<!-- 	<xsl:variable name="posi" select="position() mod 16" />
+			<xsl:variable name="posi" select="position() mod 16" />
 				<xsl:choose>
 					<xsl:when test="$posi = 0">sandybrown</xsl:when> 
 					<xsl:when test="$posi = 1">blue</xsl:when> 
@@ -48,7 +47,7 @@
 					<xsl:when test="$posi = 13">salmon</xsl:when> 
 					<xsl:when test="$posi = 14">black</xsl:when> 
 					<xsl:when test="$posi = 15">olivedrab</xsl:when>
-				 </xsl:choose> -->
+				 </xsl:choose>
 			</xsl:attribute>
 			<xsl:attribute name="points">
 					<xsl:for-each select="nd">

@@ -18,6 +18,9 @@ public class douglasPeuker {
 	
 	public punkt[] linienGlaetten(punkt[] nodes, int minIndex, int maxIndex){
 		
-		start
+		punkt startPunkt = nodes[minIndex];
+		punkt endPunkt = nodes[maxIndex];
+		
+		gerade verbindung = new gerade(startPunkt, endPunkt);
 	}
 }

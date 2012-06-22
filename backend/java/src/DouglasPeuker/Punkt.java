@@ -1,11 +1,11 @@
 package DouglasPeuker;
 
-public class punkt {
+public class Punkt {
 
 	private double x, y;
 	private String id;
 	
-	public punkt(double xWert, double yWert, int position){
+	public Punkt(double xWert, double yWert, String id){
 		setX(xWert);
 		setY(yWert);
 		setID(id);

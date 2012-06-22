@@ -1,15 +1,18 @@
 package DouglasPeuker;
 
-public class gerade {
+public class Gerade {
 	
 	private double m, c;
 
-	gerade(punkt p, punkt q){
+	Gerade(Punkt p, Punkt q){
 		setM((q.getY() - p.getY())/(q.getX() - p.getX()));
 		setC(p.getY() - (this.getM()*p.getX()));
 	}
 	
-	
+	Gerade(double m, double c){
+		setM(m);
+		setC(c);
+	}
 	
 	public double getC() {
 		return c;

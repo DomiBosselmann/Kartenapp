@@ -1,28 +1,29 @@
 
-package steffen;
+package steffen.clean;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import steffen.WrapNodes;
 
-public class CleanLayer {
-	private static String	sourceFile	= "bawu bounfdary.xml";
-	private static String	targetFile	= "bawu boundfary2.xml";
-	private static String[]	tagsToKeep	= { "k=\"admin_level\"", "k=\"boundary\"", "k=\"border_type\"" };
+public class CleanLayerCities {
+	private static String	sourceFile	= "bawu hugecities.xml";
+	private static String[]	tagsToKeep	= { "k=\"name\"", "k=\"place\"" };
 	
 	public static void main(String[] args) throws IOException {
+		String targetFile = sourceFile.replaceAll(".xml", "2.xml");
 		// create
-		BufferedReader reader = new BufferedReader(new FileReader(new File(CleanLayer.sourceFile)));
-		FileWriter writer = new FileWriter(new File(CleanLayer.targetFile));
+		BufferedReader reader = new BufferedReader(new FileReader(new File(CleanLayerCities.sourceFile)));
+		FileWriter writer = new FileWriter(new File(targetFile));
 		
 		// actions
 		String line = null;
 		while (reader.ready()) {
 			line = reader.readLine();
 			if (line.indexOf("<tag") >= 0) {
-				if (CleanLayer.keepTag(line)) {
+				if (CleanLayerCities.keepTag(line)) {
 					writer.write(line + "\n");
 				}
 			} else {
@@ -40,14 +41,14 @@ public class CleanLayer {
 		
 		System.out.println("Step 1");
 		
-		String[] args2 = { CleanLayer.sourceFile.replaceAll(".xml", "2.xml"), CleanLayer.targetFile.replaceAll(".xml", "2.xml") };
+		String[] args2 = { targetFile, targetFile.replaceAll(".xml", "2.xml") };
 		WrapNodes.main(args2);
 		
 		System.out.println("Done");
 	}
 	
 	private static boolean keepTag(String input) {
-		for (String tag : CleanLayer.tagsToKeep) {
+		for (String tag : CleanLayerCities.tagsToKeep) {
 			if (input.indexOf(tag) >= 0) {
 				return true;
 			}

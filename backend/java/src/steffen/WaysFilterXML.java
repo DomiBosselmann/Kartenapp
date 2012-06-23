@@ -9,7 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Hashtable;
 
-public class FilterXML {
+public class WaysFilterXML {
 	private static String	fileSource		= "bawu.xml";
 	private static String	fileTarget		= "bawu motorwaytest.xml";
 	private static String[]	neededKeys		= { "k=\"highway\"" };
@@ -20,7 +20,7 @@ public class FilterXML {
 		
 		// 1 Save needed nodes in file
 		// 1 Create
-		File sourceFile = new File(FilterXML.fileSource);
+		File sourceFile = new File(WaysFilterXML.fileSource);
 		BufferedReader reader = null;
 		try {
 			reader = new BufferedReader(new FileReader(sourceFile));
@@ -87,7 +87,7 @@ public class FilterXML {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		File targetFile = new File(FilterXML.fileTarget);
+		File targetFile = new File(WaysFilterXML.fileTarget);
 		writer = new FileWriter(targetFile);
 		
 		// 2 Actions

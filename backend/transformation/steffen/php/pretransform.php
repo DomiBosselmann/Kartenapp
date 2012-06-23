@@ -27,17 +27,17 @@ if (isset($_GET['lon2'])) {
 switch ($_GET[l]) {
 	case 'm':
 		{
-			$xmlfile = 'motorway.xml';
+			$xmlfile = '../xml/motorway.xml';
 			break;
 		}
 	case 'b':
 		{
-			$xmlfile = 'boundary.xml';
+			$xmlfile = '../xml/boundary.xml';
 			break;
 		}
 	default:
 		{
-			$xmlfile = 'boundary2.xml';
+			$xmlfile = '../xml/boundary2.xml';
 			break;
 		}
 }
@@ -79,10 +79,9 @@ foreach ($xml as $node0 => $value0) {
 							}
 					}
 				}
-				$line .= "/>";
 				if ($print1 && $print2) {
 					$nodes[''.$id] = true;
-					echo $line . "\n";
+					echo $line . "/>\n";
 				}
 				break;
 			}
@@ -124,7 +123,7 @@ foreach ($xml as $node0 => $value0) {
 								}
 								$line .= "/>";
 								if ($nodes[''.$ref]) {
-									echo $line . "\n";
+									echo $line . "/>\n";
 								}
 								break;
 							}

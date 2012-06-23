@@ -41,7 +41,7 @@ public class CleanLayerCities {
 		
 		System.out.println("Step 1");
 		
-		String[] args2 = { targetFile, targetFile.replaceAll(".xml", "2.xml") };
+		String[] args2 = { targetFile };
 		WrapNodes.main(args2);
 		
 		System.out.println("Done");

@@ -7,18 +7,18 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class CitesFilterXML {
+public class FilterXMLCites {
 	private static String	fileSource		= "bawu.xml";
+	private static String	fileTarget		= "bawu cities.xml";
 	private static String	neededKey		= "k=\"place\"";
 	// private static String[] possibleValues = { "v=\"city\"", "v=\"town\"", "v=\"village\"", "v=\"hamlet\"", "v=\"suburb\"" };
 	private static String[]	possibleValues	= { "v=\"city\"" };
 	
 	public static void main(String[] args) throws IOException {
-		String targetFile = fileSource.replaceAll(".xml", "2.xml");
 		// 1 Save needed nodes in file
 		// 1 Create
-		BufferedReader reader = new BufferedReader(new FileReader(new File(CitesFilterXML.fileSource)));
-		FileWriter writer = new FileWriter(new File(targetFile));
+		BufferedReader reader = new BufferedReader(new FileReader(new File(FilterXMLCites.fileSource)));
+		FileWriter writer = new FileWriter(new File(FilterXMLCites.fileTarget));
 		
 		// 1 Actions
 		String line = null;
@@ -31,8 +31,8 @@ public class CitesFilterXML {
 					do {
 						line = reader.readLine();
 						if (line.indexOf("<tag") >= 0) {
-							if (line.indexOf(CitesFilterXML.neededKey) >= 0) {
-								for (String value : CitesFilterXML.possibleValues) {
+							if (line.indexOf(FilterXMLCites.neededKey) >= 0) {
+								for (String value : FilterXMLCites.possibleValues) {
 									if (line.indexOf(value) >= 0) {
 										needed = true;
 										break;

@@ -11,9 +11,9 @@ import java.util.Hashtable;
 
 public class FilterXMLAdministrative {
 	private static String	fileSource	= "bawu.xml";
-	private static String	fileTarget	= "bawu boundary2.xml";
+	private static String	fileTarget	= "bawu boundary.xml";
 	private static String[]	neededTags	= { "k=\"boundary\" v=\"administrative\"" };
-	private static int		admin_level	= 2;
+	private static int		admin_level	= 4;
 	
 	public static void main(String[] args) throws IOException {
 		Hashtable<Integer, Integer> nodeIDs = new Hashtable<Integer, Integer>();
@@ -37,7 +37,7 @@ public class FilterXMLAdministrative {
 				do {
 					line = reader.readLine();
 					if (line.indexOf("<tag") >= 0) {
-						for (String neededTag : neededTags) {
+						for (String neededTag : FilterXMLAdministrative.neededTags) {
 							if (line.indexOf(neededTag) >= 0) {
 								needed1 = true;
 							}
@@ -47,7 +47,7 @@ public class FilterXMLAdministrative {
 							if (levelbegin >= 0) {
 								int levelend = line.indexOf("\"", levelbegin + 3);
 								int level = Integer.valueOf(line.substring(levelbegin + 3, levelend));
-								if (level <= admin_level) {
+								if (level <= FilterXMLAdministrative.admin_level) {
 									needed2 = true;
 								}
 							}
@@ -78,6 +78,7 @@ public class FilterXMLAdministrative {
 		}
 		
 		System.out.println(nodeIDs.size());
+		System.out.println("Step 1");
 		
 		// 2 Add nodes to target file
 		// 2 Create
@@ -131,6 +132,8 @@ public class FilterXMLAdministrative {
 			reader.close();
 		}
 		
+		System.out.println("Step 2");
+		
 		// 3 Add ways to target file
 		// 3 Create
 		reader = new BufferedReader(new FileReader(tempFile));
@@ -142,7 +145,6 @@ public class FilterXMLAdministrative {
 			writer.write(line + "\n");
 		}
 		writer.write("</osm>\n");
-		System.out.println(line);
 		
 		// 3 Destroy
 		if (reader != null) {
@@ -152,6 +154,6 @@ public class FilterXMLAdministrative {
 			writer.close();
 		}
 		
-		System.out.println("DONE");
+		System.out.println("Done");
 	}
 }

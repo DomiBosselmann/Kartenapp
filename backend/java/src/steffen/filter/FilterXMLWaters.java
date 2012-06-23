@@ -8,17 +8,20 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Hashtable;
 
-public class FilterXMLMotorway {
-	private static String	fileSource	= "bawu.xml";
-	private static String	fileTarget	= "bawu motorway.xml";
-	private static String[]	neededTags	= { "k=\"highway\" v=\"motorway\"" };
+public class FilterXMLWaters {
+	private static String	fileSource		= "bawu.xml";
+	private static String	fileTarget		= "bawu rivers.xml";
+//	private static String[]	neededKeys		= { "k=\"waterway\"", "k=\"waterway\"", "k=\"waterway\"", "k=\"natural\"" };
+//	private static String[]	neededValues	= { "v=\"river\"", "v=\"canal\"", "v=\"riverbank\"", "v=\"water\"" };
+	private static String[]	neededKeys		= { "k=\"waterway\"" };
+	private static String[]	neededValues	= { "v=\"river\"" };
 	
 	public static void main(String[] args) throws IOException {
 		Hashtable<Integer, Integer> nodeIDs = new Hashtable<Integer, Integer>();
 		
-		// 1 Save needed nodes in file
+		// 1 Save needed ways in file and needed nodes in hashtable
 		// 1 Create
-		File sourceFile = new File(FilterXMLMotorway.fileSource);
+		File sourceFile = new File(FilterXMLWaters.fileSource);
 		BufferedReader reader = new BufferedReader(new FileReader(sourceFile));
 		File tempFile = new File("lines_temp.xml");
 		FileWriter writer = new FileWriter(tempFile);
@@ -35,12 +38,17 @@ public class FilterXMLMotorway {
 				do {
 					line = reader.readLine();
 					if (line.indexOf("<tag") >= 0) {
-						for (String neededTag : FilterXMLMotorway.neededTags) {
+						int i = 0;
+						for (String neededTag : FilterXMLWaters.neededKeys) {
 							if (line.indexOf(neededTag) >= 0) {
-								needed1 = true;
+								if (line.indexOf(FilterXMLWaters.neededValues[i]) >= 0) {
+									needed1 = true;
+								}
+								i++;
 							}
 						}
 					}
+					// place for adding additional checks
 					zeile += line + "\n";
 				} while (line.indexOf("</way") < 0);
 				if (needed1 && needed2) {
@@ -71,7 +79,8 @@ public class FilterXMLMotorway {
 		// 2 Add nodes to target file
 		// 2 Create
 		reader = new BufferedReader(new FileReader(sourceFile));
-		writer = new FileWriter(new File(FilterXMLMotorway.fileTarget));
+		File targetFile = new File(FilterXMLWaters.fileTarget);
+		writer = new FileWriter(targetFile);
 		
 		// 2 Actions
 		writer.write("<?xml version='1.0' encoding='UTF-8'?>\n");

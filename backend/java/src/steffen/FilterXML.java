@@ -3,13 +3,12 @@ package steffen;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Hashtable;
 
-public class WaysFilterXML {
+public class FilterXML {
 	private static String	fileSource		= "bawu.xml";
 	private static String	fileTarget		= "bawu motorwaytest.xml";
 	private static String[]	neededKeys		= { "k=\"highway\"" };
@@ -17,19 +16,13 @@ public class WaysFilterXML {
 	
 	public static void main(String[] args) throws IOException {
 		Hashtable<Integer, Integer> nodeIDs = new Hashtable<Integer, Integer>();
-		
-		// 1 Save needed nodes in file
+
+		// 1 Save needed ways in file and needed nodes in hashtable
 		// 1 Create
-		File sourceFile = new File(WaysFilterXML.fileSource);
-		BufferedReader reader = null;
-		try {
-			reader = new BufferedReader(new FileReader(sourceFile));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		File sourceFile = new File(FilterXML.fileSource);
+		BufferedReader reader = new BufferedReader(new FileReader(sourceFile));
 		File tempFile = new File("lines_temp.xml");
-		FileWriter writer = null;
-		writer = new FileWriter(tempFile);
+		FileWriter writer = new FileWriter(tempFile);
 		tempFile.deleteOnExit();
 		
 		// 1 Actions
@@ -44,9 +37,9 @@ public class WaysFilterXML {
 					line = reader.readLine();
 					if (line.indexOf("<tag") >= 0) {
 						int i = 0;
-						for (String neededTag : neededKeys) {
+						for (String neededTag : FilterXML.neededKeys) {
 							if (line.indexOf(neededTag) >= 0) {
-								if (line.indexOf(neededValues[i]) >= 0) {
+								if (line.indexOf(FilterXML.neededValues[i]) >= 0) {
 									needed1 = true;
 								}
 								i++;
@@ -79,15 +72,12 @@ public class WaysFilterXML {
 		}
 		
 		System.out.println(nodeIDs.size());
+		System.out.println("Step 1");
 		
 		// 2 Add nodes to target file
 		// 2 Create
-		try {
-			reader = new BufferedReader(new FileReader(sourceFile));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		File targetFile = new File(WaysFilterXML.fileTarget);
+		reader = new BufferedReader(new FileReader(sourceFile));
+		File targetFile = new File(FilterXML.fileTarget);
 		writer = new FileWriter(targetFile);
 		
 		// 2 Actions
@@ -132,6 +122,8 @@ public class WaysFilterXML {
 			reader.close();
 		}
 		
+		System.out.println("Step 2");
+		
 		// 3 Add ways to target file
 		// 3 Create
 		reader = new BufferedReader(new FileReader(tempFile));
@@ -143,7 +135,6 @@ public class WaysFilterXML {
 			writer.write(line + "\n");
 		}
 		writer.write("</osm>\n");
-		System.out.println(line);
 		
 		// 3 Destroy
 		if (reader != null) {
@@ -153,6 +144,6 @@ public class WaysFilterXML {
 			writer.close();
 		}
 		
-		System.out.println("DONE");
+		System.out.println("Done");
 	}
 }

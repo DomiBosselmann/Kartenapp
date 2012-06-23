@@ -5,7 +5,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 
 public class GetLine {
@@ -14,7 +13,7 @@ public class GetLine {
 	
 	public static void main(String[] args) {
 		// create
-		File file1 = new File(sourceFilePath);
+		File file1 = new File(GetLine.sourceFilePath);
 		BufferedReader reader = null;
 		try {
 			reader = new BufferedReader(new FileReader(file1));
@@ -28,7 +27,7 @@ public class GetLine {
 		try {
 			while (reader.ready()) {
 				line = reader.readLine();
-				if (line.indexOf(searchedString) >= 0) {
+				if (line.indexOf(GetLine.searchedString) >= 0) {
 					System.out.println(i);
 					System.out.println(line);
 				}

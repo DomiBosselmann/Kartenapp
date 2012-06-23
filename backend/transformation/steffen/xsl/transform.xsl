@@ -37,7 +37,7 @@
 	<xsl:template match="node">
 		<xsl:value-of select="@lon * 150 - 1050" />
 		<xsl:text>,</xsl:text>
-		<xsl:value-of select="@lat * -150 + 7500" />
+		<xsl:value-of select="@lat * -190 + 9500" />
 	</xsl:template>
 
 	<xsl:template match="tag">

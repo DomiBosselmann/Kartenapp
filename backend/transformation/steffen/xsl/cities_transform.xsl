@@ -29,7 +29,7 @@
 	<xsl:template match="node">
 		<xsl:element name="g">
 			<xsl:attribute name="transform">translate(<xsl:value-of select="@lon * 150 - 1050" /><xsl:text> </xsl:text><xsl:value-of
-				select="@lat * -150 + 7500" />)</xsl:attribute>
+				select="@lat * -190 + 9500" />)</xsl:attribute>
 			<xsl:element name="use">
 				<xsl:attribute name="xlink:href">#city</xsl:attribute>
 			</xsl:element>

@@ -24,22 +24,39 @@ if (isset($_GET['lon2'])) {
 	$lon2 = 99999;
 }
 
-switch ($_GET[l]) {
-	case 'm':
-		{
-			$xmlfile = '../xml/motorway.xml';
-			break;
-		}
-	case 'b':
-		{
-			$xmlfile = '../xml/boundary.xml';
-			break;
-		}
-	default:
-		{
-			$xmlfile = '../xml/boundary2.xml';
-			break;
-		}
+$xmlfile = '../xml/';
+if ($_GET['l']){
+	$layer = substr($_GET['l'],0,1);
+	switch ($layer) {
+		case 'm':
+			{
+				$xmlfile .= 'motorway.xml';
+				break;
+			}
+		case 'b':
+			{
+				switch ($_GET['l']) {
+					case 'b1':
+						{
+							$xmlfile .= 'boundary1.xml';
+							break;
+						}
+					default:
+						{
+							$xmlfile .= 'boundary.xml';
+							break;
+						}
+				}
+				break;
+			}
+		default:
+			{
+				$xmlfile .= 'boundary.xml';
+				break;
+			}
+	}
+} else {
+	$xmlfile .= 'boundary.xml';
 }
 
 $xml = simplexml_load_file($xmlfile);

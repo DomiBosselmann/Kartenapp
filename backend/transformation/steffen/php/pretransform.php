@@ -30,7 +30,7 @@ if ($_GET['l']){
 	switch ($layer) {
 		case 'm':
 			{
-				$xmlfile .= 'motorway.xml';
+				$xmlfile .= 'highways/motorway.xml';
 				break;
 			}
 		case 'b':
@@ -38,25 +38,30 @@ if ($_GET['l']){
 				switch ($_GET['l']) {
 					case 'b1':
 						{
-							$xmlfile .= 'boundary1.xml';
+							$xmlfile .= 'bounds/bawubounds.xml';
 							break;
 						}
 					default:
 						{
-							$xmlfile .= 'boundary.xml';
+							$xmlfile .= 'bounds/gerbounds.xml';
 							break;
 						}
 				}
 				break;
 			}
+		case 'r':
+			{
+				$xmlfile .= 'waters/rivers.xml';
+				break;
+			}
 		default:
 			{
-				$xmlfile .= 'boundary.xml';
+				$xmlfile .= 'bounds/gerbounds.xml';
 				break;
 			}
 	}
 } else {
-	$xmlfile .= 'boundary.xml';
+	$xmlfile .= 'bounds/gerbounds.xml';
 }
 
 $xml = simplexml_load_file($xmlfile);

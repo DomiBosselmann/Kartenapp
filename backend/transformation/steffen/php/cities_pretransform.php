@@ -28,22 +28,22 @@ $xmlfile = '../xml/';
 switch ($_GET[l]) {
 	case 'c1':
 		{
-			$xmlfile .= 'bigcities.xml';
+			$xmlfile .= 'cities/largecities.xml';
 			break;
 		}
 	case 'c2':
 		{
-			$xmlfile .= 'largecities.xml';
+			$xmlfile .= 'cities/bigcities.xml';
 			break;
 		}
 	case 'c3':
 		{
-			$xmlfile .= 'hugecities.xml';
+			$xmlfile .= 'cities/allcities.xml';
 			break;
 		}
 	default:
 		{
-			$xmlfile .= 'allcities.xml';
+			$xmlfile .= 'cities/hugecities.xml';
 			break;
 		}
 }

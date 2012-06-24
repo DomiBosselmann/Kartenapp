@@ -3,7 +3,6 @@ package steffen.filter;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,7 +10,7 @@ import java.util.Hashtable;
 
 public class FilterXMLMotorway {
 	private static String	fileSource	= "bawu.xml";
-	private static String	fileTarget	= "bawu boundary.xml";
+	private static String	fileTarget	= "bawu motorway.xml";
 	private static String[]	neededTags	= { "k=\"highway\" v=\"motorway\"" };
 	
 	public static void main(String[] args) throws IOException {
@@ -20,15 +19,9 @@ public class FilterXMLMotorway {
 		// 1 Save needed nodes in file
 		// 1 Create
 		File sourceFile = new File(FilterXMLMotorway.fileSource);
-		BufferedReader reader = null;
-		try {
-			reader = new BufferedReader(new FileReader(sourceFile));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		BufferedReader reader = new BufferedReader(new FileReader(sourceFile));
 		File tempFile = new File("lines_temp.xml");
-		FileWriter writer = null;
-		writer = new FileWriter(tempFile);
+		FileWriter writer = new FileWriter(tempFile);
 		tempFile.deleteOnExit();
 		
 		// 1 Actions
@@ -42,7 +35,7 @@ public class FilterXMLMotorway {
 				do {
 					line = reader.readLine();
 					if (line.indexOf("<tag") >= 0) {
-						for (String neededTag : neededTags) {
+						for (String neededTag : FilterXMLMotorway.neededTags) {
 							if (line.indexOf(neededTag) >= 0) {
 								needed1 = true;
 							}
@@ -73,16 +66,12 @@ public class FilterXMLMotorway {
 		}
 		
 		System.out.println(nodeIDs.size());
+		System.out.println("Step 1");
 		
 		// 2 Add nodes to target file
 		// 2 Create
-		try {
-			reader = new BufferedReader(new FileReader(sourceFile));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		File targetFile = new File(FilterXMLMotorway.fileTarget);
-		writer = new FileWriter(targetFile);
+		reader = new BufferedReader(new FileReader(sourceFile));
+		writer = new FileWriter(new File(FilterXMLMotorway.fileTarget));
 		
 		// 2 Actions
 		writer.write("<?xml version='1.0' encoding='UTF-8'?>\n");
@@ -126,6 +115,8 @@ public class FilterXMLMotorway {
 			reader.close();
 		}
 		
+		System.out.println("Step 2");
+		
 		// 3 Add ways to target file
 		// 3 Create
 		reader = new BufferedReader(new FileReader(tempFile));
@@ -137,7 +128,6 @@ public class FilterXMLMotorway {
 			writer.write(line + "\n");
 		}
 		writer.write("</osm>\n");
-		System.out.println(line);
 		
 		// 3 Destroy
 		if (reader != null) {
@@ -147,6 +137,6 @@ public class FilterXMLMotorway {
 			writer.close();
 		}
 		
-		System.out.println("DONE");
+		System.out.println("Done");
 	}
 }

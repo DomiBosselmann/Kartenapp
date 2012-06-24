@@ -24,22 +24,44 @@ if (isset($_GET['lon2'])) {
 	$lon2 = 99999;
 }
 
-switch ($_GET[l]) {
-	case 'm':
-		{
-			$xmlfile = 'motorway.xml';
-			break;
-		}
-	case 'b':
-		{
-			$xmlfile = 'boundary.xml';
-			break;
-		}
-	default:
-		{
-			$xmlfile = 'boundary2.xml';
-			break;
-		}
+$xmlfile = '../xml/';
+if ($_GET['l']){
+	$layer = substr($_GET['l'],0,1);
+	switch ($layer) {
+		case 'm':
+			{
+				$xmlfile .= 'highways/motorway.xml';
+				break;
+			}
+		case 'b':
+			{
+				switch ($_GET['l']) {
+					case 'b1':
+						{
+							$xmlfile .= 'bounds/bawubounds.xml';
+							break;
+						}
+					default:
+						{
+							$xmlfile .= 'bounds/gerbounds.xml';
+							break;
+						}
+				}
+				break;
+			}
+		case 'r':
+			{
+				$xmlfile .= 'waters/rivers.xml';
+				break;
+			}
+		default:
+			{
+				$xmlfile .= 'bounds/gerbounds.xml';
+				break;
+			}
+	}
+} else {
+	$xmlfile .= 'bounds/gerbounds.xml';
 }
 
 $xml = simplexml_load_file($xmlfile);
@@ -79,10 +101,9 @@ foreach ($xml as $node0 => $value0) {
 							}
 					}
 				}
-				$line .= "/>";
 				if ($print1 && $print2) {
 					$nodes[''.$id] = true;
-					echo $line . "\n";
+					echo $line . "/>\n";
 				}
 				break;
 			}
@@ -124,7 +145,7 @@ foreach ($xml as $node0 => $value0) {
 								}
 								$line .= "/>";
 								if ($nodes[''.$ref]) {
-									echo $line . "\n";
+									echo $line . "/>\n";
 								}
 								break;
 							}

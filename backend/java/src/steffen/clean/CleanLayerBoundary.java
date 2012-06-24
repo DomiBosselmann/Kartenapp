@@ -9,14 +9,14 @@ import java.io.IOException;
 import steffen.WrapNodes;
 
 public class CleanLayerBoundary {
-	private static String	sourceFile	= "boundary2.xml";
-	private static String	targetFile	= "boundary3.xml";
+	private static String	sourceFile	= "bawu boundary.xml";
 	private static String[]	tagsToKeep	= { "k=\"admin_level\"", "k=\"boundary\"", "k=\"border_type\"" };
 	
 	public static void main(String[] args) throws IOException {
+		String targetFile = CleanLayerBoundary.sourceFile.replaceAll(".xml", "2.xml");
 		// create
 		BufferedReader reader = new BufferedReader(new FileReader(new File(CleanLayerBoundary.sourceFile)));
-		FileWriter writer = new FileWriter(new File(CleanLayerBoundary.targetFile));
+		FileWriter writer = new FileWriter(new File(targetFile));
 		
 		// actions
 		String line = null;
@@ -38,8 +38,13 @@ public class CleanLayerBoundary {
 		if (writer != null) {
 			writer.close();
 		}
-		String[] args2 = { CleanLayerBoundary.targetFile, CleanLayerBoundary.targetFile.replaceAll(".xml", "2.xml") };
+		
+		System.out.println("Step 1");
+		
+		String[] args2 = { targetFile };
 		WrapNodes.main(args2);
+		
+		System.out.println("Done");
 	}
 	
 	private static boolean keepTag(String input) {

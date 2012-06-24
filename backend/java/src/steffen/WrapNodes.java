@@ -9,16 +9,16 @@ import java.io.IOException;
 
 public class WrapNodes {
 	private static String	sourceFile	= "bawu highway motorway2.xml";
-	private static String	targetFile	= "bawu highway motorway3.xml";
 	
 	public static void main(String[] args) throws IOException {
+		String targetFile = WrapNodes.sourceFile.replaceAll(".xml", "2.xml");
 		if (args.length > 0) {
 			WrapNodes.sourceFile = args[0];
-			WrapNodes.targetFile = args[1];
+			targetFile = args[0].replaceAll(".xml", "2.xml");
 		}
 		// create
 		BufferedReader reader = new BufferedReader(new FileReader(new File(WrapNodes.sourceFile)));
-		FileWriter writer = new FileWriter(new File(WrapNodes.targetFile));
+		FileWriter writer = new FileWriter(new File(targetFile));
 		
 		// actions
 		String line = null;

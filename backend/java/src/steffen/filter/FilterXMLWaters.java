@@ -1,5 +1,5 @@
 
-package steffen;
+package steffen.filter;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -8,18 +8,20 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Hashtable;
 
-public class FilterXML {
+public class FilterXMLWaters {
 	private static String	fileSource		= "bawu.xml";
-	private static String	fileTarget		= "bawu motorwaytest.xml";
-	private static String[]	neededKeys		= { "k=\"highway\"" };
-	private static String[]	neededValues	= { "v=\"motorway\"" };
+	private static String	fileTarget		= "bawu rivers.xml";
+//	private static String[]	neededKeys		= { "k=\"waterway\"", "k=\"waterway\"", "k=\"waterway\"", "k=\"natural\"" };
+//	private static String[]	neededValues	= { "v=\"river\"", "v=\"canal\"", "v=\"riverbank\"", "v=\"water\"" };
+	private static String[]	neededKeys		= { "k=\"waterway\"" };
+	private static String[]	neededValues	= { "v=\"river\"" };
 	
 	public static void main(String[] args) throws IOException {
 		Hashtable<Integer, Integer> nodeIDs = new Hashtable<Integer, Integer>();
-
+		
 		// 1 Save needed ways in file and needed nodes in hashtable
 		// 1 Create
-		File sourceFile = new File(FilterXML.fileSource);
+		File sourceFile = new File(FilterXMLWaters.fileSource);
 		BufferedReader reader = new BufferedReader(new FileReader(sourceFile));
 		File tempFile = new File("lines_temp.xml");
 		FileWriter writer = new FileWriter(tempFile);
@@ -37,9 +39,9 @@ public class FilterXML {
 					line = reader.readLine();
 					if (line.indexOf("<tag") >= 0) {
 						int i = 0;
-						for (String neededTag : FilterXML.neededKeys) {
+						for (String neededTag : FilterXMLWaters.neededKeys) {
 							if (line.indexOf(neededTag) >= 0) {
-								if (line.indexOf(FilterXML.neededValues[i]) >= 0) {
+								if (line.indexOf(FilterXMLWaters.neededValues[i]) >= 0) {
 									needed1 = true;
 								}
 								i++;
@@ -77,7 +79,7 @@ public class FilterXML {
 		// 2 Add nodes to target file
 		// 2 Create
 		reader = new BufferedReader(new FileReader(sourceFile));
-		File targetFile = new File(FilterXML.fileTarget);
+		File targetFile = new File(FilterXMLWaters.fileTarget);
 		writer = new FileWriter(targetFile);
 		
 		// 2 Actions

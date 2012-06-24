@@ -8,8 +8,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class KillCrap {
-	private static String	sourceFile	= "LayerGrenzen.xml";
-	private static String	targetFile	= "LayerGrenzen2.xml";
+	private static String	sourceFile	= "bawu.xml";
+	private static String	targetFile	= "bawu2.xml";
 	
 	public static void main(String[] args) throws IOException {
 		// create
@@ -31,6 +31,8 @@ public class KillCrap {
 					line = KillCrap.deleteAttribute("version", line);
 					line = KillCrap.deleteAttribute("changeset", line);
 					line = line.trim();
+					line = killMultipleSpaces(line);
+					line = killLastSpace(line);
 					writer.write(line + "\n");
 				}
 			}
@@ -60,5 +62,16 @@ public class KillCrap {
 	
 	private static boolean uselessNode(String input) {
 		return input.indexOf("<relation") >= 0 || false;
+	}
+	
+	private static String killMultipleSpaces(String input) {
+		while (input.indexOf("  ") >= 0) {
+			input = input.replaceAll("  ", " ");
+		}
+		return input;
+	}
+	
+	private static String killLastSpace(String input) {
+		return input.replaceAll(" />", "/>");
 	}
 }

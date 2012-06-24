@@ -7,7 +7,9 @@ window.Karte = (function () {
 			exportButton: null,
 			importButton: null,
 			saveButton: null,
-			searchField: null
+			searchField: null,
+			mapChooser: null,
+			activeMapChooser: null
 		},
 		init : function () {
 			// UI-Elemente mit Referenzen versehen
@@ -17,6 +19,7 @@ window.Karte = (function () {
 			this.uiElements.importButton = document.querySelector("button[title='Importieren']");
 			this.uiElements.saveButton = document.querySelector("button[title='Sichern']");
 			this.uiElements.searchField = document.getElementById("searchField");
+			this.uiElements.mapChooser = Array.prototype.slice.call(document.getElementById("choosemap").children);
 			
 			// EventListener hinzufügen
 			this.uiElements.searchButton.addEventListener("click", this.handler.enableSearch, false);
@@ -26,6 +29,15 @@ window.Karte = (function () {
 			
 			this.uiElements.searchField.addEventListener("keyup", controller.handler.handleSearchInput, false);
 			this.uiElements.searchField.addEventListener("keydown", controller.handler.handleSearchInput, false);
+			
+			this.uiElements.mapChooser.forEach(function (element) {				
+				element.addEventListener("click", controller.handler.switchMapView, false);
+				
+				// Aktive View setzen
+				if (element.className === "active") {
+					controller.uiElements.activeMapChooser = element;
+				}
+			});
 		},
 		handler : {
 			enableSearch : function (event) {
@@ -50,6 +62,27 @@ window.Karte = (function () {
 			disableSearch : function () {
 				controller.uiElements.toolbar.className = "";
 				controller.uiElements.searchButton.addEventListener("click", controller.handler.enableSearch, false);
+			},
+			switchMapView : function (event) {
+				// Überprüfung ob die View geändert wurde
+				if (event.currentTarget === controller.uiElements.activeMapChooser) {
+					return;
+				}
+				
+				// Aktive View setzen
+				controller.uiElements.activeMapChooser = event.currentTarget;
+				
+				// MapView ändern in den Einstellungen
+				alert("Wenn jetzt ne Karte da wäre, könnte man zwischen den Ansichten wechseln.");
+				
+				// UI-Rückmeldung
+				controller.uiElements.mapChooser.forEach(function (element) {
+					if (element === event.currentTarget) {
+						element.className = "active";
+					} else {
+						element.className = "";
+					}
+				});
 			}
 		}
 	};

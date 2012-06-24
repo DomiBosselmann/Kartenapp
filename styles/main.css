@@ -136,7 +136,7 @@ aside {
 	display: -webkit-box;
 }
 
-#toolbar.searchenabled button:not(#searchbutton) {
+#toolbar.searchEnabled button:not(#searchbutton) {
 	opacity: 0;
 }
 
@@ -151,16 +151,16 @@ aside {
 	-moz-transition: -moz-transform 1s ease;
 }
 
-#toolbar.searchenabled #searchbutton {
+#toolbar.searchEnabled #searchbutton {
 	left: -284px;
 }
 
-#toolbar.searchenabled #searchbutton img {
+#toolbar.searchEnabled #searchbutton img {
 	-webkit-transform: rotate(90deg);
 	-moz-transform: rotate(90deg);
 }
 
-#searchflags {
+#searchField {
 	position: absolute;
 	left: 20px;
 	right: 200px;
@@ -171,16 +171,17 @@ aside {
 	background: transparent;
 	color: white;
 	opacity: 0;
-	-webkit-transition: opacity 0.5s ease-in-out;
-	-webkit-transition-delay: 0.7s;
-}
-
-#toolbar.searchenabled #searchflags {
-	opacity: 1;
-	right: 10px;
+	-webkit-transition: opacity 0.2s ease-in-out;
 	outline: none;
 }
 
-#searchflags::-webkit-input-placeholder {
+#toolbar.searchEnabled #searchField {
+	opacity: 1;
+	right: 10px;
+	-webkit-transition-delay: 0.7s;
+	-webkit-transition-duration: 0.5s;
+}
+
+#searchField::-webkit-input-placeholder {
 	color: rgba(255, 255, 255, 0.6);
 }

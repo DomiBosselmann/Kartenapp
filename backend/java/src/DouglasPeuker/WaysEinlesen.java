@@ -44,7 +44,8 @@ public class WaysEinlesen {
 			}else if(nextLine.trim().startsWith("<tag")){
 				tags.add(nextLine);
 			}else if(nextLine.trim().startsWith("</way")){
-				punkte = punkteBerechnen(punkteIDs);
+				//punkte = punkteBerechnen(punkteIDs);
+				punkte = null;
 				punkte = DouglasPeuker.linienGlaetten(punkte);
 				
 				for (int i=0; i<punkte.length; i++){

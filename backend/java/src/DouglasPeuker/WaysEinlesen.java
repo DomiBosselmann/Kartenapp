@@ -17,10 +17,12 @@ public class WaysEinlesen {
 		String file = "C:\\Users\\Dolle\\Desktop\\projektKarte\\osmarender\\stylesheets\\data.Roh.osm";
 		File myDir = new File("C:\\Users\\Dolle\\Desktop\\projektKarte");
 		String outputFile = "gepeukert.osm";
-		
 		double maxAbweichung = 500;
+
+		
+		berechneKoord koordBerechnen = new berechneKoord(file);
 		String nextLine;
-		List<String> punkteIDs = new ArrayList<String>();
+		ArrayList<String> punkteIDs = new ArrayList<String>();
 		List<String> tags = new ArrayList<String>();
 		Punkt[] punkte;
 		DouglasPeuker DouglasPeuker = new DouglasPeuker(maxAbweichung);
@@ -44,7 +46,7 @@ public class WaysEinlesen {
 			}else if(nextLine.trim().startsWith("<tag")){
 				tags.add(nextLine);
 			}else if(nextLine.trim().startsWith("</way")){
-				//punkte = punkteBerechnen(punkteIDs);
+				punkte = koordBerechnen.berechneLaenge(punkteIDs);
 				punkte = null;
 				punkte = DouglasPeuker.linienGlaetten(punkte);
 				

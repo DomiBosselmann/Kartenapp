@@ -16,8 +16,7 @@ public class DouglasPeuker {
 		return epsilon;
 	}
 	
-	public Punkt[] linienGlaetten(Punkt[] nodes, double e){
-		setEpsilon(e);
+	public Punkt[] linienGlaetten(Punkt[] nodes){
 		return linienGlaetten(nodes, 0, nodes.length-1);
 	}
 	

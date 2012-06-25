@@ -31,8 +31,8 @@ public class berechneKoord {
 				startIndex = nextLine.indexOf(" lon=") + 6;
 				endIndex = nextLine.indexOf("\"", startIndex);
 				lon = Double.parseDouble(nextLine.substring(startIndex, endIndex));
-				
-				
+				lon = lon * 111.120 * Math.cos(lat);
+				lat = lat * 111.120;
 				help[0] = lat;
 				help[1] = lon;
 				

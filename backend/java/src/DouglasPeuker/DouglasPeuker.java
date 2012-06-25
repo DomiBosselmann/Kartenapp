@@ -17,7 +17,7 @@ public class DouglasPeuker {
 	}
 	
 	public Punkt[] linienGlaetten(Punkt[] nodes){
-		return linienGlaetten(nodes, 0, nodes.length-1);
+		return linienGlaetten(nodes, 0, nodes.length-(int)(1));
 	}
 	
 	public Punkt[] linienGlaetten(Punkt[] nodes, int minIndex, int maxIndex){

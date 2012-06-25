@@ -14,7 +14,7 @@ public class WaysEinlesen {
 	
 	public static void main(String[] args) throws IOException{
 		
-		String file = "C:\\Users\\Dolle\\Desktop\\projektKarte\\osmarender\\stylesheets\\data.Roh.osm";
+		String file = "C:\\Users\\Dolle\\Desktop\\projektKarte\\LayerGrenzen.osm";
 		File myDir = new File("C:\\Users\\Dolle\\Desktop\\projektKarte");
 		String outputFile = "gepeukert.osm";
 		double maxAbweichung = 500;
@@ -42,17 +42,17 @@ public class WaysEinlesen {
 				writer.write(System.getProperty("line.separator"));
 				writer.flush();
 			}else if(nextLine.trim().startsWith("<nd")){
-				punkteIDs.add(nextLine.substring(nextLine.indexOf(" ref=") + 6, nextLine.length()-3));
+				startIndex = nextLine.indexOf(" ref=") + 6;
+				punkteIDs.add(nextLine.substring(startIndex, nextLine.indexOf("\"", startIndex)));
 			}else if(nextLine.trim().startsWith("<tag")){
 				tags.add(nextLine);
 			}else if(nextLine.trim().startsWith("</way")){
 				punkte = koordBerechnen.berechneLaenge(punkteIDs);
-				punkte = null;
 				punkte = DouglasPeuker.linienGlaetten(punkte);
 				
 				for (int i=0; i<punkte.length; i++){
 					if (!(punkte[i] == null)){
-						writer.write("    <nd ref=\"" + punkte[i].getID() + "\"\\>");
+						writer.write("    <nd ref=\"" + punkte[i].getID() + "\"/>");
 						writer.write(System.getProperty("line.separator"));
 						writer.flush();
 						
@@ -74,6 +74,7 @@ public class WaysEinlesen {
 			}else if(nextLine.trim().startsWith("</node")){
 				//die nodes sollen erst in einem zweiten durchgang geschrieben werden, 
 				//wenn man weiß, ob man sie überhaupt noch braucht.
+			}else if(nextLine.trim().startsWith("<node")){	
 			}else{
 				writer.write(nextLine);
 				writer.write(System.getProperty("line.separator"));
@@ -83,6 +84,7 @@ public class WaysEinlesen {
 		
 		br.close();
 		writer.close();
+		System.out.println("Teil 1");
 		
 		data = new File(myDir, outputFile);
 		BufferedReader wayReader = new BufferedReader(new FileReader(myDir + "\\help.osm")); 
@@ -118,5 +120,7 @@ public class WaysEinlesen {
 		wayReader.close();
 		nodeReader.close();
 		writer.close();
+
+		System.out.println("Teil 2");
 	}
 }

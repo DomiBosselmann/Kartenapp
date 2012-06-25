@@ -16,7 +16,7 @@ public class berechneKoord {
 		
 		String nodeID;
 		double lat, lon;
-		double[] help = new double[1];
+		double[] help = new double[2];
 		
 		BufferedReader br = new BufferedReader(new FileReader(file));
 
@@ -47,9 +47,8 @@ public class berechneKoord {
 		Punkt[] point = new Punkt[anzNodes];
 		int index = 0;
 
-		
 		for (String nodeInList: list){
-			if (allNodes.contains(nodeInList)){
+			if (allNodes.containsKey(nodeInList)){
 				point[index] = new Punkt(allNodes.get(nodeInList)[0], allNodes.get(nodeInList)[1], nodeInList);
 				index++;
 			}

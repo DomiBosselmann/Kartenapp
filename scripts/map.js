@@ -1,4 +1,8 @@
 window.Karte = (function () {
+
+	var preferences = {
+		url : "http://karte.dominique-bosselmann.de/"
+	};
 	
 	var controller = {
 		uiElements : {
@@ -36,6 +40,16 @@ window.Karte = (function () {
 				// Aktive View setzen
 				if (element.className === "active") {
 					controller.uiElements.activeMapChooser = element;
+				}
+			});
+			
+			// Karte laden
+			this.loadMap({
+				onSuccess : function (event) {
+					console.log(event);
+				},
+				onError : function (event) {
+					console.error(event);
 				}
 			});
 		},
@@ -84,7 +98,35 @@ window.Karte = (function () {
 					}
 				});
 			}
+		},
+		loadMap : function (latitude, longitude, handler) {
+			var parameters, request;
+			
+			parameters = "lat=" + latitude;
+			parameters += "&long= " + longitude;
+			
+			request = new XMLHttpRequest();
+			request.onreadystatechange = function () {
+				if (request.readyState === 4) {
+					handler.onSuccess({
+						statusCode : request.statusCode;
+						data: request.responseXML;
+					});
+				}
+			}
+			request.open("get", preferemces.url + "get/map?" + parameters, true);
+			request.send(null);
+			
+			console.log("Die Karte wird geladen");
 		}
+	};
+	
+	var renderer = {
+			
+	};
+	
+	var cache = {
+	
 	};
 	
 	return {

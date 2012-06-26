@@ -1,5 +1,5 @@
 
-package steffen;
+package steffen.analyse;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,29 +7,25 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class GetLineCount {
-	private static String	sourceFilePath	= "boundary2.xml";
+	private static String	sourceFilePath	= "bawu4.xml";
 	
 	public static void main(String[] args) throws IOException {
 		// create
-		File file1 = new File(GetLineCount.sourceFilePath);
-		BufferedReader reader = null;
-		reader = new BufferedReader(new FileReader(file1));
+		BufferedReader reader = new BufferedReader(new FileReader(new File(GetLineCount.sourceFilePath)));
 		
 		// actions
 		int i = 0;
 		String line = null;
 		while (reader.ready()) {
 			line = reader.readLine();
-			// System.out.println(i);
 			i++;
 		}
 		
+		// destroy
+		reader.close();
+		
 		System.out.println(i);
 		System.out.println(line);
-		
-		// destroy
-		if (reader != null) {
-			reader.close();
-		}
+		System.out.println("Done");
 	}
 }

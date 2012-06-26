@@ -1,5 +1,5 @@
 
-package steffen;
+package steffen.layer.filter;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -8,18 +8,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Hashtable;
 
-public class FilterXML {
-	private static String	fileSource		= "bawu.xml";
-	private static String	fileTarget		= "bawu motorwaytest.xml";
-	private static String[]	neededKeys		= { "k=\"highway\"" };
-	private static String[]	neededValues	= { "v=\"motorway\"" };
+public class FilterXMLMotorway {
+	private static String	fileSource	= "bawu.xml";
+	private static String	fileTarget	= "bawu motorway.xml";
+	private static String[]	neededTags	= { "k=\"highway\" v=\"motorway\"" };
 	
 	public static void main(String[] args) throws IOException {
 		Hashtable<Integer, Integer> nodeIDs = new Hashtable<Integer, Integer>();
-
-		// 1 Save needed ways in file and needed nodes in hashtable
+		
+		// 1 Save needed nodes in file
 		// 1 Create
-		File sourceFile = new File(FilterXML.fileSource);
+		File sourceFile = new File(FilterXMLMotorway.fileSource);
 		BufferedReader reader = new BufferedReader(new FileReader(sourceFile));
 		File tempFile = new File("lines_temp.xml");
 		FileWriter writer = new FileWriter(tempFile);
@@ -30,26 +29,20 @@ public class FilterXML {
 		while (reader.ready()) {
 			line = reader.readLine();
 			if (line.indexOf("<way") >= 0) {
-				boolean needed1 = false;
-				boolean needed2 = true;
+				boolean needed = false;
 				String zeile = line + "\n";
 				do {
 					line = reader.readLine();
 					if (line.indexOf("<tag") >= 0) {
-						int i = 0;
-						for (String neededTag : FilterXML.neededKeys) {
+						for (String neededTag : FilterXMLMotorway.neededTags) {
 							if (line.indexOf(neededTag) >= 0) {
-								if (line.indexOf(FilterXML.neededValues[i]) >= 0) {
-									needed1 = true;
-								}
-								i++;
+								needed = true;
 							}
 						}
 					}
-					// place for adding additional checks
 					zeile += line + "\n";
 				} while (line.indexOf("</way") < 0);
-				if (needed1 && needed2) {
+				if (needed) {
 					int refbegin = zeile.indexOf("ref=\"");
 					int refend = -1;
 					while (refbegin >= 0) {
@@ -64,12 +57,8 @@ public class FilterXML {
 		}
 		
 		// 1 Destroy
-		if (reader != null) {
-			reader.close();
-		}
-		if (writer != null) {
-			writer.close();
-		}
+		reader.close();
+		writer.close();
 		
 		System.out.println(nodeIDs.size());
 		System.out.println("Step 1");
@@ -77,8 +66,7 @@ public class FilterXML {
 		// 2 Add nodes to target file
 		// 2 Create
 		reader = new BufferedReader(new FileReader(sourceFile));
-		File targetFile = new File(FilterXML.fileTarget);
-		writer = new FileWriter(targetFile);
+		writer = new FileWriter(new File(FilterXMLMotorway.fileTarget));
 		
 		// 2 Actions
 		writer.write("<?xml version='1.0' encoding='UTF-8'?>\n");
@@ -118,9 +106,7 @@ public class FilterXML {
 		}
 		
 		// 2 Destroy (except writer)
-		if (reader != null) {
-			reader.close();
-		}
+		reader.close();
 		
 		System.out.println("Step 2");
 		
@@ -129,7 +115,6 @@ public class FilterXML {
 		reader = new BufferedReader(new FileReader(tempFile));
 		
 		// 3 Actions
-		line = null;
 		while (reader.ready()) {
 			line = reader.readLine();
 			writer.write(line + "\n");
@@ -137,12 +122,8 @@ public class FilterXML {
 		writer.write("</osm>\n");
 		
 		// 3 Destroy
-		if (reader != null) {
-			reader.close();
-		}
-		if (writer != null) {
-			writer.close();
-		}
+		reader.close();
+		writer.close();
 		
 		System.out.println("Done");
 	}

@@ -15,27 +15,27 @@
 				<xsl:element name="polygon">
 					<xsl:attribute name="id">city</xsl:attribute>
 					<xsl:attribute name="fill">red</xsl:attribute>
-					<xsl:attribute name="points">0,0 10,0 10,10 0,10 0,0</xsl:attribute>
+					<xsl:attribute name="points">-5,-5 5,-5 5,5 -5,5</xsl:attribute>
 				</xsl:element>
 				<xsl:element name="polygon">
 					<xsl:attribute name="id">town</xsl:attribute>
 					<xsl:attribute name="fill">red</xsl:attribute>
-					<xsl:attribute name="points">0,0 8,0 8,8 0,8 0,0</xsl:attribute>
+					<xsl:attribute name="points">-4,-4 4,-4 4,4 -4,4</xsl:attribute>
 				</xsl:element>
 				<xsl:element name="polygon">
 					<xsl:attribute name="id">village</xsl:attribute>
 					<xsl:attribute name="fill">red</xsl:attribute>
-					<xsl:attribute name="points">0,0 6,0 6,6 0,6 0,0</xsl:attribute>
+					<xsl:attribute name="points">-3,-3 3,-3 3,3 -3,3</xsl:attribute>
 				</xsl:element>
 				<xsl:element name="polygon">
 					<xsl:attribute name="id">hamlet</xsl:attribute>
 					<xsl:attribute name="fill">red</xsl:attribute>
-					<xsl:attribute name="points">0,0 4,0 4,4 0,4 0,0</xsl:attribute>
+					<xsl:attribute name="points">-2,-2 2,-2 2,2 -2,2</xsl:attribute>
 				</xsl:element>
 				<xsl:element name="polygon">
 					<xsl:attribute name="id">suburb</xsl:attribute>
 					<xsl:attribute name="fill">orange</xsl:attribute>
-					<xsl:attribute name="points">0,0 2,0 2,2 0,2 0,0</xsl:attribute>
+					<xsl:attribute name="points">-1,-1 1,-1 1,1 -1,1</xsl:attribute>
 				</xsl:element>
 			</xsl:element>
 

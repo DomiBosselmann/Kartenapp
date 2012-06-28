@@ -57,8 +57,8 @@
 			<xsl:when test="@k = &#34;name&#34;">
 				<xsl:element name="text">
 					<xsl:attribute name="id">name</xsl:attribute>
-					<xsl:attribute name="x">15</xsl:attribute>
-					<xsl:attribute name="y">0</xsl:attribute>
+					<xsl:attribute name="x">12</xsl:attribute>
+					<xsl:attribute name="y">5</xsl:attribute>
 					<xsl:attribute name="pointer-events">none</xsl:attribute>
 					<xsl:value-of select="@v" />
 				</xsl:element>

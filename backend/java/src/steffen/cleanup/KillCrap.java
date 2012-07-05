@@ -8,8 +8,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class KillCrap {
-	private static String	fileSource	= "bawu.xml";
-	private static String	fileTarget	= "bawu3.xml";
+	private static String	fileSource	= "xml/bawu.xml";
+	private static String	fileTarget	= "xml/bawu2.xml";
 	
 	public static void main(String[] args) throws IOException {
 		// create

@@ -21,6 +21,11 @@ public class CleanLayer {
 		String line = null;
 		while (reader.ready()) {
 			line = reader.readLine();
+			/*
+			 * ((If nodes shall not have tags)) if (line.indexOf("<node") >= 0) { if (line.indexOf("/>") < 0) { line =
+			 * line.replaceFirst(">", "/>"); writer.write(line + "\n"); do { line = reader.readLine(); } while ((line.indexOf("</node") <
+			 * 0)); } else { writer.write(line + "\n"); } } else {
+			 */
 			if (line.indexOf("<tag") >= 0) {
 				if (CleanLayer.keepTag(line)) {
 					writer.write(line + "\n");

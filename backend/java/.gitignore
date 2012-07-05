@@ -1,4 +1,8 @@
+/peucker
+/.classpath
+/.DS_Store
+/.gitignore
+/.project
 /bawu.xml
-/boundary2.xml
-/bawu boundary.xml
-/bawu motorway.xml
+/.settings
+/xml

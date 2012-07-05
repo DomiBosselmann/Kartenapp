@@ -8,7 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class CleanLayerWaters {
-	private static String	sourceFile	= "bawu rivers.xml";
+	private static String	sourceFile	= "xml/bawu rivers.xml";
 	private static String[]	tagsToKeep	= { "k=\"name\"", "k=\"waterway\"", "k=\"natural\"" };
 	
 	public static void main(String[] args) throws IOException {
@@ -21,12 +21,24 @@ public class CleanLayerWaters {
 		String line = null;
 		while (reader.ready()) {
 			line = reader.readLine();
-			if (line.indexOf("<tag") >= 0) {
-				if (CleanLayerWaters.keepTag(line)) {
+			if (line.indexOf("<node") >= 0) {
+				if (line.indexOf("/>") < 0) {
+					line = line.replaceFirst(">", "/>");
+					writer.write(line + "\n");
+					do {
+						line = reader.readLine();
+					} while ((line.indexOf("</node") < 0));
+				} else {
 					writer.write(line + "\n");
 				}
 			} else {
-				writer.write(line + "\n");
+				if (line.indexOf("<tag") >= 0) {
+					if (CleanLayerWaters.keepTag(line)) {
+						writer.write(line + "\n");
+					}
+				} else {
+					writer.write(line + "\n");
+				}
 			}
 		}
 		

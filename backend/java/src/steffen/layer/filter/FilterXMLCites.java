@@ -8,11 +8,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class FilterXMLCites {
-	private static String	fileSource		= "bawu.xml";
-	private static String	fileTarget		= "bawu cities.xml";
+	private static String	fileSource		= "xml/bawu.xml";
+	private static String	fileTarget		= "xml/bawu cities.xml";
 	private static String	neededKey		= "k=\"place\"";
 	// private static String[] possibleValues = { "v=\"city\"", "v=\"town\"", "v=\"village\"", "v=\"hamlet\"", "v=\"suburb\"" };
-	private static String[]	possibleValues	= { "v=\"city\"" };
+	private static String[]	possibleValues	= { "v=\"suburb\"" };
 	
 	public static void main(String[] args) throws IOException {
 		// 1 Save needed nodes in file
@@ -63,13 +63,9 @@ public class FilterXMLCites {
 		}
 		
 		// 1 Destroy
-		if (reader != null) {
-			reader.close();
-		}
-		if (writer != null) {
-			writer.close();
-		}
+		reader.close();
+		writer.close();
 		
-		System.out.println("DONE");
+		System.out.println("Done");
 	}
 }

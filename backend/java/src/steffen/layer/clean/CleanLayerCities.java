@@ -8,7 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class CleanLayerCities {
-	private static String	sourceFile	= "bawu hugecities.xml";
+	private static String	sourceFile	= "xml/bawu cities.xml";
 	private static String[]	tagsToKeep	= { "k=\"name\"", "k=\"place\"" };
 	
 	public static void main(String[] args) throws IOException {

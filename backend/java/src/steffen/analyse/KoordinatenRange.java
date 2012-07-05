@@ -7,7 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class KoordinatenRange {
-	private static String	sourceFilePath	= "bawu.xml";
+	private static String	sourceFilePath	= "xml/bawu.xml";
 	
 	public static void main(String[] args) throws IOException {
 		// create
@@ -45,12 +45,12 @@ public class KoordinatenRange {
 			}
 		}
 		
+		// destroy
+		reader.close();
+		
 		System.out.println("Links: " + lon1);
 		System.out.println("Rechts: " + lon2);
 		System.out.println("Oben: " + lat2);
 		System.out.println("Unten: " + lat1);
-		
-		// destroy
-		reader.close();
 	}
 }

@@ -25,12 +25,12 @@ if (isset($_GET['lon2'])) {
 }
 
 if ($_GET['l']) {
-	$xmlfile = '../xml/';
+	$xmlfile = '../../../../../xmls/';
 	$layer = substr($_GET['l'],0,1);
 	switch ($layer) {
 		case 'm':
 			{
-				$xmlfile .= 'highways/motorways.xml';
+				$xmlfile .= 'streets/motorways.xml';
 				break;
 			}
 		case 'b':

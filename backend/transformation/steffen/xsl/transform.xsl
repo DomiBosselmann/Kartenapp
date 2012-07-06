@@ -10,6 +10,7 @@
 	<xsl:template match="osm">
 		<xsl:element name="svg">
 			<xsl:attribute name="xmlns">http://www.w3.org/2000/svg</xsl:attribute>
+			<xsl:attribute name="style">position:absolute;</xsl:attribute>
 			<xsl:element name="g">
 				<xsl:attribute name="fill">none</xsl:attribute>
 				<xsl:attribute name="stroke">black</xsl:attribute>
@@ -20,31 +21,30 @@
 	</xsl:template>
 
 	<xsl:template match="way">
-		<xsl:element name="g">
-			<xsl:element name="polyline">
-				<xsl:attribute name="points">
+		<xsl:element name="polyline">
+			<xsl:attribute name="points">
 					<xsl:for-each select="nd">
 						<xsl:variable name="ref" select="@ref" />
 						<xsl:apply-templates select="../../node[@id=$ref]" />
 						<xsl:text> </xsl:text>
 					</xsl:for-each>
 				</xsl:attribute>
-			</xsl:element>
 			<xsl:apply-templates select="tag" />
 		</xsl:element>
 	</xsl:template>
 
 	<xsl:template match="node">
-		<xsl:value-of select="@lon * 150 - 1050" />
+		<xsl:value-of select='format-number(@lon * 150 - 1050, "#.000")' />
 		<xsl:text>,</xsl:text>
-		<xsl:value-of select="@lat * -190 + 9500" />
+		<xsl:value-of select='format-number(@lat * -200 + 10000, "#.000")' />
 	</xsl:template>
 
 	<xsl:template match="tag">
-		<xsl:element name="tag">
-			<xsl:attribute name="k"> <xsl:value-of select="@k" /> </xsl:attribute>
-			<xsl:attribute name="v"> <xsl:value-of select="@v" /> </xsl:attribute>
-		</xsl:element>
+		<xsl:choose>
+			<xsl:when test="@k = &#34;admin_level&#34;">
+				<xsl:attribute name="admin_level"><xsl:value-of select="@v"></xsl:value-of></xsl:attribute>
+			</xsl:when>
+		</xsl:choose>
 	</xsl:template>
 
 </xsl:stylesheet>

@@ -3,67 +3,36 @@ package steffen;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class SplitFile {
-	private static String	sourceFilePath	= "./berlin4.xml";
-	private static String	targetFilePath	= "./berlin5.xml";
-	private static int		beginLine		= 5000000;
-	private static int		endLine			= 5527980;
+	private static String	sourceFilePath	= "bawu4.xml";
+	private static int		beginLine		= 24186221;
+	private static int		endLine			= 24196221;
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
+		String targetFilePath = SplitFile.sourceFilePath.replaceFirst(".xml", " split .xml");
 		// create
-		File file1 = new File(sourceFilePath);
-		BufferedReader reader = null;
-		try {
-			reader = new BufferedReader(new FileReader(file1));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		File file2 = new File(targetFilePath);
-		FileWriter writer = null;
-		try {
-			writer = new FileWriter(file2);
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
+		BufferedReader reader = new BufferedReader(new FileReader(new File(SplitFile.sourceFilePath)));
+		FileWriter writer = new FileWriter(new File(targetFilePath));
 		
 		// actions
 		int i = 0;
 		String line = null;
-		try {
-			while ((reader.ready()) && (i < endLine)) {
-				line = reader.readLine() + "\n";
-				if (i > beginLine) {
-					writer.write(line);
-					System.out.println(i);
-				} else {
-					System.out.println("_" + i);
-				}
-				i++;
+		while (reader.ready() && i < SplitFile.endLine) {
+			line = reader.readLine() + "\n";
+			if (i > SplitFile.beginLine) {
+				writer.write(line);
 			}
-		} catch (IOException e1) {
-			e1.printStackTrace();
+			i++;
 		}
-		System.out.println(line);
 		
 		// destroy
-		if (reader != null) {
-			try {
-				reader.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		if (writer != null) {
-			try {
-				writer.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+		reader.close();
+		writer.close();
+		
+		System.out.println("Done");
 	}
 }

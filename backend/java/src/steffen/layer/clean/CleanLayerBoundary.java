@@ -1,12 +1,11 @@
 
-package steffen.clean;
+package steffen.layer.clean;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import steffen.WrapNodes;
 
 public class CleanLayerBoundary {
 	private static String	sourceFile	= "bawu boundary.xml";
@@ -32,17 +31,8 @@ public class CleanLayerBoundary {
 		}
 		
 		// destroy
-		if (reader != null) {
-			reader.close();
-		}
-		if (writer != null) {
-			writer.close();
-		}
-		
-		System.out.println("Step 1");
-		
-		String[] args2 = { targetFile };
-		WrapNodes.main(args2);
+		reader.close();
+		writer.close();
 		
 		System.out.println("Done");
 	}

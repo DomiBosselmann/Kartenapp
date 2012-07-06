@@ -1,5 +1,5 @@
 
-package steffen;
+package steffen.analyse;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,8 +11,7 @@ public class KoordinatenRange {
 	
 	public static void main(String[] args) throws IOException {
 		// create
-		File file1 = new File(sourceFilePath);
-		BufferedReader reader = new BufferedReader(new FileReader(file1));
+		BufferedReader reader = new BufferedReader(new FileReader(new File(sourceFilePath)));
 		
 		// actions
 		String line = null;
@@ -52,8 +51,6 @@ public class KoordinatenRange {
 		System.out.println("Unten: " + lat1);
 		
 		// destroy
-		if (reader != null) {
-			reader.close();
-		}
+		reader.close();
 	}
 }

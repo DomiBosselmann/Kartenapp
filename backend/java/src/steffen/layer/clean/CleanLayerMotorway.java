@@ -1,15 +1,14 @@
 
-package steffen.clean;
+package steffen.layer.clean;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import steffen.WrapNodes;
 
 public class CleanLayerMotorway {
-	private static String	sourceFile	= "bawu motorwaytest.xml";
+	private static String	sourceFile	= "bawu2.xml";
 	private static String[]	tagsToKeep	= { "k=\"highway\"", "k=\"name\"", "k=\"int_ref\"", "k=\"ref\"", "k=\"lanes\"", "k=\"oneway\"" };
 	
 	public static void main(String[] args) throws IOException {
@@ -32,14 +31,10 @@ public class CleanLayerMotorway {
 		}
 		
 		// destroy
-		if (reader != null) {
-			reader.close();
-		}
-		if (writer != null) {
-			writer.close();
-		}
-		String[] args2 = { targetFile };
-		WrapNodes.main(args2);
+		reader.close();
+		writer.close();
+		
+		System.out.println("Done");
 	}
 	
 	private static boolean keepTag(String input) {

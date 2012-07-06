@@ -1,34 +1,46 @@
 <?php
 
 if (strrpos($_SERVER['HTTP_USER_AGENT'], "MSIE") > 0) {
-	echo '<image src="http://www.schteffens.de/ie.png" />';
+	echo '<image src="../../../../images/ie.png" />';
 } else {
 	header("Content-Type: image/svg+xml");
 
-	// Load the XML
-	$xmlfile = "http://www.schteffens.de/karte/php/";
-	$xslfile = "../xsl/";
-	$xml = new DOMDocument;
+	$xmlfile = "http://dhbwweb.draco.uberspace.de/backend/transformation/steffen/php/pretransform.php?";
+	$xslfile = "http://dhbwweb.draco.uberspace.de/backend/transformation/steffen/php/dynamic_xsl.php?";
 	if ($_GET['l']) {
 		$layer = substr($_GET['l'],0,1);
-		switch ($layer) {
-			case 'c':
-				{
-					$xmlfile .= "cities_pretransform.php?";
-					$xslfile .= "cities_transform.xsl";
-					break;
-				}
-			default:
-				{
-					$xmlfile .= "pretransform.php?";
-					$xslfile .= "transform.xsl";
-					break;
-				}
+		if ($layer == 'c') {
+			$xmlfile = "http://dhbwweb.draco.uberspace.de/backend/transformation/steffen/php/cities_pretransform.php?";
+			$xslfile .= "l=c&";
+			switch ($_GET['l']) {
+				case "c1":
+					{
+						$xslfile .= "id=towns&";
+						break;
+					}
+				case 'c2':
+					{
+						$xslfile .= "id=villages&";
+						break;
+					}
+				case 'c3':
+					{
+						$xslfile .= "id=hamlets&";
+						break;
+					}
+				case 'c4':
+					{
+						$xslfile .= "id=suburbs&";
+						break;
+					}
+				default:
+					{
+						$xslfile .= "id=cities&";
+						break;
+					}
+			}
 		}
 		$xmlfile .= "l=" . $_GET['l'] . "&";
-	} else {
-		$xmlfile .= "pretransform.php?";
-		$xslfile .= "transform.xsl";
 	}
 	if ($_GET['lat1']) {
 		$xmlfile .= "lat1=" . $_GET['lat1'] . "&";
@@ -42,6 +54,9 @@ if (strrpos($_SERVER['HTTP_USER_AGENT'], "MSIE") > 0) {
 	if ($_GET['lon2']) {
 		$xmlfile .= "lon2=" . $_GET['lon2'] . "&";
 	}
+
+	// Load the XML
+	$xml = new DOMDocument;
 	$xml->load($xmlfile);
 
 	// Load the XSL

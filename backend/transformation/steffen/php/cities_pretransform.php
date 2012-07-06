@@ -24,26 +24,31 @@ if (isset($_GET['lon2'])) {
 	$lon2 = 99999;
 }
 
-$xmlfile = '../xml/';
+$xmlfile = "../../../xmls/cities/";
 switch ($_GET[l]) {
 	case 'c1':
 		{
-			$xmlfile .= 'cities/largecities.xml';
+			$xmlfile .= "towns.xml";
 			break;
 		}
 	case 'c2':
 		{
-			$xmlfile .= 'cities/bigcities.xml';
+			$xmlfile .= "villages.xml";
 			break;
 		}
 	case 'c3':
 		{
-			$xmlfile .= 'cities/allcities.xml';
+			$xmlfile .= "hamlets.xml";
+			break;
+		}
+	case 'c4':
+		{
+			$xmlfile .= "suburbs.xml";
 			break;
 		}
 	default:
 		{
-			$xmlfile .= 'cities/hugecities.xml';
+			$xmlfile .= "cities.xml";
 			break;
 		}
 }

@@ -24,173 +24,133 @@ if (isset($_GET['lon2'])) {
 	$lon2 = 99999;
 }
 
-$xmlfile = '../xml/';
-if ($_GET['l']){
+if ($_GET['l']) {
+	$xmlfile = "../../../xmls/";
 	$layer = substr($_GET['l'],0,1);
 	switch ($layer) {
 		case 'm':
 			{
-				switch ($_GET['l']) {
-					case 'm100':
-						{
-							$xmlfile .= 'highways/motorway100.xml';
-							break;
-						}
-					case 'm50':
-						{
-							$xmlfile .= 'highways/motorway50.xml';
-							break;
-						}
-					case 'ms':
-						{
-							$xmlfile .= 'highways/smotorway.xml';
-							break;
-						}
-					default:
-						{
-							$xmlfile .= 'highways/motorway.xml';
-							break;
-						}
-				}
+				$xmlfile .= "streets/motorways.xml";
 				break;
 			}
 		case 'b':
 			{
-				switch ($_GET['l']) {
-					case 'b1':
-						{
-							$xmlfile .= 'bounds/bawubounds.xml';
-							break;
-						}
-					default:
-						{
-							$xmlfile .= 'bounds/bawubounds.xml';
-							break;
-						}
-				}
+				$xmlfile .= "bounds/bawu.xml";
 				break;
 			}
 		case 'r':
 			{
-				$xmlfile .= 'waters/rivers.xml';
-				break;
-			}
-		default:
-			{
-				$xmlfile .= 'bounds/gerbounds.xml';
+				$xmlfile .= "waters/rivers.xml";
 				break;
 			}
 	}
-} else {
-	$xmlfile .= 'bounds/gerbounds.xml';
-}
 
-$xml = simplexml_load_file($xmlfile);
 
-echo "<osm>\n";
-$nodes = array();
+	$xml = simplexml_load_file($xmlfile);
 
-foreach ($xml as $node0 => $value0) {
-	switch ($node0) {
-		case "node":
-			{
-				$print1 = false;
-				$print2 = false;
-				$line = '<' . $node0 . ' ';
-				foreach ($value0->attributes() as $attributeskey0 => $attributesvalue0) {
-					switch ($attributeskey0) {
-						case 'id':
-							{
-								$id = $attributesvalue0;
-							}
-						case 'lat':
-							{
-								if (($attributesvalue0 >= $lat1) && ($attributesvalue0 <= $lat2)) {
-									$print1 = true;
+	echo "<osm>\n";
+	$nodes = array();
+
+	foreach ($xml as $node0 => $value0) {
+		switch ($node0) {
+			case "node":
+				{
+					$print1 = false;
+					$print2 = false;
+					$line = '<' . $node0 . ' ';
+					foreach ($value0->attributes() as $attributeskey0 => $attributesvalue0) {
+						switch ($attributeskey0) {
+							case 'id':
+								{
+									$id = $attributesvalue0;
 								}
-							}
-						case 'lon':
-							{
-								if (($attributesvalue0 >= $lon1) && ($attributesvalue0 <= $lon2)) {
-									$print2 = true;
-								}
-							}
-						default:
-							{
-								$line .= $attributeskey0 . '="' . $attributesvalue0 . '" ';
-								break;
-							}
-					}
-				}
-				if ($print1 && $print2) {
-					$nodes[''.$id] = true;
-					echo $line . "/>\n";
-				}
-				break;
-			}
-		case "way":
-			{
-				$line = '<' . $node0 . ' ';
-				foreach ($value0->attributes() as $attributeskey0 => $attributesvalue0) {
-					switch ($attributeskey0) {
-						case 'id':
-							{
-								$id = $attributesvalue0;
-							}
-						default:
-							{
-								$line .= $attributeskey0 . '="' . $attributesvalue0 . '" ';
-								break;
-							}
-					}
-				}
-				$line .= '>';
-				echo $line . "\n";
-				foreach ($value0->children() as $childkey0 => $childvalue0) {
-					$line = "<" . $childkey0 . " ";
-					switch ($childkey0) {
-						case 'nd':
-							{
-								foreach ($childvalue0->attributes() as $attributeskey1 => $attributesvalue1) {
-									switch ($attributeskey1) {
-										case 'ref':
-											{
-												$ref = $attributesvalue1;
-											}
-										default:
-											{
-												$line .= $attributeskey1 . '="' . $attributesvalue1 . '" ';
-												break;
-											}
+							case 'lat':
+								{
+									if (($attributesvalue0 >= $lat1) && ($attributesvalue0 <= $lat2)) {
+										$print1 = true;
 									}
 								}
-								$line .= "/>";
-								if ($nodes[''.$ref]) {
-									echo $line . "/>\n";
+							case 'lon':
+								{
+									if (($attributesvalue0 >= $lon1) && ($attributesvalue0 <= $lon2)) {
+										$print2 = true;
+									}
 								}
-								break;
-							}
-						default:
-							{
-								foreach ($childvalue0->attributes() as $attributeskey1 => $attributesvalue1) {
-									$line .= $attributeskey1 . '="' . $attributesvalue1 . '" ';
+							default:
+								{
+									$line .= $attributeskey0 . '="' . $attributesvalue0 . '" ';
+									break;
 								}
-								$line .= "/>";
-								echo $line . "\n";
-								break;
-							}
+						}
 					}
+					if ($print1 && $print2) {
+						$nodes[''.$id] = true;
+						echo $line . "/>\n";
+					}
+					break;
 				}
-				echo "</$node0>\n";
-				break;
-			}
-		default:
-			{
-				break;
-			}
+			case "way":
+				{
+					$line = '<' . $node0 . ' ';
+					foreach ($value0->attributes() as $attributeskey0 => $attributesvalue0) {
+						switch ($attributeskey0) {
+							case 'id':
+								{
+									$id = $attributesvalue0;
+								}
+							default:
+								{
+									$line .= $attributeskey0 . '="' . $attributesvalue0 . '" ';
+									break;
+								}
+						}
+					}
+					$line .= '>';
+					echo $line . "\n";
+					foreach ($value0->children() as $childkey0 => $childvalue0) {
+						$line = "<" . $childkey0 . " ";
+						switch ($childkey0) {
+							case 'nd':
+								{
+									foreach ($childvalue0->attributes() as $attributeskey1 => $attributesvalue1) {
+										switch ($attributeskey1) {
+											case 'ref':
+												{
+													$ref = $attributesvalue1;
+												}
+											default:
+												{
+													$line .= $attributeskey1 . '="' . $attributesvalue1 . '" ';
+													break;
+												}
+										}
+									}
+									if ($nodes[''.$ref]) {
+										echo $line . "/>\n";
+									}
+									break;
+								}
+							default:
+								{
+									foreach ($childvalue0->attributes() as $attributeskey1 => $attributesvalue1) {
+										$line .= $attributeskey1 . '="' . $attributesvalue1 . '" ';
+									}
+									echo $line . "/>\n";
+									break;
+								}
+						}
+					}
+					echo "</$node0>\n";
+					break;
+				}
+			default:
+				{
+					break;
+				}
+		}
 	}
-}
 
-echo "</osm>";
+	echo "</osm>";
+}
 
 ?>

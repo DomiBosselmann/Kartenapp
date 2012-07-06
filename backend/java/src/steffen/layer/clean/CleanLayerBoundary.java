@@ -8,7 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class CleanLayerBoundary {
-	private static String	sourceFile	= "bawu boundary.xml";
+	private static String	sourceFile	= "xml/bawu boundary.xml";
 	private static String[]	tagsToKeep	= { "k=\"admin_level\"", "k=\"boundary\"", "k=\"border_type\"" };
 	
 	public static void main(String[] args) throws IOException {

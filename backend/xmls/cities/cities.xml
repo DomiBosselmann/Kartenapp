@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<osm>
+<node id="26769661" lat="49.1422908" lon="9.2186549">
+<tag k="name" v="Heilbronn"/>
+<tag k="place" v="city"/>
+</node>
+<node id="31985630" lat="48.4963326" lon="9.2105667">
+<tag k="name" v="Reutlingen"/>
+<tag k="place" v="city"/>
+</node>
+<node id="240046032" lat="48.8908846" lon="8.7029532">
+<tag k="name" v="Pforzheim"/>
+<tag k="place" v="city"/>
+</node>
+<node id="240058050" lat="49.4093608" lon="8.6948125">
+<tag k="name" v="Heidelberg"/>
+<tag k="place" v="city"/>
+</node>
+<node id="240060919" lat="49.4896174" lon="8.4672685">
+<tag k="name" v="Mannheim"/>
+<tag k="place" v="city"/>
+</node>
+<node id="240092010" lat="47.9960901" lon="7.8494005">
+<tag k="name" v="Freiburg im Breisgau"/>
+<tag k="place" v="city"/>
+</node>
+<node id="240120582" lat="49.0140679" lon="8.4044366">
+<tag k="name" v="Karlsruhe"/>
+<tag k="place" v="city"/>
+</node>
+<node id="1674026139" lat="48.7763511" lon="9.1829049">
+<tag k="name" v="Stuttgart"/>
+<tag k="place" v="city"/>
+</node>
+<node id="1699831958" lat="48.3983120" lon="9.9910464">
+<tag k="name" v="Ulm"/>
+<tag k="place" v="city"/>
+</node>
+</osm>

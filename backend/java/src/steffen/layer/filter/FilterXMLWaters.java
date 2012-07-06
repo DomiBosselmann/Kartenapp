@@ -9,10 +9,10 @@ import java.io.IOException;
 import java.util.Hashtable;
 
 public class FilterXMLWaters {
-	private static String	fileSource		= "bawu2.xml";
-	private static String	fileTarget		= "bawu rivers.xml";
-//	private static String[]	neededKeys		= { "k=\"waterway\"", "k=\"waterway\"", "k=\"waterway\"", "k=\"natural\"" };
-//	private static String[]	neededValues	= { "v=\"river\"", "v=\"canal\"", "v=\"riverbank\"", "v=\"water\"" };
+	private static String	fileSource		= "xml/bawu.xml";
+	private static String	fileTarget		= "xml/bawu rivers.xml";
+	// private static String[] neededKeys = { "k=\"waterway\"", "k=\"waterway\"", "k=\"waterway\"", "k=\"natural\"" };
+	// private static String[] neededValues = { "v=\"river\"", "v=\"canal\"", "v=\"riverbank\"", "v=\"water\"" };
 	private static String[]	neededKeys		= { "k=\"waterway\"" };
 	private static String[]	neededValues	= { "v=\"river\"" };
 	
@@ -66,14 +66,10 @@ public class FilterXMLWaters {
 		}
 		
 		// 1 Destroy
-		if (reader != null) {
-			reader.close();
-		}
-		if (writer != null) {
-			writer.close();
-		}
+		reader.close();
+		writer.close();
 		
-		System.out.println(nodeIDs.size());
+		System.out.println("Nodes: " + nodeIDs.size());
 		System.out.println("Step 1");
 		
 		// 2 Add nodes to target file
@@ -120,9 +116,7 @@ public class FilterXMLWaters {
 		}
 		
 		// 2 Destroy (except writer)
-		if (reader != null) {
-			reader.close();
-		}
+		reader.close();
 		
 		System.out.println("Step 2");
 		
@@ -131,7 +125,6 @@ public class FilterXMLWaters {
 		reader = new BufferedReader(new FileReader(tempFile));
 		
 		// 3 Actions
-		line = null;
 		while (reader.ready()) {
 			line = reader.readLine();
 			writer.write(line + "\n");
@@ -139,12 +132,8 @@ public class FilterXMLWaters {
 		writer.write("</osm>\n");
 		
 		// 3 Destroy
-		if (reader != null) {
-			reader.close();
-		}
-		if (writer != null) {
-			writer.close();
-		}
+		reader.close();
+		writer.close();
 		
 		System.out.println("Done");
 	}

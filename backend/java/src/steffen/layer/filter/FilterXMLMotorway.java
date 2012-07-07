@@ -9,9 +9,10 @@ import java.io.IOException;
 import java.util.Hashtable;
 
 public class FilterXMLMotorway {
-	private static String	fileSource	= "bawu.xml";
-	private static String	fileTarget	= "bawu motorway.xml";
-	private static String[]	neededTags	= { "k=\"highway\" v=\"motorway\"" };
+	private static String	fileSource	= "xml/bawu.xml";
+	private static String	fileTarget	= "xml/bawu motorway.xml";
+	private static String	neededTag1	= "k=\"highway\" v=\"motorway\"";
+	private static String	neededTag2	= "k=\"ref\"";
 	
 	public static void main(String[] args) throws IOException {
 		Hashtable<Integer, Integer> nodeIDs = new Hashtable<Integer, Integer>();
@@ -29,20 +30,23 @@ public class FilterXMLMotorway {
 		while (reader.ready()) {
 			line = reader.readLine();
 			if (line.indexOf("<way") >= 0) {
-				boolean needed = false;
+				boolean needed1 = false;
+				boolean needed2 = false;
 				String zeile = line + "\n";
 				do {
 					line = reader.readLine();
 					if (line.indexOf("<tag") >= 0) {
-						for (String neededTag : FilterXMLMotorway.neededTags) {
-							if (line.indexOf(neededTag) >= 0) {
-								needed = true;
+						if (line.indexOf(neededTag1) >= 0) {
+							needed1 = true;
+						} else {
+							if (line.indexOf(neededTag2) >= 0) {
+								needed2 = true;
 							}
 						}
 					}
 					zeile += line + "\n";
 				} while (line.indexOf("</way") < 0);
-				if (needed) {
+				if (needed1 && needed2) {
 					int refbegin = zeile.indexOf("ref=\"");
 					int refend = -1;
 					while (refbegin >= 0) {

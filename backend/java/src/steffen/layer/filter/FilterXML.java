@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.util.Hashtable;
 
 public class FilterXML {
-	private static String	fileSource		= "bawu.xml";
-	private static String	fileTarget		= "bawu motorwaytest.xml";
+	private static String	fileSource		= "xml/bawu.xml";
+	private static String	fileTarget		= "xml/bawu test.xml";
 	private static String[]	neededKeys		= { "k=\"highway\"" };
 	private static String[]	neededValues	= { "v=\"motorway\"" };
 	
@@ -30,8 +30,7 @@ public class FilterXML {
 		while (reader.ready()) {
 			line = reader.readLine();
 			if (line.indexOf("<way") >= 0) {
-				boolean needed1 = false;
-				boolean needed2 = true;
+				boolean[] needed = new boolean[neededKeys.length];
 				String zeile = line + "\n";
 				do {
 					line = reader.readLine();
@@ -40,7 +39,7 @@ public class FilterXML {
 						for (String neededTag : FilterXML.neededKeys) {
 							if (line.indexOf(neededTag) >= 0) {
 								if (line.indexOf(FilterXML.neededValues[i]) >= 0) {
-									needed1 = true;
+									needed[i] = true;
 								}
 								i++;
 							}
@@ -49,14 +48,20 @@ public class FilterXML {
 					// place for adding additional checks
 					zeile += line + "\n";
 				} while (line.indexOf("</way") < 0);
-				if (needed1 && needed2) {
-					int refbegin = zeile.indexOf("ref=\"");
-					int refend = -1;
+				boolean needed1 = true;
+				for (boolean need : needed) {
+					if (!need) {
+						needed1 = false;
+					}
+				}
+				if (needed1) {
+					String str = "ref=\"";
+					int refbegin = zeile.indexOf(str);
 					while (refbegin >= 0) {
-						refend = zeile.indexOf("\"", refbegin + 5);
-						Integer ref = Integer.valueOf(zeile.substring(refbegin + 5, refend));
+						int refend = zeile.indexOf("\"", refbegin + str.length());
+						Integer ref = Integer.valueOf(zeile.substring(refbegin + str.length(), refend));
 						nodeIDs.put(ref, ref);
-						refbegin = zeile.indexOf("ref=\"", refend);
+						refbegin = zeile.indexOf(str, refend);
 					}
 					writer.write(zeile);
 				}
@@ -67,7 +72,7 @@ public class FilterXML {
 		reader.close();
 		writer.close();
 		
-		System.out.println(nodeIDs.size());
+		System.out.println("Nodes: " + nodeIDs.size());
 		System.out.println("Step 1");
 		
 		// 2 Add nodes to target file
@@ -83,10 +88,11 @@ public class FilterXML {
 		while (reader.ready()) {
 			line = reader.readLine();
 			if (line.indexOf("<node") >= 0) {
-				int idbegin = line.indexOf("id=\"");
+				String str = "id=\"";
+				int idbegin = line.indexOf(str);
 				if (idbegin >= 0) {
-					int idend = line.indexOf("\"", idbegin + 4);
-					if (nodeIDs.containsKey(Integer.valueOf(line.substring(idbegin + 4, idend)))) {
+					int idend = line.indexOf("\"", idbegin + str.length());
+					if (nodeIDs.containsKey(Integer.valueOf(line.substring(idbegin + str.length(), idend)))) {
 						writer.write(line + "\n");
 						if (line.indexOf("/>") < 0) {
 							do {

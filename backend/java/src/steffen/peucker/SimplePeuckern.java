@@ -11,18 +11,17 @@ import java.util.Hashtable;
 
 public class SimplePeuckern {
 	private static String								fileSource			= "xml/bawu boundary.xml";
-	private static Hashtable<Integer, Double>		latitudes			= new Hashtable<Integer, Double>();
-	private static Hashtable<Integer, Double>		longitudes			= new Hashtable<Integer, Double>();
+	private static Hashtable<Integer, Node>		nodes					= new Hashtable<Integer, Node>();
 	private static Hashtable<Integer, Boolean>	neededNodes			= new Hashtable<Integer, Boolean>();
 	private static Hashtable<Integer, Integer>	wayPoints			= new Hashtable<Integer, Integer>();
 	private static double								xratio				= 72.0;
 	private static double								yratio				= 111.0;
-	private static double								peuckerDistance	= 3.0;
+	private static double								peuckerDistance	= 2.0;
 	
 	public static void main(String[] args) throws IOException {
 		DecimalFormat format = new DecimalFormat("0.#");
-		String fileTarget = SimplePeuckern.fileSource.replaceFirst(".xml",
-				" sp" + format.format(SimplePeuckern.peuckerDistance) + ".xml");
+		String fileTarget = SimplePeuckern.fileSource.replaceFirst(".xml", " sp" + format.format(SimplePeuckern.peuckerDistance)
+				+ ".xml");
 		BufferedReader reader = new BufferedReader(new FileReader(new File(SimplePeuckern.fileSource)));
 		
 		// Save data of the nodes in Hashtables and check for needed nodes
@@ -44,8 +43,7 @@ public class SimplePeuckern {
 						if (begin >= 0) {
 							end = line.indexOf("\"", begin + 5);
 							Double lon = Double.valueOf(line.substring(begin + 5, end));
-							SimplePeuckern.latitudes.put(id, lat);
-							SimplePeuckern.longitudes.put(id, lon);
+							nodes.put(id, new Node(lon, lat));
 						}
 					}
 				}
@@ -71,27 +69,28 @@ public class SimplePeuckern {
 							Integer[] refs2 = new Integer[SimplePeuckern.wayPoints.size()];
 							Integer[] refs = SimplePeuckern.wayPoints.keySet().toArray(refs2);
 							refs2 = null;
-							SimplePeuckern.wayPoints.clear();
 							SimplePeuckern.neededNodes.put(refs[0], new Boolean(true));
 							SimplePeuckern.neededNodes.put(refs[refs.length - 1], new Boolean(true));
 							for (int i = 1; i < refs.length - 1; i++) {
-								if (SimplePeuckern.peuckerDistance < SimplePeuckern.getDistanceToLine(SimplePeuckern.longitudes.get(refs[i]),
-										SimplePeuckern.latitudes.get(refs[i]), SimplePeuckern.longitudes.get(refs[i - 1]),
-										SimplePeuckern.latitudes.get(refs[i - 1]), SimplePeuckern.longitudes.get(refs[i + 1]),
-										SimplePeuckern.latitudes.get(refs[i + 1]))) {
+								Node lastNode = nodes.get(refs[i - 1]);
+								Node node = nodes.get(refs[i]);
+								Node nextNode = nodes.get(refs[i + 1]);
+								if (SimplePeuckern.peuckerDistance < SimplePeuckern.getDistanceToLine(node.lon, node.lat, lastNode.lon,
+										lastNode.lat, nextNode.lon, nextNode.lat)) {
 									SimplePeuckern.neededNodes.put(refs[i], new Boolean(true));
 								}
 							}
 							refs = null;
 						}
+						SimplePeuckern.wayPoints.clear();
 					}
 				}
 			}
 		}
 		
 		reader.close();
-		SimplePeuckern.latitudes.clear();
-		SimplePeuckern.longitudes.clear();
+		nodes.clear();
+		System.out.println("Nodes: " + neededNodes.size());
 		
 		System.out.println("Step 1");
 		

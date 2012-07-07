@@ -1,7 +1,8 @@
 window.Karte = (function () {
 
-	var preferences = {
-		url : "http://karte.dominique-bosselmann.de/"
+	var constants = {
+		url : "http://karte.localhost/backend/transformation/steffen/php/transform.php",
+		layers : ["c"]
 	};
 	
 	var map = {
@@ -29,7 +30,8 @@ window.Karte = (function () {
 			saveButton: null,
 			searchField: null,
 			mapChooser: null,
-			activeMapChooser: null
+			activeMapChooser: null,
+			map: null
 		},
 		init : function () {
 			// UI-Elemente mit Referenzen versehen
@@ -40,6 +42,7 @@ window.Karte = (function () {
 			this.uiElements.saveButton = document.querySelector("button[title='Sichern']");
 			this.uiElements.searchField = document.getElementById("searchField");
 			this.uiElements.mapChooser = Array.prototype.slice.call(document.getElementById("choosemap").children);
+			this.uiElements.map = document.getElementById("mapcontainer");
 			this.uiElements.mapScale = document.getElementById("mapscale");
 			this.uiElements.mapScaler = document.getElementById("scaler");
 			this.uiElements.mapScaleText = document.getElementById("scalevalue");
@@ -72,9 +75,9 @@ window.Karte = (function () {
 			}
 						
 			// Karte laden
-			this.loadMap({
+			this.loadMap(undefined, undefined, {
 				onSuccess : function (event) {
-					console.log(event);
+					controller.uiElements.map.appendChild(event.data.getElementsByTagName("svg")[0]);
 				},
 				onError : function (event) {
 					console.error(event);
@@ -174,29 +177,45 @@ window.Karte = (function () {
 			}
 		},
 		loadMap : function (latitude, longitude, handler) {
-			var parameters, request;
 			
-			parameters = "lat=" + latitude;
-			parameters += "&long= " + longitude;
-			
-			request = new XMLHttpRequest();
-			request.onreadystatechange = function () {
-				if (request.readyState === 4) {
-					handler.onSuccess({
-						statusCode : request.statusCode;
-						data: request.responseXML;
-					});
+			constants.layers.forEach(function (layer) {
+				var parameters, params = [], requestURL = constants.url, request,
+					key;
+								
+				parameters = {
+					lat : latitude,
+					long : longitude,
+					l : layer	
+				};
+				
+				for (key in parameters) {
+					if (parameters.hasOwnProperty(key) && parameters[key] !== undefined) {
+						params.push(encodeURIComponent(key) + "=" + encodeURIComponent(parameters[key]));
+					}
+				};
+				
+				if (params.length !== 0) {
+					requestURL += "?" + params.join("&");
 				}
-			}
-			request.open("get", preferemces.url + "get/map?" + parameters, true);
-			request.send(null);
-			
-			console.log("Die Karte wird geladen");
+				
+				request = new XMLHttpRequest();
+				request.open("get", requestURL, true);
+				request.send(null);
+				request.onreadystatechange = function () {
+					if (request.readyState === 4) {
+						handler.onSuccess({
+							statusCode : request.statusCode,
+							data: request.responseXML,
+							textData: request.responseText
+						});
+					}
+				}	
+			});
 		}
 	};
 	
 	var renderer = {
-			
+		
 	};
 	
 	var cache = {

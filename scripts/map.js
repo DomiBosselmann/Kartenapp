@@ -4,6 +4,22 @@ window.Karte = (function () {
 		url : "http://karte.dominique-bosselmann.de/"
 	};
 	
+	var map = {
+		coordinates : {
+			topleft: [],
+			bottomright : []
+		},
+		scaling : {
+			value : 4,
+			unit : "km",
+			scalerX : null,
+			scalablesX : []
+		},
+		layers : [],
+		places : [],
+		routes : []
+	}
+	
 	var controller = {
 		uiElements : {
 			toolbar : null,
@@ -24,6 +40,10 @@ window.Karte = (function () {
 			this.uiElements.saveButton = document.querySelector("button[title='Sichern']");
 			this.uiElements.searchField = document.getElementById("searchField");
 			this.uiElements.mapChooser = Array.prototype.slice.call(document.getElementById("choosemap").children);
+			this.uiElements.mapScale = document.getElementById("mapscale");
+			this.uiElements.mapScaler = document.getElementById("scaler");
+			this.uiElements.mapScaleText = document.getElementById("scalevalue");
+			this.uiElements.scalables = this.uiElements.mapScale.getElementsByClassName("scalable");
 			
 			// EventListener hinzufügen
 			this.uiElements.searchButton.addEventListener("click", this.handler.enableSearch, false);
@@ -43,6 +63,14 @@ window.Karte = (function () {
 				}
 			});
 			
+			this.uiElements.mapScaler.addEventListener("mousedown", this.handler.enableScaling, false);
+			
+			// Attribute für Geschwindigkeit zwischenspeichern
+			var length = controller.uiElements.scalables.length;
+			for (var i = 0; i < length; i++) {
+				map.scaling.scalablesX.push(parseInt(controller.uiElements.scalables[i].getAttribute("x")));
+			}
+						
 			// Karte laden
 			this.loadMap({
 				onSuccess : function (event) {
@@ -97,6 +125,52 @@ window.Karte = (function () {
 						element.className = "";
 					}
 				});
+			},
+			enableScaling : function (event) {
+				map.scaling.scalerX = event.pageX;
+				map.scaling.scalerY = event.pageY;
+				
+				controller.uiElements.mapScale.className = "";
+				
+				document.addEventListener("mousemove", controller.handler.handleScaling, false);
+				document.addEventListener("mouseup", controller.handler.finishScaling, false);
+			},
+			handleScaling : function (event) {
+				// Karte skalieren	
+				
+				// Maßstab-UI anpassen
+				var diff = event.pageX - map.scaling.scalerX;
+				var scaleValue = Math.round((map.scaling.value/Math.abs(100 - diff)) * 10000) / 100;
+				
+				controller.uiElements.mapScaleText.innerText = scaleValue + map.scaling.unit;
+				
+				var length = controller.uiElements.scalables.length;
+				
+				for (var i = 0; i < length; i++) {
+					controller.uiElements.scalables[i].style.webkitTransform = "translate(" + (event.pageX - map.scaling.scalerX) * (i + 1)/4 + "px)";
+				}
+			},
+			finishScaling : function (event) {
+				// Bei Bedarf neue Daten laden
+				
+				// Maßstab-UI anpassen
+				var diff = event.pageX - map.scaling.scalerX;
+				map.scaling.value = (map.scaling.value/Math.abs(100 - diff)) * 100;
+				
+				controller.uiElements.mapScale.setAttribute("class","finishScaling");
+				
+				//debugger;
+				
+				window.setTimeout(function () {
+					var length = controller.uiElements.scalables.length;
+				
+					for (var i = 0; i < length; i++) {
+						controller.uiElements.scalables[i].style.webkitTransform = "translate(0px)";
+					}
+				}, 20);
+
+				
+				document.removeEventListener("mousemove", controller.handler.handleScaling, false);
 			}
 		},
 		loadMap : function (latitude, longitude, handler) {

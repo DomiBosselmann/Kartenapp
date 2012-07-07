@@ -192,3 +192,10 @@ aside {
 #searchField::-webkit-input-placeholder {
 	color: rgba(255, 255, 255, 0.6);
 }
+
+.finishScaling * {
+	-webkit-transition: -webkit-transform 0.5s ease-in-out;
+	-moz-transition: -moz-transform 0.5s ease-in-out;
+	-o-transition: -o-transform 0.5s ease-in-out;
+	-ms-transition: -ms-transform 0.5s ease-in-out;
+}

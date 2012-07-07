@@ -133,7 +133,7 @@ window.Karte = (function () {
 				map.scaling.scalerX = event.pageX;
 				map.scaling.scalerY = event.pageY;
 				
-				controller.uiElements.mapScale.className = "";
+				controller.uiElements.mapScale.setAttribute("class","");
 				
 				document.addEventListener("mousemove", controller.handler.handleScaling, false);
 				document.addEventListener("mouseup", controller.handler.finishScaling, false);
@@ -142,15 +142,20 @@ window.Karte = (function () {
 				// Karte skalieren	
 				
 				// Maßstab-UI anpassen
+				var transform = "translate(%d)",
+					transformValue;
+				
 				var diff = event.pageX - map.scaling.scalerX;
 				var scaleValue = Math.round((map.scaling.value/Math.abs(100 - diff)) * 10000) / 100;
 				
-				controller.uiElements.mapScaleText.innerText = scaleValue + map.scaling.unit;
+				console.log(scaleValue);
+				controller.uiElements.mapScaleText.textContent = scaleValue + map.scaling.unit;
 				
 				var length = controller.uiElements.scalables.length;
 				
 				for (var i = 0; i < length; i++) {
-					controller.uiElements.scalables[i].style.webkitTransform = "translate(" + (event.pageX - map.scaling.scalerX) * (i + 1)/4 + "px)";
+					transformValue = (event.pageX - map.scaling.scalerX) * (i + 1)/4;
+					controller.uiElements.scalables[i].setAttribute("transform",transform.replace(/%d/g, transformValue));
 				}
 			},
 			finishScaling : function (event) {
@@ -168,7 +173,7 @@ window.Karte = (function () {
 					var length = controller.uiElements.scalables.length;
 				
 					for (var i = 0; i < length; i++) {
-						controller.uiElements.scalables[i].style.webkitTransform = "translate(0px)";
+						controller.uiElements.scalables[i].removeAttribute("transform");
 					}
 				}, 20);
 

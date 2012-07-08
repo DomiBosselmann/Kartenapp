@@ -8,7 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class CleanLayerMotorway {
-	private static String	sourceFile	= "bawu motorway.xml";
+	private static String	sourceFile	= "xml/bawu motorways.xml";
 	private static String[]	tagsToKeep	= { "k=\"highway\"", "k=\"name\"", "k=\"int_ref\"", "k=\"ref\"", "k=\"lanes\"", "k=\"oneway\"" };
 	
 	public static void main(String[] args) throws IOException {
@@ -34,6 +34,25 @@ public class CleanLayerMotorway {
 			} else {
 				if (line.indexOf("<tag") >= 0) {
 					if (CleanLayerMotorway.keepTag(line)) {
+						if (line.indexOf("k=\"ref\"") >= 0) {
+							int refbegin = line.indexOf("v=\"");
+							if (refbegin >= 0) {
+								int refend = line.indexOf("\"", refbegin + 3);
+								String ref1 = line.substring(refbegin, refend + 3);
+								String ref2 = ref1.replaceAll(" ", "");
+								line = line.replaceFirst(ref1, ref2);
+							}
+						} else {
+							if (line.indexOf("k=\"int_ref\"") >= 0) {
+								int refbegin = line.indexOf("v=\"");
+								if (refbegin >= 0) {
+									int refend = line.indexOf("\"", refbegin + 3);
+									String ref1 = line.substring(refbegin, refend + 3);
+									String ref2 = ref1.replaceAll(" ", "");
+									line = line.replaceFirst(ref1, ref2);
+								}
+							}
+						}
 						writer.write(line + "\n");
 					}
 				} else {

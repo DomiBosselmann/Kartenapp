@@ -1,6 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:xlink="http://www.w3.org/1999/xlink">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink">
 	<xsl:output method="xml" version="1.0" encoding="UTF-8" />
 
 	<xsl:template match="/">
@@ -14,7 +13,7 @@
 			<xsl:element name="g">
 				<xsl:attribute name="fill">none</xsl:attribute>
 				<xsl:attribute name="stroke">black</xsl:attribute>
-				<xsl:attribute name="stroke-width">2</xsl:attribute>
+				<xsl:attribute name="stroke-width">1</xsl:attribute>
 				<xsl:apply-templates select="way" />
 			</xsl:element>
 		</xsl:element>
@@ -46,6 +45,12 @@
 			</xsl:when>
 			<xsl:when test="@k = &#34;ref&#34;">
 				<xsl:attribute name="mw_ref"><xsl:value-of select="@v"></xsl:value-of></xsl:attribute>
+			</xsl:when>
+			<xsl:when test="@k = &#34;water&#34;">
+				<xsl:attribute name="water"><xsl:value-of select="@v"></xsl:value-of></xsl:attribute>
+			</xsl:when>
+			<xsl:when test="@k = &#34;name&#34;">
+				<xsl:attribute name="name"><xsl:value-of select="@v"></xsl:value-of></xsl:attribute>
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>

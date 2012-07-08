@@ -9,36 +9,40 @@ if (strrpos($_SERVER['HTTP_USER_AGENT'], "MSIE") > 0) {
 	$xslfile = "http://dhbwweb.draco.uberspace.de/backend/transformation/steffen/php/dynamic_xsl.php?";
 	if ($_GET['l']) {
 		$layer = substr($_GET['l'],0,1);
-		if ($layer == 'c') {
-			$xmlfile = "http://dhbwweb.draco.uberspace.de/backend/transformation/steffen/php/cities_pretransform.php?";
-			$xslfile .= "l=c&";
-			switch ($_GET['l']) {
-				case "c1":
-					{
-						$xslfile .= "id=towns&";
-						break;
+		switch ($layer) {
+			case "c":
+				{
+					$xmlfile = "http://dhbwweb.draco.uberspace.de/backend/transformation/steffen/php/cities_pretransform.php?";
+					$xslfile .= "l=c&";
+					switch ($_GET['l']) {
+						case "c1":
+							{
+								$xslfile .= "id=towns&";
+								break;
+							}
+						case 'c2':
+							{
+								$xslfile .= "id=villages&";
+								break;
+							}
+						case 'c3':
+							{
+								$xslfile .= "id=hamlets&";
+								break;
+							}
+						case 'c4':
+							{
+								$xslfile .= "id=suburbs&";
+								break;
+							}
+						default:
+							{
+								$xslfile .= "id=cities&";
+								break;
+							}
 					}
-				case 'c2':
-					{
-						$xslfile .= "id=villages&";
-						break;
-					}
-				case 'c3':
-					{
-						$xslfile .= "id=hamlets&";
-						break;
-					}
-				case 'c4':
-					{
-						$xslfile .= "id=suburbs&";
-						break;
-					}
-				default:
-					{
-						$xslfile .= "id=cities&";
-						break;
-					}
-			}
+					break;
+				}
 		}
 		$xmlfile .= "l=" . $_GET['l'] . "&";
 	}
@@ -69,4 +73,5 @@ if (strrpos($_SERVER['HTTP_USER_AGENT'], "MSIE") > 0) {
 
 	echo $proc->transformToXML($xml);
 }
+
 ?>

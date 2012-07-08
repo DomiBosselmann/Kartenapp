@@ -7,14 +7,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class CleanLayerWaters {
-	private static String	sourceFile	= "xml/bawu rivers.xml";
-	private static String[]	tagsToKeep	= { "k=\"name\"", "k=\"waterway\"", "k=\"natural\"" };
+public class CleanLayerLakes {
+	private static String	sourceFile	= "xml/bawu lakes.xml";
+	private static String[]	tagsToKeep	= { "k=\"natural\"", "k=\"water\"", "k=\"name\"" };
 	
 	public static void main(String[] args) throws IOException {
-		String targetFile = CleanLayerWaters.sourceFile.replaceAll(".xml", "2.xml");
+		String targetFile = CleanLayerLakes.sourceFile.replaceAll(".xml", "2.xml");
 		// create
-		BufferedReader reader = new BufferedReader(new FileReader(new File(CleanLayerWaters.sourceFile)));
+		BufferedReader reader = new BufferedReader(new FileReader(new File(CleanLayerLakes.sourceFile)));
 		FileWriter writer = new FileWriter(new File(targetFile));
 		
 		// actions
@@ -27,13 +27,13 @@ public class CleanLayerWaters {
 					writer.write(line + "\n");
 					do {
 						line = reader.readLine();
-					} while ((line.indexOf("</node") < 0));
+					} while (line.indexOf("</node") < 0);
 				} else {
 					writer.write(line + "\n");
 				}
 			} else {
 				if (line.indexOf("<tag") >= 0) {
-					if (CleanLayerWaters.keepTag(line)) {
+					if (CleanLayerLakes.keepTag(line)) {
 						writer.write(line + "\n");
 					}
 				} else {
@@ -50,7 +50,7 @@ public class CleanLayerWaters {
 	}
 	
 	private static boolean keepTag(String input) {
-		for (String tag : CleanLayerWaters.tagsToKeep) {
+		for (String tag : CleanLayerLakes.tagsToKeep) {
 			if (input.indexOf(tag) >= 0) {
 				return true;
 			}

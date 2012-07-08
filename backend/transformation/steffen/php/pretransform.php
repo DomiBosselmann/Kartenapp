@@ -35,7 +35,19 @@ if ($_GET['l']) {
 			}
 		case 'b':
 			{
-				$xmlfile .= "bounds/bawu.xml";
+				$xmlfile .= "bounds/";
+				switch ($_GET['l']) {
+					case "b1":
+						{
+							$xmlfile .= "counties.xml";
+							break;
+						}
+					default:
+						{
+							$xmlfile .= "bawu.xml";
+							break;
+						}
+				}
 				break;
 			}
 		case 'r':

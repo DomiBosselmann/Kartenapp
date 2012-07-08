@@ -8,7 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Hashtable;
 
-public class FilterXMLWaters {
+public class FilterXMLRivers {
 	private static String	fileSource		= "xml/bawu.xml";
 	private static String	fileTarget		= "xml/bawu rivers.xml";
 	// private static String[] neededKeys = { "k=\"waterway\"", "k=\"waterway\"", "k=\"waterway\"", "k=\"natural\"" };
@@ -21,7 +21,7 @@ public class FilterXMLWaters {
 		
 		// 1 Save needed ways in file and needed nodes in hashtable
 		// 1 Create
-		File sourceFile = new File(FilterXMLWaters.fileSource);
+		File sourceFile = new File(FilterXMLRivers.fileSource);
 		BufferedReader reader = new BufferedReader(new FileReader(sourceFile));
 		File tempFile = new File("lines_temp.xml");
 		FileWriter writer = new FileWriter(tempFile);
@@ -39,9 +39,9 @@ public class FilterXMLWaters {
 					line = reader.readLine();
 					if (line.indexOf("<tag") >= 0) {
 						int i = 0;
-						for (String neededTag : FilterXMLWaters.neededKeys) {
+						for (String neededTag : FilterXMLRivers.neededKeys) {
 							if (line.indexOf(neededTag) >= 0) {
-								if (line.indexOf(FilterXMLWaters.neededValues[i]) >= 0) {
+								if (line.indexOf(FilterXMLRivers.neededValues[i]) >= 0) {
 									needed1 = true;
 								}
 								i++;
@@ -75,7 +75,7 @@ public class FilterXMLWaters {
 		// 2 Add nodes to target file
 		// 2 Create
 		reader = new BufferedReader(new FileReader(sourceFile));
-		File targetFile = new File(FilterXMLWaters.fileTarget);
+		File targetFile = new File(FilterXMLRivers.fileTarget);
 		writer = new FileWriter(targetFile);
 		
 		// 2 Actions

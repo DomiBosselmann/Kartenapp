@@ -11,7 +11,7 @@ import java.util.Hashtable;
 public class SplitIntoSimplierFiles {
 	
 	private static String	fileSource	= "xml/bawu lakes p0.05.xml";
-	private static int		wayCount		= 150;
+	private static int		wayCount		= 200;
 	
 	public static void main(String[] args) throws IOException {
 		String fileTarget = fileSource.replaceFirst(".xml", " splitted ");

@@ -26,22 +26,27 @@ if (isset($_GET['lon2'])) {
 
 $xmlfile = "../../../xmls/cities/";
 switch ($_GET[l]) {
-	case 'c1':
+	case "c":
+		{
+			$xmlfile .= "cities.xml";
+			break;
+		}
+	case "c1":
 		{
 			$xmlfile .= "towns.xml";
 			break;
 		}
-	case 'c2':
+	case "c2":
 		{
 			$xmlfile .= "villages.xml";
 			break;
 		}
-	case 'c3':
+	case "c3":
 		{
 			$xmlfile .= "hamlets.xml";
 			break;
 		}
-	case 'c4':
+	case "c4":
 		{
 			$xmlfile .= "suburbs.xml";
 			break;

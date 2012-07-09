@@ -13,8 +13,7 @@ public class Peuckern {
 	private static String								fileSource			= "xml/bawu lakes.xml";
 	private static Hashtable<Integer, Node>		nodes					= new Hashtable<Integer, Node>();
 	private static Hashtable<Integer, Boolean>	neededNodes			= new Hashtable<Integer, Boolean>();
-	// private static Hashtable<Integer, Integer> wayPoints = new Hashtable<Integer, Integer>();
-	private static double								peuckerDistance	= 0.05;
+	private static double								peuckerDistance	= 1.5;
 	
 	public static void main(String[] args) throws IOException {
 		Hashtable<Integer, Integer> wayPoints = new Hashtable<Integer, Integer>();

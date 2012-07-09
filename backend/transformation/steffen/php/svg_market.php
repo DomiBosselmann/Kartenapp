@@ -1,35 +1,34 @@
 <?php
 
-$layer = $_GET['l'];
 
 if ($_GET) {
-	$begin = '<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;">';
-	$end = '</svg>';
 	header("Content-Type: image/svg+xml");
+	
+	$begin = '<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" style="position:absolute;">';
+	$end = '</svg>';
 
 	if (isset($_GET['lon1'])) {
-		$lon1 = $_GET['lon1'];
-		@lon * 150 - 1050
+		$lon1 = $_GET['lon1'] * 150 - 1050;
 	} else {
 		$lon1 = -99999;
 	}
 	if (isset($_GET['lon2'])) {
-		$lon2 = $_GET['lon2'];
+		$lon2 = $_GET['lon2'] * 150 - 1050;
 	} else {
 		$lon2 = 99999;
 	}
 	if (isset($_GET['lat1'])) {
-		$lat1 = $_GET['lat1'];
-		@lat * -200 + 10000
+		$lat1 = $_GET['lat1'] * -200 + 10000;
 	} else {
 		$lat1 = -99999;
 	}
 	if (isset($_GET['lat2'])) {
-		$lat2 = $_GET['lat2'];
+		$lat2 = $_GET['lat2'] * -200 + 10000;
 	} else {
-		$lat2 = 99999; 
+		$lat2 = 99999;
 	}
 
+	$layer = $_GET['l'];
 	$file = $begin;
 	foreach ($_GET as $para => $layer) {
 		switch ($para) {
@@ -88,14 +87,19 @@ if ($_GET) {
 								$filename .= "cities/suburbs.svg";
 								break;
 							}
-						case "m":
+						case "s":
 							{
 								$filename .= "streets/motorways.svg";
 								break;
 							}
-						case "r":
+						case "w":
 							{
 								$filename .= "waters/rivers.svg";
+								break;
+							}
+						case "w1":
+							{
+								$filename .= "waters/lakes.svg";
 								break;
 							}
 						default:
@@ -104,7 +108,7 @@ if ($_GET) {
 								break;
 							}
 					}
-					if (!$nope){
+					if (!$nope) {
 						$filecontent = file_get_contents($filename);
 						$file .= substr($filecontent,strlen($begin),strlen($filecontent)-strlen($begin)-strlen($end));
 					}
@@ -112,7 +116,8 @@ if ($_GET) {
 				}
 		}
 	}
-	echo $file.$end;
+
+	echo $file . $end;
 }
 
 ?>

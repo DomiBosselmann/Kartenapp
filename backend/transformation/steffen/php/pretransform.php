@@ -28,15 +28,32 @@ if ($_GET['l']) {
 	$xmlfile = "../../../xmls/";
 	$layer = substr($_GET['l'],0,1);
 	switch ($layer) {
-		case 'm':
+		case 's':
 			{
-				$xmlfile .= "streets/motorways.xml";
+				$xmlfile .= "streets/";
+				switch ($_GET['l']) {
+					case "s":
+						{
+							$xmlfile .= "motorways.xml";
+							break;
+						}
+					default:
+						{
+							$xmlfile .= "motorways.xml";
+							break;
+						}
+				}
 				break;
 			}
 		case 'b':
 			{
 				$xmlfile .= "bounds/";
 				switch ($_GET['l']) {
+					case "b":
+						{
+							$xmlfile .= "federal.xml";
+							break;
+						}
 					case "b1":
 						{
 							$xmlfile .= "counties.xml";
@@ -44,15 +61,32 @@ if ($_GET['l']) {
 						}
 					default:
 						{
-							$xmlfile .= "bawu.xml";
+							$xmlfile .= "federal.xml";
 							break;
 						}
 				}
 				break;
 			}
-		case 'r':
+		case 'w':
 			{
-				$xmlfile .= "waters/rivers.xml";
+				$xmlfile .= "waters/";
+				switch ($_GET['l']) {
+					case "w":
+						{
+							$xmlfile .= "rivers.xml";
+							break;
+						}
+					case "w1":
+						{
+							$xmlfile .= "lakes.xml";
+							break;
+						}
+					default:
+						{
+							$xmlfile .= "rivers.xml";
+							break;
+						}
+				}
 				break;
 			}
 	}

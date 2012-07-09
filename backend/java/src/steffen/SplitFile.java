@@ -8,9 +8,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class SplitFile {
-	private static String	sourceFilePath	= "bawu4.xml";
-	private static int		beginLine		= 24186221;
-	private static int		endLine			= 24196221;
+	private static String	sourceFilePath	= "xml/bawu.xml";
+	private static int		beginLine		= 37351521;
+	private static int		endLine			= 37351541;
 	
 	public static void main(String[] args) throws IOException {
 		String targetFilePath = SplitFile.sourceFilePath.replaceFirst(".xml", " split .xml");

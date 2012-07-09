@@ -11,8 +11,12 @@ import java.util.Hashtable;
 public class FilterXMLLakes {
 	private static String	fileSource			= "xml/bawu.xml";
 	private static String	fileTarget			= "xml/bawu lakes.xml";
-	// private static String[] neededKeys = { "k=\"natural\"", "k=\"water\"" };
-	// private static String[] neededValues = { "v=\"water\"", "v=\"lake\"" };
+	
+	// private static String[] neededKeys = { "k=\"water\"" };
+	// private static String[] neededValues = { "v=\"lake\"" };
+	// private static String[] permittedKeys = {};
+	// private static String[] permittedValues = {};
+	
 	private static String[]	neededKeys			= { "k=\"natural\"" };
 	private static String[]	neededValues		= { "v=\"water\"" };
 	private static String[]	permittedKeys		= { "k=\"golf\"", "k=\"waterway\"" };

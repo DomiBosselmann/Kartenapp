@@ -7,8 +7,8 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class GetLine {
-	private static String	sourceFilePath	= "bawu.xml";
-	private static String	searchedString	= "<relation";
+	private static String	sourceFilePath	= "xml/bawu.xml";
+	private static String	searchedString	= "v=\"bodensee\"";
 	
 	public static void main(String[] args) throws IOException {
 		// create
@@ -17,9 +17,11 @@ public class GetLine {
 		// actions
 		int i = 0;
 		String line = null;
+		String lineLower = null;
 		while (reader.ready()) {
 			line = reader.readLine();
-			if (line.indexOf(GetLine.searchedString) >= 0) {
+			lineLower = line.toLowerCase();
+			if (lineLower.indexOf(GetLine.searchedString.toLowerCase()) >= 0) {
 				System.out.println(i);
 				System.out.println(line);
 			}

@@ -209,3 +209,24 @@ aside {
 	-o-transition: -o-transform 0.5s ease-in-out;
 	-ms-transition: -ms-transform 0.5s ease-in-out;
 }
+
+#visibilities {
+	-webkit-column-count: 2;
+}
+
+#visibilities ul {
+	list-style: none;
+	padding: 0;
+	-webkit-column-break-inside: avoid;
+}
+
+#visibilities h1 {
+	font-size: 12px;
+	font-weight: bold;
+	text-transform: uppercase;
+	-webkit-column-break-after: avoid;
+}
+
+#visibilities li.inactive {
+	opacity: 0.5;
+}

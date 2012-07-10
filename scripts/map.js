@@ -135,6 +135,7 @@ window.Karte = (function () {
 			this.uiElements.mapScaler = document.getElementById("scaler");
 			this.uiElements.mapScaleText = document.getElementById("scalevalue");
 			this.uiElements.scalables = this.uiElements.mapScale.getElementsByClassName("scalable");
+			this.uiElements.visibilities = document.getElementById("visibilities");
 			
 			// EventListener hinzufügen
 			this.uiElements.searchButton.addEventListener("click", this.handler.enableSearch, false);
@@ -171,6 +172,9 @@ window.Karte = (function () {
 					console.error(event);
 				}
 			});
+			
+			// Ansichten anzeigen
+			sideView.renderVisibilities();
 		},
 		handler : {
 			enableSearch : function (event) {
@@ -267,6 +271,12 @@ window.Karte = (function () {
 
 				
 				document.removeEventListener("mousemove", controller.handler.handleScaling, false);
+			},
+			setVisibility : function (event, object) {
+				object.visible = object.visible ? false : true;
+				event.currentTarget.className = object.visible ? "active" : "inactive";
+				
+				renderer.filter();
 			}
 		},
 		loadMap : function (latitude, longitude, handler) {
@@ -331,6 +341,38 @@ window.Karte = (function () {
 		
 	};
 	
+	var sideView = {
+		renderVisibilities : function () {
+			var type, subtype, value,
+				title, list, item;
+			
+			for (type in map.layers) {
+				if (map.layers.hasOwnProperty(type)) {
+					title = document.createElement("h1");
+					title.textContent = map.layers[type].name;
+					controller.uiElements.visibilities.appendChild(title);
+					
+					list = document.createElement("ul");
+					controller.uiElements.visibilities.appendChild(list);
+										
+					for (subtype in map.layers[type].sub) {
+						if (map.layers[type].sub.hasOwnProperty(subtype)) {
+							value = map.layers[type].sub[subtype];
+							item = document.createElement("li");
+							item.className = value.visible ? "active" : "inactive";
+							
+							(function (subtype) {
+								item.addEventListener("click", function (event) { controller.handler.setVisibility(event, subtype); }, false);
+							})(value);
+							
+							item.textContent = value.name;
+							list.appendChild(item);
+						}
+					}
+				}
+			}
+		}
+	}
 	
 	return {
 		init: function () {

@@ -106,17 +106,12 @@ aside {
 	overflow: hidden
 }
 
-#mapcontainer img {
+#mapcontainer svg {
+	position: relative !important; /* Important fällt weg, sobald SVG fertig */
 	width: 100%;
 	height: 100%;
-}
-
-#wurschd {
-	-webkit-column-count: 2;
-}
-
-#wurschd p {
-	margin: 0;
+	top: 0px;
+	left: 0px;
 }
 
 #toolbar {

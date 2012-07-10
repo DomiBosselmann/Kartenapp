@@ -131,6 +131,7 @@ window.Karte = (function () {
 			this.uiElements.searchField = document.getElementById("searchField");
 			this.uiElements.mapChooser = Array.prototype.slice.call(document.getElementById("choosemap").children);
 			this.uiElements.map = document.getElementById("mapcontainer");
+			this.uiElements.mapRoot = this.uiElements.map.getElementsByTagName("svg")[0];
 			this.uiElements.mapScale = document.getElementById("mapscale");
 			this.uiElements.mapScaler = document.getElementById("scaler");
 			this.uiElements.mapScaleText = document.getElementById("scalevalue");
@@ -166,10 +167,10 @@ window.Karte = (function () {
 			// Karte laden
 			this.loadMap(undefined, undefined, {
 				onSuccess : function (event) {
-					controller.uiElements.map.appendChild(event.data.getElementsByTagName("svg")[0]);
+					renderer.start(event.data);
 				},
 				onError : function (event) {
-					console.error(event);
+					alert("tja, iwie blöd gelaufen");
 				}
 			});
 			
@@ -338,7 +339,40 @@ window.Karte = (function () {
 	};
 	
 	var renderer = {
-		
+		data : undefined,
+		start : function (data) {
+			// Verwaltungsmethode für den Renderer
+			this.data = data;
+			
+			this.parse();
+			this.render();
+			this.optimize();
+		},
+		parse : function () {
+			this.data = this.data.getElementsByTagName("svg")[0].childNodes;
+		},
+		render : function () {
+			var data = Array.prototype.slice.call(this.data);
+			
+			data.forEach(function (node) {
+				controller.uiElements.mapRoot.appendChild(node);
+			});
+		},
+		optimize : function () {
+			// Dummy, wird gefüllt, wenn noch Zeit über ist
+		},
+		stop : function () {
+			
+		},
+		filter : function () {
+			
+		},
+		zoom : function () {
+			
+		},
+		pan : function (x, y) {
+			controller.uiElements.mapRoot.style.cssText = "left: " + x + "px; top: " + y + "px;";
+		}
 	};
 	
 	var sideView = {

@@ -119,7 +119,13 @@ window.Karte = (function () {
 			searchField: null,
 			mapChooser: null,
 			activeMapChooser: null,
-			map: null
+			map: null,
+			mapRoot : null,
+			mapScale : null,
+			mapScaler : null,
+			mapScaleText : null,
+			scalables : null,
+			visibilities : null
 		},
 		init : function () {
 			// UI-Elemente mit Referenzen versehen

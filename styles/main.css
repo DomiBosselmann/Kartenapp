@@ -19,11 +19,15 @@ aside {
 	font-family: "Lucida Grande";
 	font-size: 12px;
 	display: -webkit-box;
+	display: -moz-box;
 	-webkit-box-orient: vertical;
+	-moz-box-orient: vertical;
+	-moz-box-align: center;
 }
 
 #flags {
 	-webkit-box-flex: 1;
+	-moz-box-flex: 1;
 	overflow: hidden;
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
@@ -72,11 +76,14 @@ aside {
 	padding: 0;
 	overflow: hidden;
 	display: -webkit-box;
+	display: -moz-box;
 	margin-bottom: 20px;
+	width: 100%;
 }
 
 #choosemap li {
 	-webkit-box-flex: 1;
+	-moz-box-flex: 1;
 	text-align: center;
 	line-height: 3;
 	-webkit-user-select: none;
@@ -96,6 +103,7 @@ aside {
 	right: 0;
 	bottom: 0;
 	background: #83ab39;
+	overflow: hidden
 }
 
 #mapcontainer img {
@@ -187,6 +195,8 @@ aside {
 	right: 10px;
 	-webkit-transition-delay: 0.7s;
 	-webkit-transition-duration: 0.5s;
+	-moz-transition-delay: 0.7s;
+	-moz-transition-duration: 0.5s;
 }
 
 #searchField::-webkit-input-placeholder {

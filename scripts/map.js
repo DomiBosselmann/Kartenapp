@@ -6,9 +6,16 @@ window.Karte = (function () {
 	};
 	
 	var map = {
+		dimensions : {
+			width : undefined,
+			height : undefined,
+			maxWidth : undefined,
+			maxHeight : undefined
+		},
 		coordinates : {
 			topleft: [],
-			bottomright : []
+			bottomright : [],
+			center : []
 		},
 		scaling : {
 			value : 4,
@@ -171,6 +178,14 @@ window.Karte = (function () {
 			for (var i = 0; i < length; i++) {
 				map.scaling.scalablesX.push(parseInt(controller.uiElements.scalables[i].getAttribute("x")));
 			}
+			
+			// Dimensionen herausfinden und setzen
+			map.dimensions.width = window.innerWidth - 320;
+			map.dimensions.height = window.innerHeight;
+			map.dimensions.maxWidth = screen.availWidth - 320;
+			map.dimensions.maxHeight = screen.availHeight;
+			
+			console.log(map);
 						
 			// Karte laden
 			this.loadMap(undefined, undefined, {
@@ -431,13 +446,57 @@ window.Karte = (function () {
 		}
 	}
 	
+	var units = {
+		geoCoordinatesToDistance : function (topLeft, bottomRight) { // nur waagrecht oder senkrecht
+			var topY = topLeft[0], bottomY = bottomRight[0];
+			var leftX = topLeft[1], rightX = bottomRight[1];
+			
+			// TODO: Zwei Arten zur Berechnung des Maßstabs. Welche?
+			console.log("Ausgerechnet anhand Breite: " + (111.32 * (topY - bottomY)));
+			console.log("Ausgerechnet anhand Länge: " + ((2 * Math.PI * 6371 * Math.cos(topY))/360 * (topY - bottomY)));
+			return 111.32 * (topY - bottomY);
+		},
+		distanceToGeoCoordinates : function (distance, center) { // Sollte tun
+			var oldDistance,
+				coordinateDiffX, coordinateDiffY,
+				distanceDiff,
+				newTopLeft = [], newBottomRight = [];
+			
+			oldDistance = units.geoCoordinatesToDistance(map.coordinates.topLeft, center);
+			distanceDiff = distance/oldDistance;
+			
+			coordinateDiffY = Math.abs(center[0] - map.coordinates.topLeft[0]);
+			coordinateDiffX = Math.abs(center[1] - map.coordinates.topLeft[1]);
+			
+			newTopLeft[0] = center[0] + coordinateDiffY * distanceDiff;
+			newBottomRight[0] = center[0] - coordinateDiffY * distanceDiff;
+			newTopLeft[1] = center[1] - coordinateDiffX * distanceDiff;
+			newBottomRight[1] = center[1] + coordinateDiffX * distanceDiff;
+			
+			return [newTopLeft, newBottomRight];
+		},
+		geoCoordinateToPixelCoordinate : function (latitude, longitude) {
+			x = (latitude - map.coordinates.topLeft[0]) / (map.coordinates.bottomRight[0] - map.coordinates.topLeft[0]) * map.dimensions.width;
+			y = (longitude - map.coordinates.topLeft[1]) / (map.coordinates.bottomRight[1] - map.coordinates.topLeft[1]) * map.dimensions.height;
+			
+			return [x,y];
+		},
+		pixelCoordinateToGeoCoordinate : function (x, y) { //TODO: Sascha
+			latitude = x;
+			longitude = y;
+			
+			return [latitude, longitude];
+		}
+	};
+	
 	return {
 		init: function () {
 			controller.init();
 		},
 		pan : function (x, y) {
 			renderer.pan(x, y);
-		}
+		},
+		units : units
 	}
 	
 })();

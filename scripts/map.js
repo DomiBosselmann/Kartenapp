@@ -223,9 +223,6 @@ window.Karte = (function () {
 		
 	};
 	
-	var cache = {
-	
-	};
 	
 	return {
 		init: function () {

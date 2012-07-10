@@ -1,4 +1,113 @@
 window.Karte = (function () {
+
+	var constants = {
+		url : "http://karte.localhost/backend/transformation/steffen/php/svg_market.php"
+		//url : "http://karte.localhost/backend/transformation/steffen/php/transform.php"
+	};
+	
+	var map = {
+		coordinates : {
+			topleft: [],
+			bottomright : []
+		},
+		scaling : {
+			value : 4,
+			unit : "km",
+			scalerX : null,
+			scalablesX : []
+		},
+		layers : {
+			roads : {
+				name : "Straßen",
+				visible : false,
+				paramName : undefined,
+				sub : {
+					motorways : {
+						name : "Autobahnen",
+						visible : true,
+						paramName : "m"
+					},
+					federal : {
+						name : "Bundesstraßen",
+						visible : true,
+						paramName : undefined
+					},
+					landesstrasse : {
+						name : "Landesstraße",
+						visible : false,
+						paramName : undefined
+					},
+					kreisstrasse : {
+						name : "Kreisstraße",
+						visible : false,
+						paramName : undefined
+					}
+				}
+			},
+			places : {
+				name : "Städte",
+				visible : false,
+				sub : {
+					cities : {
+						name : "Städte",
+						visible : true,
+						paramName : "c"
+					},
+					towns : {
+						name : "(Dörfer)",
+						visible : false,
+						paramName : "c1"
+					},
+					villages : {
+						name : "(Kuhdörfer)",
+						visible : false,
+						paramName : "c2"
+					},
+					hamlets : {
+						name : "(Kaffs)",
+						visible : false,
+						paramName : "c3"
+					},
+					suburbs : {
+						name : "(Bauernhof)",
+						visible : false,
+						paramName : "c4"
+					}
+				}
+			},
+			boundaries : {
+				name : "Grenzen",
+				visible : true,
+				paramName : undefined,
+				sub : {
+					federal : {
+						name : "Länder",
+						visible : true,
+						paramName : "b"
+					},
+					counties : {
+						name : "Landkreise",
+						visible : false,
+						paramName : "b1"
+					}
+				}
+			},
+			rivers : {
+				name : "Seen und Flüsse",
+				visibile : false,
+				paramName : undefined,
+				sub : {
+					rivers : {
+						name : "Flüsse",
+						visible : true,
+						paramName : "r"
+					}
+				}
+			}
+		},
+		places : [],
+		routes : []
+	}
 	
 	var controller = {
 		uiElements : {
@@ -9,7 +118,14 @@ window.Karte = (function () {
 			saveButton: null,
 			searchField: null,
 			mapChooser: null,
-			activeMapChooser: null
+			activeMapChooser: null,
+			map: null,
+			mapRoot : null,
+			mapScale : null,
+			mapScaler : null,
+			mapScaleText : null,
+			scalables : null,
+			visibilities : null
 		},
 		init : function () {
 			// UI-Elemente mit Referenzen versehen
@@ -20,6 +136,13 @@ window.Karte = (function () {
 			this.uiElements.saveButton = document.querySelector("button[title='Sichern']");
 			this.uiElements.searchField = document.getElementById("searchField");
 			this.uiElements.mapChooser = Array.prototype.slice.call(document.getElementById("choosemap").children);
+			this.uiElements.map = document.getElementById("mapcontainer");
+			this.uiElements.mapRoot = this.uiElements.map.getElementsByTagName("svg")[0];
+			this.uiElements.mapScale = document.getElementById("mapscale");
+			this.uiElements.mapScaler = document.getElementById("scaler");
+			this.uiElements.mapScaleText = document.getElementById("scalevalue");
+			this.uiElements.scalables = this.uiElements.mapScale.getElementsByClassName("scalable");
+			this.uiElements.visibilities = document.getElementById("visibilities");
 			
 			// EventListener hinzufügen
 			this.uiElements.searchButton.addEventListener("click", this.handler.enableSearch, false);
@@ -38,6 +161,29 @@ window.Karte = (function () {
 					controller.uiElements.activeMapChooser = element;
 				}
 			});
+			
+			this.uiElements.mapScaler.addEventListener("mousedown", this.handler.enableScaling, false);
+			
+			this.uiElements.map.addEventListener("mousedown", this.handler.enablePanning, false);
+			
+			// Attribute für Geschwindigkeit zwischenspeichern
+			var length = controller.uiElements.scalables.length;
+			for (var i = 0; i < length; i++) {
+				map.scaling.scalablesX.push(parseInt(controller.uiElements.scalables[i].getAttribute("x")));
+			}
+						
+			// Karte laden
+			this.loadMap(undefined, undefined, {
+				onSuccess : function (event) {
+					renderer.start(event.data);
+				},
+				onError : function (event) {
+					alert("tja, iwie blöd gelaufen");
+				}
+			});
+			
+			// Ansichten anzeigen
+			sideView.renderVisibilities();
 		},
 		handler : {
 			enableSearch : function (event) {
@@ -83,13 +229,214 @@ window.Karte = (function () {
 						element.className = "";
 					}
 				});
+			},
+			enableScaling : function (event) {
+				map.scaling.scalerX = event.pageX;
+				map.scaling.scalerY = event.pageY;
+				
+				controller.uiElements.mapScale.setAttribute("class","");
+				
+				document.addEventListener("mousemove", controller.handler.handleScaling, false);
+				document.addEventListener("mouseup", controller.handler.finishScaling, false);
+			},
+			handleScaling : function (event) {
+				// Karte skalieren	
+				
+				// Maßstab-UI anpassen
+				var transform = "translate(%d)",
+					transformValue;
+				
+				var diff = event.pageX - map.scaling.scalerX;
+				var scaleValue = Math.round((map.scaling.value/Math.abs(100 - diff)) * 10000) / 100;
+				
+				console.log(scaleValue);
+				controller.uiElements.mapScaleText.textContent = scaleValue + map.scaling.unit;
+				
+				var length = controller.uiElements.scalables.length;
+				
+				for (var i = 0; i < length; i++) {
+					transformValue = (event.pageX - map.scaling.scalerX) * (i + 1)/4;
+					controller.uiElements.scalables[i].setAttribute("transform",transform.replace(/%d/g, transformValue));
+				}
+			},
+			finishScaling : function (event) {
+				// Bei Bedarf neue Daten laden
+				
+				// Maßstab-UI anpassen
+				var diff = event.pageX - map.scaling.scalerX;
+				map.scaling.value = (map.scaling.value/Math.abs(100 - diff)) * 100;
+				
+				controller.uiElements.mapScale.setAttribute("class","finishScaling");
+				
+				//debugger;
+				
+				window.setTimeout(function () {
+					var length = controller.uiElements.scalables.length;
+				
+					for (var i = 0; i < length; i++) {
+						controller.uiElements.scalables[i].removeAttribute("transform");
+					}
+				}, 20);
+
+				
+				document.removeEventListener("mousemove", controller.handler.handleScaling, false);
+			},
+			enablePanning : function (event) {
+				document.addEventListener("mousemove", controller.handler.handlePanning, false);
+				document.addEventListener("mouseup", controller.handler.finishPanning, false);
+			},
+			handlePanning : function (event) {
+				
+			},
+			finishPanning : function (event) {
+				
+				
+				
+				// EventListener wieder entfernen
+				document.removeEventListener("mousemove", controller.handler.handlePanning, false);
+				document.removeEventListener("mouseup", controller.handler.finsihPanning, false);
+			},
+			setVisibility : function (event, object) {
+				object.visible = object.visible ? false : true;
+				event.currentTarget.className = object.visible ? "active" : "inactive";
+				
+				renderer.filter();
 			}
+		},
+		loadMap : function (latitude, longitude, handler) {
+			
+			var parameters, params = [], requestURL = constants.url, request,
+				layers = [],
+				key;
+							
+			// Layer bestimmen
+			
+			for (type in map.layers) {
+				if (map.layers.hasOwnProperty(type) && map.layers[type].visible) {
+					for (subtype in map.layers[type].sub) {
+						if (map.layers[type].sub.hasOwnProperty(subtype) && map.layers[type].sub[subtype].visible && map.layers[type].sub[subtype].paramName !== undefined) {
+							layers.push(map.layers[type].sub[subtype].paramName);
+						}
+					}
+				}
+			}
+			
+			console.log(layers);
+			
+			// Parameter für die Übergabe zusammenschustern
+			
+			parameters = {
+				lat : latitude,
+				long : longitude,
+			};
+			
+			layers.forEach(function (value, index) {
+				parameters[index + 1] = value;
+			});
+			
+			for (key in parameters) {
+				if (parameters.hasOwnProperty(key) && parameters[key] !== undefined) {
+					params.push(encodeURIComponent(key) + "=" + encodeURIComponent(parameters[key]));
+				}
+			};
+			
+			if (params.length !== 0) {
+				requestURL += "?" + params.join("&");
+			}
+			
+			// Request absetzen
+			
+			request = new XMLHttpRequest();
+			request.open("get", requestURL, true);
+			request.send(null);
+			request.onreadystatechange = function () {
+				if (request.readyState === 4) {
+					handler.onSuccess({
+						statusCode : request.statusCode,
+						data: request.responseXML,
+						textData: request.responseText
+					});
+				}
+			}	
 		}
 	};
+	
+	var renderer = {
+		data : undefined,
+		start : function (data) {
+			// Verwaltungsmethode für den Renderer
+			this.data = data;
+			
+			this.parse();
+			this.render();
+			this.optimize();
+		},
+		parse : function () {
+			this.data = this.data.getElementsByTagName("svg")[0].childNodes;
+		},
+		render : function () {
+			var data = Array.prototype.slice.call(this.data);
+			
+			data.forEach(function (node) {
+				controller.uiElements.mapRoot.appendChild(node);
+			});
+		},
+		optimize : function () {
+			// Dummy, wird gefüllt, wenn noch Zeit über ist
+		},
+		stop : function () {
+			
+		},
+		filter : function () {
+			
+		},
+		zoom : function () {
+			
+		},
+		pan : function (x, y) {
+			controller.uiElements.mapRoot.style.cssText = "left: " + x + "px; top: " + y + "px;";
+		}
+	};
+	
+	var sideView = {
+		renderVisibilities : function () {
+			var type, subtype, value,
+				title, list, item;
+			
+			for (type in map.layers) {
+				if (map.layers.hasOwnProperty(type)) {
+					title = document.createElement("h1");
+					title.textContent = map.layers[type].name;
+					controller.uiElements.visibilities.appendChild(title);
+					
+					list = document.createElement("ul");
+					controller.uiElements.visibilities.appendChild(list);
+										
+					for (subtype in map.layers[type].sub) {
+						if (map.layers[type].sub.hasOwnProperty(subtype)) {
+							value = map.layers[type].sub[subtype];
+							item = document.createElement("li");
+							item.className = value.visible ? "active" : "inactive";
+							
+							(function (subtype) {
+								item.addEventListener("click", function (event) { controller.handler.setVisibility(event, subtype); }, false);
+							})(value);
+							
+							item.textContent = value.name;
+							list.appendChild(item);
+						}
+					}
+				}
+			}
+		}
+	}
 	
 	return {
 		init: function () {
 			controller.init();
+		},
+		pan : function (x, y) {
+			renderer.pan(x, y);
 		}
 	}
 	

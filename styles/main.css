@@ -19,11 +19,15 @@ aside {
 	font-family: "Lucida Grande";
 	font-size: 12px;
 	display: -webkit-box;
+	display: -moz-box;
 	-webkit-box-orient: vertical;
+	-moz-box-orient: vertical;
+	-moz-box-align: center;
 }
 
 #flags {
 	-webkit-box-flex: 1;
+	-moz-box-flex: 1;
 	overflow: hidden;
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
@@ -72,11 +76,14 @@ aside {
 	padding: 0;
 	overflow: hidden;
 	display: -webkit-box;
+	display: -moz-box;
 	margin-bottom: 20px;
+	width: 100%;
 }
 
 #choosemap li {
 	-webkit-box-flex: 1;
+	-moz-box-flex: 1;
 	text-align: center;
 	line-height: 3;
 	-webkit-user-select: none;
@@ -96,19 +103,15 @@ aside {
 	right: 0;
 	bottom: 0;
 	background: #83ab39;
+	overflow: hidden
 }
 
-#mapcontainer img {
+#mapcontainer svg {
+	position: relative !important; /* Important fällt weg, sobald SVG fertig */
 	width: 100%;
 	height: 100%;
-}
-
-#wurschd {
-	-webkit-column-count: 2;
-}
-
-#wurschd p {
-	margin: 0;
+	top: 0px;
+	left: 0px;
 }
 
 #toolbar {
@@ -129,6 +132,11 @@ aside {
 	vertical-align: top;
 	color: white;
 	-webkit-transition: opacity 0.5s ease-in-out, left 0.7s ease-in-out;
+	-moz-transition: opacity 0.5s ease-in-out, left 0.7s ease-in-out;
+}
+
+#toolbar button:active {
+	-webkit-filter: drop-shadow(white 0 0 6px);
 }
 
 #toolbar button.rightside {
@@ -179,7 +187,16 @@ aside {
 	color: white;
 	opacity: 0;
 	-webkit-transition: opacity 0.2s ease-in-out;
+	-moz-transition: opacity 0.2s ease-in-out;
 	outline: none;
+	/* für Firefox */
+	height: 100%;
+	-moz-box-sizing: border-box;
+	padding-left: 10px;
+}
+
+#searchField::-webkit-search-cancel-button, #searchField::-webkit-search-decoration {
+	-webkit-appearance: none;
 }
 
 #toolbar.searchEnabled #searchField {
@@ -187,8 +204,38 @@ aside {
 	right: 10px;
 	-webkit-transition-delay: 0.7s;
 	-webkit-transition-duration: 0.5s;
+	-moz-transition-delay: 0.7s;
+	-moz-transition-duration: 0.5s;
 }
 
 #searchField::-webkit-input-placeholder {
 	color: rgba(255, 255, 255, 0.6);
+}
+
+.finishScaling * {
+	-webkit-transition: -webkit-transform 0.5s ease-in-out;
+	-moz-transition: -moz-transform 0.5s ease-in-out;
+	-o-transition: -o-transform 0.5s ease-in-out;
+	-ms-transition: -ms-transform 0.5s ease-in-out;
+}
+
+#visibilities {
+	-webkit-column-count: 2;
+}
+
+#visibilities ul {
+	list-style: none;
+	padding: 0;
+	-webkit-column-break-inside: avoid;
+}
+
+#visibilities h1 {
+	font-size: 12px;
+	font-weight: bold;
+	text-transform: uppercase;
+	-webkit-column-break-after: avoid;
+}
+
+#visibilities li.inactive {
+	opacity: 0.5;
 }

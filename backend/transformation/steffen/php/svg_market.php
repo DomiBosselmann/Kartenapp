@@ -54,7 +54,7 @@ if ($_GET) {
 					switch ($layer) {
 						case "b":
 							{
-								$filename .= "bounds/bawubounds.svg";
+								$filename .= "bounds/federal.svg";
 								break;
 							}
 						case "b1":

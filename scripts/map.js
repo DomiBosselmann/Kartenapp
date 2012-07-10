@@ -1,7 +1,6 @@
 window.Karte = (function () {
 
 	var constants = {
-		layers : ["c"]
 		url : "http://karte.localhost/backend/transformation/steffen/php/svg_market.php"
 		//url : "http://karte.localhost/backend/transformation/steffen/php/transform.php"
 	};
@@ -17,7 +16,95 @@ window.Karte = (function () {
 			scalerX : null,
 			scalablesX : []
 		},
-		layers : [],
+		layers : {
+			roads : {
+				name : "Straßen",
+				visible : false,
+				paramName : undefined,
+				sub : {
+					motorways : {
+						name : "Autobahnen",
+						visible : true,
+						paramName : "m"
+					},
+					federal : {
+						name : "Bundesstraßen",
+						visible : true,
+						paramName : undefined
+					},
+					landesstrasse : {
+						name : "Landesstraße",
+						visible : false,
+						paramName : undefined
+					},
+					kreisstrasse : {
+						name : "Kreisstraße",
+						visible : false,
+						paramName : undefined
+					}
+				}
+			},
+			places : {
+				name : "Städte",
+				visible : false,
+				sub : {
+					cities : {
+						name : "Städte",
+						visible : true,
+						paramName : "c"
+					},
+					towns : {
+						name : "(Dörfer)",
+						visible : false,
+						paramName : "c1"
+					},
+					villages : {
+						name : "(Kuhdörfer)",
+						visible : false,
+						paramName : "c2"
+					},
+					hamlets : {
+						name : "(Kaffs)",
+						visible : false,
+						paramName : "c3"
+					},
+					suburbs : {
+						name : "(Bauernhof)",
+						visible : false,
+						paramName : "c4"
+					}
+				}
+			},
+			boundaries : {
+				name : "Grenzen",
+				visible : true,
+				paramName : undefined,
+				sub : {
+					federal : {
+						name : "Länder",
+						visible : true,
+						paramName : "b"
+					},
+					counties : {
+						name : "Landkreise",
+						visible : false,
+						paramName : "b1"
+					}
+				}
+			},
+			rivers : {
+				name : "Seen und Flüsse",
+				visibile : false,
+				paramName : undefined,
+				sub : {
+					rivers : {
+						name : "Flüsse",
+						visible : true,
+						paramName : "r"
+					}
+				}
+			}
+		},
 		places : [],
 		routes : []
 	}
@@ -187,9 +274,20 @@ window.Karte = (function () {
 			var parameters, params = [], requestURL = constants.url, request,
 				layers = [],
 				key;
+							
+			// Layer bestimmen
+			
+			for (type in map.layers) {
+				if (map.layers.hasOwnProperty(type) && map.layers[type].visible) {
+					for (subtype in map.layers[type].sub) {
+						if (map.layers[type].sub.hasOwnProperty(subtype) && map.layers[type].sub[subtype].visible && map.layers[type].sub[subtype].paramName !== undefined) {
+							layers.push(map.layers[type].sub[subtype].paramName);
+						}
 					}
 				}
 			}
+			
+			console.log(layers);
 			
 			// Parameter für die Übergabe zusammenschustern
 			
@@ -197,6 +295,9 @@ window.Karte = (function () {
 				lat : latitude,
 				long : longitude,
 			};
+			
+			layers.forEach(function (value, index) {
+				parameters[index + 1] = value;
 			});
 			
 			for (key in parameters) {

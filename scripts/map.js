@@ -19,6 +19,7 @@ window.Karte = (function () {
 		},
 		scaling : {
 			value : 4,
+			zoomLevelValue : 4,
 			unit : "km",
 			scalerX : null,
 			scalablesX : []
@@ -255,14 +256,17 @@ window.Karte = (function () {
 				document.addEventListener("mouseup", controller.handler.finishScaling, false);
 			},
 			handleScaling : function (event) {
-				// Karte skalieren	
+				// Aktuellen Maßstab berechnen
+				var diff = event.pageX - map.scaling.scalerX;
+				var scaleValue = Math.round((map.scaling.value/Math.abs(100 - diff)) * 10000) / 100;
+			
+				// Karte skalieren
 				
+				renderer.zoom(map.scaling.zoomLevelValue, scaleValue);
+								
 				// Maßstab-UI anpassen
 				var transform = "translate(%d)",
 					transformValue;
-				
-				var diff = event.pageX - map.scaling.scalerX;
-				var scaleValue = Math.round((map.scaling.value/Math.abs(100 - diff)) * 10000) / 100;
 				
 				console.log(scaleValue);
 				controller.uiElements.mapScaleText.textContent = scaleValue + map.scaling.unit;
@@ -275,16 +279,15 @@ window.Karte = (function () {
 				}
 			},
 			finishScaling : function (event) {
-				// Bei Bedarf neue Daten laden
-				
-				// Maßstab-UI anpassen
-				var diff = event.pageX - map.scaling.scalerX;
+				var diff = event.pageX - map.scaling.scalerX
 				map.scaling.value = (map.scaling.value/Math.abs(100 - diff)) * 100;
 				
+				// Bei Bedarf neue Daten laden — TODO: Bedarf ermitteln
+								
+				// Maßstab-UI anpassen
+				
 				controller.uiElements.mapScale.setAttribute("class","finishScaling");
-				
-				//debugger;
-				
+								
 				window.setTimeout(function () {
 					var length = controller.uiElements.scalables.length;
 				
@@ -405,8 +408,10 @@ window.Karte = (function () {
 		filter : function () {
 			
 		},
-		zoom : function () {
+		zoom : function (newDistance, oldDistance) {
+			var scaleFactor = (newDistance / oldDistance);
 			
+			controller.uiElements.mapRoot.style.cssText = "-webkit-transform: scale(" + scaleFactor + "); -moz-transform: scale(" + scaleFactor + "); -ms-transform: scale(" + scaleFactor + "); -o-transform: scale(" + scaleFactor + "); transform: scale(" + scaleFactor + "); ";
 		},
 		pan : function (x, y) {
 			controller.uiElements.mapRoot.style.cssText = "left: " + x + "px; top: " + y + "px;";
@@ -495,6 +500,9 @@ window.Karte = (function () {
 		},
 		pan : function (x, y) {
 			renderer.pan(x, y);
+		},
+		zoom : function (oldDistance, newDistance) {
+			renderer.zoom(oldDistance, newDistance);
 		},
 		units : units
 	}

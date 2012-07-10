@@ -1,8 +1,9 @@
 window.Karte = (function () {
 
 	var constants = {
-		url : "http://karte.localhost/backend/transformation/steffen/php/transform.php",
 		layers : ["c"]
+		url : "http://karte.localhost/backend/transformation/steffen/php/svg_market.php"
+		//url : "http://karte.localhost/backend/transformation/steffen/php/transform.php"
 	};
 	
 	var map = {
@@ -183,39 +184,45 @@ window.Karte = (function () {
 		},
 		loadMap : function (latitude, longitude, handler) {
 			
-			constants.layers.forEach(function (layer) {
-				var parameters, params = [], requestURL = constants.url, request,
-					key;
-								
-				parameters = {
-					lat : latitude,
-					long : longitude,
-					l : layer	
-				};
-				
-				for (key in parameters) {
-					if (parameters.hasOwnProperty(key) && parameters[key] !== undefined) {
-						params.push(encodeURIComponent(key) + "=" + encodeURIComponent(parameters[key]));
+			var parameters, params = [], requestURL = constants.url, request,
+				layers = [],
+				key;
 					}
-				};
-				
-				if (params.length !== 0) {
-					requestURL += "?" + params.join("&");
 				}
-				
-				request = new XMLHttpRequest();
-				request.open("get", requestURL, true);
-				request.send(null);
-				request.onreadystatechange = function () {
-					if (request.readyState === 4) {
-						handler.onSuccess({
-							statusCode : request.statusCode,
-							data: request.responseXML,
-							textData: request.responseText
-						});
-					}
-				}	
+			}
+			
+			// Parameter für die Übergabe zusammenschustern
+			
+			parameters = {
+				lat : latitude,
+				long : longitude,
+			};
 			});
+			
+			for (key in parameters) {
+				if (parameters.hasOwnProperty(key) && parameters[key] !== undefined) {
+					params.push(encodeURIComponent(key) + "=" + encodeURIComponent(parameters[key]));
+				}
+			};
+			
+			if (params.length !== 0) {
+				requestURL += "?" + params.join("&");
+			}
+			
+			// Request absetzen
+			
+			request = new XMLHttpRequest();
+			request.open("get", requestURL, true);
+			request.send(null);
+			request.onreadystatechange = function () {
+				if (request.readyState === 4) {
+					handler.onSuccess({
+						statusCode : request.statusCode,
+						data: request.responseXML,
+						textData: request.responseText
+					});
+				}
+			}	
 		}
 	};
 	

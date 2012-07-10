@@ -9,7 +9,6 @@ if ($_GET) {
 
 	if (isset($_GET['lon1'])) {
 		$lon1 = $_GET['lon1'];
-		@lon * 150 - 1050
 	} else {
 		$lon1 = -99999;
 	}
@@ -20,7 +19,6 @@ if ($_GET) {
 	}
 	if (isset($_GET['lat1'])) {
 		$lat1 = $_GET['lat1'];
-		@lat * -200 + 10000
 	} else {
 		$lat1 = -99999;
 	}

@@ -132,6 +132,11 @@ aside {
 	vertical-align: top;
 	color: white;
 	-webkit-transition: opacity 0.5s ease-in-out, left 0.7s ease-in-out;
+	-moz-transition: opacity 0.5s ease-in-out, left 0.7s ease-in-out;
+}
+
+#toolbar button:active {
+	-webkit-filter: drop-shadow(white 0 0 6px);
 }
 
 #toolbar button.rightside {
@@ -182,7 +187,16 @@ aside {
 	color: white;
 	opacity: 0;
 	-webkit-transition: opacity 0.2s ease-in-out;
+	-moz-transition: opacity 0.2s ease-in-out;
 	outline: none;
+	/* für Firefox */
+	height: 100%;
+	-moz-box-sizing: border-box;
+	padding-left: 10px;
+}
+
+#searchField::-webkit-search-cancel-button, #searchField::-webkit-search-decoration {
+	-webkit-appearance: none;
 }
 
 #toolbar.searchEnabled #searchField {

@@ -7,7 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class GetLineCount {
-	private static String	sourceFilePath	= "xml/bawu boundary.xml";
+	private static String	sourceFilePath	= "../../../../Projekt Karte/xml/bawu lakes.xml";
 	
 	public static void main(String[] args) throws IOException {
 		// create

@@ -7,14 +7,17 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Hashtable;
+import steffen.FilePath;
 
 public class FilterXMLMotorway {
-	private static String	fileSource	= "xml/bawu.xml";
-	private static String	fileTarget	= "xml/bawu motorway.xml";
+	private static String	fileSource	= "bawu.xml";
+	private static String	fileTarget	= "bawu motorways.xml";
 	private static String	neededTag1	= "k=\"highway\" v=\"motorway\"";
 	private static String	neededTag2	= "k=\"ref\"";
 	
 	public static void main(String[] args) throws IOException {
+		fileSource = FilePath.path + fileSource;
+		fileTarget = FilePath.path + fileTarget;
 		Hashtable<Integer, Integer> nodeIDs = new Hashtable<Integer, Integer>();
 		
 		// 1 Save needed nodes in file

@@ -6,16 +6,18 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import steffen.FilePath;
 
 public class CleanLayerMotorway {
-	private static String	sourceFile	= "xml/bawu motorways.xml";
+	private static String	fileSource	= "bawu motorways.xml";
 	private static String[]	tagsToKeep	= { "k=\"highway\"", "k=\"name\"", "k=\"int_ref\"", "k=\"ref\"", "k=\"lanes\"", "k=\"oneway\"" };
 	
 	public static void main(String[] args) throws IOException {
-		String targetFile = CleanLayerMotorway.sourceFile.replaceFirst(".xml", "2.xml");
+		String fileTarget = FilePath.path + CleanLayerMotorway.fileSource.replaceFirst(".xml", "2.xml");
+		fileSource = FilePath.path + fileSource;
 		// create
-		BufferedReader reader = new BufferedReader(new FileReader(new File(CleanLayerMotorway.sourceFile)));
-		FileWriter writer = new FileWriter(new File(targetFile));
+		BufferedReader reader = new BufferedReader(new FileReader(new File(CleanLayerMotorway.fileSource)));
+		FileWriter writer = new FileWriter(new File(fileTarget));
 		
 		// actions
 		String line = null;

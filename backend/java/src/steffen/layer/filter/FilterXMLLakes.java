@@ -7,10 +7,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Hashtable;
+import steffen.FilePath;
 
 public class FilterXMLLakes {
-	private static String	fileSource			= "xml/bawu.xml";
-	private static String	fileTarget			= "xml/bawu lakes.xml";
+	private static String	fileSource			= "bawu.xml";
+	private static String	fileTarget			= "bawu lakes.xml";
 	
 	// private static String[] neededKeys = { "k=\"water\"" };
 	// private static String[] neededValues = { "v=\"lake\"" };
@@ -23,6 +24,8 @@ public class FilterXMLLakes {
 	private static String[]	permittedValues	= { "", "" };
 	
 	public static void main(String[] args) throws IOException {
+		fileSource = FilePath.path + fileSource;
+		fileTarget = FilePath.path + fileTarget;
 		Hashtable<Integer, Integer> nodeIDs = new Hashtable<Integer, Integer>();
 		
 		// 1 Save needed ways in file and needed nodes in hashtable

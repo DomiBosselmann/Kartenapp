@@ -1,6 +1,5 @@
 <?php
 
-
 if ($_GET) {
 	header("Content-Type: image/svg+xml");
 	

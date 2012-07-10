@@ -10,11 +10,12 @@ import java.util.Hashtable;
 
 public class SplitIntoSimplierFiles {
 	
-	private static String	fileSource	= "xml/bawu lakes p0.05.xml";
-	private static int		wayCount		= 200;
+	private static String	fileSource	= "bawu motorways p0.05.xml";
+	private static int		wayCount		= 250;
 	
 	public static void main(String[] args) throws IOException {
-		String fileTarget = fileSource.replaceFirst(".xml", " splitted ");
+		String fileTarget = FilePath.path + fileSource.replaceFirst(".xml", " splitted ");
+		fileSource = FilePath.path + fileSource;
 		BufferedReader reader = new BufferedReader(new FileReader(new File(fileSource)));
 		Hashtable<Integer, Boolean> nodes = new Hashtable<Integer, Boolean>();
 		
@@ -41,7 +42,8 @@ public class SplitIntoSimplierFiles {
 					} while (line.indexOf("</way") < 0);
 					if (ways >= wayCount) {
 						BufferedReader reader2 = new BufferedReader(new FileReader(new File(fileSource)));
-						FileWriter writer = new FileWriter(new File(fileTarget + file + ".xml"));
+						File myFile = new File(fileTarget + file + ".xml");
+						FileWriter writer = new FileWriter(myFile);
 						writer.write("<?xml version='1.0' encoding='UTF-8'?>\n");
 						writer.write("<?xml-stylesheet type=\"text/xml\" href=\"transform.xsl\"?>\n");
 						writer.write("<osm>\n");

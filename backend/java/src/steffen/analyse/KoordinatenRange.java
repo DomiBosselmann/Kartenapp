@@ -7,7 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class KoordinatenRange {
-	private static String	sourceFilePath	= "xml/bawu.xml";
+	private static String	sourceFilePath	= "../../../../Projekt Karte/xml/bawu.xml";
 	
 	public static void main(String[] args) throws IOException {
 		// create

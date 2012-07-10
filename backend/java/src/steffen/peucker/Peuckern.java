@@ -8,17 +8,20 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Hashtable;
+import steffen.FilePath;
 
 public class Peuckern {
-	private static String								fileSource			= "xml/bawu lakes.xml";
+	private static String								fileSource			= "bawu motorways.xml";
 	private static Hashtable<Integer, Node>		nodes					= new Hashtable<Integer, Node>();
 	private static Hashtable<Integer, Boolean>	neededNodes			= new Hashtable<Integer, Boolean>();
-	private static double								peuckerDistance	= 1.5;
+	private static double								peuckerDistance	= 0.05;
 	
 	public static void main(String[] args) throws IOException {
 		Hashtable<Integer, Integer> wayPoints = new Hashtable<Integer, Integer>();
 		DecimalFormat format = new DecimalFormat("0.##");
-		String fileTarget = Peuckern.fileSource.replaceFirst(".xml", " p" + format.format(Peuckern.peuckerDistance) + ".xml");
+		String fileTarget = FilePath.path
+				+ Peuckern.fileSource.replaceFirst(".xml", " p" + format.format(Peuckern.peuckerDistance) + ".xml");
+		fileSource = FilePath.path + fileSource;
 		BufferedReader reader = new BufferedReader(new FileReader(new File(Peuckern.fileSource)));
 		
 		// Save data of the nodes in Hashtables and check for needed nodes

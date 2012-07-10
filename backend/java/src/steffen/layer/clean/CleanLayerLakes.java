@@ -6,16 +6,18 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import steffen.FilePath;
 
 public class CleanLayerLakes {
-	private static String	sourceFile	= "xml/bawu lakes.xml";
+	private static String	fileSource	= "bawu lakes.xml";
 	private static String[]	tagsToKeep	= { "k=\"natural\"", "k=\"water\"", "k=\"name\"" };
 	
 	public static void main(String[] args) throws IOException {
-		String targetFile = CleanLayerLakes.sourceFile.replaceAll(".xml", "2.xml");
+		String fileTarget = FilePath.path + CleanLayerLakes.fileSource.replaceFirst(".xml", "2.xml");
+		fileSource = FilePath.path + fileSource;
 		// create
-		BufferedReader reader = new BufferedReader(new FileReader(new File(CleanLayerLakes.sourceFile)));
-		FileWriter writer = new FileWriter(new File(targetFile));
+		BufferedReader reader = new BufferedReader(new FileReader(new File(CleanLayerLakes.fileSource)));
+		FileWriter writer = new FileWriter(new File(fileTarget));
 		
 		// actions
 		String line = null;

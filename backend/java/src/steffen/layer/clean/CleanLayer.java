@@ -8,14 +8,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class CleanLayer {
-	private static String	sourceFile	= "bawu boundary.xml";
+	private static String	fileSource	= "bawu boundary.xml";
 	private static String[]	tagsToKeep	= { "k=\"admin_level\"", "k=\"boundary\"", "k=\"border_type\"" };
 	
 	public static void main(String[] args) throws IOException {
-		String targetFile = CleanLayer.sourceFile.replaceAll(".xml", "2.xml");
+		String fileTarget = CleanLayer.fileSource.replaceAll(".xml", "2.xml");
 		// create
-		BufferedReader reader = new BufferedReader(new FileReader(new File(CleanLayer.sourceFile)));
-		FileWriter writer = new FileWriter(new File(targetFile));
+		BufferedReader reader = new BufferedReader(new FileReader(new File(CleanLayer.fileSource)));
+		FileWriter writer = new FileWriter(new File(fileTarget));
 		
 		// actions
 		String line = null;

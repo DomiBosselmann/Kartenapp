@@ -7,13 +7,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Hashtable;
+import steffen.FilePath;
 
 public class FilterXMLBoundary {
-	private static String	fileSource			= "xml/bawu.xml";
-	private static String	fileTarget			= "xml/bawu boundary.xml";
+	private static String	fileSource			= "bawu.xml";
+	private static String	fileTarget			= "bawu boundary.xml";
 	private static String[]	neededTags			= { "k=\"boundary\" v=\"administrative\"" };
-	private static int		admin_level_min	= 6;
-	private static int		admin_level_max	= 6;
+	private static int		admin_level_min	= 2;
+	private static int		admin_level_max	= 4;
 	
 	// admin_level gibt Grenzart an:
 	// 2: Staaten
@@ -24,13 +25,15 @@ public class FilterXMLBoundary {
 	// 9-11: Ortsteile
 	
 	public static void main(String[] args) throws IOException {
+		fileSource = FilePath.path + fileSource;
+		fileTarget = FilePath.path + fileTarget;
 		Hashtable<Integer, Integer> nodeIDs = new Hashtable<Integer, Integer>();
 		
 		// 1 Save needed nodes in file
 		// 1 Create
 		File sourceFile = new File(FilterXMLBoundary.fileSource);
 		BufferedReader reader = new BufferedReader(new FileReader(sourceFile));
-		File tempFile = new File("xml/lines_temp.xml");
+		File tempFile = new File("lines_temp.xml");
 		FileWriter writer = new FileWriter(tempFile);
 		tempFile.deleteOnExit();
 		

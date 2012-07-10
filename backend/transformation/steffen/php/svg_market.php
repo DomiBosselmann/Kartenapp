@@ -2,33 +2,44 @@
 
 if ($_GET) {
 	header("Content-Type: image/svg+xml");
-	
-	$begin = '<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" style="position:absolute;">';
-	$end = '</svg>';
+
+	$koords = "<koords ";
 
 	if (isset($_GET['lon1'])) {
 		$lon1 = $_GET['lon1'] * 150 - 1050;
+		$koords .= "lon1=\"" . $_GET['lon1'] . "\" ";
 	} else {
 		$lon1 = -99999;
+		$koords .= "lon1=\"5.976\" ";
 	}
 	if (isset($_GET['lon2'])) {
 		$lon2 = $_GET['lon2'] * 150 - 1050;
+		$koords .= "lon2=\"" . $_GET['lon2'] . "\" ";
 	} else {
 		$lon2 = 99999;
+		$koords .= "lon2=\"12.014\" ";
 	}
 	if (isset($_GET['lat1'])) {
 		$lat1 = $_GET['lat1'] * -200 + 10000;
+		$koords .= "lat1=\"" . $_GET['lat1'] . "\" ";
 	} else {
 		$lat1 = -99999;
+		$koords .= "lat1=\"47.142\" ";
 	}
 	if (isset($_GET['lat2'])) {
 		$lat2 = $_GET['lat2'] * -200 + 10000;
+		$koords .= "lat2=\"" . $_GET['lat2'] . "\" ";
 	} else {
 		$lat2 = 99999;
+		$koords .= "lat2=\"51.388\" ";
 	}
+	$koords .= "/>";
+
+	$begin = '<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" style="position:absolute;">';
+	$end = '</svg>';
 
 	$layer = $_GET['l'];
-	$file = $begin;
+	$file = $begin . $koords;
 	foreach ($_GET as $para => $layer) {
 		switch ($para) {
 			case "lon1":

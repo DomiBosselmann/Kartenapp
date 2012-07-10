@@ -158,6 +158,8 @@ window.Karte = (function () {
 			
 			this.uiElements.mapScaler.addEventListener("mousedown", this.handler.enableScaling, false);
 			
+			this.uiElements.map.addEventListener("mousedown", this.handler.enablePanning, false);
+			
 			// Attribute für Geschwindigkeit zwischenspeichern
 			var length = controller.uiElements.scalables.length;
 			for (var i = 0; i < length; i++) {
@@ -272,6 +274,21 @@ window.Karte = (function () {
 
 				
 				document.removeEventListener("mousemove", controller.handler.handleScaling, false);
+			},
+			enablePanning : function (event) {
+				document.addEventListener("mousemove", controller.handler.handlePanning, false);
+				document.addEventListener("mouseup", controller.handler.finishPanning, false);
+			},
+			handlePanning : function (event) {
+				
+			},
+			finishPanning : function (event) {
+				
+				
+				
+				// EventListener wieder entfernen
+				document.removeEventListener("mousemove", controller.handler.handlePanning, false);
+				document.removeEventListener("mouseup", controller.handler.finsihPanning, false);
 			},
 			setVisibility : function (event, object) {
 				object.visible = object.visible ? false : true;
@@ -411,6 +428,9 @@ window.Karte = (function () {
 	return {
 		init: function () {
 			controller.init();
+		},
+		pan : function (x, y) {
+			renderer.pan(x, y);
 		}
 	}
 	

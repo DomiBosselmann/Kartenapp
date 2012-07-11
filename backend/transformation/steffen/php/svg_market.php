@@ -10,28 +10,28 @@ if ($_GET) {
 		$koords .= "lon1=\"" . $_GET['lon1'] . "\" ";
 	} else {
 		$lon1 = -99999;
-		$koords .= "lon1=\"5.976\" ";
+		$koords .= "lon1=\"7.5117461\" ";
 	}
 	if (isset($_GET['lon2'])) {
 		$lon2 = $_GET['lon2'] * 150 - 1050;
 		$koords .= "lon2=\"" . $_GET['lon2'] . "\" ";
 	} else {
 		$lon2 = 99999;
-		$koords .= "lon2=\"12.014\" ";
+		$koords .= "lon2=\"10.4954066\" ";
 	}
 	if (isset($_GET['lat1'])) {
 		$lat1 = $_GET['lat1'] * -200 + 10000;
 		$koords .= "lat1=\"" . $_GET['lat1'] . "\" ";
 	} else {
 		$lat1 = -99999;
-		$koords .= "lat1=\"47.142\" ";
+		$koords .= "lat1=\"49.7913369\" ";
 	}
 	if (isset($_GET['lat2'])) {
 		$lat2 = $_GET['lat2'] * -200 + 10000;
 		$koords .= "lat2=\"" . $_GET['lat2'] . "\" ";
 	} else {
 		$lat2 = 99999;
-		$koords .= "lat2=\"51.388\" ";
+		$koords .= "lat2=\"47.5312706\" ";
 	}
 	$koords .= "/>";
 
@@ -109,7 +109,12 @@ if ($_GET) {
 							}
 						case "w1":
 							{
-								$filename .= "waters/lakes.svg";
+								$filename .= "waters/namedLakes.svg";
+								break;
+							}
+						case "w2":
+							{
+								$filename .= "waters/allLakes.svg";
 								break;
 							}
 						default:

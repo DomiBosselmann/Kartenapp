@@ -200,8 +200,8 @@ window.Karte = (function () {
 						coordinates = data.getElementsByTagName("koords")[0];
 					
 					// Koordinaten auslesen
-					map.coordinates.topLeft = [parseFloat(coordinates.getAttribute("lat2")), parseFloat(coordinates.getAttribute("lon1"))];
-					map.coordinates.bottomRight = [parseFloat(coordinates.getAttribute("lat1")), parseFloat(coordinates.getAttribute("lon2"))];
+					map.coordinates.topLeft = [parseFloat(coordinates.getAttribute("lat1")), parseFloat(coordinates.getAttribute("lon1"))];
+					map.coordinates.bottomRight = [parseFloat(coordinates.getAttribute("lat2")), parseFloat(coordinates.getAttribute("lon2"))];
 					//map.coordinates.center = [(map.coordinates.topLeft[0] - map.coordinates.bottomRight[0])/2 + map.coordinates.topLeft[0], (map.coordinates.topLeft[1] - map.coordinates.bottomRight[1])/2 + map.coordinates.topLeft[1]];
 					
 					// Maßstab neu berechnen
@@ -476,9 +476,10 @@ window.Karte = (function () {
 			
 			// TODO: Zwei Arten zur Berechnung des Maßstabs. Welche?
 			console.log("Ausgerechnet anhand Breite: " + (111.32 * (topY - bottomY)));
-			console.log("Ausgerechnet anhand Länge: " + ((2 * Math.PI * 6371 * Math.cos(topY - (topY - bottomY) / 2))/360 * (topY - bottomY)));
+			console.log("Ausgerechnet anhand Länge: " + (2 * Math.PI * 6371 * Math.cos((topY - (topY - bottomY) / 2) * Math.PI / 180)/360 * (rightX - leftX)));
+			
 
-			return 111.32 * (topY - bottomY);
+			return 2 * Math.PI * 6371 * Math.cos((topY - (topY - bottomY) / 2) * Math.PI / 180)/360 * (rightX - leftX);
 		},
 		distanceToGeoCoordinates : function (distance, center) { // Sollte tun
 			var oldDistance,

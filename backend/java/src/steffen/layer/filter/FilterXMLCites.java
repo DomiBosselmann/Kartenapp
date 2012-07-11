@@ -6,15 +6,19 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import steffen.FilePath;
 
 public class FilterXMLCites {
-	private static String	fileSource		= "xml/bawu.xml";
-	private static String	fileTarget		= "xml/bawu cities.xml";
+	private static String	fileSource		= "bawu.xml";
+	private static String	fileTarget		= "bawu cities.xml";
 	private static String	neededKey		= "k=\"place\"";
 	// private static String[] possibleValues = { "v=\"city\"", "v=\"town\"", "v=\"village\"", "v=\"hamlet\"", "v=\"suburb\"" };
-	private static String[]	possibleValues	= { "v=\"suburb\"" };
+	private static String[]	possibleValues	= { "v=\"city\"" };
 	
 	public static void main(String[] args) throws IOException {
+		fileSource = FilePath.path + fileSource;
+		fileTarget = FilePath.path + fileTarget;
+		
 		// 1 Save needed nodes in file
 		// 1 Create
 		BufferedReader reader = new BufferedReader(new FileReader(new File(FilterXMLCites.fileSource)));

@@ -3,7 +3,7 @@ package steffen.peucker;
 
 public class Line {
 	private static Double	xratio	= 72.0;
-	private static Double	yratio	= 111.0;
+	private static Double	yratio	= 111.32;
 	
 	public static void main(String[] args) {
 		// Tests

@@ -13,8 +13,8 @@ public class FilterXMLBoundary {
 	private static String	fileSource			= "bawu.xml";
 	private static String	fileTarget			= "bawu boundary.xml";
 	private static String[]	neededTags			= { "k=\"boundary\" v=\"administrative\"" };
-	private static int		admin_level_min	= 2;
-	private static int		admin_level_max	= 4;
+	private static int		admin_level_min	= 5;
+	private static int		admin_level_max	= 6;
 	
 	// admin_level gibt Grenzart an:
 	// 2: Staaten

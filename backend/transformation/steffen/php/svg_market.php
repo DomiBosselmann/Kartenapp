@@ -3,7 +3,7 @@
 if ($_GET) {
 	header("Content-Type: image/svg+xml");
 
-	$koords = "<koords ";
+	$koords = "<coords ";
 
 	if (isset($_GET['lon1'])) {
 		$lon1 = $_GET['lon1'] * 150 - 1050;

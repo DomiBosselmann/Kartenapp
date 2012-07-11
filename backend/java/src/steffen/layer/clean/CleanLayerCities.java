@@ -6,16 +6,19 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import steffen.FilePath;
 
 public class CleanLayerCities {
-	private static String	sourceFile	= "xml/bawu cities.xml";
+	private static String	fileSource	= "bawu cities.xml";
 	private static String[]	tagsToKeep	= { "k=\"name\"", "k=\"place\"" };
 	
 	public static void main(String[] args) throws IOException {
-		String targetFile = CleanLayerCities.sourceFile.replaceAll(".xml", "2.xml");
+		String fileTarget = FilePath.path + CleanLayerCities.fileSource.replaceFirst(".xml", "2.xml");
+		fileSource = FilePath.path + fileSource;
+		
 		// create
-		BufferedReader reader = new BufferedReader(new FileReader(new File(CleanLayerCities.sourceFile)));
-		FileWriter writer = new FileWriter(new File(targetFile));
+		BufferedReader reader = new BufferedReader(new FileReader(new File(CleanLayerCities.fileSource)));
+		FileWriter writer = new FileWriter(new File(fileTarget));
 		
 		// actions
 		String line = null;

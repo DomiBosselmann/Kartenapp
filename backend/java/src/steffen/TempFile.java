@@ -28,7 +28,7 @@ public class TempFile {
 		if (delete) {
 			file.deleteOnExit();
 		}
-		file = new File(tempFolder + "/" + path);
+		file = new File(tempFolder + Constants.fileSeperator + path);
 		if (delete) {
 			file.deleteOnExit();
 		}
@@ -94,9 +94,9 @@ public class TempFile {
 	public void addInteger(Integer integer) {
 		String nmbr = String.valueOf(integer);
 		if (oneFile) {
-			this.add(nmbr + "\n");
+			this.add(nmbr + Constants.lineSeperator);
 		} else {
-			File f = new File(tempFolder + "/" + nmbr);
+			File f = new File(tempFolder + Constants.fileSeperator + nmbr);
 			try {
 				f.createNewFile();
 				f.deleteOnExit();

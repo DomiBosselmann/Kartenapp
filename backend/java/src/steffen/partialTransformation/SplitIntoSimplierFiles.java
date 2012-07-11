@@ -24,7 +24,6 @@ public class SplitIntoSimplierFiles {
 		BufferedReader reader = new BufferedReader(new FileReader(new File(fileSource)));
 		Hashtable<Integer, Boolean> nodes = new Hashtable<Integer, Boolean>();
 		
-		// 1 Gather x times the information of the next "wayCount" ways in the hashtable
 		String line = null;
 		int ways = 0;
 		int file = 1;
@@ -46,58 +45,7 @@ public class SplitIntoSimplierFiles {
 						}
 					} while (line.indexOf("</way") < 0);
 					if (ways >= wayCount) {
-						BufferedReader reader2 = new BufferedReader(new FileReader(new File(fileSource)));
-						File myFile = new File(fileTarget + file + ".xml");
-						FileWriter writer = new FileWriter(myFile);
-						writer.write("<?xml version='1.0' encoding='UTF-8'?>\n");
-						writer.write("<osm>\n");
-						String line2 = null;
-						int ways2 = 0;
-						boolean reading = true;
-						while (reader2.ready() && reading) {
-							line2 = reader2.readLine();
-							if (line2.indexOf("<node") >= 0) {
-								String str = "id=\"";
-								int begin = line2.indexOf(str);
-								if (begin >= 0) {
-									int end = line2.indexOf("\"", begin + str.length());
-									Integer id = Integer.valueOf(line2.substring(begin + str.length(), end));
-									if (nodes.containsKey(id)) {
-										writer.write(line2 + "\n");
-										if (line2.indexOf("/>") < 0) {
-											do {
-												line2 = reader2.readLine();
-												writer.write(line2 + "\n");
-											} while (line2.indexOf("</node") >= 0);
-										}
-									}
-								}
-							} else {
-								if (line2.indexOf("<way") >= 0) {
-									if (line2.indexOf("/>") < 0) {
-										if (ways2 >= (file - 1) * wayCount) {
-											ways2++;
-											writer.write(line2 + "\n");
-											do {
-												line2 = reader2.readLine();
-												writer.write(line2 + "\n");
-											} while (line2.indexOf("</way") < 0);
-											if (ways2 >= file * wayCount) {
-												reading = false;
-											}
-										} else {
-											ways2++;
-											do {
-												line2 = reader2.readLine();
-											} while (line2.indexOf("</way") < 0);
-										}
-									}
-								}
-							}
-						}
-						writer.write("</osm>");
-						reader2.close();
-						writer.close();
+						SplitIntoSimplierFiles.writeIntoSplitFile(fileSource, fileTarget, file, wayCount, nodes);
 						ways = 0;
 						file++;
 						nodes.clear();
@@ -107,6 +55,65 @@ public class SplitIntoSimplierFiles {
 		}
 		reader.close();
 		
+		SplitIntoSimplierFiles.writeIntoSplitFile(fileSource, fileTarget, file, wayCount, nodes);
+		nodes.clear();
+		
 		System.out.println("Done");
+	}
+	
+	private static void writeIntoSplitFile(String fileSource, String fileTarget, int file, int wayCount,
+			Hashtable<Integer, Boolean> nodes) throws IOException {
+		BufferedReader reader2 = new BufferedReader(new FileReader(new File(fileSource)));
+		File myFile = new File(fileTarget + file + ".xml");
+		FileWriter writer = new FileWriter(myFile);
+		writer.write("<?xml version='1.0' encoding='UTF-8'?>" + Constants.lineSeperator);
+		writer.write("<osm>" + Constants.lineSeperator);
+		String line2 = null;
+		int ways2 = 0;
+		boolean reading = true;
+		while (reader2.ready() && reading) {
+			line2 = reader2.readLine();
+			if (line2.indexOf("<node") >= 0) {
+				String str = "id=\"";
+				int begin = line2.indexOf(str);
+				if (begin >= 0) {
+					int end = line2.indexOf("\"", begin + str.length());
+					Integer id = Integer.valueOf(line2.substring(begin + str.length(), end));
+					if (nodes.containsKey(id)) {
+						writer.write(line2 + Constants.lineSeperator);
+						if (line2.indexOf("/>") < 0) {
+							do {
+								line2 = reader2.readLine();
+								writer.write(line2 + Constants.lineSeperator);
+							} while (line2.indexOf("</node") >= 0);
+						}
+					}
+				}
+			} else {
+				if (line2.indexOf("<way") >= 0) {
+					if (line2.indexOf("/>") < 0) {
+						if (ways2 >= (file - 1) * wayCount) {
+							ways2++;
+							writer.write(line2 + Constants.lineSeperator);
+							do {
+								line2 = reader2.readLine();
+								writer.write(line2 + Constants.lineSeperator);
+							} while (line2.indexOf("</way") < 0);
+							if (ways2 >= file * wayCount) {
+								reading = false;
+							}
+						} else {
+							ways2++;
+							do {
+								line2 = reader2.readLine();
+							} while (line2.indexOf("</way") < 0);
+						}
+					}
+				}
+			}
+		}
+		writer.write("</osm>");
+		reader2.close();
+		writer.close();
 	}
 }

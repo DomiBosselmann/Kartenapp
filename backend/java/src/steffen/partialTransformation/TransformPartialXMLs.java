@@ -29,6 +29,11 @@ public class TransformPartialXMLs {
 	
 	public static void transformTheseXMLs(final String xmlFileSource, String xsltFileSource, String fileTargetName) throws IOException,
 			TransformerException {
+		TransformPartialXMLs.transformTheseXMLs(xmlFileSource, xsltFileSource, fileTargetName, true);
+	}
+	
+	public static void transformTheseXMLs(final String xmlFileSource, String xsltFileSource, String fileTargetName, boolean deleteFiles)
+			throws IOException, TransformerException {
 		int splittedFilesCount = new File(Constants.pathToExternXMLs).list(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				return name.indexOf(xmlFileSource) >= 0;
@@ -44,10 +49,14 @@ public class TransformPartialXMLs {
 		transformer.setOutputProperty("{http://www.w3.org/1999/XSL/Transform}xmlns:xlink", "http://www.w3.org/1999/xlink");
 		
 		for (int i = 1; i <= splittedFilesCount; i++) {
-			Source xmlSource = new StreamSource(new File(Constants.pathToExternXMLs + xmlFileSource + i + ".xml"));
-			File file = new File(Constants.pathToExternXMLs + fileTargetName + i + ".svg");
-			file.deleteOnExit();
-			FileWriter writer = new FileWriter(file);
+			File sourceFile = new File(Constants.pathToExternXMLs + xmlFileSource + i + ".xml");
+			if (deleteFiles) {
+				sourceFile.deleteOnExit();
+			}
+			Source xmlSource = new StreamSource(sourceFile);
+			File targetFile = new File(Constants.pathToExternXMLs + fileTargetName + i + ".svg");
+			targetFile.deleteOnExit();
+			FileWriter writer = new FileWriter(targetFile);
 			transformer.transform(xmlSource, new StreamResult(writer));
 			writer.close();
 			System.out.println("Step 1: File " + i + "/" + splittedFilesCount);

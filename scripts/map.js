@@ -13,8 +13,8 @@ window.Karte = (function () {
 			maxHeight : undefined
 		},
 		coordinates : {
-			topleft: [],
-			bottomright : [],
+			topLeft: [],
+			bottomRight : [],
 			center : []
 		},
 		scaling : {
@@ -54,7 +54,7 @@ window.Karte = (function () {
 			},
 			places : {
 				name : "Städte",
-				visible : false,
+				visible : true,
 				sub : {
 					cities : {
 						name : "Städte",
@@ -449,7 +449,7 @@ window.Karte = (function () {
 				}
 			}
 		}
-	}
+	};
 	
 	var units = {
 		geoCoordinatesToDistance : function (topLeft, bottomRight) { // nur waagrecht oder senkrecht

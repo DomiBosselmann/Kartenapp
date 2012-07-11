@@ -18,8 +18,8 @@ window.Karte = (function () {
 			center : []
 		},
 		scaling : {
-			value : 4,
-			zoomLevelValue : 4,
+			value : undefined, // (Pro 100 Pixel)
+			zoomLevelValue : undefined,
 			unit : "km",
 			scalerX : null,
 			scalablesX : []
@@ -187,11 +187,29 @@ window.Karte = (function () {
 			map.dimensions.maxHeight = screen.availHeight;
 			
 			console.log(map);
+			
+			// Automatische UI-Änderungen
+			map.scaling.observe("value",function (event) {
+				controller.uiElements.mapScaleText.textContent = Math.round(event.data * 100) / 100 + map.scaling.unit;
+			});
 						
 			// Karte laden
 			this.loadMap(undefined, undefined, {
 				onSuccess : function (event) {
-					renderer.start(event.data);
+					var data = event.data,
+						coordinates = data.getElementsByTagName("koords")[0];
+					
+					// Koordinaten auslesen
+					map.coordinates.topLeft = [parseFloat(coordinates.getAttribute("lat2")), parseFloat(coordinates.getAttribute("lon1"))];
+					map.coordinates.bottomRight = [parseFloat(coordinates.getAttribute("lat1")), parseFloat(coordinates.getAttribute("lon2"))];
+					//map.coordinates.center = [(map.coordinates.topLeft[0] - map.coordinates.bottomRight[0])/2 + map.coordinates.topLeft[0], (map.coordinates.topLeft[1] - map.coordinates.bottomRight[1])/2 + map.coordinates.topLeft[1]];
+					
+					// Maßstab neu berechnen
+					map.scaling.value = units.geoCoordinatesToDistance(map.coordinates.topLeft, map.coordinates.bottomRight) / map.dimensions.height * 100;
+					map.scaling.zoomLevelValue = map.scaling.value;
+										
+					// Renderer anstoßen
+					renderer.start(data);
 				},
 				onError : function (event) {
 					alert("tja, iwie blöd gelaufen");
@@ -458,7 +476,8 @@ window.Karte = (function () {
 			
 			// TODO: Zwei Arten zur Berechnung des Maßstabs. Welche?
 			console.log("Ausgerechnet anhand Breite: " + (111.32 * (topY - bottomY)));
-			console.log("Ausgerechnet anhand Länge: " + ((2 * Math.PI * 6371 * Math.cos(topY))/360 * (topY - bottomY)));
+			console.log("Ausgerechnet anhand Länge: " + ((2 * Math.PI * 6371 * Math.cos(topY - (topY - bottomY) / 2))/360 * (topY - bottomY)));
+
 			return 111.32 * (topY - bottomY);
 		},
 		distanceToGeoCoordinates : function (distance, center) { // Sollte tun

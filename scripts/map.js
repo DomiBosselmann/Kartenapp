@@ -509,6 +509,37 @@ window.Karte = (function () {
 	
 })();
 
+Object.prototype.observe = function (property,handler) {
+	var tempValue,
+		oldValue;
+		
+	tempValue = this[property] || undefined;
+	
+	if ("defineProperty" in Object) {
+		Object.defineProperty(this,property,{
+			set : function (value) {
+				oldValue = tempValue;
+				tempValue = value;
+				if (typeof handler === "function") {
+					handler({ data : value, oldData : oldValue });
+				}
+			},
+			get : function () {
+				return tempValue;
+			}
+		});
+	} else if ("__defineSetter" in this && "__defineGetter__" in this) {
+		this.__defineSetter__(property,function (value) {
+			oldValue = tempValue;
+			tempValue = value;
+			handler({ data : value, oldData : oldValue });
+		});
+		this.__defineGetter__(property,function () {
+			return tempValue;
+		});
+	}
+};
+
 window.addEventListener("DOMContentLoaded", function() {
 	Karte.init();
 }, false);

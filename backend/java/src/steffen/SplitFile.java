@@ -8,15 +8,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class SplitFile {
-	private static String	sourceFilePath	= "xml/bawu.xml";
-	private static int		beginLine		= 37351521;
-	private static int		endLine			= 37351541;
+	private static String	fileSource	= "bawu.xml";
+	private static int		beginLine	= 46840151;
+	private static int		endLine		= 46840251;
 	
 	public static void main(String[] args) throws IOException {
-		String targetFilePath = SplitFile.sourceFilePath.replaceFirst(".xml", " split .xml");
+		String fileTarget = FilePath.path + SplitFile.fileSource.replaceFirst(".xml", " split " + beginLine + "-" + endLine + " .xml");
+		fileSource = FilePath.path + fileSource;
+		
 		// create
-		BufferedReader reader = new BufferedReader(new FileReader(new File(SplitFile.sourceFilePath)));
-		FileWriter writer = new FileWriter(new File(targetFilePath));
+		BufferedReader reader = new BufferedReader(new FileReader(new File(SplitFile.fileSource)));
+		FileWriter writer = new FileWriter(new File(fileTarget));
 		
 		// actions
 		int i = 0;

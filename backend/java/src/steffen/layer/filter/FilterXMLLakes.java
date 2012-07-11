@@ -18,8 +18,8 @@ public class FilterXMLLakes {
 	// private static String[] permittedKeys = {};
 	// private static String[] permittedValues = {};
 	
-	private static String[]	neededKeys			= { "k=\"natural\"" };
-	private static String[]	neededValues		= { "v=\"water\"" };
+	private static String[]	neededKeys			= { "k=\"natural\"", "k=\"name\"" };
+	private static String[]	neededValues		= { "v=\"water\"", "" };
 	private static String[]	permittedKeys		= { "k=\"golf\"", "k=\"waterway\"" };
 	private static String[]	permittedValues	= { "", "" };
 	

@@ -10,8 +10,8 @@ import java.util.Hashtable;
 
 public class SplitIntoSimplierFiles {
 	
-	private static String	fileSource	= "bawu motorways p0.05.xml";
-	private static int		wayCount		= 250;
+	private static String	fileSource	= "bawu lakes p0.05.xml";
+	private static int		wayCount		= 150;
 	
 	public static void main(String[] args) throws IOException {
 		String fileTarget = FilePath.path + fileSource.replaceFirst(".xml", " splitted ");

@@ -7,14 +7,18 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Hashtable;
+import steffen.Constants;
 
 public class FilterXML {
-	private static String	fileSource		= "xml/bawu.xml";
-	private static String	fileTarget		= "xml/bawu test.xml";
+	private static String	fileSource		= "bawu.xml";
+	private static String	fileTarget		= "bawu test.xml";
 	private static String[]	neededKeys		= { "k=\"highway\"" };
 	private static String[]	neededValues	= { "v=\"motorway\"" };
 	
 	public static void main(String[] args) throws IOException {
+		fileSource = Constants.pathToExternXMLs + fileSource;
+		fileTarget = Constants.pathToExternXMLs + fileTarget;
+		
 		Hashtable<Integer, Integer> nodeIDs = new Hashtable<Integer, Integer>();
 		
 		// 1 Save needed ways in file and needed nodes in hashtable

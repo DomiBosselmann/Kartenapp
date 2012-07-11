@@ -1,5 +1,5 @@
 
-package steffen;
+package steffen.partialTransformation;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,19 +15,26 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import steffen.Constants;
 
-public class ConcatePartialSVGs {
-	private static String	xmlFileSource	= "bawu boundary p0.05 splitted ";
-	private static String	xsltFileSource	= "part_transform.xsl";
-	private static String	fileTarget		= "boundary";
+public class TransformPartialXMLs {
 	
-	public static void main(String[] args) throws TransformerException, IOException {
-		int splittedFilesCount = new File(FilePath.path).list(new FilenameFilter() {
+	public static void main(String[] args) throws Exception {
+		String xmlFileSource = "bawu boundary p0.05 splitted ";
+		String xsltFileSource = "part_transform.xsl";
+		String fileTargetName = "boundary";
+		
+		TransformPartialXMLs.transformTheseXMLs(xmlFileSource, xsltFileSource, fileTargetName);
+	}
+	
+	public static void transformTheseXMLs(final String xmlFileSource, String xsltFileSource, String fileTargetName) throws IOException,
+			TransformerException {
+		int splittedFilesCount = new File(Constants.pathToExternXMLs).list(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
-				return name.indexOf(ConcatePartialSVGs.xmlFileSource) >= 0;
+				return name.indexOf(xmlFileSource) >= 0;
 			}
 		}).length;
-		Source xsltSource = new StreamSource(new File("../transformation/steffen/xsl/" + ConcatePartialSVGs.xsltFileSource));
+		Source xsltSource = new StreamSource(new File(Constants.pathToInternXSLs + xsltFileSource));
 		
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Templates xslt = transformerFactory.newTemplates(xsltSource);
@@ -37,9 +44,10 @@ public class ConcatePartialSVGs {
 		transformer.setOutputProperty("{http://www.w3.org/1999/XSL/Transform}xmlns:xlink", "http://www.w3.org/1999/xlink");
 		
 		for (int i = 1; i <= splittedFilesCount; i++) {
-			Source xmlSource = new StreamSource(new File(FilePath.path + ConcatePartialSVGs.xmlFileSource + i + ".xml"));
-			
-			FileWriter writer = new FileWriter(new File(FilePath.path + ConcatePartialSVGs.fileTarget + i + ".svg"));
+			Source xmlSource = new StreamSource(new File(Constants.pathToExternXMLs + xmlFileSource + i + ".xml"));
+			File file = new File(Constants.pathToExternXMLs + fileTargetName + i + ".svg");
+			file.deleteOnExit();
+			FileWriter writer = new FileWriter(file);
 			transformer.transform(xmlSource, new StreamResult(writer));
 			writer.close();
 			System.out.println("Step 1: File " + i + "/" + splittedFilesCount);
@@ -47,10 +55,9 @@ public class ConcatePartialSVGs {
 		
 		System.out.println("Step 1");
 		
-		FileWriter writer = new FileWriter(new File(FilePath.path + ConcatePartialSVGs.fileTarget + ".svg"));
+		FileWriter writer = new FileWriter(new File(Constants.pathToExternXMLs + fileTargetName + ".svg"));
 		for (int i = 1; i <= splittedFilesCount; i++) {
-			BufferedReader reader = new BufferedReader(new FileReader(
-					new File(FilePath.path + ConcatePartialSVGs.fileTarget + i + ".svg")));
+			BufferedReader reader = new BufferedReader(new FileReader(new File(Constants.pathToExternXMLs + fileTargetName + i + ".svg")));
 			String line = null;
 			if (reader.ready()) {
 				line = reader.readLine();

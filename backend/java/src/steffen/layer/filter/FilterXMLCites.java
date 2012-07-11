@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import steffen.FilePath;
+import steffen.Constants;
 
 public class FilterXMLCites {
 	private static String	fileSource		= "bawu.xml";
@@ -16,8 +16,8 @@ public class FilterXMLCites {
 	private static String[]	possibleValues	= { "v=\"city\"" };
 	
 	public static void main(String[] args) throws IOException {
-		fileSource = FilePath.path + fileSource;
-		fileTarget = FilePath.path + fileTarget;
+		fileSource = Constants.pathToExternXMLs + fileSource;
+		fileTarget = Constants.pathToExternXMLs + fileTarget;
 		
 		// 1 Save needed nodes in file
 		// 1 Create

@@ -1,5 +1,5 @@
 
-package steffen;
+package steffen.partialTransformation;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,15 +7,20 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Hashtable;
+import steffen.Constants;
 
 public class SplitIntoSimplierFiles {
 	
-	private static String	fileSource	= "bawu boundary p0.05.xml";
-	private static int		wayCount		= 100;
+	public static void main(String[] args) throws Exception {
+		String fileSource = "bawu boundary p0.05.xml";
+		int wayCount = 100;
+		
+		SplitIntoSimplierFiles.splitThisFile(fileSource, wayCount);
+	}
 	
-	public static void main(String[] args) throws IOException {
-		String fileTarget = FilePath.path + fileSource.replaceFirst(".xml", " splitted ");
-		fileSource = FilePath.path + fileSource;
+	public static void splitThisFile(String fileSource, int wayCount) throws IOException {
+		String fileTarget = Constants.pathToExternXMLs + fileSource.replaceFirst(".xml", " splitted ");
+		fileSource = Constants.pathToExternXMLs + fileSource;
 		BufferedReader reader = new BufferedReader(new FileReader(new File(fileSource)));
 		Hashtable<Integer, Boolean> nodes = new Hashtable<Integer, Boolean>();
 		
@@ -45,7 +50,6 @@ public class SplitIntoSimplierFiles {
 						File myFile = new File(fileTarget + file + ".xml");
 						FileWriter writer = new FileWriter(myFile);
 						writer.write("<?xml version='1.0' encoding='UTF-8'?>\n");
-						writer.write("<?xml-stylesheet type=\"text/xml\" href=\"transform.xsl\"?>\n");
 						writer.write("<osm>\n");
 						String line2 = null;
 						int ways2 = 0;

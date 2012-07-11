@@ -5,13 +5,16 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import steffen.Constants;
 
 public class GetLineCount {
-	private static String	sourceFilePath	= "../../../../Projekt Karte/xml/bawu lakes.xml";
+	private static String	fileSource	= "bawu lakes.xml";
 	
 	public static void main(String[] args) throws IOException {
+		fileSource = Constants.pathToExternXMLs + fileSource;
+		
 		// create
-		BufferedReader reader = new BufferedReader(new FileReader(new File(GetLineCount.sourceFilePath)));
+		BufferedReader reader = new BufferedReader(new FileReader(new File(GetLineCount.fileSource)));
 		
 		// actions
 		int i = 0;

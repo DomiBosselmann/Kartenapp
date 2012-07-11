@@ -6,15 +6,15 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import steffen.FilePath;
+import steffen.Constants;
 
 public class CleanLayerLakes {
 	private static String	fileSource	= "bawu lakes.xml";
 	private static String[]	tagsToKeep	= { "k=\"natural\"", "k=\"water\"", "k=\"name\"" };
 	
 	public static void main(String[] args) throws IOException {
-		String fileTarget = FilePath.path + CleanLayerLakes.fileSource.replaceFirst(".xml", "2.xml");
-		fileSource = FilePath.path + fileSource;
+		String fileTarget = Constants.pathToExternXMLs + CleanLayerLakes.fileSource.replaceFirst(".xml", "2.xml");
+		fileSource = Constants.pathToExternXMLs + fileSource;
 		// create
 		BufferedReader reader = new BufferedReader(new FileReader(new File(CleanLayerLakes.fileSource)));
 		FileWriter writer = new FileWriter(new File(fileTarget));

@@ -6,18 +6,15 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import steffen.Constants;
 
 public class WrapNodes {
-	private static String	fileSource	= "motorway.xml";
+	private static String	fileSource	= "motorways.xml";
 	
 	public static void main(String[] args) throws IOException {
-		String fileTarget;
-		if (args.length > 0) {
-			WrapNodes.fileSource = args[0];
-			fileTarget = args[0].replaceFirst(".xml", "2.xml");
-		} else {
-			fileTarget = WrapNodes.fileSource.replaceFirst(".xml", "2.xml");
-		}
+		String fileTarget = Constants.pathToExternXMLs + WrapNodes.fileSource.replaceFirst(".xml", "2.xml");
+		fileSource = Constants.pathToExternXMLs + fileSource;
+		
 		// create
 		BufferedReader reader = new BufferedReader(new FileReader(new File(WrapNodes.fileSource)));
 		FileWriter writer = new FileWriter(new File(fileTarget));

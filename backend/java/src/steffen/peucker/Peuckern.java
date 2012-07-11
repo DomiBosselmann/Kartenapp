@@ -8,7 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Hashtable;
-import steffen.FilePath;
+import steffen.Constants;
 
 public class Peuckern {
 	private static String								fileSource			= "bawu boundary.xml";
@@ -19,9 +19,9 @@ public class Peuckern {
 	public static void main(String[] args) throws IOException {
 		Hashtable<Integer, Integer> wayPoints = new Hashtable<Integer, Integer>();
 		DecimalFormat format = new DecimalFormat("0.##");
-		String fileTarget = FilePath.path
+		String fileTarget = Constants.pathToExternXMLs
 				+ Peuckern.fileSource.replaceFirst(".xml", " p" + format.format(Peuckern.peuckerDistance) + ".xml");
-		fileSource = FilePath.path + fileSource;
+		fileSource = Constants.pathToExternXMLs + fileSource;
 		BufferedReader reader = new BufferedReader(new FileReader(new File(Peuckern.fileSource)));
 		
 		// Save data of the nodes in Hashtables and check for needed nodes

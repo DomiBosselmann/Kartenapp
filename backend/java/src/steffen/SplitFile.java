@@ -13,8 +13,9 @@ public class SplitFile {
 	private static int		endLine		= 46840251;
 	
 	public static void main(String[] args) throws IOException {
-		String fileTarget = FilePath.path + SplitFile.fileSource.replaceFirst(".xml", " split " + beginLine + "-" + endLine + " .xml");
-		fileSource = FilePath.path + fileSource;
+		String fileTarget = Constants.pathToExternXMLs
+				+ SplitFile.fileSource.replaceFirst(".xml", " split " + beginLine + "-" + endLine + " .xml");
+		fileSource = Constants.pathToExternXMLs + fileSource;
 		
 		// create
 		BufferedReader reader = new BufferedReader(new FileReader(new File(SplitFile.fileSource)));

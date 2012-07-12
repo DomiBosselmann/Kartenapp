@@ -14,8 +14,8 @@ public class FilterXMLRivers {
 	private static String	fileTarget		= "bawu rivers.xml";
 	// private static String[] neededKeys = { "k=\"waterway\"", "k=\"waterway\"", "k=\"waterway\"", "k=\"natural\"" };
 	// private static String[] neededValues = { "v=\"river\"", "v=\"canal\"", "v=\"riverbank\"", "v=\"water\"" };
-	private static String[]	neededKeys		= { "k=\"waterway\"" };
-	private static String[]	neededValues	= { "v=\"river\"" };
+	private static String[]	neededKeys		= { "k=\"waterway\"", "k=\"name\"" };
+	private static String[]	neededValues	= { "v=\"canal\"", "" };
 	
 	public static void main(String[] args) throws IOException {
 		fileSource = Constants.pathToExternXMLs + fileSource;

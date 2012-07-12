@@ -2,6 +2,9 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink">
 	<xsl:output method="xml" version="1.0" encoding="UTF-8" />
 
+	<xsl:variable name="lon_factor" select="164.745" />
+	<xsl:variable name="lat_factor" select="235.445" />
+
 	<xsl:template match="/">
 		<xsl:apply-templates select="osm" />
 	</xsl:template>
@@ -34,9 +37,9 @@
 	</xsl:template>
 
 	<xsl:template match="node">
-		<xsl:value-of select='format-number(@lon * 150 - 1050, "#.000")' />
+		<xsl:value-of select='format-number((@lon - 7.5) * $lon_factor, "#.000")' />
 		<xsl:text>,</xsl:text>
-		<xsl:value-of select='format-number(@lat * -200 + 10000, "#.000")' />
+		<xsl:value-of select='format-number((-@lat + 49.83) * $lat_factor, "#.000")' />
 	</xsl:template>
 
 	<xsl:template match="tag">

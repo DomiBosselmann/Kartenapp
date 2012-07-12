@@ -13,13 +13,9 @@ public class FilterXMLLakes {
 	private static String	fileSource			= "bawu.xml";
 	private static String	fileTarget			= "bawu lakes.xml";
 	
-	// private static String[] neededKeys = { "k=\"water\"" };
-	// private static String[] neededValues = { "v=\"lake\"" };
-	// private static String[] permittedKeys = {};
-	// private static String[] permittedValues = {};
-	
-	private static String[]	neededKeys			= { "k=\"natural\"", "k=\"name\"" };
-	private static String[]	neededValues		= { "v=\"water\"", "" };
+	private static boolean	onlyNamed			= false;
+	private static String[]	neededKeys			= { "k=\"natural\"" };
+	private static String[]	neededValues		= { "v=\"water\"" };
 	private static String[]	permittedKeys		= { "k=\"golf\"", "k=\"waterway\"" };
 	private static String[]	permittedValues	= { "", "" };
 	
@@ -27,6 +23,18 @@ public class FilterXMLLakes {
 		fileSource = Constants.pathToExternXMLs + fileSource;
 		fileTarget = Constants.pathToExternXMLs + fileTarget;
 		Hashtable<Integer, Integer> nodeIDs = new Hashtable<Integer, Integer>();
+		if (onlyNamed) {
+			String[] oldNeededKeys = neededKeys;
+			String[] oldNeededValues = neededValues;
+			neededKeys = new String[oldNeededKeys.length + 1];
+			neededValues = new String[oldNeededValues.length + 1];
+			for (int i = 0; i < oldNeededKeys.length; i++) {
+				neededKeys[i] = oldNeededKeys[i];
+				neededValues[i] = oldNeededValues[i];
+			}
+			neededKeys[oldNeededKeys.length] = "k=\"name\"";
+			neededValues[oldNeededValues.length] = "";
+		}
 		
 		// 1 Save needed ways in file and needed nodes in hashtable
 		// 1 Create

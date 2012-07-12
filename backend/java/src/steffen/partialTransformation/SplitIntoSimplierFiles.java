@@ -19,7 +19,7 @@ public class SplitIntoSimplierFiles {
 	}
 	
 	public static void splitThisFile(String fileSource, int wayCount) throws IOException {
-		String fileTarget = Constants.pathToExternXMLs + fileSource.replaceFirst(".xml", " splitted ");
+		String fileTarget = Constants.pathToExternXMLs + fileSource.replaceFirst(".xml", ".splitted");
 		fileSource = Constants.pathToExternXMLs + fileSource;
 		BufferedReader reader = new BufferedReader(new FileReader(new File(fileSource)));
 		Hashtable<Integer, Boolean> nodes = new Hashtable<Integer, Boolean>();

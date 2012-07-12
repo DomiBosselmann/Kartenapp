@@ -10,7 +10,7 @@
 		<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 			<xsl:attribute name="style">position:absolute;</xsl:attribute>
 			<xsl:element name="g">
-				<xsl:attribute name="id">counties</xsl:attribute>
+				<xsl:attribute name="id">~~group_id~~</xsl:attribute>
 				<xsl:attribute name="fill">none</xsl:attribute>
 				<xsl:attribute name="stroke">black</xsl:attribute>
 				<xsl:attribute name="stroke-width">1</xsl:attribute>
@@ -35,9 +35,9 @@
 	</xsl:template>
 
 	<xsl:template match="node">
-		<xsl:value-of select='format-number(@lon * 150 - 1050, "#.000")' />
+		<xsl:value-of select='format-number((@lon - ~~lon1~~) * ~~lon_factor~~, "#.000")' />
 		<xsl:text>,</xsl:text>
-		<xsl:value-of select='format-number(@lat * -200 + 10000, "#.000")' />
+		<xsl:value-of select='format-number((-@lat + ~~lat1~~) * ~~lat_factor~~, "#.000")' />
 	</xsl:template>
 
 	<xsl:template match="tag">

@@ -3,6 +3,7 @@ package steffen.partialTransformation;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
@@ -45,6 +46,7 @@ public class TransformPartialXMLs {
 		Templates xslt = transformerFactory.newTemplates(xsltSource);
 		Transformer transformer = xslt.newTransformer();
 		transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+		transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 		transformer.setOutputProperty("{http://www.w3.org/1999/XSL/Transform}xmlns", "http://www.w3.org/2000/svg");
 		transformer.setOutputProperty("{http://www.w3.org/1999/XSL/Transform}xmlns:xlink", "http://www.w3.org/1999/xlink");
 		
@@ -56,15 +58,19 @@ public class TransformPartialXMLs {
 			Source xmlSource = new StreamSource(sourceFile);
 			File targetFile = new File(Constants.pathToExternXMLs + fileTargetName + i + ".svg");
 			targetFile.deleteOnExit();
-			FileWriter writer = new FileWriter(targetFile);
-			transformer.transform(xmlSource, new StreamResult(writer));
-			writer.close();
+			// FileWriter writer = new FileWriter(targetFile);
+			FileOutputStream outputStream = new FileOutputStream(targetFile);
+			// transformer.transform(xmlSource, new StreamResult(writer));
+			transformer.transform(xmlSource, new StreamResult(outputStream));
+			// writer.close();
+			outputStream.close();
 			System.out.println("Step 1: File " + i + "/" + splittedFilesCount);
 		}
 		
 		System.out.println("Step 1");
 		
 		FileWriter writer = new FileWriter(new File(Constants.pathToExternXMLs + fileTargetName + ".svg"));
+		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + Constants.lineSeperator);
 		for (int i = 1; i <= splittedFilesCount; i++) {
 			BufferedReader reader = new BufferedReader(new FileReader(new File(Constants.pathToExternXMLs + fileTargetName + i + ".svg")));
 			String line = null;

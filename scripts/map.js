@@ -318,15 +318,21 @@ window.Karte = (function () {
 				document.removeEventListener("mousemove", controller.handler.handleScaling, false);
 			},
 			enablePanning : function (event) {
+				controller.tmp.pan.startX = event.pageX - controller.tmp.pan.left;
+				controller.tmp.pan.startY = event.pageY - controller.tmp.pan.top;
+			
 				document.addEventListener("mousemove", controller.handler.handlePanning, false);
 				document.addEventListener("mouseup", controller.handler.finishPanning, false);
 			},
 			handlePanning : function (event) {
+				controller.tmp.pan.left = event.pageX - controller.tmp.pan.startX;
+				controller.tmp.pan.top = event.pageY - controller.tmp.pan.startY;
 				
+				renderer.pan(controller.tmp.pan.left, controller.tmp.pan.top);
 			},
 			finishPanning : function (event) {
-				
-				
+				controller.tmp.pan.left = event.pageX - controller.tmp.pan.startX;
+				controller.tmp.pan.top = event.pageY - controller.tmp.pan.startY;
 				
 				// EventListener wieder entfernen
 				document.removeEventListener("mousemove", controller.handler.handlePanning, false);
@@ -394,6 +400,14 @@ window.Karte = (function () {
 					});
 				}
 			}	
+		},
+		tmp : {
+			pan : {
+				startX : undefined,
+				startY : undefined,
+				left : 0,
+				top : 0
+			}
 		}
 	};
 	
@@ -429,10 +443,10 @@ window.Karte = (function () {
 		zoom : function (newDistance, oldDistance) {
 			var scaleFactor = (newDistance / oldDistance);
 			
-			controller.uiElements.mapRoot.style.cssText = "-webkit-transform: scale(" + scaleFactor + "); -moz-transform: scale(" + scaleFactor + "); -ms-transform: scale(" + scaleFactor + "); -o-transform: scale(" + scaleFactor + "); transform: scale(" + scaleFactor + "); ";
+			controller.uiElements.mapRoot.style.cssText += "-webkit-transform: scale(" + scaleFactor + "); -moz-transform: scale(" + scaleFactor + "); -ms-transform: scale(" + scaleFactor + "); -o-transform: scale(" + scaleFactor + "); transform: scale(" + scaleFactor + "); ";
 		},
 		pan : function (x, y) {
-			controller.uiElements.mapRoot.style.cssText = "left: " + x + "px; top: " + y + "px;";
+			controller.uiElements.mapRoot.style.cssText += "left: " + x + "px; top: " + y + "px;";
 		}
 	};
 	

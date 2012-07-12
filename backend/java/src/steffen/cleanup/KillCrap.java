@@ -6,12 +6,16 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import steffen.Constants;
 
 public class KillCrap {
-	private static String	fileSource	= "xml/bawu.xml";
-	private static String	fileTarget	= "xml/bawu2.xml";
+	private static String	fileSource	= "bawu.xml";
+	private static String	fileTarget	= "bawu2.xml";
 	
 	public static void main(String[] args) throws IOException {
+		fileSource = Constants.pathToExternXMLs + fileSource;
+		fileTarget = Constants.pathToExternXMLs + fileTarget;
+		
 		// create
 		BufferedReader reader = new BufferedReader(new FileReader(new File(KillCrap.fileSource)));
 		FileWriter writer = new FileWriter(new File(KillCrap.fileTarget));

@@ -7,19 +7,19 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Hashtable;
-import steffen.FilePath;
+import steffen.Constants;
 
 public class FilterXMLRivers {
 	private static String	fileSource		= "bawu.xml";
 	private static String	fileTarget		= "bawu rivers.xml";
 	// private static String[] neededKeys = { "k=\"waterway\"", "k=\"waterway\"", "k=\"waterway\"", "k=\"natural\"" };
 	// private static String[] neededValues = { "v=\"river\"", "v=\"canal\"", "v=\"riverbank\"", "v=\"water\"" };
-	private static String[]	neededKeys		= { "k=\"waterway\"" };
-	private static String[]	neededValues	= { "v=\"river\"" };
+	private static String[]	neededKeys		= { "k=\"waterway\"", "k=\"name\"" };
+	private static String[]	neededValues	= { "v=\"canal\"", "" };
 	
 	public static void main(String[] args) throws IOException {
-		fileSource = FilePath.path + fileSource;
-		fileTarget = FilePath.path + fileTarget;
+		fileSource = Constants.pathToExternXMLs + fileSource;
+		fileTarget = Constants.pathToExternXMLs + fileTarget;
 		Hashtable<Integer, Integer> nodeIDs = new Hashtable<Integer, Integer>();
 		
 		// 1 Save needed ways in file and needed nodes in hashtable

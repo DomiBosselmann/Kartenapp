@@ -6,13 +6,15 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import steffen.Constants;
 
 public class CleanLayer {
 	private static String	fileSource	= "bawu boundary.xml";
 	private static String[]	tagsToKeep	= { "k=\"admin_level\"", "k=\"boundary\"", "k=\"border_type\"" };
 	
 	public static void main(String[] args) throws IOException {
-		String fileTarget = CleanLayer.fileSource.replaceAll(".xml", "2.xml");
+		String fileTarget = Constants.pathToExternXMLs + CleanLayer.fileSource.replaceFirst(".xml", "2.xml");
+		fileSource = Constants.pathToExternXMLs + fileSource;
 		// create
 		BufferedReader reader = new BufferedReader(new FileReader(new File(CleanLayer.fileSource)));
 		FileWriter writer = new FileWriter(new File(fileTarget));

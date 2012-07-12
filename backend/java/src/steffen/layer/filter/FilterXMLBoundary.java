@@ -7,14 +7,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Hashtable;
-import steffen.FilePath;
+import steffen.Constants;
 
 public class FilterXMLBoundary {
 	private static String	fileSource			= "bawu.xml";
 	private static String	fileTarget			= "bawu boundary.xml";
 	private static String[]	neededTags			= { "k=\"boundary\" v=\"administrative\"" };
-	private static int		admin_level_min	= 2;
-	private static int		admin_level_max	= 4;
+	private static int		admin_level_min	= 5;
+	private static int		admin_level_max	= 6;
 	
 	// admin_level gibt Grenzart an:
 	// 2: Staaten
@@ -25,13 +25,11 @@ public class FilterXMLBoundary {
 	// 9-11: Ortsteile
 	
 	public static void main(String[] args) throws IOException {
-		fileSource = FilePath.path + fileSource;
-		fileTarget = FilePath.path + fileTarget;
 		Hashtable<Integer, Integer> nodeIDs = new Hashtable<Integer, Integer>();
 		
 		// 1 Save needed nodes in file
 		// 1 Create
-		File sourceFile = new File(FilterXMLBoundary.fileSource);
+		File sourceFile = new File(Constants.pathToExternXMLs + FilterXMLBoundary.fileSource);
 		BufferedReader reader = new BufferedReader(new FileReader(sourceFile));
 		File tempFile = new File("lines_temp.xml");
 		FileWriter writer = new FileWriter(tempFile);
@@ -44,7 +42,7 @@ public class FilterXMLBoundary {
 			if (line.indexOf("<way") >= 0) {
 				boolean needed1 = false;
 				boolean needed2 = false;
-				String zeile = line + "\n";
+				String zeile = line + Constants.lineSeperator;
 				do {
 					line = reader.readLine();
 					if (line.indexOf("<tag") >= 0) {
@@ -64,7 +62,7 @@ public class FilterXMLBoundary {
 							}
 						}
 					}
-					zeile += line + "\n";
+					zeile += line + Constants.lineSeperator;
 				} while (line.indexOf("</way") < 0);
 				if (needed1 && needed2) {
 					int refbegin = zeile.indexOf("ref=\"");
@@ -90,12 +88,12 @@ public class FilterXMLBoundary {
 		// 2 Add nodes to target file
 		// 2 Create
 		reader = new BufferedReader(new FileReader(sourceFile));
-		File targetFile = new File(FilterXMLBoundary.fileTarget);
+		File targetFile = new File(Constants.pathToExternXMLs + FilterXMLBoundary.fileTarget);
 		writer = new FileWriter(targetFile);
 		
 		// 2 Actions
-		writer.write("<?xml version='1.0' encoding='UTF-8'?>\n");
-		writer.write("<osm>\n");
+		writer.write("<?xml version='1.0' encoding='UTF-8'?>" + Constants.lineSeperator);
+		writer.write("<osm>" + Constants.lineSeperator);
 		line = null;
 		while (reader.ready()) {
 			line = reader.readLine();
@@ -106,7 +104,7 @@ public class FilterXMLBoundary {
 					if (nodeIDs.containsKey(Integer.valueOf(line.substring(idbegin + 4, idend)))) {
 						if (line.indexOf("/>") < 0) {
 							line = line.replaceFirst(">", "/>");
-							writer.write(line + "\n");
+							writer.write(line + Constants.lineSeperator);
 							do {
 								if (reader.ready()) {
 									line = reader.readLine();
@@ -115,7 +113,7 @@ public class FilterXMLBoundary {
 								}
 							} while (line.indexOf("</node") < 0);
 						} else {
-							writer.write(line + "\n");
+							writer.write(line + Constants.lineSeperator);
 						}
 					} else {
 						if (line.indexOf("/>") < 0) {
@@ -144,9 +142,9 @@ public class FilterXMLBoundary {
 		// 3 Actions
 		while (reader.ready()) {
 			line = reader.readLine();
-			writer.write(line + "\n");
+			writer.write(line + Constants.lineSeperator);
 		}
-		writer.write("</osm>\n");
+		writer.write("</osm>");
 		
 		// 3 Destroy
 		reader.close();

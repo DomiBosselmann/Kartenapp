@@ -5,18 +5,14 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import steffen.FilePath;
+import steffen.Constants;
 
 public class KoordinatenRange {
 	private static String	fileSource	= "bawu boundary.xml";
 	
 	public static void main(String[] args) throws IOException {
-		fileSource = FilePath.path + fileSource;
+		BufferedReader reader = new BufferedReader(new FileReader(new File(Constants.pathToExternXMLs + fileSource)));
 		
-		// create
-		BufferedReader reader = new BufferedReader(new FileReader(new File(fileSource)));
-		
-		// actions
 		String line = null;
 		double lat1 = 9999.0;
 		double lat2 = -9999.0;
@@ -47,8 +43,6 @@ public class KoordinatenRange {
 				}
 			}
 		}
-		
-		// destroy
 		reader.close();
 		
 		System.out.println("Links: " + lon1);

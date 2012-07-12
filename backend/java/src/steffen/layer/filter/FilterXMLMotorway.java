@@ -7,7 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Hashtable;
-import steffen.FilePath;
+import steffen.Constants;
 
 public class FilterXMLMotorway {
 	private static String	fileSource	= "bawu.xml";
@@ -16,8 +16,8 @@ public class FilterXMLMotorway {
 	private static String	neededTag2	= "k=\"ref\"";
 	
 	public static void main(String[] args) throws IOException {
-		fileSource = FilePath.path + fileSource;
-		fileTarget = FilePath.path + fileTarget;
+		fileSource = Constants.pathToExternXMLs + fileSource;
+		fileTarget = Constants.pathToExternXMLs + fileTarget;
 		Hashtable<Integer, Integer> nodeIDs = new Hashtable<Integer, Integer>();
 		
 		// 1 Save needed nodes in file

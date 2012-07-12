@@ -8,20 +8,21 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Hashtable;
+import steffen.Constants;
 
 public class SimplePeuckern {
-	private static String								fileSource			= "xml/bawu boundary.xml";
-	private static Hashtable<Integer, Node>		nodes					= new Hashtable<Integer, Node>();
-	private static Hashtable<Integer, Boolean>	neededNodes			= new Hashtable<Integer, Boolean>();
-	private static Hashtable<Integer, Integer>	wayPoints			= new Hashtable<Integer, Integer>();
-	private static double								xratio				= 72.0;
-	private static double								yratio				= 111.0;
-	private static double								peuckerDistance	= 2.0;
+	private static String	fileSource			= "bawu boundary.xml";
+	private static double	peuckerDistance	= 2.0;
 	
 	public static void main(String[] args) throws IOException {
 		DecimalFormat format = new DecimalFormat("0.#");
-		String fileTarget = SimplePeuckern.fileSource.replaceFirst(".xml", " sp" + format.format(SimplePeuckern.peuckerDistance)
-				+ ".xml");
+		String fileTarget = Constants.pathToExternXMLs
+				+ SimplePeuckern.fileSource.replaceFirst(".xml", " sp" + format.format(SimplePeuckern.peuckerDistance) + ".xml");
+		fileSource = Constants.pathToExternXMLs + fileSource;
+		
+		Hashtable<Integer, Node> nodes = new Hashtable<Integer, Node>();
+		Hashtable<Integer, Boolean> neededNodes = new Hashtable<Integer, Boolean>();
+		Hashtable<Integer, Integer> wayPoints = new Hashtable<Integer, Integer>();
 		BufferedReader reader = new BufferedReader(new FileReader(new File(SimplePeuckern.fileSource)));
 		
 		// Save data of the nodes in Hashtables and check for needed nodes
@@ -61,28 +62,28 @@ public class SimplePeuckern {
 								begin = line.indexOf("ref=\"");
 								if (begin >= 0) {
 									end = line.indexOf("\"", begin + 5);
-									SimplePeuckern.wayPoints.put(Integer.valueOf(line.substring(begin + 5, end)), 0);
+									wayPoints.put(Integer.valueOf(line.substring(begin + 5, end)), 0);
 								}
 							}
 						} while (line.indexOf("</way") < 0);
-						if (SimplePeuckern.wayPoints.size() > 0) {
-							Integer[] refs2 = new Integer[SimplePeuckern.wayPoints.size()];
-							Integer[] refs = SimplePeuckern.wayPoints.keySet().toArray(refs2);
+						if (wayPoints.size() > 0) {
+							Integer[] refs2 = new Integer[wayPoints.size()];
+							Integer[] refs = wayPoints.keySet().toArray(refs2);
 							refs2 = null;
-							SimplePeuckern.neededNodes.put(refs[0], new Boolean(true));
-							SimplePeuckern.neededNodes.put(refs[refs.length - 1], new Boolean(true));
+							neededNodes.put(refs[0], new Boolean(true));
+							neededNodes.put(refs[refs.length - 1], new Boolean(true));
 							for (int i = 1; i < refs.length - 1; i++) {
 								Node lastNode = nodes.get(refs[i - 1]);
 								Node node = nodes.get(refs[i]);
 								Node nextNode = nodes.get(refs[i + 1]);
 								if (SimplePeuckern.peuckerDistance < SimplePeuckern.getDistanceToLine(node.lon, node.lat, lastNode.lon,
 										lastNode.lat, nextNode.lon, nextNode.lat)) {
-									SimplePeuckern.neededNodes.put(refs[i], new Boolean(true));
+									neededNodes.put(refs[i], new Boolean(true));
 								}
 							}
 							refs = null;
 						}
-						SimplePeuckern.wayPoints.clear();
+						wayPoints.clear();
 					}
 				}
 			}
@@ -106,7 +107,7 @@ public class SimplePeuckern {
 				if (begin >= 0) {
 					end = line.indexOf("\"", begin + 4);
 					Integer id = Integer.valueOf(line.substring(begin + 4, end));
-					if (SimplePeuckern.neededNodes.containsKey(id)) {
+					if (neededNodes.containsKey(id)) {
 						writer.write(line + System.getProperty("line.separator", "\n"));
 					}
 				}
@@ -126,7 +127,7 @@ public class SimplePeuckern {
 							if (begin >= 0) {
 								end = line.indexOf("\"", begin + 5);
 								Integer ref = Integer.valueOf(line.substring(begin + 5, end));
-								if (SimplePeuckern.neededNodes.containsKey(ref)) {
+								if (neededNodes.containsKey(ref)) {
 									zeile += line + System.getProperty("line.separator", "\n");
 									ndcount++;
 								}
@@ -143,7 +144,7 @@ public class SimplePeuckern {
 				}
 			}
 		}
-		SimplePeuckern.neededNodes.clear();
+		neededNodes.clear();
 		reader.close();
 		writer.close();
 		
@@ -151,9 +152,9 @@ public class SimplePeuckern {
 	}
 	
 	private static Double getDistanceToLine(Double lon, Double lat, Double lon1, Double lat1, Double lon2, Double lat2) {
-		Double a = Math.sqrt(Math.pow((lon - lon1) * SimplePeuckern.xratio, 2) + Math.pow((lat - lat1) * SimplePeuckern.yratio, 2));
-		Double b = Math.sqrt(Math.pow((lon - lon2) * SimplePeuckern.xratio, 2) + Math.pow((lat - lat2) * SimplePeuckern.yratio, 2));
-		Double c = Math.sqrt(Math.pow((lon1 - lon2) * SimplePeuckern.xratio, 2) + Math.pow((lat1 - lat2) * SimplePeuckern.yratio, 2));
+		Double a = Math.sqrt(Math.pow((lon - lon1) * Constants.xRatio, 2) + Math.pow((lat - lat1) * Constants.yRatio, 2));
+		Double b = Math.sqrt(Math.pow((lon - lon2) * Constants.xRatio, 2) + Math.pow((lat - lat2) * Constants.yRatio, 2));
+		Double c = Math.sqrt(Math.pow((lon1 - lon2) * Constants.xRatio, 2) + Math.pow((lat1 - lat2) * Constants.yRatio, 2));
 		return Math.sqrt(2 * (Math.pow(a, 2) * Math.pow(b, 2) + Math.pow(b, 2) * Math.pow(c, 2) + Math.pow(c, 2) * Math.pow(a, 2))
 				- (Math.pow(a, 4) + Math.pow(b, 4) + Math.pow(c, 4)))
 				/ (2 * c);

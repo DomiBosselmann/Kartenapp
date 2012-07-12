@@ -127,10 +127,15 @@ if ($_GET) {
 							}
 						case "w1":
 							{
-								$filename .= "waters/namedLakes.svg";
+								$filename .= "waters/canals.svg";
 								break;
 							}
 						case "w2":
+							{
+								$filename .= "waters/namedLakes.svg";
+								break;
+							}
+						case "w3":
 							{
 								$filename .= "waters/allLakes.svg";
 								break;

@@ -19,6 +19,7 @@ public class SplitIntoSimplierFiles {
 	}
 	
 	public static void splitThisFile(String fileSource, int wayCount) throws IOException {
+		System.out.println("Begin Splitting Files...");
 		String fileTarget = Constants.pathToExternXMLs + fileSource.replaceFirst(".xml", ".splitted");
 		fileSource = Constants.pathToExternXMLs + fileSource;
 		BufferedReader reader = new BufferedReader(new FileReader(new File(fileSource)));
@@ -47,6 +48,7 @@ public class SplitIntoSimplierFiles {
 					if (ways >= wayCount) {
 						SplitIntoSimplierFiles.writeIntoSplitFile(fileSource, fileTarget, file, wayCount, nodes);
 						ways = 0;
+						System.out.println("File " + file);
 						file++;
 						nodes.clear();
 					}

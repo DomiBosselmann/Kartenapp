@@ -8,15 +8,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import steffen.Constants;
 
-public class CleanLayerMotorway {
-	private static String	fileSource	= "bawu motorways.xml";
+public class CleanLayerStreets {
+	private static String	fileSource	= "bawu streets.xml";
 	private static String[]	tagsToKeep	= { "k=\"highway\"", "k=\"name\"", "k=\"int_ref\"", "k=\"ref\"", "k=\"lanes\"", "k=\"oneway\"" };
 	
 	public static void main(String[] args) throws IOException {
-		String fileTarget = Constants.pathToExternXMLs + CleanLayerMotorway.fileSource.replaceFirst(".xml", "2.xml");
+		String fileTarget = Constants.pathToExternXMLs + CleanLayerStreets.fileSource.replaceFirst(".xml", "2.xml");
 		fileSource = Constants.pathToExternXMLs + fileSource;
 		// create
-		BufferedReader reader = new BufferedReader(new FileReader(new File(CleanLayerMotorway.fileSource)));
+		BufferedReader reader = new BufferedReader(new FileReader(new File(CleanLayerStreets.fileSource)));
 		FileWriter writer = new FileWriter(new File(fileTarget));
 		
 		// actions
@@ -35,7 +35,7 @@ public class CleanLayerMotorway {
 				}
 			} else {
 				if (line.indexOf("<tag") >= 0) {
-					if (CleanLayerMotorway.keepTag(line)) {
+					if (CleanLayerStreets.keepTag(line)) {
 						if (line.indexOf("k=\"ref\"") >= 0) {
 							int refbegin = line.indexOf("v=\"");
 							if (refbegin >= 0) {
@@ -71,7 +71,7 @@ public class CleanLayerMotorway {
 	}
 	
 	private static boolean keepTag(String input) {
-		for (String tag : CleanLayerMotorway.tagsToKeep) {
+		for (String tag : CleanLayerStreets.tagsToKeep) {
 			if (input.indexOf(tag) >= 0) {
 				return true;
 			}

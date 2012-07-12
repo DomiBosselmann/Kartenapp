@@ -11,7 +11,7 @@ import java.util.Hashtable;
 import steffen.Constants;
 
 public class Peuckern {
-	private static String								fileSource			= "bawu rivers2.xml";
+	private static String								fileSource			= "bawu streets2.xml";
 	private static Hashtable<Integer, Node>		nodes					= new Hashtable<Integer, Node>();
 	private static Hashtable<Integer, Boolean>	neededNodes			= new Hashtable<Integer, Boolean>();
 	private static double								peuckerDistance	= 0.02;

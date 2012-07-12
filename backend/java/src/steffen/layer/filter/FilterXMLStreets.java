@@ -9,20 +9,60 @@ import java.io.IOException;
 import java.util.Hashtable;
 import steffen.Constants;
 
-public class FilterXMLMotorway {
-	private static String	fileSource	= "bawu.xml";
-	private static String	fileTarget	= "bawu motorways.xml";
-	private static String	neededTag1	= "k=\"highway\" v=\"motorway\"";
-	private static String	neededTag2	= "k=\"ref\"";
+public class FilterXMLStreets {
+	private enum HighwayType {
+		Motorway, Trunk, Primary, Secondary, Tertiary, Living_Street, Residential;
+	}
+	
+	private static String		fileSource	= "bawu.xml";
+	private static String		fileTarget	= "bawu streets.xml";
+	private static HighwayType	highwayType	= HighwayType.Residential;
 	
 	public static void main(String[] args) throws IOException {
-		fileSource = Constants.pathToExternXMLs + fileSource;
-		fileTarget = Constants.pathToExternXMLs + fileTarget;
+		FilterXMLStreets.fileSource = Constants.pathToExternXMLs + FilterXMLStreets.fileSource;
+		FilterXMLStreets.fileTarget = Constants.pathToExternXMLs + FilterXMLStreets.fileTarget;
 		Hashtable<Integer, Integer> nodeIDs = new Hashtable<Integer, Integer>();
+		String neededTag1;
+		switch (FilterXMLStreets.highwayType) {
+			case Motorway: {
+				neededTag1 = "k=\"highway\" v=\"motorway\"";
+				break;
+			}
+			case Trunk: {
+				neededTag1 = "k=\"highway\" v=\"trunk\"";
+				break;
+			}
+			case Primary: {
+				neededTag1 = "k=\"highway\" v=\"primary\"";
+				break;
+			}
+			case Secondary: {
+				neededTag1 = "k=\"highway\" v=\"secondary\"";
+				break;
+			}
+			case Tertiary: {
+				neededTag1 = "k=\"highway\" v=\"tertiary\"";
+				break;
+			}
+			case Living_Street: {
+				neededTag1 = "k=\"highway\" v=\"living_street\"";
+				break;
+			}
+			case Residential: {
+				neededTag1 = "k=\"highway\" v=\"residential\"";
+				break;
+			}
+			default: {
+				System.exit(0);
+				neededTag1 = "";
+				break;
+			}
+		}
+		String neededTag2 = "k=\"ref\"";
 		
 		// 1 Save needed nodes in file
 		// 1 Create
-		File sourceFile = new File(FilterXMLMotorway.fileSource);
+		File sourceFile = new File(FilterXMLStreets.fileSource);
 		BufferedReader reader = new BufferedReader(new FileReader(sourceFile));
 		File tempFile = new File("lines_temp.xml");
 		FileWriter writer = new FileWriter(tempFile);
@@ -67,13 +107,13 @@ public class FilterXMLMotorway {
 		reader.close();
 		writer.close();
 		
-		System.out.println(nodeIDs.size());
+		System.out.println("Nodes: " + nodeIDs.size());
 		System.out.println("Step 1");
 		
 		// 2 Add nodes to target file
 		// 2 Create
 		reader = new BufferedReader(new FileReader(sourceFile));
-		writer = new FileWriter(new File(FilterXMLMotorway.fileTarget));
+		writer = new FileWriter(new File(FilterXMLStreets.fileTarget));
 		
 		// 2 Actions
 		writer.write("<?xml version='1.0' encoding='UTF-8'?>\n");

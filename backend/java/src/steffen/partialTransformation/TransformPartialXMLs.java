@@ -35,6 +35,7 @@ public class TransformPartialXMLs {
 	
 	public static void transformTheseXMLs(final String xmlFileSource, String xsltFileSource, String fileTargetName, boolean deleteFiles)
 			throws IOException, TransformerException {
+		System.out.println("Begin Transforming Partial Files..");
 		int splittedFilesCount = new File(Constants.pathToExternXMLs).list(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				return name.indexOf(xmlFileSource) >= 0;

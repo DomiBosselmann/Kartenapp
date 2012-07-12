@@ -120,6 +120,26 @@ if ($_GET) {
 								$filename .= "streets/motorways.svg";
 								break;
 							}
+						case "s1":
+							{
+								$filename .= "streets/trunks.svg";
+								break;
+							}
+						case "s2":
+							{
+								$filename .= "streets/primaries.svg";
+								break;
+							}
+						case "s3":
+							{
+								$filename .= "streets/secondaries.svg";
+								break;
+							}
+						case "s4":
+							{
+								$filename .= "streets/tertiaries.svg";
+								break;
+							}
 						case "w":
 							{
 								$filename .= "waters/rivers.svg";

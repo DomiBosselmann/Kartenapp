@@ -13,6 +13,7 @@
 		<svg xmlns:xlink="http://www.w3.org/1999/xlink">
 			<xsl:attribute name="xmlns">http://www.w3.org/2000/svg</xsl:attribute>
 			<xsl:attribute name="style">position:absolute;</xsl:attribute>
+			<xsl:text>&#10;</xsl:text>
 			<xsl:element name="defs">
 				<xsl:element name="rect">
 					<xsl:attribute name="id">~~rect_id~~</xsl:attribute>
@@ -23,10 +24,13 @@
 					<xsl:attribute name="height">~~rect_size~~</xsl:attribute>
 				</xsl:element>
 			</xsl:element>
+			<xsl:text>&#10;</xsl:text>
 			<xsl:element name="g">
 				<xsl:attribute name="id">~~id~~</xsl:attribute>
+				<xsl:text>&#10;</xsl:text>
 				<xsl:apply-templates select="node" />
 			</xsl:element>
+			<xsl:text>&#10;</xsl:text>
 		</svg>
 	</xsl:template>
 
@@ -36,6 +40,7 @@
 				select='format-number((-@lat + 49.83) * $lat_factor, "#.000")' />)</xsl:attribute>
 			<xsl:apply-templates select="tag" />
 		</xsl:element>
+		<xsl:text>&#10;</xsl:text>
 	</xsl:template>
 
 	<xsl:template match="tag">

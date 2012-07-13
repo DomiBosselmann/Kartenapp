@@ -57,32 +57,34 @@ public class FilterXMLCites {
 		while (reader.ready()) {
 			line = reader.readLine();
 			if (line.indexOf("<node") >= 0) {
-				boolean[] needed = new boolean[neededKeys.length];
-				String zeile = line + Constants.lineSeparator;
-				do {
-					line = reader.readLine();
-					if (line.indexOf("<tag") >= 0) {
-						int i = 0;
-						for (String neededTag : neededKeys) {
-							if (line.indexOf(neededTag) >= 0) {
-								if (line.indexOf(neededValues[i]) >= 0) {
-									needed[i] = true;
+				if (line.indexOf("/>") < 0) {
+					boolean[] needed = new boolean[neededKeys.length];
+					String zeile = line + Constants.lineSeparator;
+					do {
+						line = reader.readLine();
+						if (line.indexOf("<tag") >= 0) {
+							int i = 0;
+							for (String neededTag : neededKeys) {
+								if (line.indexOf(neededTag) >= 0) {
+									if (line.indexOf(neededValues[i]) >= 0) {
+										needed[i] = true;
+										// System.out.println(line);
+									}
 								}
 								i++;
 							}
 						}
+						zeile += line + Constants.lineSeparator;
+					} while (line.indexOf("</node") < 0);
+					boolean needed1 = true;
+					for (boolean need : needed) {
+						if (!need) {
+							needed1 = false;
+						}
 					}
-					// place for adding additional checks
-					zeile += line + Constants.lineSeparator;
-				} while (line.indexOf("</way") < 0);
-				boolean needed1 = true;
-				for (boolean need : needed) {
-					if (!need) {
-						needed1 = false;
+					if (needed1) {
+						writer.write(zeile);
 					}
-				}
-				if (needed1) {
-					writer.write(zeile);
 				}
 			} else {
 				if (line.indexOf("<?xml") >= 0) {
@@ -92,7 +94,7 @@ public class FilterXMLCites {
 						writer.write("<osm>" + Constants.lineSeparator);
 					} else {
 						if (line.indexOf("</osm") >= 0) {
-							writer.write("</osm>" + Constants.lineSeparator);
+							writer.write("</osm>");
 						}
 					}
 				}

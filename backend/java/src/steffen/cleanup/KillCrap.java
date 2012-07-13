@@ -10,14 +10,13 @@ import java.io.IOException;
 import steffen.Constants;
 
 public class KillCrap {
-	private static String	fileSource	= "germany.xml";
-	private static String	fileTarget	= "ger.xml";
+	private static String	fileSource	= "bawuu.xml";
+	private static String	fileTarget	= "bawu.xml";
 	
 	public static void main(String[] args) throws IOException {
-		KillCrap.fileSource = Constants.pathToExternXMLs + KillCrap.fileSource;
-		KillCrap.fileTarget = Constants.pathToExternXMLs + KillCrap.fileTarget;
-		BufferedReader reader = new BufferedReader(new FileReader(new File(KillCrap.fileSource)));
-		BufferedWriter writer = new BufferedWriter(new FileWriter(new File(KillCrap.fileTarget)));
+		System.out.println("Begin killing crap...");
+		BufferedReader reader = new BufferedReader(new FileReader(new File(Constants.pathToExternXMLs + KillCrap.fileSource)));
+		BufferedWriter writer = new BufferedWriter(new FileWriter(new File(Constants.pathToExternXMLs + KillCrap.fileTarget)));
 		
 		String line = null;
 		while (reader.ready()) {

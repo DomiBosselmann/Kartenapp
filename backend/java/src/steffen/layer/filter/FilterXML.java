@@ -45,8 +45,8 @@ public class FilterXML {
 								if (line.indexOf(FilterXML.neededValues[i]) >= 0) {
 									needed[i] = true;
 								}
-								i++;
 							}
+							i++;
 						}
 					}
 					// place for adding additional checks
@@ -97,7 +97,7 @@ public class FilterXML {
 				if (idbegin >= 0) {
 					int idend = line.indexOf("\"", idbegin + str.length());
 					if (nodeIDs.containsKey(Integer.valueOf(line.substring(idbegin + str.length(), idend)))) {
-						writer.write(line + "\n");
+						writer.write(line + Constants.lineSeparator);
 						if (line.indexOf("/>") < 0) {
 							do {
 								if (reader.ready()) {

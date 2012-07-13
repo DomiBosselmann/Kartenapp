@@ -65,8 +65,6 @@ if ($_GET) {
 	$end = '</svg>';
 
 	$file = "";
-	$groupBeginSearchString = '<g';
-	$groupEndSearchString = '</g>';
 	$defsBeginSearchString = '<defs>';
 	$defsEndSearchString = '</defs>';
 	$defs = $defsBeginSearchString;
@@ -189,9 +187,7 @@ if ($_GET) {
 							$defs .= substr($filecontent, $defsBegin + strlen($defsBeginSearchString), $defsEnd - $defsBegin - strlen($defsBeginSearchString));
 							$filecontent = substr($filecontent, 0, $defsBegin) . substr($filecontent, $defsEnd + strlen($defsEndSearchString));
 						}
-						$groupBeginn = stripos($filecontent, $groupBeginSearchString);
-						$groupEndd = stripos($filecontent, $groupEndSearchString, $groupBeginn) + strlen($groupEndSearchString);
-						$file .= substr($filecontent, $groupBeginn, $groupEndd - $groupBeginn) . PHP_EOL;
+						$file .= substr($filecontent, strlen($begin), strlen($filecontent) - strlen($begin) - strlen($end));
 					}
 					break;
 				}
@@ -200,9 +196,9 @@ if ($_GET) {
 	$defs .= $defsEndSearchString;
 
 	$nfile = $file;
-	$file = $begin . PHP_EOL . $koords;
+	$file = $begin . $koords;
 	if ($pixelsPrint === true) {
-		$file .= PHP_EOL . $pixels;
+		$file .= $pixels;
 	}
 	$file .= PHP_EOL;
 	if ($defsPrint === true) {
@@ -212,31 +208,31 @@ if ($_GET) {
 
 	// filter region of the svg
 	if ($region) {
-		$newfile = $begin . PHP_EOL . $koords;
+		$newfile = $begin . $koords;
 		if ($pixelsPrint === true) {
-			$newfile .= PHP_EOL . $pixels;
+			$newfile .= $pixels;
 		}
 		$newfile .= PHP_EOL;
 		if ($defsPrint === true) {
 			$newfile .= $defs . PHP_EOL;
 		}
 
+		$groupSearchString = '<g';
 		$useSearchString = '<use';
 		$polylineSearchString = '<polyline';
 		$translateSearchString = 'translate(';
 		$pointsSearchString = 'points="';
 
 		// groups
-		$groupBegin = stripos($file, $groupBeginSearchString);
+		$groupBegin = stripos($file, $groupSearchString);
 		while ($groupBegin !== false) {
 			$groupEnd = stripos($file, ">", $groupBegin) + 1;
-			$newfile .= substr($file, $groupBegin, $groupEnd - $groupBegin) . PHP_EOL;
+			$newfile .= substr($file, $groupBegin, $groupEnd - $groupBegin);
 
 			// places with uses
 			$useBegin = stripos($file, $useSearchString, $groupEnd);
-			$groupEnding = stripos($file, $groupEndSearchString, $groupEnd);
-			if (($useBegin !== false) && ($useBegin < $groupEnding)) {
-				while (($useBegin !== false) && ($useBegin < $groupEnding)) {
+			if ($useBegin !== false) {
+				while ($useBegin !== false) {
 					$print = false;
 					$translateBegin = stripos($file, $translateSearchString, $useBegin) + strlen($translateSearchString);
 					if ($translateBegin !== false) {
@@ -255,7 +251,7 @@ if ($_GET) {
 					}
 					$useEnd = stripos($file, "/>", $useBegin) + 2;
 					if ($print === true) {
-						$newfile .= substr($file, $useBegin, $useEnd - $useBegin) . PHP_EOL;
+						$newfile .= substr($file, $useBegin, $useEnd - $useBegin);
 					}
 					$useBegin = stripos($file, $useSearchString, $useEnd);
 				}
@@ -285,13 +281,13 @@ if ($_GET) {
 					}
 					if ($print === true) {
 						$newline .= substr($file, $pointsEnd, $polylineEnd - $pointsEnd);
-						$newfile .= $newline . PHP_EOL;
+						$newfile .= $newline;
 					}
 					$polylineBegin = stripos($file, $polylineSearchString, $polylineEnd);
 				}
 			}
-			$newfile .= $groupEndSearchString . PHP_EOL;
-			$groupBegin = stripos($file, $groupBeginSearchString, $groupEnd);
+			$newfile .= "</g>" . PHP_EOL;
+			$groupBegin = stripos($file, $groupSearchString, $groupEnd);
 		}
 		echo $newfile . $end;
 	} else {

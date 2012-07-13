@@ -9,13 +9,18 @@ import java.io.IOException;
 import steffen.Constants;
 
 public class CleanLayerBoundary {
-	private static String	fileSource	= "bawu bounds.xml";
 	private static String[]	tagsToKeep	= { "k=\"admin_level\"", "k=\"boundary\"", "k=\"border_type\"" };
 	
-	public static void main(String[] args) throws IOException {
-		String fileTarget = Constants.pathToExternXMLs + CleanLayerBoundary.fileSource.replaceFirst(".xml", "2.xml");
+	public static void main(String[] args) throws Exception {
+		String fileSource = "bawu bounds.xml";
+		cleanLayer(fileSource);
+	}
+	
+	public static void cleanLayer(String fileSource) throws IOException {
+		System.out.println("Begin cleaning layer...");
+		String fileTarget = Constants.pathToExternXMLs + fileSource.replaceFirst(".xml", "2.xml");
 		fileSource = Constants.pathToExternXMLs + fileSource;
-		BufferedReader reader = new BufferedReader(new FileReader(new File(CleanLayerBoundary.fileSource)));
+		BufferedReader reader = new BufferedReader(new FileReader(new File(fileSource)));
 		FileWriter writer = new FileWriter(new File(fileTarget));
 		
 		String line = null;
@@ -23,10 +28,10 @@ public class CleanLayerBoundary {
 			line = reader.readLine();
 			if (line.indexOf("<tag") >= 0) {
 				if (CleanLayerBoundary.keepTag(line)) {
-					writer.write(line + "\n");
+					writer.write(line + Constants.lineSeparator);
 				}
 			} else {
-				writer.write(line + "\n");
+				writer.write(line + Constants.lineSeparator);
 			}
 		}
 		reader.close();

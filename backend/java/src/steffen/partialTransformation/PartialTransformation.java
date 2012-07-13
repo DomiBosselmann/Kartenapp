@@ -11,17 +11,18 @@ import steffen.Constants;
 
 public class PartialTransformation {
 	
-	private static String	fileSource		= "ger boundary2 p0.2.xml";
-	private static String	groupID			= "bounds";
+	private static String	fileSource		= "bawu_bounds_zusammen.xml";
+	private static String	groupID			= "federal";
 	private static String	xsltFileSource	= "part_transform.xsl";
 	private static int		width				= 500;
 	private static int		height			= 550;
+	private static int		wayCount			= 10;
 	
 	// Ger
-	private static double	lon1				= 5.84;
-	private static double	lon2				= 16.66;
-	private static double	lat1				= 55.5;
-	private static double	lat2				= 47.1;
+	// private static double lon1 = 5.84;
+	// private static double lon2 = 16.66;
+	// private static double lat1 = 55.5;
+	// private static double lat2 = 47.1;
 	
 	// Links: 5.8663101
 	// Rechts: 16.6467723
@@ -29,10 +30,11 @@ public class PartialTransformation {
 	// Unten: 47.236307
 	
 	// Bawu
-	// private static double lon1 = 7.5;
-	// private static double lon2 = 10.535;
-	// private static double lat1 = 49.83;
-	// private static double lat2 = 47.494;
+	private static double	lon1				= 7.5;
+	private static double	lon2				= 10.535;
+	private static double	lat1				= 49.83;
+	private static double	lat2				= 47.494;
+	
 	// Links: 7.5117461
 	// Rechts: 10.5298008
 	// Oben: 49.8188685
@@ -41,7 +43,7 @@ public class PartialTransformation {
 	public static void main(String[] args) throws Exception {
 		boolean delete = true;
 		System.out.println("Begin Partial Transformation..");
-		SplitIntoSimplierFiles.splitThisFile(PartialTransformation.fileSource, 50);
+		SplitIntoSimplierFiles.splitThisFile(PartialTransformation.fileSource, wayCount);
 		PartialTransformation.dynamicNewPartTransformXSL(delete);
 		TransformPartialXMLs.transformTheseXMLs(PartialTransformation.fileSource.replaceFirst(".xml", ".splitted"),
 				PartialTransformation.xsltFileSource + "2", PartialTransformation.groupID, delete);

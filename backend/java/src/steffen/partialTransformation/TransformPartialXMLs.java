@@ -92,7 +92,7 @@ public class TransformPartialXMLs {
 							}
 						} else {
 							line = line.replaceAll("xmlns=\"\" ", "");
-							writer.write(line);
+							writer.write(line + Constants.lineSeparator);
 						}
 					}
 				}

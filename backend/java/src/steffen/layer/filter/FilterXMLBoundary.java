@@ -8,13 +8,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Hashtable;
 import steffen.Constants;
+import steffen.layer.clean.CleanLayerBoundary;
 
 public class FilterXMLBoundary {
-	private static String	fileSource			= "bawu.xml";
-	private static String	fileTarget			= "bawu bounds.xml";
-	private static String[]	neededTags			= { "k=\"boundary\" v=\"administrative\"" };
-	private static int		admin_level_min	= 1;
-	private static int		admin_level_max	= 4;
+	private enum BoundaryType {
+		Federal, Counties;
+	}
+	
+	private static String			fileSource		= "bawu.xml";
+	private static String			fileTarget		= "bawu bounds.xml";
+	private static String[]			neededTags		= { "k=\"boundary\" v=\"administrative\"" };
+	private static BoundaryType	boundaryType	= BoundaryType.Counties;
 	
 	// admin_level gibt Grenzart an:
 	// 2: Staaten
@@ -25,6 +29,26 @@ public class FilterXMLBoundary {
 	// 9-11: Ortsteile
 	
 	public static void main(String[] args) throws IOException {
+		System.out.println("Begin filtering layer...");
+		int admin_level_min = 0;
+		int admin_level_max = 0;
+		switch (boundaryType) {
+			case Federal: {
+				admin_level_min = 0;
+				admin_level_max = 4;
+				break;
+			}
+			case Counties: {
+				admin_level_min = 5;
+				admin_level_max = 6;
+				break;
+			}
+			default: {
+				System.exit(0);
+				break;
+			}
+			
+		}
 		Hashtable<Integer, Integer> nodeIDs = new Hashtable<Integer, Integer>();
 		
 		// 1 Save needed nodes in file
@@ -57,7 +81,7 @@ public class FilterXMLBoundary {
 								int levelend = line.indexOf("\"", levelbegin + 3);
 								try {
 									int level = Integer.valueOf(line.substring(levelbegin + 3, levelend));
-									if ((level >= FilterXMLBoundary.admin_level_min) && (level <= FilterXMLBoundary.admin_level_max)) {
+									if ((level >= admin_level_min) && (level <= admin_level_max)) {
 										needed2 = true;
 									}
 								} catch (NumberFormatException ex) {
@@ -155,5 +179,6 @@ public class FilterXMLBoundary {
 		writer.close();
 		
 		System.out.println("Done");
+		CleanLayerBoundary.cleanLayer(fileTarget);
 	}
 }

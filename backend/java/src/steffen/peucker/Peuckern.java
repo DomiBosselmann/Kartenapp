@@ -11,10 +11,10 @@ import java.util.Hashtable;
 import steffen.Constants;
 
 public class Peuckern {
-	private static String								fileSource			= "ger boundary2.xml";
+	private static String								fileSource			= "bawu bounds2.xml";
 	private static Hashtable<Integer, Node>		nodes					= new Hashtable<Integer, Node>();
 	private static Hashtable<Integer, Boolean>	neededNodes			= new Hashtable<Integer, Boolean>();
-	private static double								peuckerDistance	= 0.2;
+	private static double								peuckerDistance	= 0.1;
 	
 	public static void main(String[] args) throws IOException {
 		Hashtable<Integer, Integer> wayPoints = new Hashtable<Integer, Integer>();

@@ -2,13 +2,13 @@
 package steffen;
 
 public class Constants {
-	public static String	lineSeperator		= System.getProperty("line.separator");
-	public static String	fileSeperator		= System.getProperty("file.separator");
+	public static String	lineSeparator		= System.getProperty("line.separator", "\n");
+	public static String	fileSeparator		= System.getProperty("file.separator", "/");
 	
-	public static String	pathToExternXMLs	= ".." + fileSeperator + ".." + fileSeperator + ".." + fileSeperator + ".." + fileSeperator
-																+ "Projekt Karte" + fileSeperator + "xml" + fileSeperator;
-	public static String	pathToInternXSLs	= ".." + fileSeperator + "transformation" + fileSeperator + "steffen" + fileSeperator
-																+ "xsl" + fileSeperator;
+	public static String	pathToExternXMLs	= ".." + fileSeparator + ".." + fileSeparator + ".." + fileSeparator + ".." + fileSeparator
+																+ "Projekt Karte" + fileSeparator + "xml" + fileSeparator;
+	public static String	pathToInternXSLs	= ".." + fileSeparator + "transformation" + fileSeparator + "steffen" + fileSeparator
+																+ "xsl" + fileSeparator;
 	
 	public static double	xRatio				= 72.0;
 	public static double	yRatio				= 111.32;

@@ -2,6 +2,7 @@
 package steffen.cleanup;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -9,25 +10,22 @@ import java.io.IOException;
 import steffen.Constants;
 
 public class KillCrap {
-	private static String	fileSource	= "bawu.xml";
-	private static String	fileTarget	= "bawu2.xml";
+	private static String	fileSource	= "germany.xml";
+	private static String	fileTarget	= "ger.xml";
 	
 	public static void main(String[] args) throws IOException {
-		fileSource = Constants.pathToExternXMLs + fileSource;
-		fileTarget = Constants.pathToExternXMLs + fileTarget;
-		
-		// create
+		KillCrap.fileSource = Constants.pathToExternXMLs + KillCrap.fileSource;
+		KillCrap.fileTarget = Constants.pathToExternXMLs + KillCrap.fileTarget;
 		BufferedReader reader = new BufferedReader(new FileReader(new File(KillCrap.fileSource)));
-		FileWriter writer = new FileWriter(new File(KillCrap.fileTarget));
+		BufferedWriter writer = new BufferedWriter(new FileWriter(new File(KillCrap.fileTarget)));
 		
-		// actions
 		String line = null;
 		while (reader.ready()) {
 			line = reader.readLine();
 			if (line.indexOf("<relation") < 0) {
 				if (line.indexOf("<tag") < 0) {
 					if (line.indexOf("<osm") >= 0) {
-						writer.write("<osm>\n");
+						writer.write("<osm>" + Constants.lineSeparator);
 					} else {
 						line = KillCrap.deleteAttribute("user", line);
 						line = KillCrap.deleteAttribute("uid", line);
@@ -36,14 +34,14 @@ public class KillCrap {
 						line = KillCrap.deleteAttribute("version", line);
 						line = KillCrap.deleteAttribute("changeset", line);
 						line = KillCrap.cleanLine(line);
-						writer.write(line + "\n");
+						writer.write(line + Constants.lineSeparator);
 					}
 				} else {
 					// Tag checks
 					if (line.indexOf("k=\"TMC") < 0) {
 						if (line.indexOf("k=\"created_by\"") < 0) {
 							line = KillCrap.cleanLine(line);
-							writer.write(line + "\n");
+							writer.write(line + Constants.lineSeparator);
 						}
 					}
 				}
@@ -55,8 +53,6 @@ public class KillCrap {
 				}
 			}
 		}
-		
-		// destroy
 		reader.close();
 		writer.close();
 		

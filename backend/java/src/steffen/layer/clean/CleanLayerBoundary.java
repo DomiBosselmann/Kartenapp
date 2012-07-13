@@ -9,17 +9,15 @@ import java.io.IOException;
 import steffen.Constants;
 
 public class CleanLayerBoundary {
-	private static String	fileSource	= "bawu boundary.xml";
+	private static String	fileSource	= "bawu bounds.xml";
 	private static String[]	tagsToKeep	= { "k=\"admin_level\"", "k=\"boundary\"", "k=\"border_type\"" };
 	
 	public static void main(String[] args) throws IOException {
 		String fileTarget = Constants.pathToExternXMLs + CleanLayerBoundary.fileSource.replaceFirst(".xml", "2.xml");
 		fileSource = Constants.pathToExternXMLs + fileSource;
-		// create
 		BufferedReader reader = new BufferedReader(new FileReader(new File(CleanLayerBoundary.fileSource)));
 		FileWriter writer = new FileWriter(new File(fileTarget));
 		
-		// actions
 		String line = null;
 		while (reader.ready()) {
 			line = reader.readLine();
@@ -31,8 +29,6 @@ public class CleanLayerBoundary {
 				writer.write(line + "\n");
 			}
 		}
-		
-		// destroy
 		reader.close();
 		writer.close();
 		

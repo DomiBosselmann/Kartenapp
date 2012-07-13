@@ -11,10 +11,10 @@ import java.util.Hashtable;
 import steffen.Constants;
 
 public class Peuckern {
-	private static String								fileSource			= "bawu streets2.xml";
+	private static String								fileSource			= "ger boundary2.xml";
 	private static Hashtable<Integer, Node>		nodes					= new Hashtable<Integer, Node>();
 	private static Hashtable<Integer, Boolean>	neededNodes			= new Hashtable<Integer, Boolean>();
-	private static double								peuckerDistance	= 0.02;
+	private static double								peuckerDistance	= 0.2;
 	
 	public static void main(String[] args) throws IOException {
 		Hashtable<Integer, Integer> wayPoints = new Hashtable<Integer, Integer>();
@@ -96,7 +96,7 @@ public class Peuckern {
 					int end = line.indexOf("\"", begin + str.length());
 					Integer id = Integer.valueOf(line.substring(begin + str.length(), end));
 					if (Peuckern.neededNodes.containsKey(id)) {
-						writer.write(line + System.getProperty("line.separator", "\n"));
+						writer.write(line + Constants.lineSeparator);
 					}
 				}
 				if (line.indexOf("/>") < 0) {
@@ -106,7 +106,7 @@ public class Peuckern {
 				}
 			} else {
 				if (line.indexOf("<way") >= 0) {
-					zeile = line + System.getProperty("line.separator", "\n");
+					zeile = line + Constants.lineSeparator;
 					ndcount = 0;
 					do {
 						line = reader.readLine();
@@ -117,19 +117,19 @@ public class Peuckern {
 								int end = line.indexOf("\"", begin + str.length());
 								Integer ref = Integer.valueOf(line.substring(begin + str.length(), end));
 								if (Peuckern.neededNodes.containsKey(ref)) {
-									zeile += line + System.getProperty("line.separator", "\n");
+									zeile += line + Constants.lineSeparator;
 									ndcount++;
 								}
 							}
 						} else {
-							zeile += line + System.getProperty("line.separator", "\n");
+							zeile += line + Constants.lineSeparator;
 						}
 					} while (line.indexOf("</way") < 0);
 					if (ndcount >= 2) {
 						writer.write(zeile);
 					}
 				} else {
-					writer.write(line + System.getProperty("line.separator", "\n"));
+					writer.write(line + Constants.lineSeparator);
 				}
 			}
 		}

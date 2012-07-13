@@ -25,7 +25,7 @@ public class SplitFile {
 		int i = 0;
 		String line = null;
 		while (reader.ready() && i < SplitFile.endLine) {
-			line = reader.readLine() +Constants.lineSeperator;
+			line = reader.readLine() +Constants.lineSeparator;
 			if (i > SplitFile.beginLine) {
 				writer.write(line);
 			}

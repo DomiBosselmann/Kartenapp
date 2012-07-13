@@ -58,12 +58,11 @@ public class TransformPartialXMLs {
 			}
 			Source xmlSource = new StreamSource(sourceFile);
 			File targetFile = new File(Constants.pathToExternXMLs + fileTargetName + i + ".svg");
-			targetFile.deleteOnExit();
-			// FileWriter writer = new FileWriter(targetFile);
+			if (deleteFiles) {
+				targetFile.deleteOnExit();
+			}
 			FileOutputStream outputStream = new FileOutputStream(targetFile);
-			// transformer.transform(xmlSource, new StreamResult(writer));
 			transformer.transform(xmlSource, new StreamResult(outputStream));
-			// writer.close();
 			outputStream.close();
 			System.out.println("Step 1: File " + i + "/" + splittedFilesCount);
 		}
@@ -71,29 +70,31 @@ public class TransformPartialXMLs {
 		System.out.println("Step 1");
 		
 		FileWriter writer = new FileWriter(new File(Constants.pathToExternXMLs + fileTargetName + ".svg"));
-		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + Constants.lineSeperator);
+		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + Constants.lineSeparator);
 		for (int i = 1; i <= splittedFilesCount; i++) {
 			BufferedReader reader = new BufferedReader(new FileReader(new File(Constants.pathToExternXMLs + fileTargetName + i + ".svg")));
 			String line = null;
-			if (reader.ready()) {
-				line = reader.readLine();
-				if (i == 1) {
-					int begin = line.indexOf("<svg");
-					if (begin >= 0) {
-						writer.write(line);
-					}
-				}
-			}
 			while (reader.ready()) {
 				line = reader.readLine();
-				int end = line.indexOf("</g");
-				if (end >= 0) {
-					if (i == splittedFilesCount) {
-						writer.write(line);
+				if (line.indexOf("<svg") >= 0) {
+					if (i == 1) {
+						writer.write(line + Constants.lineSeparator);
 					}
 				} else {
-					line = line.replaceAll("xmlns=\"\" ", "");
-					writer.write(line);
+					if (line.indexOf("<g") >= 0) {
+						if (i == 1) {
+							writer.write(line + Constants.lineSeparator);
+						}
+					} else {
+						if (line.indexOf("</g") >= 0) {
+							if (i == splittedFilesCount) {
+								writer.write(line + Constants.lineSeparator);
+							}
+						} else {
+							line = line.replaceAll("xmlns=\"\" ", "");
+							writer.write(line);
+						}
+					}
 				}
 			}
 			reader.close();

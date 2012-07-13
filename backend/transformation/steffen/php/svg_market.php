@@ -8,12 +8,16 @@ if ($_GET) {
 	$pixelsPrint = false;
 
 	$koords = "<coords ";
-	$pixels = "<pixels ";
+	if ($pixelsPrint === true) {
+		$pixels = "<pixels ";
+	}
 
 	if (isset($_GET['lon1'])) {
 		$lon1 = getPixelForLon(doubleval($_GET['lon1']));
 		$koords .= 'lon1="' . $_GET['lon1'] . '" ';
-		$pixels .= 'lon1="' . $lon1 . '" ';
+		if ($pixelsPrint === true) {
+			$pixels .= 'lon1="' . $lon1 . '" ';
+		}
 		$region = true;
 	} else {
 		$lon1 = doubleval(-99999.0);
@@ -22,7 +26,9 @@ if ($_GET) {
 	if (isset($_GET['lon2'])) {
 		$lon2 = getPixelForLon(doubleval($_GET['lon2']));
 		$koords .= 'lon2="' . $_GET['lon2'] . '" ';
-		$pixels .= 'lon2="' . $lon2 . '" ';
+		if ($pixelsPrint === true) {
+			$pixels .= 'lon2="' . $lon2 . '" ';
+		}
 		$region = true;
 	} else {
 		$lon2 = doubleval(99999.0);
@@ -31,7 +37,9 @@ if ($_GET) {
 	if (isset($_GET['lat1'])) {
 		$lat1 = getPixelForLat(doubleval($_GET['lat1']));
 		$koords .= 'lat1="' . $_GET['lat1'] . '" ';
-		$pixels .= 'lat1="' . $lat1 . '" ';
+		if ($pixelsPrint === true) {
+			$pixels .= 'lat1="' . $lat1 . '" ';
+		}
 		$region = true;
 	} else {
 		$lat1 = doubleval(-99999.0);
@@ -40,16 +48,20 @@ if ($_GET) {
 	if (isset($_GET['lat2'])) {
 		$lat2 = getPixelForLat(doubleval($_GET['lat2']));
 		$koords .= 'lat2="' . $_GET['lat2'] . '" ';
-		$pixels .= 'lat2="' . $lat2 . '" ';
+		if ($pixelsPrint === true) {
+			$pixels .= 'lat2="' . $lat2 . '" ';
+		}
 		$region = true;
 	} else {
 		$lat2 = doubleval(99999.0);
 		$koords .= 'lat2="47.5312706" ';
 	}
 	$koords .= "/>";
-	$pixels .= "/>";
+	if ($pixelsPrint === true) {
+		$pixels .= "/>";
+	}
 
-	$begin = '<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" style="position:absolute;">';
+	$begin = '<svg style="position:absolute;" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">';
 	$end = '</svg>';
 
 	$file = "";
@@ -182,23 +194,27 @@ if ($_GET) {
 		}
 	}
 	$defs .= $defsEndSearchString;
-	if ($defsPrint === true) {
-		$file = $begin . $koords . $pixels . "\n" . $defs . "\n" . $file . $end;
-	} else {
-		$file = $begin . $koords . $pixels . "\n" . $file . $end;
+
+	$nfile = $file;
+	$file = $begin . $koords;
+	if ($pixelsPrint === true) {
+		$file .= $pixels;
 	}
+	$file .= PHP_EOL;
+	if ($defsPrint === true) {
+		$file .= $defs . PHP_EOL;
+	}
+	$file .= $nfile . $end;
 
 	// filter region of the svg
 	if ($region) {
+		$newfile = $begin . $koords;
 		if ($pixelsPrint === true) {
-			$newfile = $begin . $koords . $pixels . "\n";
-		} else {
-			$newfile = $begin . $koords . "\n";
+			$newfile .= $pixels;
 		}
-
-		// defs
+		$newfile .= PHP_EOL;
 		if ($defsPrint === true) {
-			$newfile .= $defs . "\n";
+			$newfile .= $defs . PHP_EOL;
 		}
 
 		$groupSearchString = '<g';
@@ -270,7 +286,7 @@ if ($_GET) {
 					$polylineBegin = stripos($file, $polylineSearchString, $polylineEnd);
 				}
 			}
-			$newfile .= "</g>\n";
+			$newfile .= "</g>" . PHP_EOL;
 			$groupBegin = stripos($file, $groupSearchString, $groupEnd);
 		}
 		echo $newfile . $end;
@@ -280,11 +296,11 @@ if ($_GET) {
 }
 
 function getPixelForLon($lon) {
-	return $lon * 150 - 1050;
+	return ($lon - 7.5) * 164.745;
 }
 
 function getPixelForLat($lat) {
-	return $lat * -200 + 10000;
+	return (-$lat + 49.83) * 235.445;
 }
 
 ?>

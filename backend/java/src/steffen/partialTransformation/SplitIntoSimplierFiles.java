@@ -68,8 +68,8 @@ public class SplitIntoSimplierFiles {
 		BufferedReader reader2 = new BufferedReader(new FileReader(new File(fileSource)));
 		File myFile = new File(fileTarget + file + ".xml");
 		FileWriter writer = new FileWriter(myFile);
-		writer.write("<?xml version='1.0' encoding='UTF-8'?>" + Constants.lineSeperator);
-		writer.write("<osm>" + Constants.lineSeperator);
+		writer.write("<?xml version='1.0' encoding='UTF-8'?>" + Constants.lineSeparator);
+		writer.write("<osm>" + Constants.lineSeparator);
 		String line2 = null;
 		int ways2 = 0;
 		boolean reading = true;
@@ -82,11 +82,11 @@ public class SplitIntoSimplierFiles {
 					int end = line2.indexOf("\"", begin + str.length());
 					Integer id = Integer.valueOf(line2.substring(begin + str.length(), end));
 					if (nodes.containsKey(id)) {
-						writer.write(line2 + Constants.lineSeperator);
+						writer.write(line2 + Constants.lineSeparator);
 						if (line2.indexOf("/>") < 0) {
 							do {
 								line2 = reader2.readLine();
-								writer.write(line2 + Constants.lineSeperator);
+								writer.write(line2 + Constants.lineSeparator);
 							} while (line2.indexOf("</node") >= 0);
 						}
 					}
@@ -96,10 +96,10 @@ public class SplitIntoSimplierFiles {
 					if (line2.indexOf("/>") < 0) {
 						if (ways2 >= (file - 1) * wayCount) {
 							ways2++;
-							writer.write(line2 + Constants.lineSeperator);
+							writer.write(line2 + Constants.lineSeparator);
 							do {
 								line2 = reader2.readLine();
-								writer.write(line2 + Constants.lineSeperator);
+								writer.write(line2 + Constants.lineSeparator);
 							} while (line2.indexOf("</way") < 0);
 							if (ways2 >= file * wayCount) {
 								reading = false;

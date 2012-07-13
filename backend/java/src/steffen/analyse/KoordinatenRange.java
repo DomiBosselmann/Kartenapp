@@ -8,7 +8,7 @@ import java.io.IOException;
 import steffen.Constants;
 
 public class KoordinatenRange {
-	private static String	fileSource	= "bawu boundary.xml";
+	private static String	fileSource	= "ger boundary2.xml";
 	
 	public static void main(String[] args) throws IOException {
 		BufferedReader reader = new BufferedReader(new FileReader(new File(Constants.pathToExternXMLs + fileSource)));

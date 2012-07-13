@@ -11,10 +11,10 @@ import steffen.Constants;
 
 public class FilterXMLBoundary {
 	private static String	fileSource			= "bawu.xml";
-	private static String	fileTarget			= "bawu boundary.xml";
+	private static String	fileTarget			= "bawu bounds.xml";
 	private static String[]	neededTags			= { "k=\"boundary\" v=\"administrative\"" };
-	private static int		admin_level_min	= 5;
-	private static int		admin_level_max	= 6;
+	private static int		admin_level_min	= 1;
+	private static int		admin_level_max	= 4;
 	
 	// admin_level gibt Grenzart an:
 	// 2: Staaten
@@ -42,7 +42,7 @@ public class FilterXMLBoundary {
 			if (line.indexOf("<way") >= 0) {
 				boolean needed1 = false;
 				boolean needed2 = false;
-				String zeile = line + Constants.lineSeperator;
+				String zeile = line + Constants.lineSeparator;
 				do {
 					line = reader.readLine();
 					if (line.indexOf("<tag") >= 0) {
@@ -55,14 +55,18 @@ public class FilterXMLBoundary {
 							int levelbegin = line.indexOf("v=\"");
 							if (levelbegin >= 0) {
 								int levelend = line.indexOf("\"", levelbegin + 3);
-								int level = Integer.valueOf(line.substring(levelbegin + 3, levelend));
-								if ((level >= FilterXMLBoundary.admin_level_min) && (level <= FilterXMLBoundary.admin_level_max)) {
-									needed2 = true;
+								try {
+									int level = Integer.valueOf(line.substring(levelbegin + 3, levelend));
+									if ((level >= FilterXMLBoundary.admin_level_min) && (level <= FilterXMLBoundary.admin_level_max)) {
+										needed2 = true;
+									}
+								} catch (NumberFormatException ex) {
+									
 								}
 							}
 						}
 					}
-					zeile += line + Constants.lineSeperator;
+					zeile += line + Constants.lineSeparator;
 				} while (line.indexOf("</way") < 0);
 				if (needed1 && needed2) {
 					int refbegin = zeile.indexOf("ref=\"");
@@ -92,8 +96,8 @@ public class FilterXMLBoundary {
 		writer = new FileWriter(targetFile);
 		
 		// 2 Actions
-		writer.write("<?xml version='1.0' encoding='UTF-8'?>" + Constants.lineSeperator);
-		writer.write("<osm>" + Constants.lineSeperator);
+		writer.write("<?xml version='1.0' encoding='UTF-8'?>" + Constants.lineSeparator);
+		writer.write("<osm>" + Constants.lineSeparator);
 		line = null;
 		while (reader.ready()) {
 			line = reader.readLine();
@@ -104,7 +108,7 @@ public class FilterXMLBoundary {
 					if (nodeIDs.containsKey(Integer.valueOf(line.substring(idbegin + 4, idend)))) {
 						if (line.indexOf("/>") < 0) {
 							line = line.replaceFirst(">", "/>");
-							writer.write(line + Constants.lineSeperator);
+							writer.write(line + Constants.lineSeparator);
 							do {
 								if (reader.ready()) {
 									line = reader.readLine();
@@ -113,7 +117,7 @@ public class FilterXMLBoundary {
 								}
 							} while (line.indexOf("</node") < 0);
 						} else {
-							writer.write(line + Constants.lineSeperator);
+							writer.write(line + Constants.lineSeparator);
 						}
 					} else {
 						if (line.indexOf("/>") < 0) {
@@ -142,7 +146,7 @@ public class FilterXMLBoundary {
 		// 3 Actions
 		while (reader.ready()) {
 			line = reader.readLine();
-			writer.write(line + Constants.lineSeperator);
+			writer.write(line + Constants.lineSeparator);
 		}
 		writer.write("</osm>");
 		

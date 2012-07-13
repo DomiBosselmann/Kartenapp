@@ -35,8 +35,8 @@ public class EnableXSL {
 		String line = null;
 		try {
 			reader.readLine();
-			writer.write("<?xml version='1.0' encoding='UTF-8' ?>"+Constants.lineSeperator);
-			writer.write("<?xml-stylesheet type=\"text/xml\" href=\"" + xslFileName + "\" ?>"+Constants.lineSeperator);
+			writer.write("<?xml version='1.0' encoding='UTF-8' ?>"+Constants.lineSeparator);
+			writer.write("<?xml-stylesheet type=\"text/xml\" href=\"" + xslFileName + "\" ?>"+Constants.lineSeparator);
 		} catch (IOException e2) {
 			e2.printStackTrace();
 		}

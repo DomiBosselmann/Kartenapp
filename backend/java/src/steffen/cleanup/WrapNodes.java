@@ -13,41 +13,38 @@ public class WrapNodes {
 	
 	public static void main(String[] args) throws IOException {
 		String fileTarget = Constants.pathToExternXMLs + WrapNodes.fileSource.replaceFirst(".xml", "2.xml");
-		fileSource = Constants.pathToExternXMLs + fileSource;
-		
-		// create
+		WrapNodes.fileSource = Constants.pathToExternXMLs + WrapNodes.fileSource;
 		BufferedReader reader = new BufferedReader(new FileReader(new File(WrapNodes.fileSource)));
 		FileWriter writer = new FileWriter(new File(fileTarget));
 		
-		// actions
 		String line = null;
 		String zeile = null;
 		while (reader.ready()) {
 			line = reader.readLine();
 			if (line.indexOf("<node") >= 0) {
 				if (line.indexOf("/>") >= 0 || line.indexOf("</node") >= 0) {
-					writer.write(line + "\n");
+					writer.write(line + Constants.lineSeparator);
 				} else {
 					zeile = reader.readLine();
 					if (zeile.indexOf("</node") >= 0) {
 						line = line.replaceFirst(">", "/>");
-						writer.write(line + "\n");
+						writer.write(line + Constants.lineSeparator);
 					} else {
-						writer.write(line + "\n");
-						writer.write(zeile + "\n");
+						writer.write(line + Constants.lineSeparator);
+						writer.write(zeile + Constants.lineSeparator);
 						while (zeile.indexOf("</node") < 0) {
 							zeile = reader.readLine();
-							writer.write(zeile + "\n");
+							writer.write(zeile + Constants.lineSeparator);
 						}
 					}
 				}
 			} else {
-				writer.write(line + "\n");
+				writer.write(line + Constants.lineSeparator);
 			}
 		}
-		
-		// destroy
 		reader.close();
 		writer.close();
+		
+		System.out.println("Done");
 	}
 }

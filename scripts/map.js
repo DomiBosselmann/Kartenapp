@@ -27,28 +27,30 @@ window.Karte = (function () {
 		layers : {
 			roads : {
 				name : "Straßen",
-				visible : false,
+				visible : true,
 				paramName : undefined,
 				sub : {
 					motorways : {
 						name : "Autobahnen",
 						visible : true,
-						paramName : "m"
+						paramName : "s",
+						layerName : "motorways"
 					},
 					federal : {
 						name : "Bundesstraßen",
 						visible : true,
-						paramName : undefined
+						paramName : "s2",
+						layerName : "primaries"
 					},
 					landesstrasse : {
 						name : "Landesstraße",
 						visible : false,
-						paramName : undefined
+						paramName : "s3"
 					},
 					kreisstrasse : {
 						name : "Kreisstraße",
 						visible : false,
-						paramName : undefined
+						paramName : "s4"
 					}
 				}
 			},
@@ -59,27 +61,32 @@ window.Karte = (function () {
 					cities : {
 						name : "Städte",
 						visible : true,
-						paramName : "c"
+						paramName : "c",
+						layerName : "cities"
 					},
 					towns : {
 						name : "(Dörfer)",
-						visible : false,
-						paramName : "c1"
+						visible : true,
+						paramName : "c1",
+						layerName : "towns"
 					},
 					villages : {
 						name : "(Kuhdörfer)",
-						visible : false,
-						paramName : "c2"
+						visible : true,
+						paramName : "c2",
+						layerName : "villages"
 					},
 					hamlets : {
 						name : "(Kaffs)",
-						visible : false,
-						paramName : "c3"
+						visible : true,
+						paramName : "c3",
+						layerName : "hamlets"
 					},
 					suburbs : {
 						name : "(Bauernhof)",
 						visible : false,
-						paramName : "c4"
+						paramName : "c4",
+						layerName : "suburbs"
 					}
 				}
 			},
@@ -91,24 +98,26 @@ window.Karte = (function () {
 					federal : {
 						name : "Länder",
 						visible : true,
-						paramName : "b"
+						paramName : "b",
+						layerName : "federal"
 					},
 					counties : {
 						name : "Landkreise",
-						visible : false,
-						paramName : "b1"
+						visible : true,
+						paramName : "b1",
+						layerName : "counties"
 					}
 				}
 			},
 			rivers : {
-				name : "Seen und Flüsse",
-				visibile : false,
+				name : "Seen & Flüsse",
+				visibile : true,
 				paramName : undefined,
 				sub : {
 					rivers : {
 						name : "Flüsse",
 						visible : true,
-						paramName : "r"
+						paramName : "w"
 					}
 				}
 			}
@@ -192,25 +201,23 @@ window.Karte = (function () {
 			map.scaling.observe("value",function (event) {
 				controller.uiElements.mapScaleText.textContent = Math.round(event.data * 100) / 100 + map.scaling.unit;
 			});
+			
+			// Benötigte Layer bestimmen
+			var layers = [];
+					
+			for (type in map.layers) {
+				if (map.layers.hasOwnProperty(type) && map.layers[type].visible) {
+					for (subtype in map.layers[type].sub) {
+						if (map.layers[type].sub.hasOwnProperty(subtype) && map.layers[type].sub[subtype].visible && map.layers[type].sub[subtype].paramName !== undefined) {
+							layers.push(map.layers[type].sub[subtype].paramName);
+						}
+					}
+				}
+			}
 						
 			// Karte laden
-			this.loadMap(undefined, undefined, {
-				onSuccess : function (event) {
-					var data = event.data,
-						coordinates = data.getElementsByTagName("koords")[0];
-					
-					// Koordinaten auslesen
-					map.coordinates.topLeft = [parseFloat(coordinates.getAttribute("lat1")), parseFloat(coordinates.getAttribute("lon1"))];
-					map.coordinates.bottomRight = [parseFloat(coordinates.getAttribute("lat2")), parseFloat(coordinates.getAttribute("lon2"))];
-					//map.coordinates.center = [(map.coordinates.topLeft[0] - map.coordinates.bottomRight[0])/2 + map.coordinates.topLeft[0], (map.coordinates.topLeft[1] - map.coordinates.bottomRight[1])/2 + map.coordinates.topLeft[1]];
-					
-					// Maßstab neu berechnen
-					map.scaling.value = units.geoCoordinatesToDistance(map.coordinates.topLeft, map.coordinates.bottomRight) / map.dimensions.width * 100;
-					map.scaling.zoomLevelValue = map.scaling.value;
-										
-					// Renderer anstoßen
-					renderer.start(data);
-				},
+			this.loadMap(undefined, undefined, layers, {
+				onSuccess : controller.handler.loadMap,
 				onError : function (event) {
 					alert("tja, iwie blöd gelaufen");
 				}
@@ -342,34 +349,38 @@ window.Karte = (function () {
 				object.visible = object.visible ? false : true;
 				event.currentTarget.className = object.visible ? "active" : "inactive";
 				
-				renderer.filter();
+				renderer.filter(object, !object.visible);
+			},
+			loadMap : function (event) {
+				//console.log(event.textData);
+				var data = event.data,
+					coordinates = data.getElementsByTagName("coords")[0];
+				
+				// Koordinaten auslesen
+				map.coordinates.topLeft = [parseFloat(coordinates.getAttribute("lat1")), parseFloat(coordinates.getAttribute("lon1"))];
+				map.coordinates.bottomRight = [parseFloat(coordinates.getAttribute("lat2")), parseFloat(coordinates.getAttribute("lon2"))];
+				//map.coordinates.center = [(map.coordinates.topLeft[0] - map.coordinates.bottomRight[0])/2 + map.coordinates.topLeft[0], (map.coordinates.topLeft[1] - map.coordinates.bottomRight[1])/2 + map.coordinates.topLeft[1]];
+				
+				// Maßstab neu berechnen
+				map.scaling.value = units.geoCoordinatesToDistance(map.coordinates.topLeft, map.coordinates.bottomRight) / map.dimensions.width * 100;
+				map.scaling.zoomLevelValue = map.scaling.value;
+									
+				// Renderer anstoßen
+				renderer.start(data);
 			}
 		},
-		loadMap : function (latitude, longitude, handler) {
+		loadMap : function (latitude, longitude, layers, handler) {
 			
 			var parameters, params = [], requestURL = constants.url, request,
-				layers = [],
 				key;
-							
-			// Layer bestimmen
-			
-			for (type in map.layers) {
-				if (map.layers.hasOwnProperty(type) && map.layers[type].visible) {
-					for (subtype in map.layers[type].sub) {
-						if (map.layers[type].sub.hasOwnProperty(subtype) && map.layers[type].sub[subtype].visible && map.layers[type].sub[subtype].paramName !== undefined) {
-							layers.push(map.layers[type].sub[subtype].paramName);
-						}
-					}
-				}
-			}
-			
-			console.log(layers);
-			
+						
 			// Parameter für die Übergabe zusammenschustern
 			
 			parameters = {
 				lat : latitude,
-				long : longitude,
+				lon : longitude,
+				width: map.dimensions.width,
+				height : map.dimensions.height
 			};
 			
 			layers.forEach(function (value, index) {
@@ -413,6 +424,7 @@ window.Karte = (function () {
 	
 	var renderer = {
 		data : undefined,
+		layers : undefined,
 		start : function (data) {
 			// Verwaltungsmethode für den Renderer
 			this.data = data;
@@ -420,6 +432,8 @@ window.Karte = (function () {
 			this.parse();
 			this.render();
 			this.optimize();
+			
+			this.layers = controller.uiElements.mapRoot.getElementsByTagName("g");
 		},
 		parse : function () {
 			this.data = this.data.getElementsByTagName("svg")[0].childNodes;
@@ -437,8 +451,15 @@ window.Karte = (function () {
 		stop : function () {
 			
 		},
-		filter : function () {
+		filter : function (layer, filter) {
+			var layerElement = controller.uiElements.mapRoot.getElementById(layer.layerName); // TODO: evtl auch document.getElementById()
 			
+			if (layerElement === null) {
+				// Layer noch nicht verfügbar, nachladen
+				controller.loadMap(undefined, undefined, [layer.paramName], { onSuccess : controller.handler.loadMap });
+			} else {
+				layerElement.style.display = filter ? "none" : "";
+			}
 		},
 		zoom : function (newDistance, oldDistance) {
 			var scaleFactor = (newDistance / oldDistance);
@@ -539,6 +560,10 @@ window.Karte = (function () {
 			renderer.zoom(oldDistance, newDistance);
 		},
 		units : units
+	,
+		filter : function (filters) {
+			renderer.filter(filters);
+		}
 	}
 	
 })();

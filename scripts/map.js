@@ -195,7 +195,7 @@ window.Karte = (function () {
 			this.uiElements.visibilities = document.getElementById("visibilities");
 			
 			// EventListener hinzufügen
-			this.uiElements.searchButton.addEventListener("click", this.handler.enableSearch, false);
+			this.uiElements.searchButton.addEventListener("click", this.handler.handleSearch, false);
 			this.uiElements.exportButton.addEventListener("click", function (e) { console.log(e); }, false);
 			this.uiElements.importButton.addEventListener("click", function (e) { console.log(e); }, false);
 			this.uiElements.saveButton.addEventListener("click", function (e) { console.log(e); }, false);
@@ -260,9 +260,19 @@ window.Karte = (function () {
 			sideView.render();
 		},
 		handler : {
+			handleSearch : function (event) {
+				if (event.altKey) {
+					controller.uiElements.searchField.value = "";
+					sideView.renderFlags(true);
+					sideView.renderFlags(false);
+				} else {
+					controller.handler.enableSearch(event);
+				}
+			},
 			enableSearch : function (event) {
 				// Suchfeld einblenden und fokussieren
 				controller.uiElements.toolbar.className = "searchEnabled";
+				controller.uiElements.searchField.addEventListener("blur", controller.handler.disableSearch, false);
 				controller.uiElements.searchField.focus();
 				
 				controller.uiElements.searchButton.removeEventListener("click", controller.handler.enableSearch, false);
@@ -304,7 +314,7 @@ window.Karte = (function () {
 			},
 			disableSearch : function () {
 				controller.uiElements.toolbar.className = "";
-				controller.uiElements.searchButton.addEventListener("click", controller.handler.enableSearch, false);
+				controller.uiElements.searchButton.addEventListener("click", controller.handler.handleSearch, false);
 			},
 			switchMapView : function (event) {
 				// Überprüfung ob die View geändert wurde

@@ -272,12 +272,35 @@ window.Karte = (function () {
 					if (controller.uiElements.searchField.value === "") {
 						controller.handler.disableSearch();
 					}
-				} else if (event.type === "keyup" && event.keyCode === 13) {
+				} else if (event.type === "keyup") {
 					controller.handler.performSearch();
 				}
 			},
 			performSearch : function (event) {
-				alert("Du suchst also nach \"" + controller.uiElements.searchField.value + "\". Wenn jetzt die Suchfunktion funktionieren würde...");
+				var filteredData = [];
+				
+				if (controller.uiElements.searchField.value === "") {
+					// Wenn Suchfeld leer ist, kann die ganze View gerendert werden
+					sideView.renderFlags(false);
+					sideView.renderFlags(true);
+				} else {
+					// Suchausdruck durchsucht Namen und Notitz
+					// Zunächst werden die Orte durchsucht
+					filteredData = Sort.filter(map.places, [{ attribute : "note", type : "contains", value : controller.uiElements.searchField.value }]);
+					filteredData = filteredData.concat(Sort.filter(map.places, [{ attribute : "name", type : "contains", value : controller.uiElements.searchField.value }]));
+					
+					filteredData = filteredData.unique();
+										
+					sideView.renderFlags(false, filteredData);
+					
+					// Jetzt werden die Strecken durchsucht
+					filteredData = Sort.filter(map.routes, [{ attribute : "note", type : "contains", value : controller.uiElements.searchField.value }]);
+					filteredData = filteredData.concat(Sort.filter(map.routes, [{ attribute : "name", type : "contains", value : controller.uiElements.searchField.value }]));
+					
+					filteredData = filteredData.unique();
+					
+					sideView.renderFlags(true, filteredData);
+				}			
 			},
 			disableSearch : function () {
 				controller.uiElements.toolbar.className = "";
@@ -535,10 +558,12 @@ window.Karte = (function () {
 				}
 			}
 		},
-		renderFlags : function (routes) {
+		renderFlags : function (routes, data) {
 			var item, note, name,
 				list = routes ? document.getElementById("routes") : document.getElementById("places"), // AUSLAGERN
-				content = routes ? map.routes : map.places;
+				content = data ? data : (routes ? map.routes : map.places);
+				
+			list.innerHTML = "";
 			
 			content.forEach(function (place) {
 				item = document.createElement("li");
@@ -657,6 +682,67 @@ Object.prototype.observe = function (property,handler) {
 		});
 	}
 };
+
+Array.prototype.unique = function () {
+	var length = this.length,
+		returnArray = [];
+	
+	this.forEach(function (value) {
+		if (!returnArray.in_array(value)) {
+			returnArray.push(value);
+		}
+	});
+	
+	return returnArray;
+}
+
+Object.prototype.equal = function (object) {
+	var keys = Object.keys(this),
+		i = 0;
+	
+	for (i; i < keys.length; i++) {
+		if (object[keys[i]] === "undefined") {
+			return false;
+		}
+		
+		if (this[keys[i]] instanceof Object) {
+			tempResult = this[keys[i]].equal(object[keys[i]]);
+			if (!tempresult) {
+				return false;
+			}
+		} else if (!(this[keys[i]] instanceof Function)) {
+			if (object[keys[i]] !== this[keys[i]]) {
+				return false;
+			}
+		}
+	}
+	
+	return true;
+}
+
+Array.prototype.in_array = function (value,remove) {
+	var found = false,
+		i = 0;
+			
+	for (i; i < this.length; i++) {
+		if (this[i] instanceof Array) {
+			found = this[i].in_array(value);
+		} else if (this[i] instanceof Object && value instanceof Object) {
+			found = this[i].equal(value);
+		} else if (this[i] === value) {
+			found = true;
+		}
+		
+		if (found) {
+			if (remove === true) {
+				this.splice(i,1);
+			}
+			return true;
+		}
+	}
+	
+	return false;
+}
 
 window.addEventListener("DOMContentLoaded", function() {
 	Karte.init();

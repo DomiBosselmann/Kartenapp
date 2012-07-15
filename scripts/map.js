@@ -122,8 +122,41 @@ window.Karte = (function () {
 				}
 			}
 		},
-		places : [],
-		routes : []
+		places : [
+			{
+				name : "Feierabendweg 17",
+				visible : true,
+				note : "Mein Zuhause",
+				coordinates : []
+			},
+			{
+				name : "Erzbergerstraße 121",
+				visible : true,
+				note : "Meine Uni",
+				coordinates : []
+			},
+			{
+				name : "Medienallee 1",
+				visible : true,
+				note : "Mein Lieblingsfernsehsender",
+				coordinates : []
+			},
+			{
+				name : "Dietmar-Hopp-Alle 2",
+				visible : true,
+				note : "Mein Arbeitsplatz",
+				coordinates : []
+			},
+		],
+		routes : [
+			{
+				name : "Weg zur Hochschule",
+				distance : "3km",
+				note : "Blafaselblubber",
+				points : [],
+				visible : true
+			}
+		]
 	}
 	
 	var controller = {
@@ -224,7 +257,7 @@ window.Karte = (function () {
 			});
 			
 			// Ansichten anzeigen
-			sideView.renderVisibilities();
+			sideView.render();
 		},
 		handler : {
 			enableSearch : function (event) {
@@ -501,6 +534,32 @@ window.Karte = (function () {
 					}
 				}
 			}
+		},
+		renderFlags : function (routes) {
+			var item, note, name,
+				list = routes ? document.getElementById("routes") : document.getElementById("places"), // AUSLAGERN
+				content = routes ? map.routes : map.places;
+			
+			content.forEach(function (place) {
+				item = document.createElement("li");
+				
+				note = document.createElement("span");
+				name = document.createElement("span");
+				
+				item.className = place.visible ? "active" : "inactive";
+				
+				name.textContent = place.name;
+				note.textContent = place.note;
+				
+				item.appendChild(name);
+				item.appendChild(note);
+				list.appendChild(item);
+			});
+		},
+		render : function () {
+			this.renderFlags(true);
+			this.renderFlags(false);
+			this.renderVisibilities();
 		}
 	};
 	

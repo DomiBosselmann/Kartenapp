@@ -3,8 +3,7 @@
 if ($_GET) {
 	header("Content-Type: image/svg+xml");
 
-	// build the svg
-
+	// coordinate detection
 	$pixelsPrint = false;
 
 	$koords = "<coords ";
@@ -61,6 +60,23 @@ if ($_GET) {
 		$pixels .= "/>";
 	}
 
+	// width + height detection
+
+	if (isset($_GET['width'])) {
+		$sizing = true;
+		$width = $_GET['width'];
+	} else {
+		$width = 500.0;
+	}
+	if (isset($_GET['height'])) {
+		$sizing = true;
+		$height = $_GET['height'];
+	} else {
+		$height = 550.0;
+	}
+
+	// build the svg
+
 	$begin = '<svg style="position:absolute;" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">';
 	$end = '</svg>';
 
@@ -86,6 +102,14 @@ if ($_GET) {
 					break;
 				}
 			case "lat2":
+				{
+					break;
+				}
+			case "width":
+				{
+					break;
+				}
+			case "height":
 				{
 					break;
 				}
@@ -210,7 +234,9 @@ if ($_GET) {
 	}
 	$file .= $nfile . $end;
 
+
 	// filter region of the svg
+	// TODO width+height unterstützen
 	if ($region) {
 		$newfile = $begin . PHP_EOL . $koords;
 		if ($pixelsPrint === true) {
@@ -237,11 +263,13 @@ if ($_GET) {
 			$groupEnding = stripos($file, $groupEndSearchString, $groupEnd);
 			if (($useBegin !== false) && ($useBegin < $groupEnding)) {
 				while (($useBegin !== false) && ($useBegin < $groupEnding)) {
+					$useEnd = stripos($file, "/>", $useBegin) + 2;
+					$use = substr($file, $useBegin, $useEnd - $useBegin);
 					$print = false;
-					$translateBegin = stripos($file, $translateSearchString, $useBegin) + strlen($translateSearchString);
+					$translateBegin = stripos($use, $translateSearchString) + strlen($translateSearchString);
 					if ($translateBegin !== false) {
-						$translateEnd = stripos($file, ")", $translateBegin);
-						$translate = substr($file, $translateBegin, $translateEnd - $translateBegin);
+						$translateEnd = stripos($use, ")", $translateBegin) + 1;
+						$translate = substr($use, $translateBegin, $translateEnd - $translateBegin);
 						$space = stripos($translate, " ");
 						if ($space !== false) {
 							$lonCoord = doubleval(substr($translate, 0, $space));
@@ -249,13 +277,16 @@ if ($_GET) {
 								$latCoord = doubleval(substr($translate, $space + 1));
 								if (($latCoord >= $lat1) && ($latCoord <= $lat2)) {
 									$print = true;
+									if ($sizing === true) {
+										// TODO $translate bearbeiten
+									}
 								}
 							}
 						}
 					}
-					$useEnd = stripos($file, "/>", $useBegin) + 2;
 					if ($print === true) {
-						$newfile .= substr($file, $useBegin, $useEnd - $useBegin) . PHP_EOL;
+						$newfile .= "<use " . $translate . substr($use, $translateEnd);
+						//	$newfile .= substr($file, $useBegin, $useEnd - $useBegin) . PHP_EOL;
 					}
 					$useBegin = stripos($file, $useSearchString, $useEnd);
 				}
@@ -277,8 +308,12 @@ if ($_GET) {
 							$space = stripos($points, " ", $coordBegin);
 							$latCoord = doubleval(substr($points, $comma + 1, $space - $comma));
 							if (($latCoord >= $lat1) && ($latCoord <= $lat2)) {
-								$newline .= $lonCoord . "," . $latCoord . " ";
 								$print = true;
+								if ($sizing === true) {
+									$newline .= ($lonCoord * (500 / $width)) . "," . ($latCoord * (550 / $height)) . " ";
+								} else {
+									$newline .= $lonCoord . "," . $latCoord . " ";
+								}
 							}
 						}
 						$coordBegin = stripos($points, " ", $coordBegin) + 1;

@@ -71,6 +71,7 @@ public class TransformPartialXMLs {
 			outputStream.close();
 			if (deleteFiles) {
 				sourceFile.delete();
+				targetFile.deleteOnExit();
 			}
 			if (fileLog) {
 				System.out.println("Step 1: File " + i + "/" + splittedFilesCount);

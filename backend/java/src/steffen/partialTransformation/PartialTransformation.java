@@ -14,7 +14,7 @@ import steffen.layer.Layer;
 
 public class PartialTransformation {
 	
-	private static Layer		myLayer				= Layer.Towns;
+	private static Layer		myLayer				= Layer.Federal;
 	private static boolean	myBawu				= true;
 	
 	private static int		width					= 500;
@@ -47,8 +47,14 @@ public class PartialTransformation {
 		double margin = 2.0; // Km
 		PartialTransformation.lon1 -= margin / Constants.xRatio;
 		PartialTransformation.lon2 += margin / Constants.xRatio;
-		PartialTransformation.lat1 -= margin / Constants.yRatio;
-		PartialTransformation.lat2 += margin / Constants.yRatio;
+		PartialTransformation.lat1 += margin / Constants.yRatio;
+		PartialTransformation.lat2 -= margin / Constants.yRatio;
+		
+//		System.out.println(lon1);
+//		System.out.println(lon2);
+//		System.out.println(lat1);
+//		System.out.println(lat2);
+//		System.exit(1);
 		
 		String fileSource = "";
 		if (bawu) {

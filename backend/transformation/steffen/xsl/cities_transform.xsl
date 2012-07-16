@@ -2,8 +2,9 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink">
 	<xsl:output method="xml" version="1.0" encoding="UTF-8" />
 
-	<xsl:variable name="lon_factor" select="164.745" />
-	<xsl:variable name="lat_factor" select="235.445" />
+	<!-- für 500x500 px -->
+	<xsl:variable name="lon_factor" select="162.675" />
+	<xsl:variable name="lat_factor" select="218.716" />
 
 	<xsl:template match="/">
 		<xsl:apply-templates select="osm" />

@@ -38,7 +38,9 @@ public class SplitIntoSimplierFiles {
 		int file = 1;
 		String line = null;
 		if (layer.nodeLayer) {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(new File(fileTarget + file + ".xml")));
+			File splitFile = new File(fileTarget + file + ".xml");
+			splitFile.deleteOnExit();
+			BufferedWriter writer = new BufferedWriter(new FileWriter(splitFile));
 			writer.write("<?xml version='1.0' encoding='UTF-8'?>" + Constants.lineSeparator);
 			writer.write("<osm>" + Constants.lineSeparator);
 			int nodeCount = 0;
@@ -61,7 +63,9 @@ public class SplitIntoSimplierFiles {
 							System.out.println("File " + file);
 						}
 						file++;
-						writer = new BufferedWriter(new FileWriter(new File(fileTarget + file + ".xml")));
+						splitFile = new File(fileTarget + file + ".xml");
+						splitFile.deleteOnExit();
+						writer = new BufferedWriter(new FileWriter(splitFile));
 						writer.write("<?xml version='1.0' encoding='UTF-8'?>" + Constants.lineSeparator);
 						writer.write("<osm>" + Constants.lineSeparator);
 					}
@@ -114,6 +118,7 @@ public class SplitIntoSimplierFiles {
 			Hashtable<Integer, Boolean> nodes) throws IOException {
 		BufferedReader reader2 = new BufferedReader(new FileReader(new File(fileSource)));
 		File myFile = new File(fileTarget + file + ".xml");
+		myFile.deleteOnExit();
 		BufferedWriter writer = new BufferedWriter(new FileWriter(myFile));
 		writer.write("<?xml version='1.0' encoding='UTF-8'?>" + Constants.lineSeparator);
 		writer.write("<osm>" + Constants.lineSeparator);

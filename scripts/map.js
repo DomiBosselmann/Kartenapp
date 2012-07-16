@@ -707,7 +707,7 @@ Array.prototype.unique = function () {
 }
 
 Object.prototype.equal = function (object) {
-	var keys = Object.keys(this),
+	var keys = Object.keys(this), tempResult,
 		i = 0;
 	
 	for (i; i < keys.length; i++) {
@@ -717,7 +717,7 @@ Object.prototype.equal = function (object) {
 		
 		if (this[keys[i]] instanceof Object) {
 			tempResult = this[keys[i]].equal(object[keys[i]]);
-			if (!tempresult) {
+			if (!tempResult) {
 				return false;
 			}
 		} else if (!(this[keys[i]] instanceof Function)) {

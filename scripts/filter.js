@@ -89,8 +89,6 @@ var Sort = {
 				case "smaller":
 					return element[attribute] < value;
 				case "contains" :
-					debugger;
-					console.log(attribute, element[attribute]);
 					return element[attribute].search(new RegExp(value, "i")) !== -1;
 			}
 		});

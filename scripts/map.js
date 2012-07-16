@@ -27,28 +27,30 @@ window.Karte = (function () {
 		layers : {
 			roads : {
 				name : "Straßen",
-				visible : false,
+				visible : true,
 				paramName : undefined,
 				sub : {
 					motorways : {
 						name : "Autobahnen",
 						visible : true,
-						paramName : "m"
+						paramName : "s",
+						layerName : "motorways"
 					},
 					federal : {
 						name : "Bundesstraßen",
 						visible : true,
-						paramName : undefined
+						paramName : "s2",
+						layerName : "primaries"
 					},
 					landesstrasse : {
 						name : "Landesstraße",
 						visible : false,
-						paramName : undefined
+						paramName : "s3"
 					},
 					kreisstrasse : {
 						name : "Kreisstraße",
 						visible : false,
-						paramName : undefined
+						paramName : "s4"
 					}
 				}
 			},
@@ -59,27 +61,32 @@ window.Karte = (function () {
 					cities : {
 						name : "Städte",
 						visible : true,
-						paramName : "c"
+						paramName : "c",
+						layerName : "cities"
 					},
 					towns : {
 						name : "(Dörfer)",
-						visible : false,
-						paramName : "c1"
+						visible : true,
+						paramName : "c1",
+						layerName : "towns"
 					},
 					villages : {
 						name : "(Kuhdörfer)",
-						visible : false,
-						paramName : "c2"
+						visible : true,
+						paramName : "c2",
+						layerName : "villages"
 					},
 					hamlets : {
 						name : "(Kaffs)",
-						visible : false,
-						paramName : "c3"
+						visible : true,
+						paramName : "c3",
+						layerName : "hamlets"
 					},
 					suburbs : {
 						name : "(Bauernhof)",
 						visible : false,
-						paramName : "c4"
+						paramName : "c4",
+						layerName : "suburbs"
 					}
 				}
 			},
@@ -91,30 +98,65 @@ window.Karte = (function () {
 					federal : {
 						name : "Länder",
 						visible : true,
-						paramName : "b"
+						paramName : "b",
+						layerName : "federal"
 					},
 					counties : {
 						name : "Landkreise",
-						visible : false,
-						paramName : "b1"
+						visible : true,
+						paramName : "b1",
+						layerName : "counties"
 					}
 				}
 			},
 			rivers : {
-				name : "Seen und Flüsse",
-				visibile : false,
+				name : "Seen & Flüsse",
+				visibile : true,
 				paramName : undefined,
 				sub : {
 					rivers : {
 						name : "Flüsse",
 						visible : true,
-						paramName : "r"
+						paramName : "w"
 					}
 				}
 			}
 		},
-		places : [],
-		routes : []
+		places : [
+			{
+				name : "Feierabendweg 17",
+				visible : true,
+				note : "Mein Zuhause",
+				coordinates : []
+			},
+			{
+				name : "Erzbergerstraße 121",
+				visible : true,
+				note : "Meine Uni",
+				coordinates : []
+			},
+			{
+				name : "Medienallee 1",
+				visible : true,
+				note : "Mein Lieblingsfernsehsender",
+				coordinates : []
+			},
+			{
+				name : "Dietmar-Hopp-Alle 2",
+				visible : true,
+				note : "Mein Arbeitsplatz",
+				coordinates : []
+			},
+		],
+		routes : [
+			{
+				name : "Weg zur Hochschule",
+				distance : "3km",
+				note : "Blafaselblubber",
+				points : [],
+				visible : true
+			}
+		]
 	}
 	
 	var controller = {
@@ -153,7 +195,7 @@ window.Karte = (function () {
 			this.uiElements.visibilities = document.getElementById("visibilities");
 			
 			// EventListener hinzufügen
-			this.uiElements.searchButton.addEventListener("click", this.handler.enableSearch, false);
+			this.uiElements.searchButton.addEventListener("click", this.handler.handleSearch, false);
 			this.uiElements.exportButton.addEventListener("click", function (e) { console.log(e); }, false);
 			this.uiElements.importButton.addEventListener("click", function (e) { console.log(e); }, false);
 			this.uiElements.saveButton.addEventListener("click", function (e) { console.log(e); }, false);
@@ -192,37 +234,45 @@ window.Karte = (function () {
 			map.scaling.observe("value",function (event) {
 				controller.uiElements.mapScaleText.textContent = Math.round(event.data * 100) / 100 + map.scaling.unit;
 			});
+			
+			// Benötigte Layer bestimmen
+			var layers = [];
+					
+			for (type in map.layers) {
+				if (map.layers.hasOwnProperty(type) && map.layers[type].visible) {
+					for (subtype in map.layers[type].sub) {
+						if (map.layers[type].sub.hasOwnProperty(subtype) && map.layers[type].sub[subtype].visible && map.layers[type].sub[subtype].paramName !== undefined) {
+							layers.push(map.layers[type].sub[subtype].paramName);
+						}
+					}
+				}
+			}
 						
 			// Karte laden
-			this.loadMap(undefined, undefined, {
-				onSuccess : function (event) {
-					var data = event.data,
-						coordinates = data.getElementsByTagName("koords")[0];
-					
-					// Koordinaten auslesen
-					map.coordinates.topLeft = [parseFloat(coordinates.getAttribute("lat1")), parseFloat(coordinates.getAttribute("lon1"))];
-					map.coordinates.bottomRight = [parseFloat(coordinates.getAttribute("lat2")), parseFloat(coordinates.getAttribute("lon2"))];
-					//map.coordinates.center = [(map.coordinates.topLeft[0] - map.coordinates.bottomRight[0])/2 + map.coordinates.topLeft[0], (map.coordinates.topLeft[1] - map.coordinates.bottomRight[1])/2 + map.coordinates.topLeft[1]];
-					
-					// Maßstab neu berechnen
-					map.scaling.value = units.geoCoordinatesToDistance(map.coordinates.topLeft, map.coordinates.bottomRight) / map.dimensions.width * 100;
-					map.scaling.zoomLevelValue = map.scaling.value;
-										
-					// Renderer anstoßen
-					renderer.start(data);
-				},
+			this.loadMap(undefined, undefined, layers, {
+				onSuccess : controller.handler.loadMap,
 				onError : function (event) {
 					alert("tja, iwie blöd gelaufen");
 				}
 			});
 			
 			// Ansichten anzeigen
-			sideView.renderVisibilities();
+			sideView.render();
 		},
 		handler : {
+			handleSearch : function (event) {
+				if (event.altKey) {
+					controller.uiElements.searchField.value = "";
+					sideView.renderFlags(true);
+					sideView.renderFlags(false);
+				} else {
+					controller.handler.enableSearch(event);
+				}
+			},
 			enableSearch : function (event) {
 				// Suchfeld einblenden und fokussieren
 				controller.uiElements.toolbar.className = "searchEnabled";
+				controller.uiElements.searchField.addEventListener("blur", controller.handler.disableSearch, false);
 				controller.uiElements.searchField.focus();
 				
 				controller.uiElements.searchButton.removeEventListener("click", controller.handler.enableSearch, false);
@@ -232,16 +282,39 @@ window.Karte = (function () {
 					if (controller.uiElements.searchField.value === "") {
 						controller.handler.disableSearch();
 					}
-				} else if (event.type === "keyup" && event.keyCode === 13) {
+				} else if (event.type === "keyup") {
 					controller.handler.performSearch();
 				}
 			},
 			performSearch : function (event) {
-				alert("Du suchst also nach \"" + controller.uiElements.searchField.value + "\". Wenn jetzt die Suchfunktion funktionieren würde...");
+				var filteredData = [];
+				
+				if (controller.uiElements.searchField.value === "") {
+					// Wenn Suchfeld leer ist, kann die ganze View gerendert werden
+					sideView.renderFlags(false);
+					sideView.renderFlags(true);
+				} else {
+					// Suchausdruck durchsucht Namen und Notitz
+					// Zunächst werden die Orte durchsucht
+					filteredData = Sort.filter(map.places, [{ attribute : "note", type : "contains", value : controller.uiElements.searchField.value }]);
+					filteredData = filteredData.concat(Sort.filter(map.places, [{ attribute : "name", type : "contains", value : controller.uiElements.searchField.value }]));
+					
+					filteredData = filteredData.unique();
+										
+					sideView.renderFlags(false, filteredData);
+					
+					// Jetzt werden die Strecken durchsucht
+					filteredData = Sort.filter(map.routes, [{ attribute : "note", type : "contains", value : controller.uiElements.searchField.value }]);
+					filteredData = filteredData.concat(Sort.filter(map.routes, [{ attribute : "name", type : "contains", value : controller.uiElements.searchField.value }]));
+					
+					filteredData = filteredData.unique();
+					
+					sideView.renderFlags(true, filteredData);
+				}			
 			},
 			disableSearch : function () {
 				controller.uiElements.toolbar.className = "";
-				controller.uiElements.searchButton.addEventListener("click", controller.handler.enableSearch, false);
+				controller.uiElements.searchButton.addEventListener("click", controller.handler.handleSearch, false);
 			},
 			switchMapView : function (event) {
 				// Überprüfung ob die View geändert wurde
@@ -342,34 +415,38 @@ window.Karte = (function () {
 				object.visible = object.visible ? false : true;
 				event.currentTarget.className = object.visible ? "active" : "inactive";
 				
-				renderer.filter();
+				renderer.filter(object, !object.visible);
+			},
+			loadMap : function (event) {
+				//console.log(event.textData);
+				var data = event.data,
+					coordinates = data.getElementsByTagName("coords")[0];
+				
+				// Koordinaten auslesen
+				map.coordinates.topLeft = [parseFloat(coordinates.getAttribute("lat1")), parseFloat(coordinates.getAttribute("lon1"))];
+				map.coordinates.bottomRight = [parseFloat(coordinates.getAttribute("lat2")), parseFloat(coordinates.getAttribute("lon2"))];
+				//map.coordinates.center = [(map.coordinates.topLeft[0] - map.coordinates.bottomRight[0])/2 + map.coordinates.topLeft[0], (map.coordinates.topLeft[1] - map.coordinates.bottomRight[1])/2 + map.coordinates.topLeft[1]];
+				
+				// Maßstab neu berechnen
+				map.scaling.value = units.geoCoordinatesToDistance(map.coordinates.topLeft, map.coordinates.bottomRight) / map.dimensions.width * 100;
+				map.scaling.zoomLevelValue = map.scaling.value;
+									
+				// Renderer anstoßen
+				renderer.start(data);
 			}
 		},
-		loadMap : function (latitude, longitude, handler) {
+		loadMap : function (latitude, longitude, layers, handler) {
 			
 			var parameters, params = [], requestURL = constants.url, request,
-				layers = [],
 				key;
-							
-			// Layer bestimmen
-			
-			for (type in map.layers) {
-				if (map.layers.hasOwnProperty(type) && map.layers[type].visible) {
-					for (subtype in map.layers[type].sub) {
-						if (map.layers[type].sub.hasOwnProperty(subtype) && map.layers[type].sub[subtype].visible && map.layers[type].sub[subtype].paramName !== undefined) {
-							layers.push(map.layers[type].sub[subtype].paramName);
-						}
-					}
-				}
-			}
-			
-			console.log(layers);
-			
+						
 			// Parameter für die Übergabe zusammenschustern
 			
 			parameters = {
 				lat : latitude,
-				long : longitude,
+				lon : longitude,
+				width: map.dimensions.width,
+				height : map.dimensions.height
 			};
 			
 			layers.forEach(function (value, index) {
@@ -413,6 +490,7 @@ window.Karte = (function () {
 	
 	var renderer = {
 		data : undefined,
+		layers : undefined,
 		start : function (data) {
 			// Verwaltungsmethode für den Renderer
 			this.data = data;
@@ -420,6 +498,8 @@ window.Karte = (function () {
 			this.parse();
 			this.render();
 			this.optimize();
+			
+			this.layers = controller.uiElements.mapRoot.getElementsByTagName("g");
 		},
 		parse : function () {
 			this.data = this.data.getElementsByTagName("svg")[0].childNodes;
@@ -437,8 +517,15 @@ window.Karte = (function () {
 		stop : function () {
 			
 		},
-		filter : function () {
+		filter : function (layer, filter) {
+			var layerElement = controller.uiElements.mapRoot.getElementById(layer.layerName); // TODO: evtl auch document.getElementById()
 			
+			if (layerElement === null) {
+				// Layer noch nicht verfügbar, nachladen
+				controller.loadMap(undefined, undefined, [layer.paramName], { onSuccess : controller.handler.loadMap });
+			} else {
+				layerElement.style.display = filter ? "none" : "";
+			}
 		},
 		zoom : function (newDistance, oldDistance) {
 			var scaleFactor = (newDistance / oldDistance);
@@ -480,6 +567,34 @@ window.Karte = (function () {
 					}
 				}
 			}
+		},
+		renderFlags : function (routes, data) {
+			var item, note, name,
+				list = routes ? document.getElementById("routes") : document.getElementById("places"), // AUSLAGERN
+				content = data ? data : (routes ? map.routes : map.places);
+				
+			list.innerHTML = "";
+			
+			content.forEach(function (place) {
+				item = document.createElement("li");
+				
+				note = document.createElement("span");
+				name = document.createElement("span");
+				
+				item.className = place.visible ? "active" : "inactive";
+				
+				name.textContent = place.name;
+				note.textContent = place.note;
+				
+				item.appendChild(name);
+				item.appendChild(note);
+				list.appendChild(item);
+			});
+		},
+		render : function () {
+			this.renderFlags(true);
+			this.renderFlags(false);
+			this.renderVisibilities();
 		}
 	};
 	
@@ -539,6 +654,10 @@ window.Karte = (function () {
 			renderer.zoom(oldDistance, newDistance);
 		},
 		units : units
+	,
+		filter : function (filters) {
+			renderer.filter(filters);
+		}
 	}
 	
 })();
@@ -573,6 +692,67 @@ Object.prototype.observe = function (property,handler) {
 		});
 	}
 };
+
+Array.prototype.unique = function () {
+	var length = this.length,
+		returnArray = [];
+	
+	this.forEach(function (value) {
+		if (!returnArray.in_array(value)) {
+			returnArray.push(value);
+		}
+	});
+	
+	return returnArray;
+}
+
+Object.prototype.equal = function (object) {
+	var keys = Object.keys(this),
+		i = 0;
+	
+	for (i; i < keys.length; i++) {
+		if (object[keys[i]] === "undefined") {
+			return false;
+		}
+		
+		if (this[keys[i]] instanceof Object) {
+			tempResult = this[keys[i]].equal(object[keys[i]]);
+			if (!tempresult) {
+				return false;
+			}
+		} else if (!(this[keys[i]] instanceof Function)) {
+			if (object[keys[i]] !== this[keys[i]]) {
+				return false;
+			}
+		}
+	}
+	
+	return true;
+}
+
+Array.prototype.in_array = function (value,remove) {
+	var found = false,
+		i = 0;
+			
+	for (i; i < this.length; i++) {
+		if (this[i] instanceof Array) {
+			found = this[i].in_array(value);
+		} else if (this[i] instanceof Object && value instanceof Object) {
+			found = this[i].equal(value);
+		} else if (this[i] === value) {
+			found = true;
+		}
+		
+		if (found) {
+			if (remove === true) {
+				this.splice(i,1);
+			}
+			return true;
+		}
+	}
+	
+	return false;
+}
 
 window.addEventListener("DOMContentLoaded", function() {
 	Karte.init();

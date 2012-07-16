@@ -18,7 +18,7 @@ public class PartialTransformation {
 	private static boolean	myBawu				= true;
 	
 	private static int		width					= 500;
-	private static int		height				= 550;
+	private static int		height				= 500;
 	private static boolean	deleteTempFiles	= true;
 	
 	private static double	lon1;

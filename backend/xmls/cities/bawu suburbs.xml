@@ -1,0 +1,3531 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<osm>
+<node id="17652681" lat="48.9994421" lon="8.4702066">
+<tag k="name" v="Durlach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="17652684" lat="49.0362712" lon="8.3104443">
+<tag k="name" v="Maxau"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="20603299" lat="48.7196031" lon="8.1138218">
+<tag k="name" v="Vimbuch"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="20958598" lat="48.7784950" lon="9.1295324">
+<tag k="name" v="Botnang"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="20969453" lat="48.7415827" lon="9.1525726">
+<tag k="name" v="Sonnenberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="20979375" lat="49.5213137" lon="8.6672241">
+<tag k="name" v="Hohensachsen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="21484598" lat="49.0021606" lon="8.4060496">
+<tag k="name" v="Südstadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="21486818" lat="48.9993319" lon="8.3849467">
+<tag k="name" v="Südweststadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="21486819" lat="49.0260694" lon="8.3883417">
+<tag k="name" v="Nordstadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="21486820" lat="49.0118481" lon="8.4267919">
+<tag k="name" v="Oststadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="21486941" lat="48.9746430" lon="8.4044285">
+<tag k="name" v="Rüppurr"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="21487097" lat="49.0133216" lon="8.3635856">
+<tag k="name" v="Mühlburg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="21614020" lat="48.9530509" lon="8.5080081">
+<tag k="name" v="Stupferich"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="21973471" lat="47.9865450" lon="7.8485597">
+<tag k="name" v="Wiehre"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="21973472" lat="47.9773178" lon="7.8961055">
+<tag k="name" v="Littenweiler"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="21973474" lat="48.0081440" lon="7.8586120">
+<tag k="name" v="Herdern"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="21973477" lat="47.9988801" lon="7.8377315">
+<tag k="name" v="Stühlinger"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="21973479" lat="47.9667841" lon="7.8567215">
+<tag k="name" v="Günterstal"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="21973757" lat="47.9994720" lon="7.7914334">
+<tag k="name" v="Rieselfeld"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="21973760" lat="47.9813817" lon="7.8020827">
+<tag k="name" v="Sankt Georgen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="21973762" lat="47.9876466" lon="7.8195905">
+<tag k="name" v="Haslach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="21973765" lat="47.9976901" lon="7.8022658">
+<tag k="name" v="Weingarten"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="21975207" lat="47.9722553" lon="7.9103999">
+<tag k="name" v="Kappel"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="21975209" lat="47.9859743" lon="7.9034026">
+<tag k="name" v="Ebnet"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="24465009" lat="48.9850514" lon="8.3999556">
+<tag k="name" v="Dammerstock"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="25243039" lat="49.0017745" lon="8.3551901">
+<tag k="name" v="Grünwinkel"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="25284056" lat="49.4543291" lon="8.4962386">
+<tag k="name" v="Neckarau"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="25308559" lat="49.0366826" lon="8.4399015">
+<tag k="name" v="Waldstadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="25311869" lat="49.0154961" lon="8.4407597">
+<tag k="name" v="Rintheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="25345203" lat="49.0487587" lon="8.3971373">
+<tag k="name" v="Kirchfeldsiedlung"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="25510028" lat="48.9469176" lon="8.4822808">
+<tag k="name" v="Palmbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="25510029" lat="48.9573690" lon="8.4685787">
+<tag k="name" v="Grünwettersbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="25510030" lat="48.9665053" lon="8.4809019">
+<tag k="name" v="Hohenwettersbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="25972297" lat="48.8982287" lon="8.7462919">
+<tag k="name" v="Mäuerach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="26230714" lat="49.0335862" lon="8.4579739">
+<tag k="name" v="Hagsfeld"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="26534488" lat="48.7278294" lon="9.1477780">
+<tag k="name" v="Möhringen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="26595239" lat="48.7343707" lon="8.7352413">
+<tag k="name" v="Hirsau"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="26784838" lat="49.0299133" lon="8.3402502">
+<tag k="name" v="Knielingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="26784841" lat="49.0310492" lon="8.3698501">
+<tag k="name" v="Nordweststadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="26784842" lat="49.0458727" lon="8.3784311">
+<tag k="name" v="Neureut"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="26784847" lat="48.9863919" lon="8.3617431">
+<tag k="name" v="Oberreut"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="26784903" lat="48.9847681" lon="8.3926864">
+<tag k="name" v="Weiherfeld"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="27088006" lat="48.9775824" lon="8.4569422">
+<tag k="name" v="Wolfartsweier"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="27088086" lat="48.8121423" lon="8.9790487">
+<tag k="name" v="Gebersheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="27306992" lat="48.9613040" lon="8.2893591">
+<tag k="name" v="Mörsch"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="27306994" lat="48.9786731" lon="8.3136959">
+<tag k="name" v="Forchheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="27306995" lat="48.9722189" lon="8.2651664">
+<tag k="name" v="Neuburgweier"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="27424860" lat="48.4413504" lon="9.6494493">
+<tag k="name" v="Ennabeuren"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="27510796" lat="48.8662042" lon="9.3162066">
+<tag k="name" v="Hohenacker"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="27527306" lat="48.8152760" lon="9.1124440">
+<tag k="name" v="Weilimdorf"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="27547436" lat="48.8257366" lon="8.2322999">
+<tag k="name" v="Förch"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="27675428" lat="48.0003542" lon="7.8641728">
+<tag k="name" v="Neuburg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="27675435" lat="47.9902953" lon="7.8677772">
+<tag k="name" v="Oberau"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="27675442" lat="48.0079608" lon="7.8151832">
+<tag k="name" v="Betzenhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="27675447" lat="48.0184166" lon="7.8203094">
+<tag k="name" v="Mooswald"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="27675464" lat="48.0168263" lon="7.8429967">
+<tag k="name" v="Brühl"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="27793254" lat="48.8563831" lon="9.2972770">
+<tag k="name" v="Hegnach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="27796980" lat="48.8698373" lon="9.2758759">
+<tag k="name" v="Neckarrems"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="28243880" lat="48.7004476" lon="9.2137251">
+<tag k="name" v="Plieningen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="28250176" lat="48.7181954" lon="9.2316035">
+<tag k="name" v="Kemnat"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="28254097" lat="48.7528796" lon="9.2435295">
+<tag k="name" v="Lederberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="28256181" lat="48.7564360" lon="9.2526651">
+<tag k="name" v="Hedelfingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="28256972" lat="48.7471657" lon="9.2377466">
+<tag k="name" v="Heumaden"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="28787335" lat="48.8226525" lon="9.3458028">
+<tag k="name" v="Beinstein"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="28932251" lat="48.8455231" lon="8.1357373">
+<tag k="name" v="Wintersdorf"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="28932252" lat="48.8607565" lon="8.1548745">
+<tag k="name" v="Ottersdorf"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="28932253" lat="48.8846536" lon="8.1563625">
+<tag k="name" v="Plittersdorf"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="28960968" lat="48.8888945" lon="9.3140615">
+<tag k="name" v="Bittenfeld"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="28982720" lat="48.8291407" lon="9.3752391">
+<tag k="name" v="Kleinheppach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="29026572" lat="48.7474464" lon="9.3422183">
+<tag k="name" v="Liebersbronn"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="29094980" lat="48.6955788" lon="8.9396791">
+<tag k="name" v="Darmsheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="29162776" lat="48.8884985" lon="9.2789744">
+<tag k="name" v="Hochberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="29163387" lat="48.8976705" lon="9.2944928">
+<tag k="name" v="Hochdorf"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="29376562" lat="48.3958022" lon="9.9544271">
+<tag k="name" v="Söflingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="29671408" lat="48.8343806" lon="9.2610630">
+<tag k="name" v="Schmiden"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="29685129" lat="48.8477091" lon="9.3214106">
+<tag k="name" v="Neustadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="29767619" lat="48.8564408" lon="8.2478596">
+<tag k="name" v="Rauental"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="29917930" lat="48.7906497" lon="9.4043656">
+<tag k="name" v="Schnait"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="29940338" lat="48.7130178" lon="8.9113917">
+<tag k="name" v="Döffingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="30061183" lat="49.2448350" lon="9.8501704">
+<tag k="name" v="Bächlingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="30484632" lat="48.9513229" lon="8.3818383">
+<tag k="name" v="Ettlingen-West"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="30780216" lat="48.5047413" lon="8.7767897">
+<tag k="name" v="Baisingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="30780224" lat="48.4725431" lon="8.8172500">
+<tag k="name" v="Eckenweiler"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="30780227" lat="48.5272252" lon="8.8682126">
+<tag k="name" v="Hailfingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="30780233" lat="48.5075404" lon="8.8740277">
+<tag k="name" v="Seebronn"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="30813665" lat="48.4594719" lon="8.7931487">
+<tag k="name" v="Weitingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="30960393" lat="48.8868972" lon="8.6553959">
+<tag k="name" v="Arlinger"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="31153068" lat="48.6181556" lon="9.3093028">
+<tag k="name" v="Neckarhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="31550395" lat="48.6423531" lon="9.3478133">
+<tag k="name" v="Zizishausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="31621104" lat="48.5786315" lon="9.5111962">
+<tag k="name" v="Ochsenwang"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="31910524" lat="49.2018784" lon="9.6164739">
+<tag k="name" v="Kesselfeld"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="32131183" lat="48.7403672" lon="8.2739541">
+<tag k="name" v="Oberbeuern"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="32132216" lat="48.7869048" lon="8.1914600">
+<tag k="name" v="Oos"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="32132217" lat="48.7780323" lon="8.2158705">
+<tag k="name" v="Weststadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="32132218" lat="48.7299655" lon="8.2531690">
+<tag k="name" v="Geroldsau"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="32132219" lat="48.7459410" lon="8.2582944">
+<tag k="name" v="Lichtental"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="32135863" lat="48.7205389" lon="8.1817332">
+<tag k="name" v="Neuweier"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="32573623" lat="48.7360832" lon="8.1787874">
+<tag k="name" v="Varnhalt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="33075037" lat="48.7586035" lon="9.3794273">
+<tag k="name" v="Schanbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="33075038" lat="48.7481800" lon="9.3928765">
+<tag k="name" v="Aichschieß"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="33075039" lat="48.7797782" lon="9.3913928">
+<tag k="name" v="Aichelberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="33123554" lat="48.7761131" lon="8.1726788">
+<tag k="name" v="Kartung"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="33551970" lat="48.8729431" lon="8.1939136">
+<tag k="name" v="Rheinau"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="33615439" lat="47.5717399" lon="7.7456376">
+<tag k="name" v="Degerfelden"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="33759588" lat="48.8653366" lon="10.1047551">
+<tag k="name" v="Wasseralfingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="34003898" lat="47.7398775" lon="9.2618966">
+<tag k="name" v="Mühlhofen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="34003933" lat="47.7634792" lon="9.2876818">
+<tag k="name" v="Mimmenhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="34178022" lat="48.8048828" lon="9.2146797">
+<tag k="name" v="Bad Cannstatt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="34533310" lat="48.5142314" lon="9.8496040">
+<tag k="name" v="Scharenstetten"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="34589817" lat="48.7884102" lon="8.2248384">
+<tag k="name" v="Balg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="34817659" lat="48.2153905" lon="9.8261278">
+<tag k="name" v="Obersulmetingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="34817660" lat="48.2302057" lon="9.8272299">
+<tag k="name" v="Untersulmetingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="34912286" lat="48.8414591" lon="10.1147344">
+<tag k="name" v="Grauleshof"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="35081029" lat="48.9759143" lon="9.6049713">
+<tag k="name" v="Alm"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="36261215" lat="47.7297078" lon="9.6985866">
+<tag k="name" v="Rotheidlen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="36304356" lat="47.7656692" lon="9.6012973">
+<tag k="name" v="Weißenau"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="36679490" lat="48.8312987" lon="9.1674403">
+<tag k="name" v="Zuffenhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="36771173" lat="48.5758288" lon="8.6497332">
+<tag k="name" v="Walddorf"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="39874370" lat="48.5758962" lon="8.9223232">
+<tag k="name" v="Kayh"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="39876834" lat="48.5823984" lon="8.9137785">
+<tag k="name" v="Mönchberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="40929833" lat="48.6407099" lon="9.0607761">
+<tag k="name" v="Neuweiler"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="41103202" lat="48.6918280" lon="8.9522805">
+<tag k="name" v="Dagersheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="41107271" lat="48.7167395" lon="8.8865242">
+<tag k="name" v="Dätzingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="41756991" lat="48.6253720" lon="8.9237554">
+<tag k="name" v="Rohrau"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="41760724" lat="48.6060318" lon="8.8583340">
+<tag k="name" v="Affstätt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="41773745" lat="49.0484518" lon="8.4630273">
+<tag k="name" v="Blankenloch-Büchig"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="43570133" lat="49.0827601" lon="9.6874008">
+<tag k="name" v="Bibersfeld"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="43679820" lat="48.6899824" lon="9.8915503">
+<tag k="name" v="Treffelhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="44539565" lat="48.7259509" lon="8.8903706">
+<tag k="name" v="Schafhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="52705424" lat="49.4682064" lon="8.4569761">
+<tag k="name" v="Parkinsel"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="59770755" lat="49.0425103" lon="8.6803751">
+<tag k="name" v="Diedelsheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="59777220" lat="47.6663044" lon="9.5529730">
+<tag k="name" v="Kau"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="59866443" lat="48.3503592" lon="9.9741044">
+<tag k="name" v="Wiblingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="60101461" lat="48.8050521" lon="9.0897073">
+<tag k="name" v="Giebel"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="60106001" lat="48.8164542" lon="9.0867222">
+<tag k="name" v="Hausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="60106694" lat="48.8058137" lon="9.0845336">
+<tag k="name" v="Gehenbühl"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="60490375" lat="48.6900763" lon="9.6318717">
+<tag k="name" v="Jebenhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="60889577" lat="48.8143972" lon="8.9034423">
+<tag k="name" v="Perouse"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="61942757" lat="48.6396918" lon="9.4877493">
+<tag k="name" v="Jesingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="63290228" lat="49.4591269" lon="8.4864900">
+<tag k="name" v="Almenhof"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="63290234" lat="49.4557288" lon="8.4765695">
+<tag k="name" v="Niederfeld"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="64950877" lat="48.4457060" lon="9.6686294">
+<tag k="name" v="Sontheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="64965467" lat="48.1566990" lon="9.5594607">
+<tag k="name" v="Offingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="65267640" lat="48.2936171" lon="8.5569292">
+<tag k="name" v="Lindenhof"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="65319123" lat="49.4687389" lon="8.5990640">
+<tag k="name" v="Neckarhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="66381629" lat="48.1287374" lon="9.4747306">
+<tag k="name" v="Neufra"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="67376553" lat="48.6965194" lon="9.1414617">
+<tag k="name" v="Leinfelden"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="69137990" lat="49.3050017" lon="9.6350654">
+<tag k="name" v="Criesbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="69263347" lat="47.6688679" lon="7.6495915">
+<tag k="name" v="Wollbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="69321646" lat="48.5132828" lon="8.7485083">
+<tag k="name" v="Vollmaringen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="69325514" lat="48.5156283" lon="8.7103605">
+<tag k="name" v="Gündringen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="69325540" lat="48.4960563" lon="8.7204331">
+<tag k="name" v="Hochdorf"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="70793269" lat="47.6580839" lon="9.4437798">
+<tag k="name" v="Seemoos"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="73578265" lat="48.0527930" lon="9.3214413">
+<tag k="name" v="Ennetach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="73910953" lat="49.1616422" lon="8.4184146">
+<tag k="name" v="Liedolsheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="74268455" lat="47.6118967" lon="7.7595552">
+<tag k="name" v="Adelhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="74290704" lat="47.5991361" lon="7.7906696">
+<tag k="name" v="Minseln"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="74290710" lat="47.5823763" lon="7.8061053">
+<tag k="name" v="Beuggen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="74290717" lat="47.5902319" lon="7.8216183">
+<tag k="name" v="Riedmatt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="75872173" lat="47.7252888" lon="8.8464937">
+<tag k="name" v="Arlen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="76469002" lat="47.9107959" lon="9.2025271">
+<tag k="name" v="Aach-Linz"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="76772478" lat="48.6645159" lon="9.9110667">
+<tag k="name" v="Steinenkirch"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="78728564" lat="48.7451319" lon="9.2134531">
+<tag k="name" v="Sillenbuch"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="79283210" lat="48.7719851" lon="9.2449269">
+<tag k="name" v="Wangen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="80219434" lat="47.7923190" lon="9.1987335">
+<tag k="name" v="Bambergen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="80219766" lat="47.8104353" lon="9.2186666">
+<tag k="name" v="Ernatsreute"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="81132243" lat="49.2443525" lon="8.5411869">
+<tag k="name" v="Kirrlach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="81132245" lat="49.2246438" lon="8.5224505">
+<tag k="name" v="Wiesental"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="81300585" lat="48.7144924" lon="9.3006115">
+<tag k="name" v="Nellingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="81767247" lat="48.9598020" lon="9.1278494">
+<tag k="name" v="Bietigheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="86100724" lat="49.2662156" lon="9.7613539">
+<tag k="name" v="Kocherstetten"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="89005045" lat="48.7090113" lon="9.2645457">
+<tag k="name" v="Scharnhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="89223528" lat="48.5067675" lon="8.6957703">
+<tag k="name" v="Schietingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="90328841" lat="48.7905614" lon="8.9624049">
+<tag k="name" v="Silberberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="91588660" lat="49.5307027" lon="8.6401347">
+<tag k="name" v="Ofling"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="91588668" lat="49.5313443" lon="8.6481595">
+<tag k="name" v="Waid"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="95644281" lat="48.3581661" lon="8.8186704">
+<tag k="name" v="Stetten bei Haigerloch"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="95644284" lat="48.3345002" lon="8.8305672">
+<tag k="name" v="Owingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="95711918" lat="48.2224422" lon="8.9199353">
+<tag k="name" v="Laufen an der Eyach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="95772298" lat="48.2292743" lon="9.6285996">
+<tag k="name" v="Algershofen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="96617079" lat="48.9270732" lon="9.2567525">
+<tag k="name" v="Hörnle"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="96986544" lat="49.2522526" lon="8.9048699">
+<tag k="name" v="Rohrbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="97959552" lat="48.5865407" lon="8.7035495">
+<tag k="name" v="Mindersbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="97961096" lat="48.5837193" lon="8.7343004">
+<tag k="name" v="Emmingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="98155334" lat="49.0014111" lon="8.3386057">
+<tag k="name" v="Daxlanden"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="98865198" lat="48.5525564" lon="8.8230856">
+<tag k="name" v="Öschelbronn"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="100036815" lat="47.5967588" lon="8.0323975">
+<tag k="name" v="Hänner"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="101522610" lat="48.6597274" lon="8.7441832">
+<tag k="name" v="Holzbronn"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="101538464" lat="48.6789837" lon="8.8525476">
+<tag k="name" v="Dachtel"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="104544922" lat="48.6549696" lon="8.6796529">
+<tag k="name" v="Oberhaugstett"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="105716342" lat="48.7503413" lon="8.5382656">
+<tag k="name" v="Sommerberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="105859530" lat="48.9470149" lon="9.0992277">
+<tag k="name" v="Bissingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="105958899" lat="48.6493920" lon="8.7741523">
+<tag k="name" v="Gültlingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="106017258" lat="48.6947095" lon="8.7726511">
+<tag k="name" v="Stammheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="106065061" lat="48.7389684" lon="8.7786153">
+<tag k="name" v="Neuhengstett"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="106065063" lat="48.7428785" lon="8.7525307">
+<tag k="name" v="Ottenbronn"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="106117345" lat="48.7113276" lon="9.6160244">
+<tag k="name" v="Faurndau"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="107811369" lat="48.5914187" lon="8.7254138">
+<tag k="name" v="Pfrondorf"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="107872154" lat="48.5318251" lon="8.7230856">
+<tag k="name" v="Iselshausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="111603009" lat="48.0984462" lon="7.8571214">
+<tag k="name" v="Wasser"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="111967551" lat="48.7620776" lon="8.7995185">
+<tag k="name" v="Möttlingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="115230276" lat="48.7291082" lon="9.2521635">
+<tag k="name" v="Ruit"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="122609444" lat="48.7700150" lon="8.6849497">
+<tag k="name" v="Maisenbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="123733249" lat="48.5392268" lon="8.4412087">
+<tag k="name" v="Igelsberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="130074100" lat="48.7683494" lon="8.7559629">
+<tag k="name" v="Unterhaugstett"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="130098591" lat="48.7657824" lon="9.3097287">
+<tag k="name" v="Obertal"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="130098592" lat="48.7586723" lon="9.3165934">
+<tag k="name" v="Wäldenbronn"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="130098593" lat="48.7515559" lon="9.3126058">
+<tag k="name" v="Hohenkreuz"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="130098594" lat="48.7579222" lon="9.3087844">
+<tag k="name" v="Serach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="130098595" lat="48.7451760" lon="9.3277345">
+<tag k="name" v="Kennenburg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="130098596" lat="48.7480504" lon="9.3208228">
+<tag k="name" v="Sankt Bernhardt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="130098597" lat="48.7544313" lon="9.3308788">
+<tag k="name" v="Wiflingshausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="130098600" lat="48.7651407" lon="9.2885057">
+<tag k="name" v="Rüdern"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="130098601" lat="48.7574667" lon="9.2951312">
+<tag k="name" v="Sulzgries"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="130099092" lat="48.7623772" lon="9.2969279">
+<tag k="name" v="Krummenacker"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="130099093" lat="48.7413006" lon="9.3377664">
+<tag k="name" v="Hegensberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="130099094" lat="48.7339705" lon="9.3321356">
+<tag k="name" v="Oberesslingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="135732156" lat="48.3457313" lon="8.7749807">
+<tag k="name" v="Gruol"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="145426199" lat="49.3717176" lon="9.1369802">
+<tag k="name" v="Waldstadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="148547372" lat="47.6582185" lon="9.5877086">
+<tag k="name" v="Schäferhof"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="148548490" lat="47.6587552" lon="9.5710661">
+<tag k="name" v="Bürgermoos"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="148644423" lat="48.2814368" lon="8.5402962">
+<tag k="name" v="Beffendorf"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="158850983" lat="48.5628560" lon="8.8486443">
+<tag k="name" v="Nebringen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="158851334" lat="48.5514995" lon="8.8742206">
+<tag k="name" v="Tailfingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="158852515" lat="48.6165916" lon="8.7805157">
+<tag k="name" v="Sulz am Eck"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="171395431" lat="48.5641112" lon="10.2965890">
+<tag k="name" v="Brenz"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="183915197" lat="48.7567539" lon="8.3694176">
+<tag k="name" v="Lautenbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="185364906" lat="48.2524861" lon="8.8171477">
+<tag k="name" v="Erzingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="186903252" lat="48.8731741" lon="9.2247536">
+<tag k="name" v="Pattonville"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="190137930" lat="47.6812818" lon="9.2091307">
+<tag k="name" v="Staad"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="201037252" lat="47.8339211" lon="8.1345162">
+<tag k="name" v="Aha"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="202879840" lat="48.9226125" lon="10.1694393">
+<tag k="name" v="Dalkingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="203473406" lat="48.7758440" lon="9.2801628">
+<tag k="name" v="Uhlbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="204060889" lat="49.2021835" lon="8.6461675">
+<tag k="name" v="Bad Langenbrücken"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="206109209" lat="48.8780315" lon="9.2722056">
+<tag k="name" v="Neckargröningen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="207567897" lat="48.9132567" lon="8.5049232">
+<tag k="name" v="Langensteinbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="218766156" lat="48.8536833" lon="9.1199561">
+<tag k="name" v="Müllerheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="223715131" lat="48.5140244" lon="8.6144375">
+<tag k="name" v="Altnuifra"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="223755034" lat="48.5422013" lon="8.6381954">
+<tag k="name" v="Beihingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="228634543" lat="49.5330951" lon="8.4995619">
+<tag k="name" v="Gartenstadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="228830321" lat="47.6442150" lon="9.7653561">
+<tag k="name" v="Schwarzenbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="235584952" lat="48.6684882" lon="9.1701941">
+<tag k="name" v="Stetten"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240028113" lat="48.8341000" lon="9.1927000">
+<tag k="name" v="Rot"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240029882" lat="48.7118000" lon="9.2113000">
+<tag k="name" v="Hohenheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240035182" lat="48.7195000" lon="9.1181000">
+<tag k="name" v="Dürrlewang"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240038023" lat="48.7759000" lon="9.1798000">
+<tag k="name" v="Stuttgart-Mitte"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240041064" lat="48.8409000" lon="9.1928000">
+<tag k="name" v="Zazenhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240041176" lat="48.3863343" lon="9.2868880">
+<tag k="name" v="Großengstingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240042460" lat="48.7250947" lon="9.1918372">
+<tag k="name" v="Asemwald"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240047161" lat="48.7495970" lon="9.1703452">
+<tag k="name" v="Degerloch"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240050279" lat="48.7325007" lon="9.2001402">
+<tag k="name" v="Schönberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240051564" lat="48.3853036" lon="9.2975603">
+<tag k="name" v="Kleinengstingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240054518" lat="48.8212962" lon="9.2200016">
+<tag k="name" v="Münster"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240060600" lat="48.7611045" lon="9.2198735">
+<tag k="name" v="Frauenkopf"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240061348" lat="48.8013000" lon="9.0897000">
+<tag k="name" v="Bergheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240062275" lat="48.7153000" lon="9.2014000">
+<tag k="name" v="Steckfeld"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240064391" lat="48.4045116" lon="9.3295280">
+<tag k="name" v="Kohlstetten"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240068992" lat="48.8181532" lon="9.1906506">
+<tag k="name" v="Burgholzhof"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240072243" lat="48.3996000" lon="9.8002800">
+<tag k="name" v="Gerhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240075144" lat="48.7802000" lon="9.2509000">
+<tag k="name" v="Untertürkheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240076787" lat="48.7172000" lon="9.1060000">
+<tag k="name" v="Rohr"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240078755" lat="48.7647891" lon="9.2685155">
+<tag k="name" v="Obertürkheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240079015" lat="48.3593000" lon="9.3326600">
+<tag k="name" v="Bernloch"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240080574" lat="48.7353000" lon="9.1795000">
+<tag k="name" v="Hoffeld"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240083015" lat="48.7642010" lon="9.1679265">
+<tag k="name" v="Stuttgart-Süd"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240086020" lat="48.8123052" lon="9.1590308">
+<tag k="name" v="Feuerbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240091541" lat="48.8153084" lon="9.2410173">
+<tag k="name" v="Sommerrain"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240093370" lat="48.7217494" lon="9.2090379">
+<tag k="name" v="Birkach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240095957" lat="48.7819000" lon="9.2079000">
+<tag k="name" v="Stuttgart-Ost"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240098943" lat="48.8051083" lon="9.1086404">
+<tag k="name" v="Wolfbusch"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240105211" lat="48.7978226" lon="9.1917133">
+<tag k="name" v="Stuttgart-Nord"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240107810" lat="48.7931425" lon="9.2583905">
+<tag k="name" v="Luginsland"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240109012" lat="48.7360000" lon="9.2134000">
+<tag k="name" v="Riedenberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240114192" lat="48.8423227" lon="9.2191882">
+<tag k="name" v="Mönchfeld"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240114851" lat="48.7383104" lon="9.1293628">
+<tag k="name" v="Kaltental"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240119219" lat="48.7562361" lon="9.2235614">
+<tag k="name" v="Rohracker"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240120617" lat="48.6915000" lon="9.1914000">
+<tag k="name" v="Flughafen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240123454" lat="48.7739006" lon="9.1632873">
+<tag k="name" v="Stuttgart-West"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240126522" lat="48.8363000" lon="9.2049000">
+<tag k="name" v="Freiberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240129170" lat="48.0020584" lon="9.9100582">
+<tag k="name" v="Altbellamont"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240129202" lat="48.3476249" lon="9.3715789">
+<tag k="name" v="Ödenwaldstetten"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="240704981" lat="48.8552336" lon="8.6633844">
+<tag k="name" v="Büchenbronn"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="241184151" lat="48.5964001" lon="8.5818260">
+<tag k="name" v="Überberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="244477322" lat="48.9110267" lon="9.2211402">
+<tag k="name" v="Neckarweihingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="246035791" lat="48.4720808" lon="8.3106312">
+<tag k="name" v="Kniebis"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="246040682" lat="48.2555360" lon="9.0156432">
+<tag k="name" v="Tailfingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="246666170" lat="48.8929975" lon="9.2303849">
+<tag k="name" v="Oßweil"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="246774474" lat="48.3866673" lon="8.8074946">
+<tag k="name" v="Trillfingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="246829144" lat="49.1982786" lon="8.4668757">
+<tag k="name" v="Huttenheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="246977134" lat="48.6304314" lon="9.1536975">
+<tag k="name" v="Waldenbuch-Glashütte"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="247073775" lat="47.6839388" lon="9.5486932">
+<tag k="name" v="Kehlen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="247124445" lat="48.6390460" lon="9.9613573">
+<tag k="name" v="Gussenstadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="247894296" lat="48.4510018" lon="8.4705529">
+<tag k="name" v="Dietersweiler"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="248049509" lat="48.4796222" lon="8.4683264">
+<tag k="name" v="Grüntal"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="248050298" lat="48.5060137" lon="8.4682042">
+<tag k="name" v="Obermusbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="248050317" lat="48.4993320" lon="8.4696969">
+<tag k="name" v="Untermusbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="248596443" lat="47.6771876" lon="7.6676534">
+<tag k="name" v="Egerten"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="248642081" lat="49.5434591" lon="8.4750370">
+<tag k="name" v="Schönau"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="248642082" lat="49.5439889" lon="8.4434645">
+<tag k="name" v="Sandhofen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="248886509" lat="48.3861280" lon="8.5807744">
+<tag k="name" v="Dürrenmettstetten"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="249037734" lat="47.6594439" lon="9.6013369">
+<tag k="name" v="Oberhof"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="249060587" lat="48.3822274" lon="8.0377856">
+<tag k="name" v="Bergach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="249063195" lat="48.9508483" lon="9.6826222">
+<tag k="name" v="Kirchenkirnberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="249226963" lat="49.6230252" lon="8.6963424">
+<tag k="name" v="Juhöhe"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="249253789" lat="48.6592424" lon="9.8178495">
+<tag k="name" v="Kuchalb"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="250065240" lat="47.8726463" lon="8.1366917">
+<tag k="name" v="Vorderfalkau"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="250363428" lat="48.7478465" lon="9.2781800">
+<tag k="name" v="Mettingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="251126292" lat="48.7119369" lon="8.7639642">
+<tag k="name" v="Heumaden"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="251419449" lat="48.0461057" lon="8.2317154">
+<tag k="name" v="Schönenbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="251488504" lat="49.0866288" lon="8.5544043">
+<tag k="name" v="Untergrombach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="251488558" lat="49.0993002" lon="8.6460737">
+<tag k="name" v="Heidelsheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="251488559" lat="49.0847942" lon="8.6413947">
+<tag k="name" v="Helmsheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="251488575" lat="49.0774860" lon="8.5824901">
+<tag k="name" v="Obergrombach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="251819214" lat="49.1933686" lon="9.5938840">
+<tag k="name" v="Eschelbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="251822636" lat="48.9382532" lon="9.1822010">
+<tag k="name" v="Geisingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="252083371" lat="48.7809564" lon="8.7137352">
+<tag k="name" v="Unterlengenhardt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="252551181" lat="48.7885012" lon="8.7490220">
+<tag k="name" v="Monakam"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="252985465" lat="48.5939647" lon="8.6112502">
+<tag k="name" v="Altensteigdorf"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="253419706" lat="47.9399710" lon="8.5007481">
+<tag k="name" v="Allmendshofen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="253760635" lat="48.3460603" lon="8.6847776">
+<tag k="name" v="Bergfelden"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="254210281" lat="47.6033915" lon="7.6860047">
+<tag k="name" v="Salzert"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="254299595" lat="48.6108781" lon="8.8429355">
+<tag k="name" v="Kuppingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="254299609" lat="48.6227427" lon="8.8340858">
+<tag k="name" v="Oberjesingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="254453349" lat="48.3950994" lon="9.0394514">
+<tag k="name" v="Belsen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="254515522" lat="48.9360263" lon="9.2012288">
+<tag k="name" v="Beihingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="254515578" lat="48.9279630" lon="9.1928603">
+<tag k="name" v="Heutingsheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="255164054" lat="48.5617144" lon="8.5898568">
+<tag k="name" v="Spielberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="255318125" lat="48.3721005" lon="8.5777095">
+<tag k="name" v="Hopfau"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="255598453" lat="48.2796347" lon="9.0001679">
+<tag k="name" v="Onstmettingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="258658001" lat="48.6807513" lon="8.8676285">
+<tag k="name" v="Deufringen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="259573098" lat="48.5439675" lon="8.6737226">
+<tag k="name" v="Unterschwandorf"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="259705005" lat="48.6439231" lon="10.3080385">
+<tag k="name" v="Landshausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="260004733" lat="48.2412498" lon="8.9328096">
+<tag k="name" v="Burgfelden"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="260009183" lat="48.2155175" lon="8.9595871">
+<tag k="name" v="Lautlingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="260009212" lat="48.2529072" lon="8.9678269">
+<tag k="name" v="Pfeffingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="260009687" lat="48.2311857" lon="8.9666253">
+<tag k="name" v="Margrethausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="260550877" lat="48.0231488" lon="7.8601394">
+<tag k="name" v="Zähringen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="260568184" lat="47.6915014" lon="9.1278287">
+<tag k="name" v="Lindenbühl"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="260906439" lat="48.4721136" lon="8.2010329">
+<tag k="name" v="Maisach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="261615721" lat="49.5599036" lon="8.4801169">
+<tag k="name" v="Blumenau"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="261640140" lat="48.6213813" lon="8.5731492">
+<tag k="name" v="Hornberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="262122904" lat="47.7352173" lon="9.1172623">
+<tag k="name" v="Dettingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="262122911" lat="47.7392888" lon="9.1554737">
+<tag k="name" v="Dingelsdorf"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="262122913" lat="47.7283418" lon="9.1565456">
+<tag k="name" v="Oberdorf"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="262122915" lat="47.7133163" lon="9.1726172">
+<tag k="name" v="Litzelstetten"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="262796430" lat="48.4932388" lon="8.8092235">
+<tag k="name" v="Ergenzingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="263572269" lat="48.6667477" lon="8.7077324">
+<tag k="name" v="Altbulach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="263934547" lat="49.1167809" lon="10.0346716">
+<tag k="name" v="Onolzheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="263934548" lat="49.1399427" lon="10.0235007">
+<tag k="name" v="Roßfeld"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="264047187" lat="49.4180681" lon="8.5956497">
+<tag k="name" v="Heidelberg-Grenzhof"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="264496109" lat="48.3997422" lon="9.3697255">
+<tag k="name" v="Offenhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="264680469" lat="48.6937286" lon="8.7296459">
+<tag k="name" v="Kentheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="264858629" lat="49.4555579" lon="8.5373496">
+<tag k="name" v="Hochstätt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="266782008" lat="47.7548853" lon="9.5933128">
+<tag k="name" v="Mariatal"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="266844402" lat="49.3123305" lon="9.7319180">
+<tag k="name" v="Hermuthausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="267099104" lat="48.4322148" lon="8.7843693">
+<tag k="name" v="Felldorf"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="267099786" lat="48.4482718" lon="8.8028829">
+<tag k="name" v="Börstingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="267365919" lat="48.4896029" lon="8.6646827">
+<tag k="name" v="Talheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="267662569" lat="48.6567510" lon="10.1551063">
+<tag k="name" v="Mergelstetten"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="267858104" lat="48.9541941" lon="10.1598775">
+<tag k="name" v="Neunheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="268088105" lat="48.5752062" lon="8.8794268">
+<tag k="name" v="Gültstein"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="268088248" lat="48.5810672" lon="8.8401103">
+<tag k="name" v="Haslach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="268166089" lat="48.2620326" lon="8.6304007">
+<tag k="name" v="Harthausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="268166118" lat="48.2763386" lon="8.6512567">
+<tag k="name" v="Trichtingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="268166140" lat="48.2245026" lon="8.5974215">
+<tag k="name" v="Talhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="268166203" lat="48.2242503" lon="8.5781631">
+<tag k="name" v="Herrenzimmern"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="268166265" lat="48.2292644" lon="8.6397833">
+<tag k="name" v="Irslingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="268222639" lat="48.6138996" lon="9.4645889">
+<tag k="name" v="Guckenrain"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="268607447" lat="48.6577779" lon="9.4233591">
+<tag k="name" v="Ötlingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="268797519" lat="48.0545255" lon="8.6440499">
+<tag k="name" v="Schura"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="268819312" lat="48.3801078" lon="8.6985101">
+<tag k="name" v="Mühlheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="268820605" lat="48.4201129" lon="8.7218345">
+<tag k="name" v="Dettensee"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="268992991" lat="48.9508145" lon="10.1148167">
+<tag k="name" v="Schrezheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="268993197" lat="48.9277839" lon="10.1396646">
+<tag k="name" v="Schwabsberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="268993301" lat="48.9402174" lon="10.1271882">
+<tag k="name" v="Saverwang"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="269692546" lat="48.3164515" lon="8.6387179">
+<tag k="name" v="Wittershausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="269693127" lat="48.3306406" lon="8.7276017">
+<tag k="name" v="Heiligenzimmern"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="269750245" lat="48.8992254" lon="9.2147556">
+<tag k="name" v="Schlösslesfeld"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="270284352" lat="48.2304966" lon="8.6950239">
+<tag k="name" v="Gößlingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="270538646" lat="49.0648025" lon="8.4706490">
+<tag k="name" v="Blankenloch"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="270539995" lat="49.1051921" lon="8.4768975">
+<tag k="name" v="Friedrichstal"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="271283361" lat="48.7061572" lon="9.1194606">
+<tag k="name" v="Oberaichen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="271625857" lat="49.2872922" lon="9.6212787">
+<tag k="name" v="Giebelheide"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="271625858" lat="49.2776088" lon="9.6712700">
+<tag k="name" v="Taläcker"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="271957712" lat="49.2739534" lon="9.7262567">
+<tag k="name" v="Morsbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="272237508" lat="48.2749111" lon="8.5963356">
+<tag k="name" v="Altoberndorf"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="272810771" lat="48.4962121" lon="9.0634653">
+<tag k="name" v="Gartenstadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="272822457" lat="48.5394894" lon="9.0482379">
+<tag k="name" v="Wanne"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="273015579" lat="48.7925218" lon="9.0322591">
+<tag k="name" v="Ramtel"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="273017240" lat="48.7879580" lon="9.0055799">
+<tag k="name" v="Eltingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="273505535" lat="49.2257297" lon="9.5649138">
+<tag k="name" v="Kleinhirschbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="274326680" lat="48.3249092" lon="8.4827952">
+<tag k="name" v="Römlinsdorf"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="275681751" lat="48.2121324" lon="9.0283306">
+<tag k="name" v="Ebingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="275999917" lat="48.7992090" lon="8.9955231">
+<tag k="name" v="Gartenstadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="275999920" lat="48.8079507" lon="9.0101900">
+<tag k="name" v="Haldengebiet"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="276002814" lat="48.7914297" lon="8.9975339">
+<tag k="name" v="Ezach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="276258655" lat="48.8837625" lon="8.7341621">
+<tag k="name" v="Buckenberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="277163822" lat="49.0247470" lon="9.1210409">
+<tag k="name" v="Hofen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="277676123" lat="48.0736021" lon="8.2573637">
+<tag k="name" v="Rohrbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="277692098" lat="48.9085855" lon="9.1739210">
+<tag k="name" v="Eglosheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="278321966" lat="48.9380066" lon="9.0559192">
+<tag k="name" v="Unterriexingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="279207689" lat="48.9499855" lon="9.7365102">
+<tag k="name" v="Wildgarten"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="279207690" lat="48.9611831" lon="9.7345138">
+<tag k="name" v="Honkling"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="280113758" lat="48.8311828" lon="10.0585329">
+<tag k="name" v="Hofherrnweiler"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="281190011" lat="47.6219124" lon="7.6775047">
+<tag k="name" v="Homburg Siedlung"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="281298139" lat="48.4769086" lon="9.1389034">
+<tag k="name" v="Ohmenhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="282385023" lat="48.2396406" lon="9.0281787">
+<tag k="name" v="Truchtelfingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="282737002" lat="48.4806418" lon="7.9753927">
+<tag k="name" v="Rammersweier"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="282876139" lat="48.0830800" lon="8.4566853">
+<tag k="name" v="Haslach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="283664665" lat="48.6665875" lon="9.4101024">
+<tag k="name" v="Bodelshofen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="285260826" lat="48.8412218" lon="8.2176427">
+<tag k="name" v="Niederbühl"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="285943864" lat="48.5137908" lon="9.4868843">
+<tag k="name" v="Strohweiler"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="285960116" lat="48.5453923" lon="9.1865684">
+<tag k="name" v="Altenburg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="285960145" lat="48.5169370" lon="9.2314148">
+<tag k="name" v="Sondelfingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="285971179" lat="48.0811663" lon="8.4627108">
+<tag k="name" v="Wöschhalde"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="286026819" lat="48.8720564" lon="10.0239522">
+<tag k="name" v="Dewangen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="286279770" lat="48.5330346" lon="9.1823466">
+<tag k="name" v="Sickenhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="286288380" lat="48.7077267" lon="9.5237956">
+<tag k="name" v="Sulpach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="286288381" lat="48.7041317" lon="9.5074526">
+<tag k="name" v="Weiler"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="286525453" lat="49.0347083" lon="8.6817811">
+<tag k="name" v="Rinklingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="287314983" lat="48.6292529" lon="10.2758892">
+<tag k="name" v="Hohenmemmingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="287768557" lat="48.9086603" lon="9.8371887">
+<tag k="name" v="Seifertshofen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="287768579" lat="48.9136823" lon="9.6876029">
+<tag k="name" v="Cronhütte"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="287768592" lat="48.9245345" lon="9.6951043">
+<tag k="name" v="Menzles"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="287768593" lat="48.9230806" lon="9.6744338">
+<tag k="name" v="Ebersberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="288393076" lat="48.7938180" lon="8.9563594">
+<tag k="name" v="Heuweg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="288424511" lat="48.4098820" lon="8.8662152">
+<tag k="name" v="Bietenhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="288861427" lat="48.6351083" lon="8.6999677">
+<tag k="name" v="Schönbronn"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="289491024" lat="47.6720671" lon="9.3516327">
+<tag k="name" v="Kippenhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="290039525" lat="48.6903239" lon="8.1459140">
+<tag k="name" v="Kappelwindeck"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="290558439" lat="48.2976002" lon="9.0655478">
+<tag k="name" v="Hausen im Killertal"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="290715055" lat="48.3879494" lon="8.6271943">
+<tag k="name" v="Glatt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="290715058" lat="48.3744049" lon="8.5405181">
+<tag k="name" v="Bettenhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="290720278" lat="48.3509072" lon="8.4934303">
+<tag k="name" v="Busenweiler"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="290991466" lat="47.7638150" lon="9.6072417">
+<tag k="name" v="Weingartshof"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="291380885" lat="48.8420934" lon="10.0302752">
+<tag k="name" v="Rauental"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="291380886" lat="48.8453320" lon="10.0410445">
+<tag k="name" v="Oberrombach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="291381170" lat="48.8429739" lon="10.0581695">
+<tag k="name" v="Unterrombach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="291465081" lat="47.8528183" lon="9.6048467">
+<tag k="name" v="Staig"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="291469426" lat="47.5734789" lon="7.7746563">
+<tag k="name" v="Nollingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="291516509" lat="48.3903222" lon="8.6748557">
+<tag k="name" v="Fischingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="291537207" lat="48.4680320" lon="8.4785099">
+<tag k="name" v="Aach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="291556205" lat="48.4442009" lon="8.4354147">
+<tag k="name" v="Lauterbad"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="291859133" lat="47.8362842" lon="8.1251765">
+<tag k="name" v="Unteraha"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="291888078" lat="48.6255659" lon="8.7117656">
+<tag k="name" v="Effringen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="291889589" lat="48.7242948" lon="8.7037409">
+<tag k="name" v="Altburg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="292018626" lat="47.6824321" lon="9.8546489">
+<tag k="name" v="Kohlplatz"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="292955562" lat="48.1528646" lon="8.4437583">
+<tag k="name" v="Burgberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="293068532" lat="47.7150000" lon="9.6744700">
+<tag k="name" v="Rosenharz"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="293147147" lat="48.6167427" lon="9.5168428">
+<tag k="name" v="Egelsberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="294607509" lat="47.6114954" lon="7.7381617">
+<tag k="name" v="Ottwangen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="294980283" lat="48.1488454" lon="9.5637099">
+<tag k="name" v="Dentingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="295205929" lat="47.6987177" lon="9.1175175">
+<tag k="name" v="Reichenau-Waldsiedlung"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="295737377" lat="47.9854128" lon="7.8839194">
+<tag k="name" v="Waldsee"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="299137751" lat="48.8703837" lon="8.6836634">
+<tag k="name" v="Dillweißenstein"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="300708190" lat="49.2330617" lon="8.4111469">
+<tag k="name" v="Rheinsheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="302047990" lat="48.4717755" lon="8.4492462">
+<tag k="name" v="Wittlensweiler"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="302285655" lat="47.7001905" lon="9.6611023">
+<tag k="name" v="Linden"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="303403087" lat="47.9189035" lon="7.7326101">
+<tag k="name" v="Unterambringen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="303403088" lat="47.9175245" lon="7.7393870">
+<tag k="name" v="Oberambringen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="303505098" lat="48.4865898" lon="8.4961204">
+<tag k="name" v="Hallwangen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="306270896" lat="47.9770601" lon="7.9494808">
+<tag k="name" v="Zarten"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="307397481" lat="48.5072096" lon="8.9358776">
+<tag k="name" v="Wendelsheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="308299068" lat="47.5921621" lon="7.9138159">
+<tag k="name" v="Öflingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="311123962" lat="49.5600721" lon="8.4487926">
+<tag k="name" v="Scharhof"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="316755100" lat="49.3975748" lon="8.6459436">
+<tag k="name" v="Heidelberg-Pfaffengrund"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="318134323" lat="48.4406632" lon="7.9464073">
+<tag k="name" v="Elgersweier"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="320478906" lat="47.7695183" lon="9.6404653">
+<tag k="name" v="Hinzistobel"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="320528939" lat="47.7746553" lon="9.6541281">
+<tag k="name" v="Fenken"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="320768244" lat="48.5656189" lon="7.8317995">
+<tag k="name" v="Sölling"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="320768286" lat="48.5584032" lon="7.8356844">
+<tag k="name" v="Sundheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="320768345" lat="48.5610901" lon="7.8209559">
+<tag k="name" v="Wolfsgrube"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="320768945" lat="48.5599086" lon="7.8119780">
+<tag k="name" v="Kronenhof"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="320771801" lat="48.5702632" lon="7.8080298">
+<tag k="name" v="Insel"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="321896800" lat="48.5202869" lon="8.5493847">
+<tag k="name" v="Durrweiler"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="323188121" lat="49.3738889" lon="8.7033333">
+<tag k="name" v="Boxberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="323189411" lat="49.3669444" lon="8.7041667">
+<tag k="name" v="Emmertsgrund"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="323190774" lat="49.3800903" lon="8.6874302">
+<tag k="name" v="Rohrbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="329049408" lat="48.9933490" lon="8.3889974">
+<tag k="name" v="Beiertheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="331282977" lat="49.2289937" lon="9.7060143">
+<tag k="name" v="Feßbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="331312397" lat="47.6742655" lon="7.6698238">
+<tag k="name" v="Nebenau"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="331795756" lat="48.4025990" lon="9.7663105">
+<tag k="name" v="Weiler"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="332275021" lat="47.6844647" lon="7.6541251">
+<tag k="name" v="Egisholz"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="332280971" lat="47.6892922" lon="7.6445339">
+<tag k="name" v="Hammerstein"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="332976784" lat="48.7252470" lon="9.5605352">
+<tag k="name" v="Nassachmühle"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="332978828" lat="48.7414542" lon="9.5430217">
+<tag k="name" v="Nassach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="332980501" lat="48.7556867" lon="9.5159763">
+<tag k="name" v="Baiereck"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="335425272" lat="48.4678227" lon="8.7771565">
+<tag k="name" v="Rohrdorf"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="336207226" lat="47.9612566" lon="7.9759565">
+<tag k="name" v="Höfen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="337789671" lat="48.5565847" lon="9.2924202">
+<tag k="name" v="Neugreuth"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="338507466" lat="49.4179561" lon="8.6859804">
+<tag k="name" v="Neuenheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="338507467" lat="49.4167814" lon="8.6691206">
+<tag k="name" v="Im Neuenheimer Feld"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="338507614" lat="49.4029751" lon="8.6861886">
+<tag k="name" v="Weststadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="338507615" lat="49.3893825" lon="8.6898343">
+<tag k="name" v="Südstadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="338507616" lat="49.4105301" lon="8.7016744">
+<tag k="name" v="Altstadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="338507812" lat="49.4244553" lon="8.6467796">
+<tag k="name" v="Wieblingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="338605970" lat="47.8147702" lon="7.7859910">
+<tag k="name" v="Münsterhalden"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="342004152" lat="48.2985054" lon="9.7216070">
+<tag k="name" v="Berkach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="342946055" lat="48.3429415" lon="8.4621061">
+<tag k="name" v="Aischfeld"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="345604062" lat="48.3048367" lon="8.4222859">
+<tag k="name" v="Rötenberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="348021822" lat="48.8139883" lon="8.7179343">
+<tag k="name" v="Dennjächt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="350458881" lat="48.3311320" lon="8.3977398">
+<tag k="name" v="Rötenbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="352863223" lat="48.4105274" lon="9.9557271">
+<tag k="name" v="Eselsberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="354916495" lat="48.3385666" lon="8.4612984">
+<tag k="name" v="Gräben"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="354919440" lat="48.3357609" lon="8.4391205">
+<tag k="name" v="Reutin"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="355642182" lat="47.9763509" lon="7.8237094">
+<tag k="name" v="Vauban"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="360005159" lat="48.7197412" lon="9.5868925">
+<tag k="name" v="Holzhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="360789244" lat="48.7354821" lon="9.2996025">
+<tag k="name" v="Pliensauvorstadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="360789247" lat="48.7187327" lon="9.3188087">
+<tag k="name" v="Berkheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="360789248" lat="48.7280058" lon="9.3038803">
+<tag k="name" v="Zollberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="360956602" lat="49.1260414" lon="10.0559673">
+<tag k="name" v="Altenmünster"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="360956603" lat="49.1346461" lon="10.0542554">
+<tag k="name" v="Fliegerhorst"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="360956605" lat="49.1235351" lon="10.0764391">
+<tag k="name" v="Ingersheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="360957327" lat="49.1299242" lon="10.0838143">
+<tag k="name" v="Kreuzberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="360957335" lat="49.1403289" lon="10.0534572">
+<tag k="name" v="Sauerbrunnen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="360957345" lat="49.1325734" lon="10.0665905">
+<tag k="name" v="Türkei"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="360957902" lat="49.1455042" lon="10.0491564">
+<tag k="name" v="Roter Buck"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="361112069" lat="48.7226803" lon="9.3303360">
+<tag k="name" v="Sirnau"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="361112075" lat="48.7391756" lon="9.2717932">
+<tag k="name" v="Weil"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="361203334" lat="48.4084497" lon="9.9855827">
+<tag k="name" v="Michelsberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="361204141" lat="48.4118026" lon="10.0034569">
+<tag k="name" v="Safranberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="365712424" lat="48.8641415" lon="10.0703607">
+<tag k="name" v="Affalterried"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="365719930" lat="48.8684326" lon="10.0813159">
+<tag k="name" v="Heisenberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="366384955" lat="49.5225035" lon="8.4502019">
+<tag k="name" v="Friesenheimer Insel"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="366926505" lat="47.9580550" lon="8.3632910">
+<tag k="name" v="Mistelbrunn"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="367348113" lat="47.7627431" lon="8.8065940">
+<tag k="name" v="Twielfeld"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="370707032" lat="47.8322175" lon="8.1759580">
+<tag k="name" v="Unterfischbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="370925485" lat="48.1067337" lon="7.8559944">
+<tag k="name" v="Bleiche"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="370925486" lat="48.1089193" lon="7.8651312">
+<tag k="name" v="Bürkle"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="373102361" lat="49.4985153" lon="8.4972398">
+<tag k="name" v="Wohlgelegen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="373747356" lat="48.7236993" lon="9.6052629">
+<tag k="name" v="Niederwälden"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="373857174" lat="49.1768622" lon="9.5569123">
+<tag k="name" v="Michelbach am Wald"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="375812502" lat="49.2796105" lon="8.9951101">
+<tag k="name" v="Helmhof"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="375953659" lat="48.4737840" lon="7.9902007">
+<tag k="name" v="Zell-Weierbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="378058839" lat="48.7624549" lon="9.3980316">
+<tag k="name" v="Krummhardt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="379705827" lat="48.7651895" lon="8.7159501">
+<tag k="name" v="Beinberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="383236971" lat="47.6774137" lon="9.7058293">
+<tag k="name" v="Hinteressach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="384028052" lat="49.4083581" lon="8.6769322">
+<tag k="name" v="Bergheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="384034009" lat="49.4030217" lon="8.6661634">
+<tag k="name" v="Bahnstadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="389141576" lat="48.6412898" lon="9.3033999">
+<tag k="name" v="Hardt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="393937743" lat="49.4138674" lon="8.7457920">
+<tag k="name" v="Schlierbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="395466220" lat="47.6813321" lon="9.8591088">
+<tag k="name" v="Epplings"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="399110385" lat="48.7254244" lon="9.3594204">
+<tag k="name" v="Zell"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="399356943" lat="48.5221445" lon="9.3718132">
+<tag k="name" v="Buchhalde"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="403377528" lat="49.1407601" lon="10.1244569">
+<tag k="name" v="Goldbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="403903792" lat="49.1795764" lon="9.3463797">
+<tag k="name" v="Hölzern"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="409471182" lat="48.6743197" lon="9.4684600">
+<tag k="name" v="Wellingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="409853015" lat="49.1171314" lon="10.1092022">
+<tag k="name" v="Wittau"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="410219696" lat="49.0832099" lon="10.1224625">
+<tag k="name" v="Weipertshofen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="410457003" lat="48.6919875" lon="9.5030332">
+<tag k="name" v="Roßwälden"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="410659318" lat="49.0763511" lon="10.1099484">
+<tag k="name" v="Siglershofen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="410919110" lat="48.6385558" lon="9.3255138">
+<tag k="name" v="Oberensingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="412065992" lat="48.6722703" lon="9.6054132">
+<tag k="name" v="Schopflenberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="413988801" lat="48.7120982" lon="8.7266573">
+<tag k="name" v="Wimberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="414077273" lat="47.9288307" lon="8.4022716">
+<tag k="name" v="Waldhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="414084614" lat="48.9631713" lon="8.3393554">
+<tag k="name" v="Silberstreifen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="415001052" lat="48.3642330" lon="7.8979474">
+<tag k="name" v="Heiligenzell"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="416322732" lat="47.6851497" lon="9.1556636">
+<tag k="name" v="Fürstenberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="419106656" lat="49.1565918" lon="10.0921147">
+<tag k="name" v="Beuerlbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="419288319" lat="48.9937979" lon="9.2097545">
+<tag k="name" v="Seelhofen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="424226662" lat="47.7267172" lon="8.8599899">
+<tag k="name" v="Worblingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="424226666" lat="47.7320433" lon="8.8403886">
+<tag k="name" v="Rielasingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="427549671" lat="47.8778747" lon="8.3408123">
+<tag k="name" v="Reichberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="432463431" lat="48.7215862" lon="8.7214621">
+<tag k="name" v="Alzenberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="432485329" lat="48.7320817" lon="9.5069835">
+<tag k="name" v="Büchenbronn"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="432490785" lat="48.7199520" lon="8.7116413">
+<tag k="name" v="Oberriedt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="432603937" lat="49.7360251" lon="9.4323890">
+<tag k="name" v="Nassig Steingasse"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="432640876" lat="47.8874724" lon="8.3456979">
+<tag k="name" v="Alenberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="432640988" lat="47.8859529" lon="8.3427038">
+<tag k="name" v="Maienland"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="436868133" lat="49.2391816" lon="9.2256996">
+<tag k="name" v="Hagenbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="440618491" lat="48.4894361" lon="8.4586990">
+<tag k="name" v="Frutenhof"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="454370740" lat="48.8840633" lon="10.0481981">
+<tag k="name" v="Fachsenfeld"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="457489687" lat="47.8188019" lon="8.5533330">
+<tag k="name" v="Epfenhofen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="458415767" lat="48.3764463" lon="8.5197369">
+<tag k="name" v="Fürnsal"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="458771762" lat="48.3730288" lon="8.4919216">
+<tag k="name" v="Gundelshausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="468052390" lat="48.7078612" lon="9.4316919">
+<tag k="name" v="Lettenäcker"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="468052396" lat="48.7170427" lon="9.4317980">
+<tag k="name" v="Stumpenhof"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="471391311" lat="47.5369762" lon="7.7299877">
+<tag k="name" v="Liebrüti"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="486247568" lat="47.7069509" lon="9.5125802">
+<tag k="name" v="Waltenweiler"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="492388301" lat="47.7532962" lon="9.5726163">
+<tag k="name" v="Oberzell"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="496009362" lat="47.5534648" lon="7.7653912">
+<tag k="name" v="Warmbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="501614533" lat="47.5472911" lon="7.7671430">
+<tag k="name" v="Augarten"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="510093167" lat="48.5471797" lon="9.2073725">
+<tag k="name" v="Oferdingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="527075335" lat="47.6697034" lon="9.5543877">
+<tag k="name" v="Walchesreute"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="527075336" lat="47.6691319" lon="9.5602203">
+<tag k="name" v="Pfingstweid"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="527075337" lat="47.6800569" lon="9.5870053">
+<tag k="name" v="Bechlingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="527818649" lat="47.6669466" lon="9.4467940">
+<tag k="name" v="Fallenbrunnen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="527818654" lat="47.6438959" lon="9.5060088">
+<tag k="name" v="Seewiesenesch"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="527818656" lat="47.6573005" lon="9.5031024">
+<tag k="name" v="Kitzenwiese"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="527818658" lat="47.6604611" lon="9.5062895">
+<tag k="name" v="St. Georgen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="527818659" lat="47.6720375" lon="9.5013347">
+<tag k="name" v="Allmannsweiler"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="527843004" lat="47.6252966" lon="9.5411780">
+<tag k="name" v="Schlatt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="528999604" lat="48.2745114" lon="8.8818216">
+<tag k="name" v="Heselwangen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="530186882" lat="48.3864828" lon="7.9912212">
+<tag k="name" v="Bermersbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="530186891" lat="48.3635828" lon="8.0151000">
+<tag k="name" v="Fußbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="530186892" lat="48.3884131" lon="8.0153001">
+<tag k="name" v="Strohbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="530186916" lat="48.3887337" lon="8.0350616">
+<tag k="name" v="Schwaibach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="531474614" lat="47.5870849" lon="7.7986803">
+<tag k="name" v="Karsau"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="536770700" lat="48.5205182" lon="9.0549480">
+<tag k="name" v="Zentrum"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="536771685" lat="48.5268261" lon="9.0512932">
+<tag k="name" v="Universität"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="539317979" lat="48.5315300" lon="9.2043979">
+<tag k="name" v="Rommelsbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="560660950" lat="48.3932285" lon="8.5420218">
+<tag k="name" v="Leinstetten"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="560887217" lat="48.7890407" lon="8.8339563">
+<tag k="name" v="Hausen an der Würm"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="563168672" lat="48.5197985" lon="9.0268706">
+<tag k="name" v="Weststadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="566145231" lat="48.8382645" lon="8.1997969">
+<tag k="name" v="Münchfeld"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="566145232" lat="48.8402500" lon="8.2052783">
+<tag k="name" v="Siedlung"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="566145234" lat="48.8557725" lon="8.1994592">
+<tag k="name" v="Augustavorstadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="566145235" lat="48.8524233" lon="8.2056789">
+<tag k="name" v="Ludwigvorstadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="566145236" lat="48.8600609" lon="8.1989316">
+<tag k="name" v="Georgenvorstadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="566145237" lat="48.8653993" lon="8.2050062">
+<tag k="name" v="Zay"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="566151279" lat="48.8523561" lon="8.2220333">
+<tag k="name" v="Im Beinle"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="566151280" lat="48.8668491" lon="8.2176140">
+<tag k="name" v="Biblis"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="566151282" lat="48.8683375" lon="8.2143071">
+<tag k="name" v="Röttererberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="566151283" lat="48.8717377" lon="8.2137968">
+<tag k="name" v="Baldenau"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="568383189" lat="49.4415605" lon="8.5784352">
+<tag k="name" v="Friedrichsfeld"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="572339309" lat="49.4464691" lon="8.5835550">
+<tag k="name" v="Neu-Edingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="578270330" lat="49.5826461" lon="8.7011670">
+<tag k="name" v="Nieder-Liebersbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="581128035" lat="48.3637957" lon="8.6541284">
+<tag k="name" v="Holzhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="593679354" lat="47.7027204" lon="9.5200026">
+<tag k="name" v="Eggenweiler"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="598592177" lat="48.5302007" lon="9.3055843">
+<tag k="name" v="Neuhausen an der Erms"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="599492395" lat="48.5063591" lon="9.0531539">
+<tag k="name" v="Feuerhägle"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="600725640" lat="47.7226338" lon="9.2841482">
+<tag k="name" v="Schiggendorf"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="600725643" lat="47.7154214" lon="9.2985218">
+<tag k="name" v="Baitenhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="600726196" lat="47.7034935" lon="9.2898837">
+<tag k="name" v="Riedetsweiler"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="602773705" lat="49.0439268" lon="8.7214515">
+<tag k="name" v="Gölshausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="603299686" lat="48.3708912" lon="8.7052228">
+<tag k="name" v="Renfrizhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="625977843" lat="47.6742332" lon="9.1482690">
+<tag k="name" v="Unterlohn"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="625977844" lat="47.6724577" lon="9.1540039">
+<tag k="name" v="Stromeyersdorf"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="625984948" lat="47.6756864" lon="9.1728008">
+<tag k="name" v="Petershausen-West"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="625984959" lat="47.6710821" lon="9.1913504">
+<tag k="name" v="Petershausen-Ost"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="625988141" lat="47.6912489" lon="9.1482942">
+<tag k="name" v="Wollmatingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="628250762" lat="48.7126811" lon="9.6420576">
+<tag k="name" v="Reusch"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="628250768" lat="48.6982087" lon="9.6525958">
+<tag k="name" v="Südstadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="628250793" lat="48.7075067" lon="9.6532924">
+<tag k="name" v="Oberstadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="628250823" lat="48.7114731" lon="9.6591515">
+<tag k="name" v="Hailing"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="628250933" lat="48.7042449" lon="9.6710105">
+<tag k="name" v="Malerviertel"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="631460463" lat="47.6812841" lon="9.1846497">
+<tag k="name" v="Königsbau"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="632638916" lat="48.6289582" lon="9.3842674">
+<tag k="name" v="Reudern"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="638957930" lat="48.6881855" lon="9.1662761">
+<tag k="name" v="Echterdingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="690857707" lat="48.5812875" lon="8.5565368">
+<tag k="name" v="Garrweiler"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="702253128" lat="48.9992281" lon="9.0192980">
+<tag k="name" v="Hohenhaslach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="717961984" lat="49.0733340" lon="10.0314577">
+<tag k="name" v="Gewerbegebiet Riedwasen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="727996118" lat="48.2991302" lon="8.1691378">
+<tag k="name" v="Vordertal"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="759083805" lat="49.0962408" lon="9.8875193">
+<tag k="name" v="Talheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="794131350" lat="48.4018448" lon="10.0205110">
+<tag k="name" v="Offenhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="879653016" lat="47.7475572" lon="9.1310724">
+<tag k="name" v="Wallhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="883173894" lat="48.6317707" lon="9.0471416">
+<tag k="name" v="Breitenstein"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="883253579" lat="48.7751474" lon="8.8159665">
+<tag k="name" v="Münklingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="900750219" lat="47.5832390" lon="8.0303927">
+<tag k="name" v="Oberhof"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="900750223" lat="47.5730587" lon="8.0297296">
+<tag k="name" v="Zechenwil"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="900750230" lat="47.5674674" lon="8.0360221">
+<tag k="name" v="Niederhof"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="917219209" lat="49.3891747" lon="8.6534970">
+<tag k="name" v="Pleikartsförsterhof"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="919626885" lat="49.0891243" lon="10.1407918">
+<tag k="name" v="Weipertshofen-Lixhof"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="923042380" lat="48.3434071" lon="8.7965645">
+<tag k="name" v="Hospach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="930286459" lat="47.7593890" lon="9.3304038">
+<tag k="name" v="Tobelhof"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="936431266" lat="48.8711146" lon="9.3885446">
+<tag k="name" v="Lange Weiden"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="966281952" lat="48.7217679" lon="8.9653743">
+<tag k="name" v="Maichingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="970596919" lat="47.6745043" lon="9.4947958">
+<tag k="name" v="Wiggenhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="974085798" lat="47.7976671" lon="8.3523021">
+<tag k="name" v="Wellendingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="974136303" lat="47.5718409" lon="8.0013706">
+<tag k="name" v="Harpolingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="974136309" lat="47.5764489" lon="7.9883658">
+<tag k="name" v="Rippolingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="975729474" lat="48.7090114" lon="9.2645458">
+<tag k="name" v="Scharnhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="976500587" lat="48.4946589" lon="7.9330683">
+<tag k="name" v="Bühl"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1018945605" lat="47.9491518" lon="8.2920797">
+<tag k="name" v="Oberbränd"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1018951308" lat="47.9871012" lon="8.2451951">
+<tag k="name" v="Schollach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1041449285" lat="47.9953032" lon="7.8524299">
+<tag k="name" v="Altstadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1051771770" lat="49.0098337" lon="8.3780147">
+<tag k="name" v="Weststadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1077053001" lat="47.7508944" lon="8.9667984">
+<tag k="name" v="Stockteil"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1148745237" lat="48.1900517" lon="9.1138881">
+<tag k="name" v="Fachbergsiedlung"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1159296979" lat="49.3802693" lon="9.3837969">
+<tag k="name" v="Sennfeld"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1184668215" lat="48.4982709" lon="9.0887370">
+<tag k="name" v="Aspenhausiedlung"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1190180823" lat="48.3862619" lon="9.9625658">
+<tag k="name" v="Kuhberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1190181051" lat="48.3779902" lon="9.9502814">
+<tag k="name" v="Lindenhöhe"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1192882095" lat="48.6938433" lon="9.1185734">
+<tag k="name" v="Musberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1209129793" lat="49.4894444" lon="8.4673141">
+<tag k="name" v="Innenstadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1209147819" lat="49.4815932" lon="8.4467264">
+<tag k="name" v="Mitte"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1262122546" lat="47.6870309" lon="9.8214009">
+<tag k="name" v="Berger-Höhe"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1262122548" lat="47.6986690" lon="9.8203308">
+<tag k="name" v="Wittwais"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1262122551" lat="47.6931589" lon="9.8182482">
+<tag k="name" v="Haid"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1262122554" lat="47.7011120" lon="9.8252730">
+<tag k="name" v="Waltersbühl"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1263105872" lat="47.6794042" lon="9.8466883">
+<tag k="name" v="Atzenberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1270085295" lat="48.9734291" lon="8.4659518">
+<tag k="name" v="Bergwald"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1276909207" lat="49.5196780" lon="8.4880117">
+<tag k="name" v="Waldhof"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1283403202" lat="47.6866985" lon="8.6681253">
+<tag k="name" v="Im Stemmer"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1308342028" lat="48.3877513" lon="9.9811640">
+<tag k="name" v="Galgenberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1308347907" lat="48.3949536" lon="9.9728491">
+<tag k="name" v="Weststadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1308349764" lat="48.4054175" lon="10.0052812">
+<tag k="name" v="Oststadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1308350831" lat="48.3577329" lon="9.9406934">
+<tag k="name" v="Donautal"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1318610130" lat="48.2942995" lon="8.0558976">
+<tag k="name" v="Einet"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1318610147" lat="48.3029647" lon="8.0496249">
+<tag k="name" v="Kraftzig"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1318610149" lat="48.2971620" lon="8.0545076">
+<tag k="name" v="Schwenden"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1330938210" lat="47.6833627" lon="9.2000867">
+<tag k="name" v="Allmannsdorf"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1331204377" lat="47.6776840" lon="9.1483118">
+<tag k="name" v="Industriegebiet"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1332830768" lat="47.7790031" lon="8.8357811">
+<tag k="name" v="Remishof"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1333310137" lat="47.7630970" lon="8.8786011">
+<tag k="name" v="Waldheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1333310207" lat="47.7772370" lon="8.8545271">
+<tag k="name" v="Bruderhof"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1336797669" lat="48.4027107" lon="9.0301163">
+<tag k="name" v="Bästenhardt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1337059869" lat="48.4020342" lon="9.0125973">
+<tag k="name" v="Bad Sebastiansweiler"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1338841831" lat="47.6925790" lon="9.1935026">
+<tag k="name" v="Egg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1364135632" lat="47.7679732" lon="8.2106415">
+<tag k="name" v="Schönenbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1367530175" lat="47.6777626" lon="9.1548841">
+<tag k="name" v="Oberlohn"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1367821859" lat="48.8344558" lon="9.2223684">
+<tag k="name" v="Hofen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1367821861" lat="48.8491889" lon="9.2205538">
+<tag k="name" v="Mühlhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1367821862" lat="48.8333064" lon="9.2342395">
+<tag k="name" v="Neugereut"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1367821864" lat="48.8277136" lon="9.2320181">
+<tag k="name" v="Steinhaldenfeld"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1382099533" lat="47.7213408" lon="9.4049037">
+<tag k="name" v="Möggenweiler"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1390037697" lat="47.6817996" lon="9.4824063">
+<tag k="name" v="Bunkhofen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1407210229" lat="49.2133022" lon="9.2421574">
+<tag k="name" v="Plattenwald"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1418337752" lat="49.3638950" lon="8.6226397">
+<tag k="name" v="Neurott"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1440687301" lat="48.8737442" lon="8.2033664">
+<tag k="name" v="Bittler"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1440687316" lat="48.8638079" lon="8.2193835">
+<tag k="name" v="Niederwald"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1440687324" lat="48.8649778" lon="8.1906667">
+<tag k="name" v="Oberwald"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1449339588" lat="49.0070818" lon="8.4976343">
+<tag k="name" v="Grötzingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1460407565" lat="47.8459259" lon="8.8519748">
+<tag k="name" v="Altstadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1461118412" lat="48.5639044" lon="8.7826762">
+<tag k="name" v="Unterjettingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1461122601" lat="48.5760017" lon="8.7743935">
+<tag k="name" v="Oberjettingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1495266604" lat="48.9919365" lon="8.9394189">
+<tag k="name" v="Gündelbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1502809636" lat="48.9927576" lon="8.4610709">
+<tag k="name" v="Aue"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1502888660" lat="49.0924761" lon="8.5104221">
+<tag k="name" v="Staffort"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1514149505" lat="49.1686554" lon="9.2014612">
+<tag k="name" v="Neckargartach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1516763691" lat="48.5696423" lon="8.8101290">
+<tag k="name" v="Sindlingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1540813138" lat="48.9877115" lon="8.3788680">
+<tag k="name" v="Bulach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1547719713" lat="49.1338164" lon="9.1922297">
+<tag k="name" v="Böckingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1548985133" lat="49.2117079" lon="9.2512743">
+<tag k="name" v="Amorbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1556687999" lat="49.1594552" lon="9.1717593">
+<tag k="name" v="Frankenbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1561427405" lat="49.1193062" lon="9.1563779">
+<tag k="name" v="Klingenberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1564935057" lat="49.0773199" lon="9.1055933">
+<tag k="name" v="Hausen a.d.Z."/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1564935149" lat="49.1180112" lon="9.1884022">
+<tag k="name" v="Sontheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1571421033" lat="49.0889131" lon="9.0788561">
+<tag k="name" v="Dürrenzimmern"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1571468077" lat="48.8724551" lon="10.0580845">
+<tag k="name" v="Treppach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1575891524" lat="49.3609605" lon="8.6422685">
+<tag k="name" v="Bruchhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1577390178" lat="49.1844878" lon="9.1103275">
+<tag k="name" v="Kirchhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1577440314" lat="49.0692519" lon="9.0276835">
+<tag k="name" v="Frauenzimmern"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1577440321" lat="49.0648540" lon="9.0882378">
+<tag k="name" v="Meimsheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1578758215" lat="48.1135599" lon="8.6913005">
+<tag k="name" v="Täfermühle"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1578758222" lat="48.1146412" lon="8.6905066">
+<tag k="name" v="Neuhof"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1579693840" lat="48.0227989" lon="7.8083571">
+<tag k="name" v="Landwasser"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1579693846" lat="48.0167693" lon="7.8022723">
+<tag k="name" v="Lehen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1584906792" lat="49.2512465" lon="9.1226879">
+<tag k="name" v="Zimmerhof"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1585584987" lat="49.2793703" lon="9.1932038">
+<tag k="name" v="Bachenau"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1585585002" lat="49.2870147" lon="9.2238036">
+<tag k="name" v="Höchstberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1585585392" lat="49.2980165" lon="9.2031427">
+<tag k="name" v="Tiefenbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1585588147" lat="49.2671165" lon="9.2222119">
+<tag k="name" v="Untergriesheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1585615161" lat="49.2369538" lon="9.1940109">
+<tag k="name" v="Jagstfeld"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1585615162" lat="49.2223583" lon="9.2160328">
+<tag k="name" v="Kochendorf"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1585732871" lat="49.0649142" lon="9.0668086">
+<tag k="name" v="Botenheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1586966923" lat="48.9601474" lon="9.0643379">
+<tag k="name" v="Großsachsenheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1587616004" lat="47.8772531" lon="7.8360469">
+<tag k="name" v="Spielweg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1588196855" lat="49.2136763" lon="9.0927647">
+<tag k="name" v="Bonfeld"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1591553253" lat="48.1043866" lon="7.9750579">
+<tag k="name" v="Kollnau"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1594416543" lat="48.6548016" lon="9.2155935">
+<tag k="name" v="Bonlanden"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1594957491" lat="48.8854801" lon="8.8985803">
+<tag k="name" v="Iptingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1597475926" lat="49.2826467" lon="9.7408189">
+<tag k="name" v="Amrichshausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1603597390" lat="47.7743741" lon="9.6089923">
+<tag k="name" v="Südstadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1606205378" lat="47.7830403" lon="9.5778536">
+<tag k="name" v="Weststadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1606217956" lat="47.7789826" lon="9.5912753">
+<tag k="name" v="Galgenhalde"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1607599302" lat="47.7853182" lon="9.5907042">
+<tag k="name" v="Höll"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1609096656" lat="48.9774922" lon="9.6483749">
+<tag k="name" v="Fornsbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1611714139" lat="48.1068131" lon="7.9715550">
+<tag k="name" v="Kollnau"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1613502359" lat="48.8800743" lon="9.2165263">
+<tag k="name" v="Grünbühl"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1613552215" lat="49.0929854" lon="10.0620435">
+<tag k="name" v="Jagstheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1614660724" lat="49.4741034" lon="8.4678372">
+<tag k="name" v="Lindenhof"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1615549942" lat="48.8497976" lon="9.1573049">
+<tag k="name" v="Stammheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1615720624" lat="48.8351519" lon="8.9125469">
+<tag k="name" v="Flacht"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1616490780" lat="48.7746041" lon="8.9031962">
+<tag k="name" v="Malmsheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1618716155" lat="49.1933418" lon="9.1418350">
+<tag k="name" v="Biberach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1618716160" lat="49.1161477" lon="9.1676575">
+<tag k="name" v="Horkheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1619130220" lat="48.8367248" lon="9.1420158">
+<tag k="name" v="Neuwirtshaus"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1620041659" lat="48.9723592" lon="9.1438618">
+<tag k="name" v="Kammgarnspinnerei"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1620041662" lat="48.9452605" lon="9.1456052">
+<tag k="name" v="Buch"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1620448811" lat="48.8320261" lon="9.1250933">
+<tag k="name" v="Korntal"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1622671510" lat="47.7858254" lon="9.6147805">
+<tag k="name" v="Nordstadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1624086285" lat="48.9382517" lon="9.7215503">
+<tag k="name" v="Hagkling"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1624086378" lat="48.9097068" lon="9.7323783">
+<tag k="name" v="Nardenheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1624086829" lat="48.9414686" lon="9.7829184">
+<tag k="name" v="Rotenhar"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1624086847" lat="48.9194781" lon="9.7264693">
+<tag k="name" v="Seelach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1624102921" lat="48.9139412" lon="9.7058952">
+<tag k="name" v="Hundsberg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1624214562" lat="48.9220140" lon="9.8061561">
+<tag k="name" v="Mittelbronn"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1624215320" lat="48.9443851" lon="9.7384041">
+<tag k="name" v="Waldhaus"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1624601571" lat="47.8443434" lon="8.1598162">
+<tag k="name" v="Fischbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1624908952" lat="48.8627835" lon="9.2517473">
+<tag k="name" v="Aldingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1624909003" lat="48.8436983" lon="9.2646623">
+<tag k="name" v="Oeffingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1633158271" lat="48.7314075" lon="9.1097281">
+<tag k="name" v="Vaihingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1634285386" lat="48.7518605" lon="9.0840067">
+<tag k="name" v="Büsnau"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1634558433" lat="49.4941707" lon="8.4591725">
+<tag k="name" v="Jungbusch"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1635854051" lat="49.4841154" lon="8.4821335">
+<tag k="name" v="Oststadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1636466582" lat="49.3760425" lon="8.6736186">
+<tag k="name" v="Kirchheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1636537849" lat="49.4797281" lon="8.4780211">
+<tag k="name" v="Schwetzingerstadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1636973781" lat="47.6654744" lon="9.1665136">
+<tag k="name" v="Paradies"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1637111387" lat="47.6893149" lon="9.1310384">
+<tag k="name" v="Eichbühl"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1637227539" lat="49.4739425" lon="8.4932478">
+<tag k="name" v="Fahrlach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1637678058" lat="48.5019263" lon="9.1780918">
+<tag k="name" v="Betzingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1640177853" lat="47.6619352" lon="9.1753235">
+<tag k="name" v="Altstadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1641714798" lat="49.5265740" lon="8.6667087">
+<tag k="name" v="Lützelsachsen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1642188476" lat="47.7009985" lon="9.3386860">
+<tag k="name" v="Ittendorf"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1642782387" lat="47.7353655" lon="9.3852921">
+<tag k="name" v="Fitzenweiler"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1646769727" lat="47.9580337" lon="8.7646358">
+<tag k="name" v="Möhringen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1648798262" lat="47.7447264" lon="9.3031925">
+<tag k="name" v="Buggensegel"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1648798314" lat="47.7311831" lon="9.2976588">
+<tag k="name" v="Grasbeuren"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1648798327" lat="47.7346651" lon="9.2456059">
+<tag k="name" v="Oberuhldingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1648798478" lat="47.7237369" lon="9.2300568">
+<tag k="name" v="Unteruhldingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1648849421" lat="47.7611422" lon="9.3105541">
+<tag k="name" v="Neufrach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1648849502" lat="47.7763817" lon="9.2891614">
+<tag k="name" v="Salem-Stefansfeld"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1648849508" lat="47.7900175" lon="9.3010491">
+<tag k="name" v="Weildorf"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1648905178" lat="47.7252270" lon="9.3230618">
+<tag k="name" v="Ahausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1649224292" lat="49.4667417" lon="8.5036745">
+<tag k="name" v="Neuhermsheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1649339624" lat="49.4562908" lon="8.5039654">
+<tag k="name" v="Mallau"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1651771416" lat="48.9700957" lon="9.0695757">
+<tag k="name" v="Kleinsachsenheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1651827063" lat="48.9621660" lon="9.1016543">
+<tag k="name" v="Metterzimmern"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1651952601" lat="49.5037376" lon="8.4668070">
+<tag k="name" v="Neckarstadt-West"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1652003965" lat="49.4962230" lon="8.4787931">
+<tag k="name" v="Neckarstadt-Ost"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1654291864" lat="48.2459675" lon="7.9542730">
+<tag k="name" v="Dörlinbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1655265924" lat="49.0396529" lon="9.1211636">
+<tag k="name" v="Hohenstein"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1655964618" lat="47.5967591" lon="9.5401266">
+<tag k="name" v="Langenargen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1656688748" lat="48.4975248" lon="7.9482569">
+<tag k="name" v="Bohlsbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1656870942" lat="49.5068075" lon="8.5076302">
+<tag k="name" v="Käfertal"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1658090028" lat="47.7341616" lon="8.9848552">
+<tag k="name" v="Mettnau"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1658214643" lat="47.7509148" lon="8.9838935">
+<tag k="name" v="Stürzkreut"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1659525481" lat="47.7487324" lon="8.9764163">
+<tag k="name" v="Unter Stürzkreut"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1668249529" lat="47.7526525" lon="8.9737772">
+<tag k="name" v="Altbohl"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1668772197" lat="48.0831538" lon="8.4739536">
+<tag k="name" v="Nordstetten"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1668783016" lat="48.1716046" lon="8.4595271">
+<tag k="name" v="Weiler"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1668929511" lat="48.3118229" lon="8.5350148">
+<tag k="name" v="Hochmössingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1672708286" lat="47.6710808" lon="9.4162576">
+<tag k="name" v="Fischbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1672708316" lat="47.6659997" lon="9.4263497">
+<tag k="name" v="Manzell"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1672708335" lat="47.6948632" lon="9.4428157">
+<tag k="name" v="Raderach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1672708351" lat="47.6758540" lon="9.4410220">
+<tag k="name" v="Schnetzenhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1672708361" lat="47.6853350" lon="9.4413093">
+<tag k="name" v="Unterraderach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1672708379" lat="47.6599526" lon="9.4458138">
+<tag k="name" v="Windhag"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1672991995" lat="47.6704572" lon="9.4743701">
+<tag k="name" v="Jettenhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1676201639" lat="48.6421324" lon="8.6275831">
+<tag k="name" v="Martinsmoos"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1676205734" lat="48.7174823" lon="8.6834278">
+<tag k="name" v="Weltenschwann"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1676205756" lat="48.7119614" lon="8.6961951">
+<tag k="name" v="Speßhardt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1676624156" lat="48.6778441" lon="9.2155481">
+<tag k="name" v="Bernhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1676624158" lat="48.7122987" lon="9.1584297">
+<tag k="name" v="Fasanenhof"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1676624159" lat="48.6496859" lon="9.2492546">
+<tag k="name" v="Harthausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1676624162" lat="48.6565051" lon="9.1958534">
+<tag k="name" v="Plattenhardt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1676624164" lat="48.6738614" lon="9.2377627">
+<tag k="name" v="Sielmingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1676624167" lat="48.6682397" lon="9.3734884">
+<tag k="name" v="Unterboihingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1678057292" lat="47.8024138" lon="9.3234429">
+<tag k="name" v="Beuren"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1678187673" lat="47.5627854" lon="7.9703052">
+<tag k="name" v="Obersäckingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1679232120" lat="47.7138401" lon="9.4172477">
+<tag k="name" v="Leimbach"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1679244043" lat="47.7037329" lon="9.5492518">
+<tag k="name" v="Brochenzell"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1681179964" lat="47.6329599" lon="9.5392061">
+<tag k="name" v="Mariabrunn"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1681810437" lat="49.1001849" lon="8.5245427">
+<tag k="name" v="Büchenau"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1681822521" lat="49.1142795" lon="8.5099455">
+<tag k="name" v="Spöck"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1682007444" lat="49.1866891" lon="8.4236818">
+<tag k="name" v="Rußheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1682088273" lat="47.7087601" lon="9.5167203">
+<tag k="name" v="Ettenkirch"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1682152229" lat="49.2206735" lon="8.6579518">
+<tag k="name" v="Bad Mingolsheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1684849181" lat="49.4459156" lon="8.6120103">
+<tag k="name" v="Edingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1686996610" lat="49.4306859" lon="8.6831779">
+<tag k="name" v="Handschuhsheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1686996647" lat="49.4790305" lon="8.5100964">
+<tag k="name" v="Neuostheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1686996714" lat="49.4216102" lon="8.7568930">
+<tag k="name" v="Ziegelhausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1687917495" lat="49.4452732" lon="8.5164060">
+<tag k="name" v="Casterfeld-Nord"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1688457855" lat="49.3350652" lon="8.6729605">
+<tag k="name" v="St. Ilgen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1694932468" lat="49.5101825" lon="8.5406360">
+<tag k="name" v="Vogelstang"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1696883240" lat="48.4192444" lon="8.7562692">
+<tag k="name" v="Mühringen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1699831793" lat="48.2057553" lon="9.6810746">
+<tag k="name" v="Bettighofen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1699831892" lat="48.2797047" lon="9.7622406">
+<tag k="name" v="Nasgenstadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1699952925" lat="48.4299400" lon="10.0187913">
+<tag k="name" v="Böfingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1699952931" lat="48.4202850" lon="10.0010231">
+<tag k="name" v="Eichenplatz"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1700291781" lat="48.3138235" lon="8.5702667">
+<tag k="name" v="Aistaig"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1700291835" lat="48.5019012" lon="9.0496802">
+<tag k="name" v="Derendingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1700291957" lat="48.4324176" lon="8.6608421">
+<tag k="name" v="Ihlingen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1700291964" lat="48.4306061" lon="8.6731256">
+<tag k="name" v="Isenburg"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1700292038" lat="48.6030678" lon="9.3043809">
+<tag k="name" v="Raidwangen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1700292063" lat="48.5440542" lon="9.0612432">
+<tag k="name" v="Waldhäuser-Ost"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1700405658" lat="49.4993291" lon="8.6603539">
+<tag k="name" v="Leutershausen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1704135038" lat="48.1557740" lon="9.5002870">
+<tag k="name" v="Walz"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1718644938" lat="48.5306563" lon="9.0857454">
+<tag k="name" v="Lustnau"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1719218135" lat="49.5124817" lon="8.6591077">
+<tag k="name" v="Großsachsen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1719271227" lat="49.5099379" lon="8.7032789">
+<tag k="name" v="Rittenweier"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1731192288" lat="49.4247781" lon="8.5287476">
+<tag k="name" v="Rheinau"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1732901507" lat="49.4964109" lon="8.5502470">
+<tag k="name" v="Wallstadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1746541569" lat="47.6866841" lon="9.8348109">
+<tag k="name" v="Altstadt"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1746541570" lat="47.6785266" lon="9.8280294">
+<tag k="name" v="Argensiedlung"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1746541575" lat="47.6855932" lon="9.8383807">
+<tag k="name" v="Ebnet"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1746541578" lat="47.6818153" lon="9.8368469">
+<tag k="name" v="Vorderes Ebnet"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1759448173" lat="49.4865986" lon="8.5283692">
+<tag k="name" v="Feudenheim"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1760390553" lat="47.8738153" lon="8.3476087">
+<tag k="name" v="Seppenhofen"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1774204440" lat="49.5821954" lon="8.6478075">
+<tag k="name" v="Sulzbach-West"/>
+<tag k="place" v="suburb"/>
+</node>
+<node id="1774204441" lat="49.5788550" lon="8.6593109">
+<tag k="name" v="Sulzbach"/>
+<tag k="place" v="suburb"/>
+</node>
+</osm>

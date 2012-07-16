@@ -1,5 +1,5 @@
 
-package steffen.cleanup;
+package steffen;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import steffen.Constants;
 
 public class KillCrap {
 	private static String	fileSource	= "bawuu.xml";

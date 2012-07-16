@@ -1,5 +1,5 @@
 
-package steffen.layer.filter;
+package steffen.layer;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -8,23 +8,25 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import steffen.Constants;
-import steffen.layer.clean.CleanLayerCities;
 
-public class FilterXMLCites {
-	private enum PlacesType {
-		Cities, Towns, Villages, Hamlets, Suburbs;
-	}
+public class FilterNodesLayer {
 	
-	private static String		fileSource	= "bawu.xml";
-	private static String		fileTarget	= "bawu cities.xml";
-	private static PlacesType	placesType	= PlacesType.Cities;
+	private static String	myFileSource	= "bawu.xml";
+	private static Layer		myLayer			= Layer.Cities;
 	
 	public static void main(String[] args) throws IOException {
-		System.out.println("Begin filtering layer...");
-		String[] neededKeys = { "k=\"place\"", "k=\"name\"" };
+		filterNodesLayer(myFileSource, myLayer, true);
+	}
+	
+	public static void filterNodesLayer(String fileSource, Layer layer, boolean deleteOldFile) throws IOException {
+		System.out.println("Begin filtering layer " + layer.name + "...");
+		
+		long nodes = 0L;
+		String[] neededKeys = new String[2];
 		String[] neededValues = new String[neededKeys.length];
-		neededValues[1] = "";
-		switch (placesType) {
+		neededKeys[0] = "k=\"place\"";
+		neededKeys[1] = "k=\"name\"";
+		switch (layer) {
 			case Cities: {
 				neededValues[0] = "v=\"city\"";
 				break;
@@ -46,12 +48,16 @@ public class FilterXMLCites {
 				break;
 			}
 			default: {
-				System.exit(0);
+				System.exit(1);
 				break;
 			}
 		}
-		BufferedReader reader = new BufferedReader(new FileReader(new File(Constants.pathToExternXMLs + FilterXMLCites.fileSource)));
-		BufferedWriter writer = new BufferedWriter(new FileWriter(new File(Constants.pathToExternXMLs + FilterXMLCites.fileTarget)));
+		neededValues[1] = "";
+		String fileTargetName = layer.name;
+		
+		BufferedReader reader = new BufferedReader(new FileReader(new File(Constants.pathToExternXMLs + fileSource)));
+		String fileTarget = fileSource.replaceFirst(".xml", " " + fileTargetName + ".xml");
+		BufferedWriter writer = new BufferedWriter(new FileWriter(new File(Constants.pathToExternXMLs + fileTarget)));
 		
 		String line = null;
 		while (reader.ready()) {
@@ -68,7 +74,6 @@ public class FilterXMLCites {
 								if (line.indexOf(neededTag) >= 0) {
 									if (line.indexOf(neededValues[i]) >= 0) {
 										needed[i] = true;
-										// System.out.println(line);
 									}
 								}
 								i++;
@@ -84,6 +89,7 @@ public class FilterXMLCites {
 					}
 					if (needed1) {
 						writer.write(zeile);
+						nodes++;
 					}
 				}
 			} else {
@@ -103,8 +109,9 @@ public class FilterXMLCites {
 		reader.close();
 		writer.close();
 		
+		System.out.println("Nodes: " + nodes);
 		System.out.println("Done");
 		
-		CleanLayerCities.cleanLayer(fileTarget);
+		CleanNodesLayer.cleanLayer(fileTarget, layer, deleteOldFile);
 	}
 }

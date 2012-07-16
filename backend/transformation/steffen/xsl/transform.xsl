@@ -13,6 +13,7 @@
 		<svg xmlns:xlink="http://www.w3.org/1999/xlink">
 			<xsl:attribute name="xmlns">http://www.w3.org/2000/svg</xsl:attribute>
 			<xsl:attribute name="style">position:absolute;</xsl:attribute>
+			<xsl:text>&#10;</xsl:text>
 			<xsl:element name="g">
 				<xsl:attribute name="id">~~id~~</xsl:attribute>
 				<xsl:attribute name="fill">none</xsl:attribute>
@@ -20,6 +21,7 @@
 				<xsl:attribute name="stroke-width">1</xsl:attribute>
 				<xsl:apply-templates select="way" />
 			</xsl:element>
+			<xsl:text>&#10;</xsl:text>
 		</svg>
 	</xsl:template>
 
@@ -34,6 +36,7 @@
 			</xsl:attribute>
 			<xsl:apply-templates select="tag" />
 		</xsl:element>
+		<xsl:text>&#10;</xsl:text>
 	</xsl:template>
 
 	<xsl:template match="node">

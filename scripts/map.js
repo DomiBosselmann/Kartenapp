@@ -176,7 +176,9 @@ window.Karte = (function () {
 			mapScaler : null,
 			mapScaleText : null,
 			scalables : null,
-			visibilities : null
+			visibilities : null,
+			places : null,
+			routes : null
 		},
 		init : function () {
 			// UI-Elemente mit Referenzen versehen
@@ -195,6 +197,8 @@ window.Karte = (function () {
 			this.uiElements.mapScaleText = document.getElementById("scalevalue");
 			this.uiElements.scalables = this.uiElements.mapScale.getElementsByClassName("scalable");
 			this.uiElements.visibilities = document.getElementById("visibilities");
+			this.uiElements.places = document.getElementById("places");
+			this.uiElements.routes = document.getElementById("routes");
 			
 			// EventListener hinzufügen
 			this.uiElements.addButton.addEventListener("click", this.handler.enableAddSelection, false);
@@ -632,7 +636,7 @@ window.Karte = (function () {
 		},
 		renderFlags : function (routes, data) {
 			var item, note, name,
-				list = routes ? document.getElementById("routes") : document.getElementById("places"), // AUSLAGERN
+				list = routes ? controller.uiElements.routes : controller.uiElements.places,
 				content = data ? data : (routes ? map.routes : map.places);
 				
 			list.innerHTML = "";

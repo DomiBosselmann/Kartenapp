@@ -168,8 +168,6 @@ window.Karte = (function () {
 			importButton: null,
 			saveButton: null,
 			searchField: null,
-			mapChooser: null,
-			activeMapChooser: null,
 			map: null,
 			mapRoot : null,
 			mapScale : null,
@@ -189,7 +187,6 @@ window.Karte = (function () {
 			this.uiElements.importButton = document.querySelector("button[title='Importieren']");
 			this.uiElements.saveButton = document.querySelector("button[title='Sichern']");
 			this.uiElements.searchField = document.getElementById("searchField");
-			this.uiElements.mapChooser = Array.prototype.slice.call(document.getElementById("choosemap").children);
 			this.uiElements.map = document.getElementById("mapcontainer");
 			this.uiElements.mapRoot = this.uiElements.map.getElementsByTagName("svg")[0];
 			this.uiElements.mapScale = document.getElementById("mapscale");
@@ -209,15 +206,6 @@ window.Karte = (function () {
 			
 			this.uiElements.searchField.addEventListener("keyup", controller.handler.handleSearchInput, false);
 			this.uiElements.searchField.addEventListener("keydown", controller.handler.handleSearchInput, false);
-			
-			this.uiElements.mapChooser.forEach(function (element) {				
-				element.addEventListener("click", controller.handler.switchMapView, false);
-				
-				// Aktive View setzen
-				if (element.className === "active") {
-					controller.uiElements.activeMapChooser = element;
-				}
-			});
 			
 			this.uiElements.mapScaler.addEventListener("mousedown", this.handler.enableScaling, false);
 			
@@ -322,27 +310,6 @@ window.Karte = (function () {
 			disableSearch : function () {
 				controller.uiElements.toolbar.className = "";
 				controller.uiElements.searchButton.addEventListener("click", controller.handler.handleSearch, false);
-			},
-			switchMapView : function (event) {
-				// Überprüfung ob die View geändert wurde
-				if (event.currentTarget === controller.uiElements.activeMapChooser) {
-					return;
-				}
-				
-				// Aktive View setzen
-				controller.uiElements.activeMapChooser = event.currentTarget;
-				
-				// MapView ändern in den Einstellungen
-				alert("Wenn jetzt ne Karte da wäre, könnte man zwischen den Ansichten wechseln.");
-				
-				// UI-Rückmeldung
-				controller.uiElements.mapChooser.forEach(function (element) {
-					if (element === event.currentTarget) {
-						element.className = "active";
-					} else {
-						element.className = "";
-					}
-				});
 			},
 			enableScaling : function (event) {
 				map.scaling.scalerX = event.pageX;

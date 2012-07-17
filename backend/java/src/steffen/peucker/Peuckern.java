@@ -2,6 +2,7 @@
 package steffen.peucker;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -11,24 +12,32 @@ import java.util.Hashtable;
 import steffen.Constants;
 
 public class Peuckern {
-	private static String								fileSource			= "bawu bounds2.xml";
-	private static Hashtable<Integer, Node>		nodes					= new Hashtable<Integer, Node>();
-	private static Hashtable<Integer, Boolean>	neededNodes			= new Hashtable<Integer, Boolean>();
-	private static double								peuckerDistance	= 0.1;
+	private static String								myFileSource		= "bawu bounds.xml";
+	private static Hashtable<Integer, Node>		nodes					= null;
+	private static Hashtable<Integer, Boolean>	neededNodes			= null;
+	private static double								myPeuckerDistance	= 0.1;
 	
 	public static void main(String[] args) throws IOException {
+		Peuckern.peuckern(Peuckern.myFileSource, Peuckern.myPeuckerDistance, false);
+	}
+	
+	public static void peuckern(String fileSource, double peuckerDistance, boolean deleteOldFile) throws IOException {
+		Peuckern.nodes = new Hashtable<Integer, Node>();
+		Peuckern.neededNodes = new Hashtable<Integer, Boolean>();
 		Hashtable<Integer, Integer> wayPoints = new Hashtable<Integer, Integer>();
-		DecimalFormat format = new DecimalFormat("0.##");
-		String fileTarget = Constants.pathToExternXMLs
-				+ Peuckern.fileSource.replaceFirst(".xml", " p" + format.format(Peuckern.peuckerDistance) + ".xml");
-		fileSource = Constants.pathToExternXMLs + fileSource;
-		BufferedReader reader = new BufferedReader(new FileReader(new File(Peuckern.fileSource)));
 		
-		// Save data of the nodes in Hashtables and check for needed nodes
+		DecimalFormat format = new DecimalFormat("0.##");
+		File targetFile = new File(Constants.pathToExternXMLs
+				+ fileSource.replaceFirst(".xml", " p" + format.format(peuckerDistance) + ".xml"));
+		File sourceFile = new File(Constants.pathToExternXMLs + fileSource);
+		BufferedReader reader = new BufferedReader(new FileReader(sourceFile));
+		
+		long oldNodes = 0L;
 		String line = null;
 		while (reader.ready()) {
 			line = reader.readLine();
 			if (line.indexOf("<node") >= 0) {
+				oldNodes++;
 				int begin = line.indexOf("id=\"");
 				if (begin >= 0) {
 					int end = line.indexOf("\"", begin + 4);
@@ -69,7 +78,7 @@ public class Peuckern {
 							Integer[] refs2 = new Integer[wayPoints.size()];
 							Integer[] refs = wayPoints.keySet().toArray(refs2);
 							refs2 = null;
-							Peuckern.markRelevantNodes(refs, 0, refs.length - 1);
+							Peuckern.markRelevantNodes(refs, 0, refs.length - 1, peuckerDistance);
 						}
 						wayPoints.clear();
 					}
@@ -78,13 +87,14 @@ public class Peuckern {
 		}
 		reader.close();
 		Peuckern.nodes.clear();
-		System.out.println("Nodes: " + neededNodes.size());
+		System.out.println("Old nodes: " + oldNodes);
+		System.out.println("New nodes: " + Peuckern.neededNodes.size());
 		
 		System.out.println("Step 1");
 		
 		// Write only needed nodes in the new file
-		reader = new BufferedReader(new FileReader(new File(Peuckern.fileSource)));
-		FileWriter writer = new FileWriter(new File(fileTarget));
+		reader = new BufferedReader(new FileReader(sourceFile));
+		BufferedWriter writer = new BufferedWriter(new FileWriter(targetFile));
 		String zeile = null;
 		int ndcount;
 		while (reader.ready()) {
@@ -137,10 +147,15 @@ public class Peuckern {
 		reader.close();
 		writer.close();
 		
+		if (deleteOldFile) {
+			sourceFile.delete();
+			targetFile.renameTo(sourceFile);
+		}
+		
 		System.out.println("Done");
 	}
 	
-	private static void markRelevantNodes(Integer[] refs, int begin, int end) {
+	private static void markRelevantNodes(Integer[] refs, int begin, int end, double peuckerDistance) {
 		switch (end - begin) {
 			case 0: {
 				Peuckern.neededNodes.put(refs[begin], new Boolean(true));
@@ -168,9 +183,9 @@ public class Peuckern {
 						most_distant = i;
 					}
 				}
-				if (largest_distance > Peuckern.peuckerDistance) {
-					Peuckern.markRelevantNodes(refs, begin, most_distant);
-					Peuckern.markRelevantNodes(refs, most_distant, end);
+				if (largest_distance > peuckerDistance) {
+					Peuckern.markRelevantNodes(refs, begin, most_distant, peuckerDistance);
+					Peuckern.markRelevantNodes(refs, most_distant, end, peuckerDistance);
 				} else {
 					// Peuckern.neededNodes.put(refs[begin], new Boolean(true));
 					// Peuckern.neededNodes.put(refs[end], new Boolean(true));

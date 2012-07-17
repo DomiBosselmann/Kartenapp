@@ -78,7 +78,17 @@ if ($_GET['l']) {
 						}
 					case "w1":
 						{
-							$xslfile .= "id=lakes&";
+							$xslfile .= "id=canals&";
+							break;
+						}
+					case "w2":
+						{
+							$xslfile .= "id=namedLakes&";
+							break;
+						}
+					case "w3":
+						{
+							$xslfile .= "id=allLakes&";
 							break;
 						}
 					default:
@@ -96,6 +106,26 @@ if ($_GET['l']) {
 					case "s":
 						{
 							$xslfile .= "id=motorways&";
+							break;
+						}
+					case "s1":
+						{
+							$xslfile .= "id=trunks&";
+							break;
+						}
+					case "s2":
+						{
+							$xslfile .= "id=primaries&";
+							break;
+						}
+					case "s3":
+						{
+							$xslfile .= "id=secondaries&";
+							break;
+						}
+					case "s4":
+						{
+							$xslfile .= "id=tertiaries&";
 							break;
 						}
 					default:

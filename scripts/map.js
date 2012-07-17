@@ -702,8 +702,8 @@ window.Karte = (function () {
 			return [x,y];
 		},
 		pixelCoordinateToGeoCoordinate : function (x, y) { //TODO: Sascha
-			latitude = x;
-			longitude = y;
+			latitude = ((x*(map.coordinates.bottomRight[0] - map.coordinates.topLeft[0]))/map.dimensions.width)+map.coordinates.topLeft[0];
+			longitude = ((y*(map.coordinates.bottomRight[1] - map.coordinates.topLeft[1]))/map.dimensions.height)+map.coordinates.topLeft[1];
 			
 			return [latitude, longitude];
 		}

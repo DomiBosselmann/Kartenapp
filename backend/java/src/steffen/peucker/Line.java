@@ -31,9 +31,10 @@ public class Line {
 	public Double getDistanceOfPoint(Double lon, Double lat) {
 		Double a = Math.sqrt(Math.pow((lon - this.lon1) * Line.xratio, 2) + Math.pow((lat - this.lat1) * Line.yratio, 2));
 		Double b = Math.sqrt(Math.pow((lon - this.lon2) * Line.xratio, 2) + Math.pow((lat - this.lat2) * Line.yratio, 2));
-		return Math.sqrt(2
-				* (Math.pow(a, 2) * Math.pow(b, 2) + Math.pow(b, 2) * Math.pow(this.c, 2) + Math.pow(this.c, 2) * Math.pow(a, 2))
-				- (Math.pow(a, 4) + Math.pow(b, 4) + Math.pow(this.c, 4)))
+		return Math
+				.sqrt(2
+						* (Math.pow(a, 2) * Math.pow(b, 2) + Math.pow(b, 2) * Math.pow(this.c, 2) + Math.pow(this.c, 2)
+								* Math.pow(a, 2)) - (Math.pow(a, 4) + Math.pow(b, 4) + Math.pow(this.c, 4)))
 				/ (2 * this.c);
 	}
 }

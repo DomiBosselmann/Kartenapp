@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" style="position:absolute;">
+<svg style="position:absolute;" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
 <defs><rect id="city" fill="red" x="-5" y="-5" width="10" height="10"/></defs>
 <g id="cities">
-<use transform="translate(283.140 161.918)" name="Heilbronn" xlink:href="#city"/>
-<use transform="translate(281.807 314.005)" name="Reutlingen" xlink:href="#city"/>
-<use transform="translate(198.181 221.110)" name="Pforzheim" xlink:href="#city"/>
-<use transform="translate(196.839 99.037)" name="Heidelberg" xlink:href="#city"/>
-<use transform="translate(159.353 80.141)" name="Mannheim" xlink:href="#city"/>
-<use transform="translate(57.562 431.785)" name="Freiburg im Breisgau" xlink:href="#city"/>
-<use transform="translate(149.001 192.107)" name="Karlsruhe" xlink:href="#city"/>
-<use transform="translate(277.250 248.076)" name="Stuttgart" xlink:href="#city"/>
-<use transform="translate(410.387 337.084)" name="Ulm" xlink:href="#city"/>
+<use transform="translate(282.185 147.313)" name="Heilbronn" xlink:href="#city"/>
+<use transform="translate(280.869 284.289)" name="Reutlingen" xlink:href="#city"/>
+<use transform="translate(198.293 200.624)" name="Pforzheim" xlink:href="#city"/>
+<use transform="translate(196.969 90.681)" name="Heidelberg" xlink:href="#city"/>
+<use transform="translate(159.953 73.662)" name="Mannheim" xlink:href="#city"/>
+<use transform="translate(59.442 390.365)" name="Freiburg im Breisgau" xlink:href="#city"/>
+<use transform="translate(149.732 174.503)" name="Karlsruhe" xlink:href="#city"/>
+<use transform="translate(276.369 224.911)" name="Stuttgart" xlink:href="#city"/>
+<use transform="translate(407.834 305.074)" name="Ulm" xlink:href="#city"/>
 </g>
 </svg>

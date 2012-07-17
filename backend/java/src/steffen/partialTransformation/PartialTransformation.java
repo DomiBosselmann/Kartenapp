@@ -2,77 +2,166 @@
 package steffen.partialTransformation;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import javax.xml.transform.TransformerException;
 import steffen.Constants;
+import steffen.layer.Layer;
 
 public class PartialTransformation {
 	
-	private static String	fileSource		= "bawu_bounds_zusammen.xml";
-	private static String	groupID			= "federal";
-	private static String	xsltFileSource	= "part_transform.xsl";
-	private static int		width				= 500;
-	private static int		height			= 550;
-	private static int		wayCount			= 10;
+	private static Layer		myLayer				= Layer.Federal;
+	private static boolean	myBawu				= true;
 	
-	// Ger
-	// private static double lon1 = 5.84;
-	// private static double lon2 = 16.66;
-	// private static double lat1 = 55.5;
-	// private static double lat2 = 47.1;
+	private static int		width					= 500;
+	private static int		height				= 500;
+	private static boolean	deleteTempFiles	= true;
 	
-	// Links: 5.8663101
-	// Rechts: 16.6467723
-	// Oben: 55.3372787
-	// Unten: 47.236307
-	
-	// Bawu
-	private static double	lon1				= 7.5;
-	private static double	lon2				= 10.535;
-	private static double	lat1				= 49.83;
-	private static double	lat2				= 47.494;
-	
-	// Links: 7.5117461
-	// Rechts: 10.5298008
-	// Oben: 49.8188685
-	// Unte: 47.4968682
+	private static double	lon1;
+	private static double	lon2;
+	private static double	lat1;
+	private static double	lat2;
 	
 	public static void main(String[] args) throws Exception {
-		boolean delete = true;
-		System.out.println("Begin Partial Transformation..");
-		SplitIntoSimplierFiles.splitThisFile(PartialTransformation.fileSource, wayCount);
-		PartialTransformation.dynamicNewPartTransformXSL(delete);
-		TransformPartialXMLs.transformTheseXMLs(PartialTransformation.fileSource.replaceFirst(".xml", ".splitted"),
-				PartialTransformation.xsltFileSource + "2", PartialTransformation.groupID, delete);
-		System.out.println("Partial Transformation Finished!");
+		PartialTransformation.transformThisXML(PartialTransformation.myBawu, PartialTransformation.myLayer);
 	}
 	
-	private static void dynamicNewPartTransformXSL(boolean delete) throws IOException {
-		System.out.println("Begin Building XSL..");
+	public static void transformThisXML(boolean bawu, Layer layer) throws IOException, TransformerException {
+		System.out.println("Begin partial transformation for " + layer.name + "...");
 		
-		BufferedReader reader = new BufferedReader(new FileReader(new File(Constants.pathToInternXSLs
-				+ PartialTransformation.xsltFileSource)));
-		File tempXSL = new File(Constants.pathToInternXSLs + PartialTransformation.xsltFileSource + "2");
+		if (bawu) {
+			PartialTransformation.lon1 = 7.5117461;
+			PartialTransformation.lon2 = 10.5298008;
+			PartialTransformation.lat1 = 49.8188685;
+			PartialTransformation.lat2 = 47.4968682;
+		} else {
+			PartialTransformation.lon1 = 5.8663101;
+			PartialTransformation.lon2 = 16.6467723;
+			PartialTransformation.lat1 = 55.3372787;
+			PartialTransformation.lat2 = 47.236307;
+		}
+		double margin = 2.0; // Km
+		PartialTransformation.lon1 -= margin / Constants.xRatio;
+		PartialTransformation.lon2 += margin / Constants.xRatio;
+		PartialTransformation.lat1 += margin / Constants.yRatio;
+		PartialTransformation.lat2 -= margin / Constants.yRatio;
+		
+//		System.out.println(lon1);
+//		System.out.println(lon2);
+//		System.out.println(lat1);
+//		System.out.println(lat2);
+//		System.exit(1);
+		
+		String fileSource = "";
+		if (bawu) {
+			fileSource += "bawu ";
+		} else {
+			fileSource += "ger ";
+		}
+		fileSource += layer.name + ".xml";
+		
+		SplitIntoSimplierFiles.splitThisFile(fileSource, layer);
+		
+		PartialTransformation.dynamicNewPartTransformXSL(layer, PartialTransformation.deleteTempFiles);
+		
+		TransformPartialXMLs.transformTheseXMLs(fileSource.replaceFirst(".xml", " splitted"), layer,
+				PartialTransformation.deleteTempFiles);
+		
+		System.out.println("Partial transformation finished!");
+	}
+	
+	private static void dynamicNewPartTransformXSL(Layer layer, boolean delete) throws IOException {
+		System.out.println("Begin building xsl for " + layer.name + "...");
+		
+		String xslFileSource = null;
+		String rect_id = null;
+		String rect_fill = null;
+		String rect_coord = null;
+		String rect_size = null;
+		if (layer.nodeLayer) {
+			xslFileSource = "cities_part_transform.xsl";
+			switch (layer) {
+				case Cities: {
+					rect_id = "city";
+					rect_fill = "red";
+					rect_coord = "-5";
+					rect_size = "10";
+					break;
+				}
+				case Towns: {
+					rect_id = "town";
+					rect_fill = "red";
+					rect_coord = "-4";
+					rect_size = "8";
+					break;
+				}
+				case Villages: {
+					rect_id = "village";
+					rect_fill = "red";
+					rect_coord = "-3";
+					rect_size = "6";
+					break;
+				}
+				case Hamlets: {
+					rect_id = "hamlet";
+					rect_fill = "red";
+					rect_coord = "-2";
+					rect_size = "4";
+					break;
+				}
+				case Suburbs: {
+					rect_id = "suburb";
+					rect_fill = "orange";
+					rect_coord = "-1";
+					rect_size = "2";
+					break;
+				}
+				default: {
+					System.exit(1);
+					break;
+				}
+			}
+		} else {
+			xslFileSource = "part_transform.xsl";
+		}
+		
+		String group_ID = null;
+		if (layer == Layer.NamedLakes || layer == Layer.AllLakes) {
+			group_ID = "lakes";
+		} else {
+			group_ID = layer.name;
+		}
+		
+		BufferedReader reader = new BufferedReader(new FileReader(new File(Constants.pathToInternXSLs + xslFileSource)));
+		String newXSLFileName = xslFileSource + "2";
+		File tempXSL = new File(Constants.pathToInternXSLs + newXSLFileName);
 		if (delete) {
 			tempXSL.deleteOnExit();
 		}
-		FileWriter writer = new FileWriter(tempXSL);
+		BufferedWriter writer = new BufferedWriter(new FileWriter(tempXSL));
 		
 		DecimalFormat format = new DecimalFormat("#.000");
-		String lon_factor = String.valueOf(format.format(width / (lon2 - lon1)));
-		String lat_factor = String.valueOf(format.format(height / (lat1 - lat2)));
+		double lon_factor = PartialTransformation.width / (PartialTransformation.lon2 - PartialTransformation.lon1);
+		double lat_factor = PartialTransformation.height / (PartialTransformation.lat1 - PartialTransformation.lat2);
 		
 		String line = null;
 		while (reader.ready()) {
 			line = reader.readLine();
-			line = line.replaceFirst("~~group_id~~", PartialTransformation.groupID);
-			line = line.replaceFirst("~~lon_factor~~", lon_factor);
-			line = line.replaceFirst("~~lat_factor~~", lat_factor);
-			line = line.replaceFirst("~~lon1~~", String.valueOf(lon1));
-			line = line.replaceFirst("~~lat1~~", String.valueOf(lat1));
+			line = line.replaceFirst("~~group_id~~", group_ID);
+			line = line.replaceFirst("~~lon_factor~~", format.format(lon_factor));
+			line = line.replaceFirst("~~lat_factor~~", format.format(lat_factor));
+			line = line.replaceFirst("~~lon1~~", format.format(PartialTransformation.lon1));
+			line = line.replaceFirst("~~lat1~~", format.format(PartialTransformation.lat1));
+			if (layer.nodeLayer) {
+				line = line.replaceFirst("~~rect_id~~", rect_id);
+				line = line.replaceFirst("~~rect_fill~~", rect_fill);
+				line = line.replaceFirst("~~rect_coord~~", rect_coord);
+				line = line.replaceFirst("~~rect_size~~", rect_size);
+			}
 			writer.write(line + Constants.lineSeparator);
 		}
 		reader.close();

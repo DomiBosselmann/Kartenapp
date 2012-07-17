@@ -37,6 +37,26 @@ if ($_GET['l']) {
 							$xmlfile .= "motorways.xml";
 							break;
 						}
+					case "s1":
+						{
+							$xmlfile .= "trunks.xml";
+							break;
+						}
+					case "s2":
+						{
+							$xmlfile .= "primaries.xml";
+							break;
+						}
+					case "s3":
+						{
+							$xmlfile .= "secondaries.xml";
+							break;
+						}
+					case "s4":
+						{
+							$xmlfile .= "tertiaries.xml";
+							break;
+						}
 					default:
 						{
 							$xmlfile .= "motorways.xml";
@@ -78,7 +98,17 @@ if ($_GET['l']) {
 						}
 					case "w1":
 						{
-							$xmlfile .= "lakes.xml";
+							$xmlfile .= "canals.xml";
+							break;
+						}
+					case "w2":
+						{
+							$xmlfile .= "namedLakes.xml";
+							break;
+						}
+					case "w3":
+						{
+							$xmlfile .= "allLakes.xml";
 							break;
 						}
 					default:

@@ -11,7 +11,8 @@ public class KoordinatenRange {
 	private static String	fileSource	= "ger boundary2.xml";
 	
 	public static void main(String[] args) throws IOException {
-		BufferedReader reader = new BufferedReader(new FileReader(new File(Constants.pathToExternXMLs + fileSource)));
+		BufferedReader reader = new BufferedReader(new FileReader(new File(Constants.pathToExternXMLs
+				+ KoordinatenRange.fileSource)));
 		
 		String line = null;
 		double lat1 = 9999.0;

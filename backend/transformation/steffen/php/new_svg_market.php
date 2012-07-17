@@ -43,6 +43,8 @@ if ($_GET) {
 	// width + height detection
 	$originWidth = 490.0;
 	$originHeight = 510.0;
+	$extraWidth = 0;
+	$extraHeight = 0;
 	if (isset($_GET['width'])) {
 		$sizing = true;
 		$width = $_GET['width'];
@@ -55,11 +57,26 @@ if ($_GET) {
 	} else {
 		$height = $originHeight;
 	}
-	if ($_GET['custom']) {
+	if (isset($_GET['custom'])) {
 		$widthFactor = $width / $originWidth;
 		$heightFactor = $height / $originHeight;
 	} else {
 		// TODO verhältnismäßige streckung
+
+		$lonKm = 86.0;
+		$latKm = 111.32;
+
+		$tryHeight = $width * ($latKm / $lonKm);
+		if ($tryHeight <= $height) {
+			$height = $tryHeight;
+			$extraHeight = ($_GET['height'] - $height) / 2;
+		} else {
+			$width = $height * ($lonKm / $latKm);
+			$extraWidth = ($_GET['width'] - $width) / 2;
+		}
+
+		$widthFactor = $width / $originWidth;
+		$heightFactor = $height / $originHeight;
 	}
 
 	if ($region) {
@@ -67,10 +84,6 @@ if ($_GET) {
 		$widthFactor = $width / $delta_x;
 		$delta_y = $lat2 - $lat1;
 		$heightFactor = $height / $delta_y;
-		// 		echo $delta_x . PHP_EOL;
-		// 		echo $delta_y . PHP_EOL;
-		// 		echo $widthFactor . PHP_EOL;
-		// 		echo $heightFactor . PHP_EOL;
 	}
 
 	// build the svg
@@ -112,6 +125,10 @@ if ($_GET) {
 					break;
 				}
 			case "custom":
+				{
+					break;
+				}
+			case "border":
 				{
 					break;
 				}
@@ -280,12 +297,16 @@ if ($_GET) {
 							$newLatCoord = $latCoord - $lat1;
 							$newLonCoord *= $widthFactor;
 							$newLatCoord *= $heightFactor;
+							$newLonCoord += $extraWidth;
+							$newLatCoord += $extraHeight;
 							$translate = str_replace($lonCoord, number_format($newLonCoord, 3, '.', ''), $translate);
 							$translate = str_replace($latCoord, number_format($newLatCoord, 3, '.', ''), $translate);
 						} else {
 							if ($sizing === true) {
 								$newLonCoord = $lonCoord * $widthFactor;
 								$newLatCoord = $latCoord * $heightFactor;
+								$newLonCoord += $extraWidth;
+								$newLatCoord += $extraHeight;
 								$translate = str_replace($lonCoord, number_format($newLonCoord, 3, '.', ''), $translate);
 								$translate = str_replace($latCoord, number_format($newLatCoord, 3, '.', ''), $translate);
 							}
@@ -321,12 +342,16 @@ if ($_GET) {
 								$newLatCoord = $latCoord - $lat1;
 								$newLonCoord *= $widthFactor;
 								$newLatCoord *= $heightFactor;
+								$newLonCoord += $extraWidth;
+								$newLatCoord += $extraHeight;
 								$newline .= number_format($newLonCoord, 3, '.', '') . "," . number_format($newLatCoord, 3, '.', '') . " ";
 							}
 						}
 					} else {
 						if ($sizing === true) {
-							$newline .= number_format(($lonCoord * $widthFactor), 3, '.', '') . "," . number_format(($latCoord * $heightFactor), 3, '.', '') . " ";
+							$newLonCoord = ($lonCoord * $widthFactor) + $extraWidth;
+							$newLatCoord = ($latCoord * $heightFactor) + $extraHeight;
+							$newline .= number_format($newLonCoord, 3, '.', '') . "," . number_format($newLatCoord, 3, '.', '') . " ";
 						} else {
 							$newline .= $lonCoord . "," . $latCoord . " ";
 						}
@@ -343,6 +368,18 @@ if ($_GET) {
 		$newfile .= $groupEndSearchString . PHP_EOL;
 		$groupBegin = stripos($file, $groupBeginSearchString, $groupEnd);
 	}
+
+	if (isset($_GET['border'])) {
+		$zeroWidth = $extraWidth;
+		$zeroHeight = $extraHeight;
+		$svgWidth = $width + $extraWidth;
+		$svgHeight = $height + $extraHeight;
+		$newfile .= '<polyline id="inner" fill="none" stroke="black" points="' . $zeroWidth . ',' . $zeroHeight . ' ' . $svgWidth . ',' . $zeroHeight . ' ' . $svgWidth . ',' . $svgHeight . ' ' . $zeroWidth . ',' . $svgHeight . ' ' . $zeroWidth . ',' . $zeroHeight . '"' . ' />' . PHP_EOL;
+		if (!isset($_GET['custom'])) {
+			$newfile .= '<polyline id="outer" fill="none" stroke="black" points="0,0 ' . $_GET['width'] . ',0 ' . $_GET['width'] . ',' . $_GET['height'] . ' 0,' . $_GET['height'] . ' 0,0"' . ' />' . PHP_EOL;
+		}
+	}
+
 	echo $newfile . $end;
 }
 

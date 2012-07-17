@@ -370,12 +370,14 @@ if ($_GET) {
 	}
 
 	if (isset($_GET['border'])) {
-		$zeroWidth = $extraWidth;
-		$zeroHeight = $extraHeight;
-		$svgWidth = $width + $extraWidth;
-		$svgHeight = $height + $extraHeight;
-		$newfile .= '<polyline id="inner" fill="none" stroke="black" points="' . $zeroWidth . ',' . $zeroHeight . ' ' . $svgWidth . ',' . $zeroHeight . ' ' . $svgWidth . ',' . $svgHeight . ' ' . $zeroWidth . ',' . $svgHeight . ' ' . $zeroWidth . ',' . $zeroHeight . '"' . ' />' . PHP_EOL;
-		if (!isset($_GET['custom'])) {
+		if (isset($_GET['custom'])) {
+			$newfile .= '<polyline id="outer" fill="none" stroke="black" points="0,0 ' . $_GET['width'] . ',0 ' . $_GET['width'] . ',' . $_GET['height'] . ' 0,' . $_GET['height'] . ' 0,0"' . ' />' . PHP_EOL;
+		} else {
+			$zeroWidth = $extraWidth;
+			$zeroHeight = $extraHeight;
+			$svgWidth = $width + $extraWidth;
+			$svgHeight = $height + $extraHeight;
+			$newfile .= '<polyline id="inner" fill="none" stroke="black" points="' . $zeroWidth . ',' . $zeroHeight . ' ' . $svgWidth . ',' . $zeroHeight . ' ' . $svgWidth . ',' . $svgHeight . ' ' . $zeroWidth . ',' . $svgHeight . ' ' . $zeroWidth . ',' . $zeroHeight . '"' . ' />' . PHP_EOL;
 			$newfile .= '<polyline id="outer" fill="none" stroke="black" points="0,0 ' . $_GET['width'] . ',0 ' . $_GET['width'] . ',' . $_GET['height'] . ' 0,' . $_GET['height'] . ' 0,0"' . ' />' . PHP_EOL;
 		}
 	}

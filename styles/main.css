@@ -155,6 +155,10 @@ aside {
 	opacity: 0;
 }
 
+#toolbar.addFlagEnabled button {
+	opacity: 0;
+}
+
 #searchbutton {
 	margin-left: 0;
 	position: relative;
@@ -199,6 +203,27 @@ aside {
 	-webkit-appearance: none;
 }
 
+#newFlagTooltip {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	text-align: center;
+	color: white;
+	line-height: 30px;
+	padding: 0;
+	margin: 0;
+	opacity: 0;
+	z-index: -2;
+	-webkit-transition: opacity 0.2s ease-in-out;
+}
+
+#toolbar.addFlagEnabled #newFlagTooltip {
+	opacity: 1;
+	z-index: 1;
+}
+
 #toolbar.searchEnabled #searchField {
 	opacity: 1;
 	right: 10px;
@@ -238,4 +263,13 @@ aside {
 
 #visibilities li.inactive {
 	opacity: 0.5;
+}
+
+#addSelectionMask {
+	position: absolute;
+	background: white;
+	top: 10px;
+	left: 0;
+	list-style: none;
+	padding: 5px;
 }

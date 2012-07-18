@@ -37,20 +37,23 @@ window.Karte = (function () {
 						layerName : "motorways"
 					},
 					federal : {
-						name : "Bundesstraßen",
-						visible : true,
+						name : "(Bundesstraßen & Kraftfahrstraßen)",
+						visible : false,
 						paramName : "s2",
 						layerName : "primaries"
 					},
+					
 					landesstrasse : {
 						name : "Landesstraße",
 						visible : false,
-						paramName : "s3"
+						paramName : "s3",
+						layerName : "secondaries"
 					},
 					kreisstrasse : {
 						name : "Kreisstraße",
 						visible : false,
-						paramName : "s4"
+						paramName : "s4",
+						layerName : "tertiaries"
 					}
 				}
 			},
@@ -66,19 +69,19 @@ window.Karte = (function () {
 					},
 					towns : {
 						name : "(Dörfer)",
-						visible : true,
+						visible : false,
 						paramName : "c1",
 						layerName : "towns"
 					},
 					villages : {
 						name : "(Kuhdörfer)",
-						visible : true,
+						visible : false,
 						paramName : "c2",
 						layerName : "villages"
 					},
 					hamlets : {
 						name : "(Kaffs)",
-						visible : true,
+						visible : false,
 						paramName : "c3",
 						layerName : "hamlets"
 					},
@@ -96,28 +99,47 @@ window.Karte = (function () {
 				paramName : undefined,
 				sub : {
 					federal : {
-						name : "Länder",
+						name : "Bundesländer",
 						visible : true,
 						paramName : "b",
 						layerName : "federal"
 					},
 					counties : {
 						name : "Landkreise",
-						visible : true,
+						visible : false,
 						paramName : "b1",
 						layerName : "counties"
 					}
 				}
 			},
-			rivers : {
-				name : "Seen & Flüsse",
-				visibile : true,
+			waters : {
+				name : "Gewässer",
+				visible : true,
 				paramName : undefined,
 				sub : {
 					rivers : {
 						name : "Flüsse",
 						visible : true,
-						paramName : "w"
+						paramName : "w",
+						layerName : "rivers"
+					},
+					canals : {
+						name : "Kanäle",
+						visible : false,
+						paramName : "w1",
+						layerName : "canals"
+					},
+					namedLakes : {
+						name : "Seen",
+						visible : false,
+						paramName : "w2",
+						layerName : "namedLakes"
+					},
+					allLakes : {
+						name : "(Seen)",
+						visible : false,
+						paramName : "w3",
+						layerName : "allLakes"
 					}
 				}
 			}

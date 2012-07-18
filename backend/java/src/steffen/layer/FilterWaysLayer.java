@@ -97,8 +97,8 @@ public class FilterWaysLayer {
 					neededKeys[0] = "k=\"natural\"";
 					neededValues[0] = "v=\"water\"";
 				} else {
-					if (layer == Layer.Motorways || layer == Layer.Trunks || layer == Layer.Primaries
-							|| layer == Layer.Secondaries || layer == Layer.Tertiaries) {
+					if (layer == Layer.Motorways || layer == Layer.Primaries || layer == Layer.Secondaries
+							|| layer == Layer.Tertiaries) {
 						neededKeys = new String[2];
 						neededValues = new String[neededKeys.length];
 						neededKeys[0] = "k=\"highway\"";
@@ -106,10 +106,6 @@ public class FilterWaysLayer {
 						switch (layer) {
 							case Motorways: {
 								neededValues[0] = "v=\"motorway\"";
-								break;
-							}
-							case Trunks: {
-								neededValues[0] = "v=\"trunk\"";
 								break;
 							}
 							case Primaries: {

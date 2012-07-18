@@ -1,7 +1,7 @@
 window.Karte = (function () {
 
 	var constants = {
-		url : "http://karte.localhost/backend/transformation/steffen/php/svg_market.php"
+		url : "http://localhost/karte/backend/transformation/steffen/php/svg_market.php"
 		//url : "http://karte.localhost/backend/transformation/steffen/php/transform.php"
 	};
 	
@@ -460,14 +460,37 @@ window.Karte = (function () {
 			},
 			newPlace : function (event) {
 				if (event.currentTarget !== event.target) { // Event war im Zeichenbereich von Bawü
-					alert("Pin kommt");
-					// Hier kommt Marius' Teil hin (Einfügen des Pins)
+					var svg = controller.uiElements.mapRoot;
+					var svgNS = "http://www.w3.org/2000/svg";
+					event = event ? event : window.event;
+					var pin = document.createElementNS(svgNS, "use");
+					//Container muss position:absolut oder relativ sein!! 1 Für Chrome + Safarie 2 für FF
+					var x = event.offsetX ? event.offsetX : event.layerX;
+					var y = event.offsetY ? event.offsetY : event.layerY;
+					var input = "translate("+x+" "+y+") scale(0.1)";
+					pin.setAttributeNS(null, "transform", input); 
+					pin.setAttributeNS("http://www.w3.org/1999/xlink", "href", "#pin"); 
+					pin.addEventListener("click", function(e) {
+						//ToDO Prüfen ob das Event innerhalb der Karte stattfand*******
+						alert("X= "+x+" Y= "+y);
+						//Verhindere, dass das Event im SVG Element ausgelößt wird
+						e.stopPropagation();
+					});
 				
-					/*var newPlace = document.createElement("li");
+					var newPlace = document.createElement("li");
+					newPlace.addEventListener("keypress", function(e){
+						if(e.keyCode == 13){
+							newPlace.contentEditable = false;
+							//Verhindere, dass das Event im SVG Element ausgelößt wird
+							e.stopPropagation();
+							//Feuere insert Methode... Koordinaten sind in den Variablen X und Y....Ortbezeichnung ist in dem newPlace Element
+						}
+					});
 					newPlace.contentEditable = true;
-					
 					controller.uiElements.places.appendChild(newPlace);
-					newPlace.focus();*/
+					newPlace.focus();
+					
+					svg.appendChild(pin);
 				}
 			},
 			newRoute : function (event) {

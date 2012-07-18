@@ -179,20 +179,15 @@ if ($_GET) {
 							}
 						case "s1":
 							{
-								$filename .= "streets/trunks.svg";
+								$filename .= "streets/primaries.svg";
 								break;
 							}
 						case "s2":
 							{
-								$filename .= "streets/primaries.svg";
-								break;
-							}
-						case "s3":
-							{
 								$filename .= "streets/secondaries.svg";
 								break;
 							}
-						case "s4":
+						case "s3":
 							{
 								$filename .= "streets/tertiaries.svg";
 								break;

@@ -41,8 +41,8 @@ public class CleanWaysLayer {
 					CleanWaysLayer.tagsToKeep[1] = "k=\"water\"";
 					CleanWaysLayer.tagsToKeep[2] = "k=\"name\"";
 				} else {
-					if (layer == Layer.Motorways || layer == Layer.Trunks || layer == Layer.Primaries
-							|| layer == Layer.Secondaries || layer == Layer.Tertiaries) {
+					if (layer == Layer.Motorways || layer == Layer.Primaries || layer == Layer.Secondaries
+							|| layer == Layer.Tertiaries) {
 						noNodeTags = true;
 						optimizeRefs = true;
 						CleanWaysLayer.tagsToKeep = new String[6];

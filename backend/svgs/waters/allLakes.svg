@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg style="position:absolute;" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
-<g id="lakes" fill="none" stroke="black" stroke-width="1">
+<g id="allLakes" fill="none" stroke="black" stroke-width="1">
 <polyline points="192.715,61.380 192.735,61.365 "/>
 <polyline points="192.968,61.855 192.949,61.844 "/>
 <polyline points="193.064,61.981 193.084,61.975 "/>

@@ -1,7 +1,9 @@
 window.Karte = (function () {
+	var loggedin = undefined;
 
 	var constants = {
-		url : "http://karte.localhost/backend/transformation/steffen/php/svg_market.php"
+		url : "http://karte.localhost/backend/transformation/steffen/php/svg_market.php",
+		loginURL : "http://karte.localhost/backend/login/login.php"
 		//url : "http://karte.localhost/backend/transformation/steffen/php/transform.php"
 	};
 	
@@ -198,9 +200,28 @@ window.Karte = (function () {
 			scalables : null,
 			visibilities : null,
 			places : null,
-			routes : null
+			routes : null,
+			loginForm : null
 		},
 		init : function () {
+			// Login-Status sicher wegschreiben und Manipulation verhindern
+			loggedin = document.body.getAttribute("data-loggedin");
+			
+			// Drecks-Browser-Kompatibilität. Das ist in DOM2 spezifiziert, verdammt noch mal. Ironischerweise fixbar durch DOM4.
+			var observer = ("WebKitMutationObserver" in window) ? new WebKitMutationObserver(controller.handler.observation) : (("MutationObserver" in window) ? new MutationObserver(controller.handler.observation) : undefined);
+			
+			if (observer !== undefined) {
+				observer.observe(document.body, { attributes: true, subtree: false });
+			} else {
+				document.body.addEventListener("DOMAttrModified", function (event) {
+					controller.handler.detectManipulation({
+						name : event.attrName,
+						newValue : event.newValue,
+						target : event.target
+					});
+				}, false);
+			}
+		
 			// UI-Elemente mit Referenzen versehen
 			this.uiElements.toolbar = document.getElementById("toolbar");
 			this.uiElements.addButton = document.querySelector("button[title='Route oder Punkt hinzufügen']");
@@ -218,6 +239,7 @@ window.Karte = (function () {
 			this.uiElements.visibilities = document.getElementById("visibilities");
 			this.uiElements.places = document.getElementById("places");
 			this.uiElements.routes = document.getElementById("routes");
+			this.uiElements.loginForm = document.getElementById("login");
 			
 			// EventListener hinzufügen
 			this.uiElements.addButton.addEventListener("click", this.handler.enableAddSelection, false);
@@ -232,6 +254,8 @@ window.Karte = (function () {
 			this.uiElements.mapScaler.addEventListener("mousedown", this.handler.enableScaling, false);
 			
 			this.uiElements.map.addEventListener("mousedown", this.handler.enablePanning, false);
+			
+			this.uiElements.loginForm.addEventListener("submit", this.handler.performLogin, false);
 			
 			// Attribute für Geschwindigkeit zwischenspeichern
 			var length = controller.uiElements.scalables.length;
@@ -488,6 +512,51 @@ window.Karte = (function () {
 					controller.uiElements.toolbar.className = "";
 					document.removeEventListener("keyup", controller.handler.abortAddNewFlag, false);
 				}
+			},
+			observation : function (mutations) {
+				mutations.forEach(function (event) {
+					controller.handler.detectManipulation({
+						name : event.attributeName,
+						newValue : event.target.getAttribute(event.attributeName),
+						target : event.target
+					});
+				});
+			},
+			detectManipulation : function (event) {
+				console.log(event);
+				
+				if (event.target === document.body && event.name === "data-loggedin" && event.newValue !== loggedin.toString()) {
+					// Manipulation durch Attributänderung
+					alert("Netter Versuch ;)");
+					window.location.reload();
+				} else if (true) {
+					// Manipulation durch Löschen
+				} else if (true) {
+					// Manipulation durch Style-Änderung
+				}
+			},
+			performLogin : function (event) {
+			
+				request = new XMLHttpRequest();
+				request.open("post", constants.loginURL, true);
+				request.send(new FormData(controller.uiElements.loginForm));
+				/*request.onreadystatechange = function () {
+					if (request.readyState === 4) {
+						// TODO: Anpassen
+						if (request.responseText) {
+							controller.handler.login(); // Zusammenführen?	
+						}
+					}
+				}*/
+				
+				controller.handler.login();
+				
+				event.preventDefault();
+				return false;
+			},
+			login : function () {
+				loggedin = true;
+				document.body.setAttribute("data-loggedin", "true");
 			}
 		},
 		loadMap : function (latitude, longitude, layers, handler) {

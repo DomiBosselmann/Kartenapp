@@ -1,7 +1,19 @@
+html {
+	height: 100%;
+}
+
 body {
 	height: 100%;
+	width: 100%;
 	overflow: hidden;
 	font-family: "Corbel";
+	display: -webkit-box;
+	-webkit-box-align: center;
+	-webkit-box-pack: center;
+	display: -moz-box;
+	-moz-box-align: center;
+	-moz-box-pack: center;
+	-moz-box-orient: horizontal;
 }
 
 aside {
@@ -37,6 +49,7 @@ aside {
 	-webkit-box-flex: 1;
 	overflow: auto;
 	padding: 0 10px;
+	-webkit-transition: -webkit-filter 1s ease-in-out;
 }
 
 #usersearch {
@@ -69,7 +82,7 @@ aside {
 	right: 0;
 	bottom: 0;
 	background: #83ab39;
-	overflow: hidden
+	overflow: hidden;
 }
 
 #mapcontainer svg {
@@ -78,6 +91,7 @@ aside {
 	height: 100%;
 	top: 0px;
 	left: 0px;
+	-webkit-transition: -webkit-filter 1s ease-in-out;
 }
 
 #toolbar {
@@ -97,7 +111,7 @@ aside {
 	height: 100%;
 	vertical-align: top;
 	color: white;
-	-webkit-transition: opacity 0.5s ease-in-out, left 0.7s ease-in-out;
+	-webkit-transition: opacity 0.5s ease-in-out, left 0.7s ease-in-out, -webkit-filter 1s ease-in-out;
 	-moz-transition: opacity 0.5s ease-in-out, left 0.7s ease-in-out;
 }
 
@@ -213,6 +227,8 @@ aside {
 #visibilities {
 	padding: 10px;
 	-webkit-column-count: 2;
+	-moz-column-count: 2;
+	-webkit-transition: -webkit-filter 1s ease-in-out;
 }
 
 #visibilities ul {
@@ -226,10 +242,15 @@ aside {
 	font-weight: bold;
 	text-transform: uppercase;
 	-webkit-column-break-after: avoid;
+	margin-top: 0;
 }
 
 #visibilities li.inactive {
 	opacity: 0.5;
+}
+
+#mapscaler {
+	-webkit-transition: -webkit-filter 1s ease-in-out;
 }
 
 #addSelectionMask {
@@ -239,4 +260,34 @@ aside {
 	left: 0;
 	list-style: none;
 	padding: 5px;
+}
+
+body[data-loggedin=false] #login {
+	background: white;
+	padding: 30px;
+}
+
+body[data-loggedin=false] #login::after {
+	content: "";
+	position: absolute;
+	display: block;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: -1;
+	background: rgba(0,0,0,0.7);
+}
+
+body[data-loggedin=false] aside, body[data-loggedin=false] #mapcontainer {
+	z-index: -2
+}
+
+body[data-loggedin=false] #mapcontainer svg, body[data-loggedin=false] #flags .container, body[data-loggedin=false] #visibilities, body[data-loggedin=false] #mapscaler {
+	-webkit-transition: -webkit-filter 1s ease-in-out;
+	-webkit-filter: blur(10px);
+}
+
+body[data-loggedin=false] #flags button {
+	-webkit-filter: blur(2px);
 }

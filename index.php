@@ -1,3 +1,14 @@
+<?php
+	$loggedin = "false";
+	
+	if (!!!session_start()) {
+		session_start();
+	}
+	
+	if ($_SESSION["loggedin"] === true) {
+		$loggedin = "true";
+	}
+?>
 <!Doctype html>
 <html>
 	<head>
@@ -7,7 +18,7 @@
 		<script type="application/javascript" src="scripts/filter.js"></script>
 		<meta charset="utf-8" />
 	</head>
-	<body>
+	<body data-loggedin="<?=$loggedin?>">
 		<aside>
 			<section id="flags">
 				<nav id="toolbar">
@@ -33,7 +44,7 @@
 			<form id="viewpreferences" name="viewpreferences">
 				<section id="visibilities">
 				</section>
-				<section>
+				<section id="mapscaler">
 					<svg width="102" height="16" id="mapscale">
 						<title>Maßstab</title>
 						<rect x="0" y="7" width="102" height="2"></rect>
@@ -56,5 +67,12 @@
 			<svg width="1000" height="1000"><!-- Defs clientseitig? -->
 			</svg>
 		</section>
+		<form id="login">
+			<label for="username">Name</label>
+			<input type="text" name="username" />
+			<label for="password">Passwort</label>
+			<input type="password" name="password" />
+			<input type="submit" name="login" value="Anmelden" />
+		</form>
 	</body>
 </html>

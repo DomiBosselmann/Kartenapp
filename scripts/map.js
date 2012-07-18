@@ -162,30 +162,31 @@ window.Karte = (function () {
 	var controller = {
 		uiElements : {
 			toolbar : null,
+			addButton : null,
 			searchButton: null,
 			exportButton: null,
 			importButton: null,
 			saveButton: null,
 			searchField: null,
-			mapChooser: null,
-			activeMapChooser: null,
 			map: null,
 			mapRoot : null,
 			mapScale : null,
 			mapScaler : null,
 			mapScaleText : null,
 			scalables : null,
-			visibilities : null
+			visibilities : null,
+			places : null,
+			routes : null
 		},
 		init : function () {
 			// UI-Elemente mit Referenzen versehen
 			this.uiElements.toolbar = document.getElementById("toolbar");
+			this.uiElements.addButton = document.querySelector("button[title='Route oder Punkt hinzufügen']");
 			this.uiElements.searchButton = document.querySelector("button[title='Suchen']");
 			this.uiElements.exportButton = document.querySelector("button[title='Exportieren']");
 			this.uiElements.importButton = document.querySelector("button[title='Importieren']");
 			this.uiElements.saveButton = document.querySelector("button[title='Sichern']");
 			this.uiElements.searchField = document.getElementById("searchField");
-			this.uiElements.mapChooser = Array.prototype.slice.call(document.getElementById("choosemap").children);
 			this.uiElements.map = document.getElementById("mapcontainer");
 			this.uiElements.mapRoot = this.uiElements.map.getElementsByTagName("svg")[0];
 			this.uiElements.mapScale = document.getElementById("mapscale");
@@ -193,8 +194,11 @@ window.Karte = (function () {
 			this.uiElements.mapScaleText = document.getElementById("scalevalue");
 			this.uiElements.scalables = this.uiElements.mapScale.getElementsByClassName("scalable");
 			this.uiElements.visibilities = document.getElementById("visibilities");
+			this.uiElements.places = document.getElementById("places");
+			this.uiElements.routes = document.getElementById("routes");
 			
 			// EventListener hinzufügen
+			this.uiElements.addButton.addEventListener("click", this.handler.enableAddSelection, false);
 			this.uiElements.searchButton.addEventListener("click", this.handler.handleSearch, false);
 			this.uiElements.exportButton.addEventListener("click", function (e) { console.log(e); }, false);
 			this.uiElements.importButton.addEventListener("click", function (e) { console.log(e); }, false);
@@ -202,15 +206,6 @@ window.Karte = (function () {
 			
 			this.uiElements.searchField.addEventListener("keyup", controller.handler.handleSearchInput, false);
 			this.uiElements.searchField.addEventListener("keydown", controller.handler.handleSearchInput, false);
-			
-			this.uiElements.mapChooser.forEach(function (element) {				
-				element.addEventListener("click", controller.handler.switchMapView, false);
-				
-				// Aktive View setzen
-				if (element.className === "active") {
-					controller.uiElements.activeMapChooser = element;
-				}
-			});
 			
 			this.uiElements.mapScaler.addEventListener("mousedown", this.handler.enableScaling, false);
 			
@@ -316,27 +311,6 @@ window.Karte = (function () {
 				controller.uiElements.toolbar.className = "";
 				controller.uiElements.searchButton.addEventListener("click", controller.handler.handleSearch, false);
 			},
-			switchMapView : function (event) {
-				// Überprüfung ob die View geändert wurde
-				if (event.currentTarget === controller.uiElements.activeMapChooser) {
-					return;
-				}
-				
-				// Aktive View setzen
-				controller.uiElements.activeMapChooser = event.currentTarget;
-				
-				// MapView ändern in den Einstellungen
-				alert("Wenn jetzt ne Karte da wäre, könnte man zwischen den Ansichten wechseln.");
-				
-				// UI-Rückmeldung
-				controller.uiElements.mapChooser.forEach(function (element) {
-					if (element === event.currentTarget) {
-						element.className = "active";
-					} else {
-						element.className = "";
-					}
-				});
-			},
 			enableScaling : function (event) {
 				map.scaling.scalerX = event.pageX;
 				map.scaling.scalerY = event.pageY;
@@ -433,6 +407,65 @@ window.Karte = (function () {
 									
 				// Renderer anstoßen
 				renderer.start(data);
+			},
+			enableAddSelection : function (event) {
+				var container = document.createElement("ul");
+				var newPlace = document.createElement("li");
+				var newRoute = document.createElement("li");
+				
+				container.id = "addSelectionMask";
+				
+				newPlace.textContent = "Neuer Ort";
+				newPlace.addEventListener("click", controller.handler.newFlag, false);
+				
+				newRoute.textContent = "Neue Route";
+				newRoute.addEventListener("click", controller.handler.newRoute, false);
+				
+				container.appendChild(newPlace);
+				container.appendChild(newRoute);
+				
+				document.body.appendChild(container); // Einbindung ändern
+				
+				event.stopPropagation();
+				
+				document.addEventListener("click", controller.handler.handleAddSelection, false);
+			},
+			newFlag : function (event) {
+				controller.uiElements.toolbar.className = "addFlagEnabled";
+				controller.uiElements.mapRoot.addEventListener("click", controller.handler.newPlace, false);
+				
+				document.addEventListener("keyup", controller.handler.abortAddNewFlag, false);
+			},
+			newPlace : function (event) {
+				if (event.currentTarget !== event.target) { // Event war im Zeichenbereich von Bawü
+					alert("Pin kommt");
+					// Hier kommt Marius' Teil hin (Einfügen des Pins)
+				
+					/*var newPlace = document.createElement("li");
+					newPlace.contentEditable = true;
+					
+					controller.uiElements.places.appendChild(newPlace);
+					newPlace.focus();*/
+				}
+			},
+			newRoute : function (event) {
+				console.log(event);
+			},
+			handleAddSelection : function (event) {
+				// Sollte noch unbenannt werden
+				if (event.currentTarget !== document.getElementById("addSelectionMask")) {
+					controller.handler.disableAddSelection();
+				}
+			},
+			disableAddSelection : function () {
+				document.body.removeChild(document.getElementById("addSelectionMask"));
+				document.removeEventListener("click", controller.handler.handleAddSelection, false);
+			},
+			abortAddNewFlag : function (event) {
+				if (event.keyCode === 27) {
+					controller.uiElements.toolbar.className = "";
+					document.removeEventListener("keyup", controller.handler.abortAddNewFlag, false);
+				}
 			}
 		},
 		loadMap : function (latitude, longitude, layers, handler) {
@@ -570,7 +603,7 @@ window.Karte = (function () {
 		},
 		renderFlags : function (routes, data) {
 			var item, note, name,
-				list = routes ? document.getElementById("routes") : document.getElementById("places"), // AUSLAGERN
+				list = routes ? controller.uiElements.routes : controller.uiElements.places,
 				content = data ? data : (routes ? map.routes : map.places);
 				
 			list.innerHTML = "";
@@ -707,7 +740,7 @@ Array.prototype.unique = function () {
 }
 
 Object.prototype.equal = function (object) {
-	var keys = Object.keys(this),
+	var keys = Object.keys(this), tempResult,
 		i = 0;
 	
 	for (i; i < keys.length; i++) {
@@ -717,7 +750,7 @@ Object.prototype.equal = function (object) {
 		
 		if (this[keys[i]] instanceof Object) {
 			tempResult = this[keys[i]].equal(object[keys[i]]);
-			if (!tempresult) {
+			if (!tempResult) {
 				return false;
 			}
 		} else if (!(this[keys[i]] instanceof Function)) {

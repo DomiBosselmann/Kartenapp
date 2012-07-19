@@ -61,9 +61,7 @@ if ($_GET) {
 		$widthFactor = $width / $originWidth;
 		$heightFactor = $height / $originHeight;
 	} else {
-		// TODO verhältnismäßige streckung
-
-		$lonKm = 86.0;
+		$lonKm = 100.0;
 		$latKm = 111.32;
 
 		$tryHeight = $width * ($latKm / $lonKm);

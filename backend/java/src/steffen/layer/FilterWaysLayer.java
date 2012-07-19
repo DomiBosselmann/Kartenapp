@@ -13,7 +13,7 @@ import steffen.Constants;
 public class FilterWaysLayer {
 	
 	private static String	myFileSource	= "bawu.xml";
-	private static Layer		myLayer			= Layer.Federal;
+	private static Layer		myLayer			= Layer.Counties;
 	
 	public static void filterWaysLayer(String fileSource, Layer layer, boolean deleteOldFile) throws IOException {
 		System.out.println("Begin filtering layer " + layer.name + "...");

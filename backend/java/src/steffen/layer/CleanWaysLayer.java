@@ -11,7 +11,8 @@ import steffen.Constants;
 
 public class CleanWaysLayer {
 	
-	private static String	myFileSource	= "bawu motorways.xml";
+	private static Layer		layer				= Layer.Counties;
+	private static String	myFileSource	= "bawu counties.xml";
 	private static String[]	tagsToKeep		= null;
 	
 	public static void cleanLayer(String fileSource, Layer layer, boolean deleteOldFile) throws IOException {
@@ -158,7 +159,7 @@ public class CleanWaysLayer {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		CleanWaysLayer.cleanLayer(myFileSource, Layer.Motorways, false);
+		CleanWaysLayer.cleanLayer(myFileSource, layer, false);
 	}
 	
 	private static boolean keepTag(String input) {

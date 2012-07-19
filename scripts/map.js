@@ -185,6 +185,7 @@ window.Karte = (function () {
 	
 	var controller = {
 		uiElements : {
+			aside : null,
 			toolbar : null,
 			addButton : null,
 			searchButton: null,
@@ -204,25 +205,8 @@ window.Karte = (function () {
 			loginForm : null
 		},
 		init : function () {
-			// Login-Status sicher wegschreiben und Manipulation verhindern
-			loggedin = document.body.getAttribute("data-loggedin");
-			
-			// Drecks-Browser-Kompatibilität. Das ist in DOM2 spezifiziert, verdammt noch mal. Ironischerweise fixbar durch DOM4.
-			var observer = ("WebKitMutationObserver" in window) ? new WebKitMutationObserver(controller.handler.observation) : (("MutationObserver" in window) ? new MutationObserver(controller.handler.observation) : undefined);
-			
-			if (observer !== undefined) {
-				observer.observe(document.body, { attributes: true, subtree: false });
-			} else {
-				document.body.addEventListener("DOMAttrModified", function (event) {
-					controller.handler.detectManipulation({
-						name : event.attrName,
-						newValue : event.newValue,
-						target : event.target
-					});
-				}, false);
-			}
-		
 			// UI-Elemente mit Referenzen versehen
+			this.uiElements.aside = document.getElementsByTagName("aside")[0];
 			this.uiElements.toolbar = document.getElementById("toolbar");
 			this.uiElements.addButton = document.querySelector("button[title='Route oder Punkt hinzufügen']");
 			this.uiElements.searchButton = document.querySelector("button[title='Suchen']");
@@ -256,6 +240,41 @@ window.Karte = (function () {
 			this.uiElements.map.addEventListener("mousedown", this.handler.enablePanning, false);
 			
 			this.uiElements.loginForm.addEventListener("submit", this.handler.performLogin, false);
+			
+			
+			
+			// Login-Status sicher wegschreiben und Manipulation verhindern
+			loggedin = document.body.getAttribute("data-loggedin");
+			
+			// Drecks-Browser-Kompatibilität. Das ist in DOM2 spezifiziert, verdammt noch mal. Ironischerweise fixbar durch DOM4.
+			var observer = ("WebKitMutationObserver" in window) ? new WebKitMutationObserver(controller.handler.observation) : (("MutationObserver" in window) ? new MutationObserver(controller.handler.observation) : undefined);
+			
+			if (observer !== undefined) {
+				observer.observe(document.body, { attributes : true, subtree : false });
+				observer.observe(this.uiElements.aside, { attributes : true, subtree : false });
+			} else {
+				document.body.addEventListener("DOMAttrModified", function (event) {
+					controller.handler.detectManipulation({
+						name : event.attrName,
+						newValue : event.newValue,
+						target : event.target
+					});
+				}, false);
+				this.uiElements.aside.addEventListener("DOMAttrModified", function (event) {
+					controller.handler.detectManipulation({
+						name : event.attrName,
+						newValue : event.newValue,
+						target : event.target
+					});
+				}, false);
+			}
+			/*document.styleSheets[0].cssRules[2].observe("style", function (event) {
+				controller.handler.detectManipulation({
+					name : "stylesheet",
+					target : undefined,
+					newValue : document.styleSheets[0].cssRules[2]
+				});
+			});*/
 			
 			// Attribute für Geschwindigkeit zwischenspeichern
 			var length = controller.uiElements.scalables.length;
@@ -525,14 +544,22 @@ window.Karte = (function () {
 			detectManipulation : function (event) {
 				console.log(event);
 				
+				var wasManipulated = false;
+				
 				if (event.target === document.body && event.name === "data-loggedin" && event.newValue !== loggedin.toString()) {
 					// Manipulation durch Attributänderung
+					wasManipulated = true;
+				} else if (event.name === "stylesheet" && event.target === undefined) {
+					// Manipulation durch Löschen
+					wasManipulated = true;
+				} else if (event.target === controller.uiElements.aside && event.name === "style") {
+					// Manipulation durch Style-Änderung
+					wasManipulated = true;
+				}
+				
+				if (wasManipulated) {
 					alert("Netter Versuch ;)");
 					window.location.reload();
-				} else if (true) {
-					// Manipulation durch Löschen
-				} else if (true) {
-					// Manipulation durch Style-Änderung
 				}
 			},
 			performLogin : function (event) {

@@ -478,6 +478,8 @@ window.Karte = (function () {
 					
 					renderer.drawPin(pin, x, y);
 					
+					pin.setAttribute("class", "hover");
+					
 					/*pin.addEventListener("click", function(e) {
 						//Verhindere, dass das Event im SVG Element ausgelößt wird
 						e.stopPropagation();
@@ -488,6 +490,7 @@ window.Karte = (function () {
 						if (event.keyCode === 13) {
 							// Es war ein Enter
 							newPlace.blur();
+							pin.removeAttribute("class");
 							newPlace.contentEditable = false;
 							
 							// Neuen Ort wegschreiben
@@ -502,6 +505,7 @@ window.Karte = (function () {
 							
 							// Pin mit ID versehen
 							pin.setAttribute("data-interimPinID", pinID);
+							event.target.setAttribute("data-interimPinID", pinID);
 							
 							pin.addEventListener("mouseover", function (event) {
 								console.log(map.places[event.currentTarget.getAttribute("data-interimPinID") - 1]);
@@ -517,14 +521,20 @@ window.Karte = (function () {
 								controller.handler.finishAddNewFlag();
 							}
 						}
-					});
+					}, false);
 					newPlace.addEventListener("keyup", function (event) {
 						if (event.keyCode === 27) {
 							// Es war ein Esc
 							controller.uiElements.places.removeChild(newPlace);
 							renderer.removePin(pin);
 						}
-					});
+					}, false);
+					newPlace.addEventListener("mouseover", function (event) {
+						map.places[event.currentTarget.getAttribute("data-interimPinID") - 1].pinReference.setAttribute("class", "hover");
+					}, false);
+					newPlace.addEventListener("mouseout", function (event) {
+						map.places[event.currentTarget.getAttribute("data-interimPinID") - 1].pinReference.removeAttribute("class");
+					}, false);
 					newPlace.contentEditable = true;
 					controller.uiElements.places.appendChild(newPlace);
 					newPlace.focus();

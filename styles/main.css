@@ -25,7 +25,7 @@ aside {
 	-moz-box-align: center;
 }
 
-#flags {
+#flaglist {
 	-webkit-box-flex: 1;
 	-moz-box-flex: 1;
 	overflow: hidden;
@@ -33,13 +33,13 @@ aside {
 	-webkit-box-orient: vertical;
 }
 
-#flags div.container {
+#flaglist div.container {
 	-webkit-box-flex: 1;
 	overflow: auto;
 	padding: 0 10px;
 }
 
-#flags div.container li.hover {
+#flaglist div.container li.hover, #flaglist div.container li:hover {
 	background: violet;
 }
 
@@ -243,4 +243,12 @@ aside {
 	left: 0;
 	list-style: none;
 	padding: 5px;
+}
+
+#flags *:not(:hover) {
+	opacity: 0.2;
+}
+
+#flags .hover {
+	opacity: 1;
 }

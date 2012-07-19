@@ -41,6 +41,8 @@
        echo mysql_error($link);
        
        $_SESSION["loggedin"] = true;
+       $_loggedIn = true;
+       return json_encode($_loggedIn);
        
        }
        

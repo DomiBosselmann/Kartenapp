@@ -43,6 +43,10 @@ aside {
 	background: violet;
 }
 
+#flaglist div.container li.inactive {
+	opacity: 0.5;
+}
+
 #usersearch {
 	width: 100%;
 }

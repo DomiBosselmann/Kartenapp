@@ -469,6 +469,7 @@ window.Karte = (function () {
 			},
 			newPlace : function (event) {
 				if (event.currentTarget !== event.target) { // Event war im Zeichenbereich von Bawü
+					var pinObject;
 					var altKey = event.altKey;
 					var pin = document.createElementNS( "http://www.w3.org/2000/svg", "use");
 					
@@ -494,14 +495,16 @@ window.Karte = (function () {
 							newPlace.contentEditable = false;
 							
 							// Neuen Ort wegschreiben
-							var pinID = map.places.push({
+							pinObject = {
 								name : newPlace.textContent,
 								visible : true,
 								note : "",
 								coordinates : units.pixelCoordinateToGeoCoordinate(x, y),
 								pinReference : pin,
 								listReference : newPlace
-							});
+							};
+							
+							var pinID = map.places.push(pinObject);
 							
 							// Pin mit ID versehen
 							pin.setAttribute("data-interimPinID", pinID);
@@ -534,6 +537,12 @@ window.Karte = (function () {
 					}, false);
 					newPlace.addEventListener("mouseout", function (event) {
 						map.places[event.currentTarget.getAttribute("data-interimPinID") - 1].pinReference.removeAttribute("class");
+					}, false);
+					newPlace.addEventListener("click", function (event) {
+						pinObject.visible = pinObject.visible ? false : true;
+						event.currentTarget.className = pinObject.visible ? "active" : "inactive";
+						
+						pinObject.pinReference.style.display = pinObject.visible ? "" : "none"; // Sollte eventuell in den Renderer
 					}, false);
 					newPlace.contentEditable = true;
 					controller.uiElements.places.appendChild(newPlace);

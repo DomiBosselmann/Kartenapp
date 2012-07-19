@@ -1,7 +1,7 @@
 window.Karte = (function () {
 
 	var constants = {
-		url : "http://localhost/karte/backend/transformation/steffen/php/svg_market.php"
+		url : "http://karte.localhost/backend/transformation/steffen/php/svg_market.php"
 		//url : "http://karte.localhost/backend/transformation/steffen/php/transform.php"
 	};
 	
@@ -149,25 +149,33 @@ window.Karte = (function () {
 				name : "Feierabendweg 17",
 				visible : true,
 				note : "Mein Zuhause",
-				coordinates : []
+				coordinates : [],
+				pinReference : undefined,
+				listReference : undefined
 			},
 			{
 				name : "Erzbergerstraße 121",
 				visible : true,
 				note : "Meine Uni",
-				coordinates : []
+				coordinates : [],
+				pinReference : undefined,
+				listReference : undefined
 			},
 			{
 				name : "Medienallee 1",
 				visible : true,
 				note : "Mein Lieblingsfernsehsender",
-				coordinates : []
+				coordinates : [],
+				pinReference : undefined,
+				listReference : undefined
 			},
 			{
 				name : "Dietmar-Hopp-Alle 2",
 				visible : true,
 				note : "Mein Arbeitsplatz",
-				coordinates : []
+				coordinates : [],
+				pinReference : undefined,
+				listReference : undefined
 			},
 		],
 		routes : [
@@ -176,7 +184,8 @@ window.Karte = (function () {
 				distance : "3km",
 				note : "Blafaselblubber",
 				points : [],
-				visible : true
+				visible : true,
+				listReference : undefined
 			}
 		]
 	}
@@ -460,37 +469,65 @@ window.Karte = (function () {
 			},
 			newPlace : function (event) {
 				if (event.currentTarget !== event.target) { // Event war im Zeichenbereich von Bawü
-					var svg = controller.uiElements.mapRoot;
-					var svgNS = "http://www.w3.org/2000/svg";
-					event = event ? event : window.event;
-					var pin = document.createElementNS(svgNS, "use");
-					//Container muss position:absolut oder relativ sein!! 1 Für Chrome + Safarie 2 für FF
+					var altKey = event.altKey;
+					var pin = document.createElementNS( "http://www.w3.org/2000/svg", "use");
+					
+					// 1 Für Chrome + Safarie 2 für FF
 					var x = event.offsetX ? event.offsetX : event.layerX;
 					var y = event.offsetY ? event.offsetY : event.layerY;
-					var input = "translate("+x+" "+y+") scale(0.1)";
-					pin.setAttributeNS(null, "transform", input); 
-					pin.setAttributeNS("http://www.w3.org/1999/xlink", "href", "#pin"); 
-					pin.addEventListener("click", function(e) {
-						//ToDO Prüfen ob das Event innerhalb der Karte stattfand*******
-						alert("X= "+x+" Y= "+y);
+					
+					renderer.drawPin(pin, x, y);
+					
+					/*pin.addEventListener("click", function(e) {
 						//Verhindere, dass das Event im SVG Element ausgelößt wird
 						e.stopPropagation();
-					});
+					});*/
 				
 					var newPlace = document.createElement("li");
-					newPlace.addEventListener("keypress", function(e){
-						if(e.keyCode == 13){
+					newPlace.addEventListener("keypress", function (event) {
+						if (event.keyCode === 13) {
+							// Es war ein Enter
+							newPlace.blur();
 							newPlace.contentEditable = false;
-							//Verhindere, dass das Event im SVG Element ausgelößt wird
-							e.stopPropagation();
-							//Feuere insert Methode... Koordinaten sind in den Variablen X und Y....Ortbezeichnung ist in dem newPlace Element
+							
+							// Neuen Ort wegschreiben
+							var pinID = map.places.push({
+								name : newPlace.textContent,
+								visible : true,
+								note : "",
+								coordinates : units.pixelCoordinateToGeoCoordinate(x, y),
+								pinReference : pin,
+								listReference : newPlace
+							});
+							
+							// Pin mit ID versehen
+							pin.setAttribute("data-interimPinID", pinID);
+							
+							pin.addEventListener("mouseover", function (event) {
+								console.log(map.places[event.currentTarget.getAttribute("data-interimPinID") - 1]);
+								map.places[event.currentTarget.getAttribute("data-interimPinID") - 1].listReference.classList.add("hover");
+							}, false);
+							
+							pin.addEventListener("mouseout", function (event) {
+								console.log(map.places[event.currentTarget.getAttribute("data-interimPinID") - 1]);
+								map.places[event.currentTarget.getAttribute("data-interimPinID") - 1].listReference.classList.remove("hover");
+							}, false);
+							
+							if (!altKey) {
+								controller.handler.finishAddNewFlag();
+							}
+						}
+					});
+					newPlace.addEventListener("keyup", function (event) {
+						if (event.keyCode === 27) {
+							// Es war ein Esc
+							controller.uiElements.places.removeChild(newPlace);
+							renderer.removePin(pin);
 						}
 					});
 					newPlace.contentEditable = true;
 					controller.uiElements.places.appendChild(newPlace);
 					newPlace.focus();
-					
-					svg.appendChild(pin);
 				}
 			},
 			newRoute : function (event) {
@@ -510,7 +547,13 @@ window.Karte = (function () {
 				if (event.keyCode === 27) {
 					controller.uiElements.toolbar.className = "";
 					document.removeEventListener("keyup", controller.handler.abortAddNewFlag, false);
+					controller.uiElements.mapRoot.removeEventListener("click", controller.handler.newPlace, false);
 				}
+			},
+			finishAddNewFlag : function (event) {
+				controller.uiElements.toolbar.className = "";
+				document.removeEventListener("keyup", controller.handler.abortAddNewFlag, false);
+				controller.uiElements.mapRoot.removeEventListener("click", controller.handler.newPlace, false);
 			}
 		},
 		loadMap : function (latitude, longitude, layers, handler) {
@@ -568,16 +611,20 @@ window.Karte = (function () {
 	
 	var renderer = {
 		data : undefined,
+		map : undefined,
 		layers : undefined,
+		flags : undefined,
 		start : function (data) {
 			// Verwaltungsmethode für den Renderer
 			this.data = data;
+			this.map = controller.uiElements.mapRoot;
 			
 			this.parse();
 			this.render();
 			this.optimize();
 			
-			this.layers = controller.uiElements.mapRoot.getElementsByTagName("g");
+			this.layers = controller.uiElements.mapRoot.getElementsByTagName("g"); // Notwendigkeit?
+			this.flags = controller.uiElements.mapRoot.getElementById("flags");
 		},
 		parse : function () {
 			this.data = this.data.getElementsByTagName("svg")[0].childNodes;
@@ -612,6 +659,18 @@ window.Karte = (function () {
 		},
 		pan : function (x, y) {
 			controller.uiElements.mapRoot.style.cssText += "left: " + x + "px; top: " + y + "px;";
+		},
+		drawPin : function (pin, x, y) {
+			pin.setAttributeNS(null, "transform", "translate(" + x + " " + y + ") scale(0.1)"); 
+			pin.setAttributeNS("http://www.w3.org/1999/xlink", "href", "#pin");
+			
+			renderer.flags.appendChild(pin);
+		},
+		drawRoute : function (pins) {
+			
+		},
+		removePin : function (pin) {
+			renderer.flags.removeChild(pin);
 		}
 	};
 	

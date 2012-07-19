@@ -39,6 +39,10 @@ aside {
 	padding: 0 10px;
 }
 
+#flags div.container li.hover {
+	background: violet;
+}
+
 #usersearch {
 	width: 100%;
 }

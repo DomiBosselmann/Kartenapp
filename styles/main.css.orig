@@ -270,6 +270,7 @@ aside {
 	padding: 5px;
 }
 
+<<<<<<< HEAD
 body[data-loggedin=false] #login {
 	background: white;
 	padding: 30px;
@@ -298,12 +299,12 @@ body[data-loggedin=false] #mapcontainer svg, body[data-loggedin=false] #flags .c
 
 body[data-loggedin=false] #flags button {
 	-webkit-filter: blur(2px);
-}
-
+=======
 #flags *:not(:hover) {
 	opacity: 0.2;
 }
 
 #flags .hover {
 	opacity: 1;
+>>>>>>> refs/heads/master
 }

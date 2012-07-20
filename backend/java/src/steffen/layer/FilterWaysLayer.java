@@ -13,7 +13,7 @@ import steffen.Constants;
 public class FilterWaysLayer {
 	
 	private static String	myFileSource	= "bawu.xml";
-	private static Layer		myLayer			= Layer.Federal;
+	private static Layer		myLayer			= Layer.Counties;
 	
 	public static void filterWaysLayer(String fileSource, Layer layer, boolean deleteOldFile) throws IOException {
 		System.out.println("Begin filtering layer " + layer.name + "...");
@@ -97,8 +97,8 @@ public class FilterWaysLayer {
 					neededKeys[0] = "k=\"natural\"";
 					neededValues[0] = "v=\"water\"";
 				} else {
-					if (layer == Layer.Motorways || layer == Layer.Trunks || layer == Layer.Primaries
-							|| layer == Layer.Secondaries || layer == Layer.Tertiaries) {
+					if (layer == Layer.Motorways || layer == Layer.Primaries || layer == Layer.Secondaries
+							|| layer == Layer.Tertiaries) {
 						neededKeys = new String[2];
 						neededValues = new String[neededKeys.length];
 						neededKeys[0] = "k=\"highway\"";
@@ -106,10 +106,6 @@ public class FilterWaysLayer {
 						switch (layer) {
 							case Motorways: {
 								neededValues[0] = "v=\"motorway\"";
-								break;
-							}
-							case Trunks: {
-								neededValues[0] = "v=\"trunk\"";
 								break;
 							}
 							case Primaries: {

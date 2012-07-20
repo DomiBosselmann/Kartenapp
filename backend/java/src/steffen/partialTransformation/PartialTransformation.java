@@ -14,7 +14,7 @@ import steffen.layer.Layer;
 
 public class PartialTransformation {
 	
-	private static Layer		myLayer				= Layer.Federal;
+	private static Layer		myLayer				= Layer.Counties;
 	private static boolean	myBawu				= true;
 	
 	private static int		width					= 500;
@@ -50,11 +50,11 @@ public class PartialTransformation {
 		PartialTransformation.lat1 += margin / Constants.yRatio;
 		PartialTransformation.lat2 -= margin / Constants.yRatio;
 		
-//		System.out.println(lon1);
-//		System.out.println(lon2);
-//		System.out.println(lat1);
-//		System.out.println(lat2);
-//		System.exit(1);
+		// System.out.println(lon1);
+		// System.out.println(lon2);
+		// System.out.println(lat1);
+		// System.out.println(lat2);
+		// System.exit(1);
 		
 		String fileSource = "";
 		if (bawu) {
@@ -129,13 +129,6 @@ public class PartialTransformation {
 			xslFileSource = "part_transform.xsl";
 		}
 		
-		String group_ID = null;
-		if (layer == Layer.NamedLakes || layer == Layer.AllLakes) {
-			group_ID = "lakes";
-		} else {
-			group_ID = layer.name;
-		}
-		
 		BufferedReader reader = new BufferedReader(new FileReader(new File(Constants.pathToInternXSLs + xslFileSource)));
 		String newXSLFileName = xslFileSource + "2";
 		File tempXSL = new File(Constants.pathToInternXSLs + newXSLFileName);
@@ -151,7 +144,7 @@ public class PartialTransformation {
 		String line = null;
 		while (reader.ready()) {
 			line = reader.readLine();
-			line = line.replaceFirst("~~group_id~~", group_ID);
+			line = line.replaceFirst("~~group_id~~", layer.name);
 			line = line.replaceFirst("~~lon_factor~~", format.format(lon_factor));
 			line = line.replaceFirst("~~lat_factor~~", format.format(lat_factor));
 			line = line.replaceFirst("~~lon1~~", format.format(PartialTransformation.lon1));

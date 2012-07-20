@@ -61,9 +61,7 @@ if ($_GET) {
 		$widthFactor = $width / $originWidth;
 		$heightFactor = $height / $originHeight;
 	} else {
-		// TODO verhŠltnismŠ§ige streckung
-
-		$lonKm = 86.0;
+		$lonKm = 100.0;
 		$latKm = 111.32;
 
 		$tryHeight = $width * ($latKm / $lonKm);
@@ -135,7 +133,7 @@ if ($_GET) {
 			default:
 				{
 					$nope = false;
-					$filename = "../../../svgs/";
+					$filename = "../svgs/";
 					switch ($layer) {
 						case "b":
 							{
@@ -179,20 +177,15 @@ if ($_GET) {
 							}
 						case "s1":
 							{
-								$filename .= "streets/trunks.svg";
+								$filename .= "streets/primaries.svg";
 								break;
 							}
 						case "s2":
 							{
-								$filename .= "streets/primaries.svg";
-								break;
-							}
-						case "s3":
-							{
 								$filename .= "streets/secondaries.svg";
 								break;
 							}
-						case "s4":
+						case "s3":
 							{
 								$filename .= "streets/tertiaries.svg";
 								break;
@@ -251,7 +244,6 @@ if ($_GET) {
 
 
 	// region and width+height customizing of the svg
-	// TODO width+height unterstŸtzen
 
 	$newfile = $begin . PHP_EOL . $koords . PHP_EOL;
 	if ($defsPrint === true) {
@@ -269,7 +261,7 @@ if ($_GET) {
 		$groupEnd = stripos($file, ">", $groupBegin) + 1;
 		$newfile .= substr($file, $groupBegin, $groupEnd - $groupBegin) . PHP_EOL;
 
-		// places with uses
+		// with uses
 		$useBegin = stripos($file, $useSearchString, $groupEnd);
 		$groupEnding = stripos($file, $groupEndSearchString, $groupEnd);
 		if (($useBegin !== false) && ($useBegin < $groupEnding)) {
@@ -319,50 +311,52 @@ if ($_GET) {
 				$useBegin = stripos($file, $useSearchString, $useEnd);
 			}
 		} else {
-			// other with polylines
+			// with polylines
 			$polylineBegin = stripos($file, $polylineSearchString, $groupEnd);
-			while ($polylineBegin !== false) {
-				$print = false;
-				$polylineEnd = stripos($file, '/>', $polylineBegin) + 2;
-				$pointsBegin = stripos($file, $pointsSearchString, $polylineBegin) + strlen($pointsSearchString);
-				$newline = substr($file, $polylineBegin, $pointsBegin - $polylineBegin);
-				$pointsEnd = stripos($file, '"', $pointsBegin);
-				$points = substr($file, $pointsBegin, $pointsEnd - $pointsBegin);
-				$coordBegin = 0;
-				while ($coordBegin < strlen($points) - 1) {
-					$comma = stripos($points, ",", $coordBegin);
-					$space = stripos($points, " ", $coordBegin);
-					$lonCoord = doubleval(substr($points, $coordBegin, $comma - $coordBegin));
-					$latCoord = doubleval(substr($points, $comma + 1, $space - $comma));
-					if ($region === true) {
-						if (($lonCoord >= $lon1) && ($lonCoord <= $lon2)) {
-							if (($latCoord >= $lat1) && ($latCoord <= $lat2)) {
-								$print = true;
-								$newLonCoord = $lonCoord - $lon1;
-								$newLatCoord = $latCoord - $lat1;
-								$newLonCoord *= $widthFactor;
-								$newLatCoord *= $heightFactor;
-								$newLonCoord += $extraWidth;
-								$newLatCoord += $extraHeight;
+			if ($polylineBegin !== false) {
+				while ($polylineBegin !== false) {
+					$print = false;
+					$polylineEnd = stripos($file, '/>', $polylineBegin) + 2;
+					$pointsBegin = stripos($file, $pointsSearchString, $polylineBegin) + strlen($pointsSearchString);
+					$newline = substr($file, $polylineBegin, $pointsBegin - $polylineBegin);
+					$pointsEnd = stripos($file, '"', $pointsBegin);
+					$points = substr($file, $pointsBegin, $pointsEnd - $pointsBegin);
+					$coordBegin = 0;
+					while ($coordBegin < strlen($points) - 1) {
+						$comma = stripos($points, ",", $coordBegin);
+						$space = stripos($points, " ", $coordBegin);
+						$lonCoord = doubleval(substr($points, $coordBegin, $comma - $coordBegin));
+						$latCoord = doubleval(substr($points, $comma + 1, $space - $comma));
+						if ($region === true) {
+							if (($lonCoord >= $lon1) && ($lonCoord <= $lon2)) {
+								if (($latCoord >= $lat1) && ($latCoord <= $lat2)) {
+									$print = true;
+									$newLonCoord = $lonCoord - $lon1;
+									$newLatCoord = $latCoord - $lat1;
+									$newLonCoord *= $widthFactor;
+									$newLatCoord *= $heightFactor;
+									$newLonCoord += $extraWidth;
+									$newLatCoord += $extraHeight;
+									$newline .= number_format($newLonCoord, 3, '.', '') . "," . number_format($newLatCoord, 3, '.', '') . " ";
+								}
+							}
+						} else {
+							if ($sizing === true) {
+								$newLonCoord = ($lonCoord * $widthFactor) + $extraWidth;
+								$newLatCoord = ($latCoord * $heightFactor) + $extraHeight;
 								$newline .= number_format($newLonCoord, 3, '.', '') . "," . number_format($newLatCoord, 3, '.', '') . " ";
+							} else {
+								$newline .= $lonCoord . "," . $latCoord . " ";
 							}
 						}
-					} else {
-						if ($sizing === true) {
-							$newLonCoord = ($lonCoord * $widthFactor) + $extraWidth;
-							$newLatCoord = ($latCoord * $heightFactor) + $extraHeight;
-							$newline .= number_format($newLonCoord, 3, '.', '') . "," . number_format($newLatCoord, 3, '.', '') . " ";
-						} else {
-							$newline .= $lonCoord . "," . $latCoord . " ";
-						}
+						$coordBegin = stripos($points, " ", $coordBegin) + 1;
 					}
-					$coordBegin = stripos($points, " ", $coordBegin) + 1;
+					if (($region === false ) || ($print === true)) {
+						$newline .= substr($file, $pointsEnd, $polylineEnd - $pointsEnd);
+						$newfile .= $newline . PHP_EOL;
+					}
+					$polylineBegin = stripos($file, $polylineSearchString, $polylineEnd);
 				}
-				if (($region === false ) || ($print === true)) {
-					$newline .= substr($file, $pointsEnd, $polylineEnd - $pointsEnd);
-					$newfile .= $newline . PHP_EOL;
-				}
-				$polylineBegin = stripos($file, $polylineSearchString, $polylineEnd);
 			}
 		}
 		$newfile .= $groupEndSearchString . PHP_EOL;

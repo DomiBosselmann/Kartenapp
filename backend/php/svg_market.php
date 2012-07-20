@@ -1,5 +1,7 @@
 <?php
 
+// Obsolete
+
 if ($_GET) {
 	header("Content-Type: image/svg+xml");
 
@@ -113,10 +115,18 @@ if ($_GET) {
 				{
 					break;
 				}
+			case "custom":
+				{
+					break;
+				}
+			case "border":
+				{
+					break;
+				}
 			default:
 				{
 					$nope = false;
-					$filename = "../../../svgs/";
+					$filename = "../svgs/";
 					switch ($layer) {
 						case "b":
 							{
@@ -160,20 +170,15 @@ if ($_GET) {
 							}
 						case "s1":
 							{
-								$filename .= "streets/trunks.svg";
+								$filename .= "streets/primaries.svg";
 								break;
 							}
 						case "s2":
 							{
-								$filename .= "streets/primaries.svg";
-								break;
-							}
-						case "s3":
-							{
 								$filename .= "streets/secondaries.svg";
 								break;
 							}
-						case "s4":
+						case "s3":
 							{
 								$filename .= "streets/tertiaries.svg";
 								break;

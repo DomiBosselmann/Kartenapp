@@ -12,7 +12,7 @@ import java.util.Hashtable;
 import steffen.Constants;
 
 public class Peuckern {
-	private static String								myFileSource		= "bawu bounds.xml";
+	private static String								myFileSource		= "bawu counties.xml";
 	private static Hashtable<Integer, Node>		nodes					= null;
 	private static Hashtable<Integer, Boolean>	neededNodes			= null;
 	private static double								myPeuckerDistance	= 0.1;

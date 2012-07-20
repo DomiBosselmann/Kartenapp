@@ -20,7 +20,7 @@
 	</head>
 	<body data-loggedin="<?=$loggedin?>">
 		<aside>
-			<section id="flags">
+			<section id="flaglist">
 				<nav id="toolbar">
 					<button title="Route oder Punkt hinzufügen" accesskey="a"><img src="images/add.svg" alt="Route oder Punkt hinzufügen" height="15" /></button>
 					<section class="group">
@@ -64,7 +64,18 @@
 			</form>
 		</aside>
 		<section id="mapcontainer">
-			<svg width="1000" height="1000"><!-- Defs clientseitig? -->
+			<svg width="1000" height="1000"><!-- Defs clientseitig! -->
+				<defs>
+					<g id="pin">
+						<path d="M 0 0 q -15 -155 -100 -175 l 200 000 q -85 20 -100 175" stroke="black" stroke-width="5" fill="silver" />
+						<ellipse cx="0" cy="-200" rx="120" ry="45" style="fill:grey;stroke:black;stroke-width:5" />
+						<ellipse cx="0" cy="-225" rx="90" ry="30" style="fill:grey;stroke:black;stroke-width:5" />
+						<ellipse cx="0" cy="-250" rx="60" ry="20" style="fill:grey;stroke:black;stroke-width:5" />
+						<ellipse cx="0" cy="-270" rx="30" ry="10" style="fill:grey;stroke:black;stroke-width:5" />			
+					</g>			
+				</defs>
+				<g id="flags">
+				</g>
 			</svg>
 		</section>
 		<form id="login">

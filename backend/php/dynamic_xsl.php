@@ -1,5 +1,7 @@
 <?php 
 
+// Deprecated/Obsolete
+
 switch (substr($_GET['l'],0,1)) {
 	case "c":
 		{

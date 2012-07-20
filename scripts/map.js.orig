@@ -2,7 +2,13 @@ window.Karte = (function () {
 	var loggedin = undefined;
 
 	var constants = {
+<<<<<<< HEAD
+		url : "http://karte.localhost/backend/transformation/steffen/php/svg_market.php",
+		loginURL : "http://karte.localhost/backend/login/login.php"
+		//url : "http://karte.localhost/backend/transformation/steffen/php/transform.php"
+=======
 		url : "http://karte.localhost/backend/php/svg_market.php"
+>>>>>>> refs/heads/master
 	};
 	
 	var map = {
@@ -610,6 +616,7 @@ window.Karte = (function () {
 					controller.uiElements.mapRoot.removeEventListener("click", controller.handler.newPlace, false);
 				}
 			},
+<<<<<<< HEAD
 			observation : function (mutations) {
 				mutations.forEach(function (event) {
 					controller.handler.detectManipulation({
@@ -662,11 +669,12 @@ window.Karte = (function () {
 			login : function () {
 				loggedin = true;
 				document.body.setAttribute("data-loggedin", "true");
-			},
+=======
 			finishAddNewFlag : function (event) {
 				controller.uiElements.toolbar.className = "";
 				document.removeEventListener("keyup", controller.handler.abortAddNewFlag, false);
 				controller.uiElements.mapRoot.removeEventListener("click", controller.handler.newPlace, false);
+>>>>>>> refs/heads/master
 			}
 		},
 		loadMap : function (latitude, longitude, layers, handler) {

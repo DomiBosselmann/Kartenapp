@@ -34,13 +34,15 @@
 		$_query = "SELECT CNAME, CPASSWORD FROM TUSER WHERE CNAME='$_cName' and CPASSWORD='$_password'";
 		$_result = mysql_query($_query) or die ("Fehler: " . mysql_error());
 		
-		if(!$_query)
+		if(!$_query){
 		echo mysql_error($link);
-		
+		# Datenbank wieder schliessen
+		mysql_close($link);
+		exit();
+		}
 		$_SESSION["loggedin"] = true;
 		echo json_encode("{ success : true, error : [] }");
 	}
 	
-	# Datenbank wieder schliessen
-	mysql_close($link);
+
 ?>

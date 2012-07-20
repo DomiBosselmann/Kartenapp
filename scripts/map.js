@@ -2,7 +2,8 @@ window.Karte = (function () {
 	var loggedin = undefined;
 
 	var constants = {
-		url : "http://karte.localhost/backend/php/svg_market.php"
+		url : "http://karte.localhost/backend/php/svg_market.php",
+		loginURL : "http://karte.localhost/backend/login/login.php"
 	};
 	
 	var map = {

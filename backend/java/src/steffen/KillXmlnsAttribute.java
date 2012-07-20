@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class KillXmlnsAttribute {
 	
-	private static String	fileName	= "federal";
+	private static String	fileName	= "counties";
 	
 	public static void main(String[] args) throws IOException {
 		System.out.println("Begin killing xmlns attribute...");

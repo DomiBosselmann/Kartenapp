@@ -1,5 +1,7 @@
 <?php
 
+// Obsolete
+
 if ($_GET) {
 	header("Content-Type: image/svg+xml");
 

@@ -1,5 +1,7 @@
 <?php
 
+// Deprecated/Obsolete
+
 header("Content-Type: image/svg+xml");
 
 $xmlfile = "http://dhbwweb.draco.uberspace.de/backend/transformation/steffen/php/pretransform.php?";

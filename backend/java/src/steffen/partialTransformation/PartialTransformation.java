@@ -14,12 +14,12 @@ import steffen.layer.Layer;
 
 public class PartialTransformation {
 	
-	private static Layer		myLayer				= Layer.Federal;
+	private static Layer		myLayer				= Layer.Counties;
 	private static boolean	myBawu				= true;
 	
 	private static int		width					= 500;
 	private static int		height				= 500;
-	private static boolean	deleteTempFiles	= false;
+	private static boolean	deleteTempFiles	= true;
 	
 	private static double	lon1;
 	private static double	lon2;

@@ -1,5 +1,7 @@
 <?php 
 
+// Deprecated/Obsolete
+
 if (isset($_GET['lat1'])) {
 	$lat1 = $_GET['lat1'];
 } else {

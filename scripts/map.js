@@ -462,91 +462,9 @@ window.Karte = (function () {
 			},
 			newFlag : function (event) {
 				controller.uiElements.toolbar.className = "addFlagEnabled";
-				controller.uiElements.mapRoot.addEventListener("click", controller.handler.newPlace, false);
+				controller.uiElements.mapRoot.addEventListener("click", controller.handler.flags.newPlace, false);
 				
 				document.addEventListener("keyup", controller.handler.abortAddNewFlag, false);
-			},
-			newPlace : function (event) {
-				if (event.currentTarget !== event.target) { // Event war im Zeichenbereich von Bawü
-					var pinObject;
-					var altKey = event.altKey;
-					var pin = document.createElementNS( "http://www.w3.org/2000/svg", "use");
-					
-					// 1 Für Chrome + Safarie 2 für FF
-					var x = event.offsetX ? event.offsetX : event.layerX;
-					var y = event.offsetY ? event.offsetY : event.layerY;
-					
-					renderer.drawPin(pin, x, y);
-					
-					pin.setAttribute("class", "hover");
-					
-					/*pin.addEventListener("click", function(e) {
-						//Verhindere, dass das Event im SVG Element ausgelößt wird
-						e.stopPropagation();
-					});*/
-				
-					var newPlace = document.createElement("li");
-					newPlace.addEventListener("keypress", function (event) {
-						if (event.keyCode === 13) {
-							// Es war ein Enter
-							newPlace.blur();
-							pin.removeAttribute("class");
-							newPlace.contentEditable = false;
-							
-							// Neuen Ort wegschreiben
-							pinObject = {
-								name : newPlace.textContent,
-								visible : true,
-								note : "",
-								coordinates : units.pixelCoordinateToGeoCoordinate(x, y),
-								pinReference : pin,
-								listReference : newPlace
-							};
-							
-							var pinID = map.places.push(pinObject);
-							
-							// Pin mit ID versehen
-							pin.setAttribute("data-interimPinID", pinID);
-							event.target.setAttribute("data-interimPinID", pinID);
-							
-							pin.addEventListener("mouseover", function (event) {
-								console.log(map.places[event.currentTarget.getAttribute("data-interimPinID") - 1]);
-								map.places[event.currentTarget.getAttribute("data-interimPinID") - 1].listReference.classList.add("hover");
-							}, false);
-							
-							pin.addEventListener("mouseout", function (event) {
-								console.log(map.places[event.currentTarget.getAttribute("data-interimPinID") - 1]);
-								map.places[event.currentTarget.getAttribute("data-interimPinID") - 1].listReference.classList.remove("hover");
-							}, false);
-							
-							if (!altKey) {
-								controller.handler.finishAddNewFlag();
-							}
-						}
-					}, false);
-					newPlace.addEventListener("keyup", function (event) {
-						if (event.keyCode === 27) {
-							// Es war ein Esc
-							controller.uiElements.places.removeChild(newPlace);
-							renderer.removePin(pin);
-						}
-					}, false);
-					newPlace.addEventListener("mouseover", function (event) {
-						map.places[event.currentTarget.getAttribute("data-interimPinID") - 1].pinReference.setAttribute("class", "hover");
-					}, false);
-					newPlace.addEventListener("mouseout", function (event) {
-						map.places[event.currentTarget.getAttribute("data-interimPinID") - 1].pinReference.removeAttribute("class");
-					}, false);
-					newPlace.addEventListener("click", function (event) {
-						pinObject.visible = pinObject.visible ? false : true;
-						event.currentTarget.className = pinObject.visible ? "active" : "inactive";
-						
-						pinObject.pinReference.style.display = pinObject.visible ? "" : "none"; // Sollte eventuell in den Renderer
-					}, false);
-					newPlace.contentEditable = true;
-					controller.uiElements.places.appendChild(newPlace);
-					newPlace.focus();
-				}
 			},
 			newRoute : function (event) {
 				console.log(event);
@@ -572,6 +490,98 @@ window.Karte = (function () {
 				controller.uiElements.toolbar.className = "";
 				document.removeEventListener("keyup", controller.handler.abortAddNewFlag, false);
 				controller.uiElements.mapRoot.removeEventListener("click", controller.handler.newPlace, false);
+			},
+			flags : {
+				viewList : undefined,
+				pin : undefined,
+				x : undefined,
+				y : undefined,
+				altKey : undefined,
+				pinObject : undefined,
+				newPlace : function (event) {
+					if (event.currentTarget !== event.target) { // Event war im Zeichenbereich von Bawü
+						controller.handler.flags.altKey = event.altKey;
+						controller.handler.flags.pin = document.createElementNS( "http://www.w3.org/2000/svg", "use");
+						
+						// 1 Für Chrome + Safarie 2 für FF
+						controller.handler.flags.x = event.offsetX ? event.offsetX : event.layerX;
+						controller.handler.flags.y = event.offsetY ? event.offsetY : event.layerY;
+						
+						renderer.drawPin(controller.handler.flags.pin, controller.handler.flags.x, controller.handler.flags.y);
+						
+						pin.setAttribute("class", "hover");
+						
+						/*pin.addEventListener("click", function(e) {
+							//Verhindere, dass das Event im SVG Element ausgelößt wird
+							e.stopPropagation();
+						});*/
+					
+						controller.handler.flags.viewList = document.createElement("li");
+						controller.handler.flags.viewList.addEventListener("keypress", controller.handler.flags.finishAddNewPlace, false);
+						controller.handler.flags.viewList.addEventListener("keyup", function (event) {
+							if (event.keyCode === 27) {
+								// Es war ein Esc
+								controller.uiElements.places.removeChild(controller.handler.flags.viewList);
+								renderer.removePin(controller.handler.flags.pin);
+							} else {
+								controller.handler.flags.finishAddNewPlace(event);
+							}
+						}, false);
+						controller.handler.flags.viewList.addEventListener("mouseover", function (event) {
+							map.places[event.currentTarget.getAttribute("data-interimPinID") - 1].pinReference.setAttribute("class", "hover");
+						}, false);
+						controller.handler.flags.viewList.addEventListener("mouseout", function (event) {
+							map.places[event.currentTarget.getAttribute("data-interimPinID") - 1].pinReference.removeAttribute("class");
+						}, false);
+						controller.handler.flags.viewList.addEventListener("click", function (event) {
+							controller.handler.flags.pinObject.visible = controller.handler.flags.pinObject.visible ? false : true;
+							event.currentTarget.className = controller.handler.flags.pinObject.visible ? "active" : "inactive";
+							
+							controller.handler.flags.pinObject.pinReference.style.display = controller.handler.flags.pinObject.visible ? "" : "none"; // Sollte eventuell in den Renderer
+						}, false);
+						controller.handler.flags.viewList.contentEditable = true;
+						controller.uiElements.places.appendChild(controller.handler.flags.viewList);
+						controller.handler.flags.viewList.focus();
+					}
+				},
+				finishAddNewPlace : function (event) {
+					if (event.keyCode === 13 || event.keyCode === 39) {
+						// Es war ein Enter. Oder ein Rechtspfeil
+						controller.handler.flags.viewList.blur();
+						controller.handler.flags.pin.removeAttribute("class");
+						controller.handler.flags.viewList.contentEditable = false;
+						
+						// Neuen Ort wegschreiben
+						controller.handler.flags.pinObject = {
+							name : controller.handler.flags.viewList.textContent,
+							visible : true,
+							note : "",
+							coordinates : units.pixelCoordinateToGeoCoordinate(controller.handler.flags.x, controller.handler.flags.y),
+							pinReference : controller.handler.flags.pin,
+							listReference : controller.handler.flags.viewList
+						};
+						
+						var pinID = map.places.push(controller.handler.flags.pinObject);
+						
+						// Pin mit ID versehen
+						controller.handler.flags.pin.setAttribute("data-interimPinID", pinID);
+						event.target.setAttribute("data-interimPinID", pinID);
+						
+						controller.handler.flags.pin.addEventListener("mouseover", function (event) {
+							console.log(map.places[event.currentTarget.getAttribute("data-interimPinID") - 1]);
+							map.places[event.currentTarget.getAttribute("data-interimPinID") - 1].listReference.classList.add("hover");
+						}, false);
+						
+						controller.handler.flags.pin.addEventListener("mouseout", function (event) {
+							console.log(map.places[event.currentTarget.getAttribute("data-interimPinID") - 1]);
+							map.places[event.currentTarget.getAttribute("data-interimPinID") - 1].listReference.classList.remove("hover");
+						}, false);
+						
+						if (!controller.handler.flags.altKey && !event.shiftKey) {
+							controller.handler.finishAddNewFlag();
+						}
+					}
+				}
 			}
 		},
 		loadMap : function (latitude, longitude, layers, handler) {

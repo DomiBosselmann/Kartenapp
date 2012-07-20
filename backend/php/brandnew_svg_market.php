@@ -140,6 +140,11 @@ if ($_GET) {
 								$filename .= "bounds/federal.svg";
 								break;
 							}
+						case "bp":
+							{
+								$filename .= "bounds/federal_polygon.svg";
+								break;
+							}
 						case "b1":
 							{
 								$filename .= "bounds/counties.svg";
@@ -252,6 +257,7 @@ if ($_GET) {
 
 	$useSearchString = '<use';
 	$polylineSearchString = '<polyline';
+	$polygonSearchString = '<polygon';
 	$translateSearchString = 'translate(';
 	$pointsSearchString = 'points="';
 
@@ -357,26 +363,74 @@ if ($_GET) {
 					}
 					$polylineBegin = stripos($file, $polylineSearchString, $polylineEnd);
 				}
+			} else {
+				// with polygons
+				$polygonBegin = stripos($file, $polygonSearchString, $groupEnd);
+				if ($polygonBegin !== false) {
+					while ($polygonBegin !== false) {
+						$print = false;
+						$polygonEnd = stripos($file, '/>', $polygonBegin) + 2;
+						$pointsBegin = stripos($file, $pointsSearchString, $polygonBegin) + strlen($pointsSearchString);
+						$newline = substr($file, $polygonBegin, $pointsBegin - $polygonBegin);
+						$pointsEnd = stripos($file, '"', $pointsBegin);
+						$points = substr($file, $pointsBegin, $pointsEnd - $pointsBegin);
+						$coordBegin = 0;
+						while ($coordBegin < strlen($points) - 1) {
+							$comma = stripos($points, ",", $coordBegin);
+							$space = stripos($points, " ", $coordBegin);
+							$lonCoord = doubleval(substr($points, $coordBegin, $comma - $coordBegin));
+							$latCoord = doubleval(substr($points, $comma + 1, $space - $comma));
+							// 							if ($region === true) {
+							// 								if (($lonCoord >= $lon1) && ($lonCoord <= $lon2)) {
+							// 									if (($latCoord >= $lat1) && ($latCoord <= $lat2)) {
+							// 										$print = true;
+							// 										$newLonCoord = $lonCoord - $lon1;
+							// 										$newLatCoord = $latCoord - $lat1;
+							// 										$newLonCoord *= $widthFactor;
+							// 										$newLatCoord *= $heightFactor;
+							// 										$newLonCoord += $extraWidth;
+							// 										$newLatCoord += $extraHeight;
+							// 										$newline .= number_format($newLonCoord, 3, '.', '') . "," . number_format($newLatCoord, 3, '.', '') . " ";
+							// 									}
+							// 								}
+							// 							} else {
+							// 								if ($sizing === true) {
+							// 									$newLonCoord = ($lonCoord * $widthFactor) + $extraWidth;
+							// 									$newLatCoord = ($latCoord * $heightFactor) + $extraHeight;
+							// 									$newline .= number_format($newLonCoord, 3, '.', '') . "," . number_format($newLatCoord, 3, '.', '') . " ";
+							// 								} else {
+							// 									$newline .= $lonCoord . "," . $latCoord . " ";
+							// 								}
+							// 							}
+							$coordBegin = stripos($points, " ", $coordBegin) + 1;
+					}
+					if (($region === false ) || ($print === true)) {
+						$newline .= substr($file, $pointsEnd, $polygonEnd - $pointsEnd);
+						$newfile .= $newline . PHP_EOL;
+					}
+					$polygonBegin = stripos($file, $polygonSearchString, $polygonEnd);
+				}
 			}
 		}
-		$newfile .= $groupEndSearchString . PHP_EOL;
-		$groupBegin = stripos($file, $groupBeginSearchString, $groupEnd);
 	}
+	$newfile .= $groupEndSearchString . PHP_EOL;
+	$groupBegin = stripos($file, $groupBeginSearchString, $groupEnd);
+}
 
-	if (isset($_GET['border'])) {
-		if (isset($_GET['custom'])) {
-			$newfile .= '<polyline id="outer" fill="none" stroke="black" points="0,0 ' . $_GET['width'] . ',0 ' . $_GET['width'] . ',' . $_GET['height'] . ' 0,' . $_GET['height'] . ' 0,0"' . ' />' . PHP_EOL;
-		} else {
-			$zeroWidth = $extraWidth;
-			$zeroHeight = $extraHeight;
-			$svgWidth = $width + $extraWidth;
-			$svgHeight = $height + $extraHeight;
-			$newfile .= '<polyline id="inner" fill="none" stroke="black" points="' . $zeroWidth . ',' . $zeroHeight . ' ' . $svgWidth . ',' . $zeroHeight . ' ' . $svgWidth . ',' . $svgHeight . ' ' . $zeroWidth . ',' . $svgHeight . ' ' . $zeroWidth . ',' . $zeroHeight . '"' . ' />' . PHP_EOL;
-			$newfile .= '<polyline id="outer" fill="none" stroke="black" points="0,0 ' . $_GET['width'] . ',0 ' . $_GET['width'] . ',' . $_GET['height'] . ' 0,' . $_GET['height'] . ' 0,0"' . ' />' . PHP_EOL;
-		}
+if (isset($_GET['border'])) {
+	if (isset($_GET['custom'])) {
+		$newfile .= '<polyline id="outer" fill="none" stroke="black" points="0,0 ' . $_GET['width'] . ',0 ' . $_GET['width'] . ',' . $_GET['height'] . ' 0,' . $_GET['height'] . ' 0,0"' . ' />' . PHP_EOL;
+	} else {
+		$zeroWidth = $extraWidth;
+		$zeroHeight = $extraHeight;
+		$svgWidth = $width + $extraWidth;
+		$svgHeight = $height + $extraHeight;
+		$newfile .= '<polyline id="inner" fill="none" stroke="black" points="' . $zeroWidth . ',' . $zeroHeight . ' ' . $svgWidth . ',' . $zeroHeight . ' ' . $svgWidth . ',' . $svgHeight . ' ' . $zeroWidth . ',' . $svgHeight . ' ' . $zeroWidth . ',' . $zeroHeight . '"' . ' />' . PHP_EOL;
+		$newfile .= '<polyline id="outer" fill="none" stroke="black" points="0,0 ' . $_GET['width'] . ',0 ' . $_GET['width'] . ',' . $_GET['height'] . ' 0,' . $_GET['height'] . ' 0,0"' . ' />' . PHP_EOL;
 	}
+}
 
-	echo $newfile . $end;
+echo $newfile . $end;
 }
 
 function getPixelForLon($lon) {

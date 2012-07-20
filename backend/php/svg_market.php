@@ -126,7 +126,7 @@ if ($_GET) {
 			default:
 				{
 					$nope = false;
-					$filename = "../../../svgs/";
+					$filename = "../svgs/";
 					switch ($layer) {
 						case "b":
 							{

@@ -1,8 +1,7 @@
 window.Karte = (function () {
 
 	var constants = {
-		url : "http://karte.localhost/backend/transformation/steffen/php/svg_market.php"
-		//url : "http://karte.localhost/backend/transformation/steffen/php/transform.php"
+		url : "http://karte.localhost/backend/php/svg_market.php"
 	};
 	
 	var map = {

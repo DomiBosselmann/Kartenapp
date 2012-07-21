@@ -494,14 +494,16 @@ window.Karte = (function () {
 							//Verhindere, dass das Event im SVG Element ausgelößt wird
 							e.stopPropagation();
 						});*/
+						
+						controller.handler.flags.pin.addEventListener("mousedown", controller.handler.flags.enablePanning, false);
 					
 						controller.handler.flags.viewList = document.createElement("li");
+						controller.handler.flags.viewList.contentEditable = true;
 						controller.handler.flags.viewList.addEventListener("keypress", controller.handler.flags.finishAddNewPlace, false);
 						controller.handler.flags.viewList.addEventListener("keyup", function (event) {
 							if (event.keyCode === 27) {
 								// Es war ein Esc
-								controller.uiElements.places.removeChild(controller.handler.flags.viewList);
-								renderer.removePin(controller.handler.flags.pin);
+								controller.handler.flags.abortAddNewPlace(event);
 							} else {
 								controller.handler.flags.finishAddNewPlace(event);
 							}
@@ -509,10 +511,8 @@ window.Karte = (function () {
 						controller.handler.flags.viewList.addEventListener("mouseover", controller.handler.flags.highlightPin, false);
 						controller.handler.flags.viewList.addEventListener("mouseout", controller.handler.flags.deHighlightPin, false);
 						controller.handler.flags.viewList.addEventListener("click", controller.handler.flags.setVisibility, false);
+						controller.handler.flags.viewList.addEventListener("blur", controller.handler.flags.abortAddNewPlace, false);
 						
-						controller.handler.flags.pin.addEventListener("mousedown", controller.handler.flags.enablePanning, false);
-						
-						controller.handler.flags.viewList.contentEditable = true;
 						controller.uiElements.places.appendChild(controller.handler.flags.viewList);
 						controller.handler.flags.viewList.focus();
 					}
@@ -532,6 +532,10 @@ window.Karte = (function () {
 				finishAddNewPlace : function (event) {
 					if (event.keyCode === 13 || event.keyCode === 39) {
 						// Es war ein Enter. Oder ein Rechtspfeil
+						
+						// Blur-Handler entfernen (UI-Aktion für Abbruch)
+						controller.handler.flags.viewList.removeEventListener("blur", controller.handler.flags.abortAddNewPlace, false);
+						
 						controller.handler.flags.viewList.blur();
 						controller.handler.flags.pin.removeAttribute("class");
 						controller.handler.flags.viewList.contentEditable = false;
@@ -559,6 +563,10 @@ window.Karte = (function () {
 							controller.handler.flags.finishAddNewFlag();
 						}
 					}
+				},
+				abortAddNewPlace : function (event) {
+					controller.uiElements.places.removeChild(controller.handler.flags.viewList);
+					renderer.removePin(controller.handler.flags.pin);
 				},
 				enablePanning : function (event) {
 					// Aktuellen Translate ermitteln

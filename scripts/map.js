@@ -509,7 +509,8 @@ window.Karte = (function () {
 				altKey : undefined,
 				pinObject : undefined,
 				newPlace : function (event) {
-					if (event.currentTarget !== event.target) { // Event war im Zeichenbereich von Bawü
+					if (event.currentTarget !== event.target && !(event.target instanceof SVGElementInstance && event.target.correspondingUseElement.parentNode === renderer.flags)) { // Event war im Zeichenbereich von Bawü und nicht auf einem Pin
+						
 						controller.handler.flags.altKey = event.altKey;
 						controller.handler.flags.pin = document.createElementNS( "http://www.w3.org/2000/svg", "use");
 						
@@ -549,6 +550,9 @@ window.Karte = (function () {
 							
 							controller.handler.flags.pinObject.pinReference.style.display = controller.handler.flags.pinObject.visible ? "" : "none"; // Sollte eventuell in den Renderer
 						}, false);
+						
+						controller.handler.flags.pin.addEventListener("mousedown", controller.handler.flags.enablePanning, false);
+						
 						controller.handler.flags.viewList.contentEditable = true;
 						controller.uiElements.places.appendChild(controller.handler.flags.viewList);
 						controller.handler.flags.viewList.focus();
@@ -591,6 +595,38 @@ window.Karte = (function () {
 							controller.handler.finishAddNewFlag();
 						}
 					}
+				},
+				enablePanning : function (event) {
+					document.addEventListener("mousemove", controller.handler.flags.performPanning, false);
+					document.addEventListener("mouseup", controller.handler.flags.finishPanning, false);
+					
+					event.stopPropagation();
+					event.preventDefault();
+				},
+				performPanning : function (event) {
+					var x = event.offsetX ? event.offsetX : event.layerX;
+					var y = event.offsetY ? event.offsetY : event.layerY;
+					controller.handler.flags.pin.setAttribute("transform", "translate(" + x + " " + y + ") scale(0.1)");
+					
+					console.log(event);
+					
+					event.stopPropagation();
+					event.preventDefault();		
+				},
+				finishPanning : function (event) {
+					var x = event.offsetX ? event.offsetX : event.layerX;
+					var y = event.offsetY ? event.offsetY : event.layerY;
+					
+					
+					console.log(map.places[event.target.getAttribute("data-interimPinID") - 1]);
+					map.places[event.target.getAttribute("data-interimPinID") - 1].coordinates = units.pixelCoordinateToGeoCoordinate(x, y);
+					//controller.handler.flags.pinObject.coordinates = units.pixelCoordinateToGeoCoordinate(x, y); // TODO
+					
+					document.removeEventListener("mousemove", controller.handler.flags.performPanning, false);
+					document.removeEventListener("mouseup", controller.handler.flags.finishPanning, false);
+					
+					event.stopPropagation();
+					event.preventDefault();
 				}
 			}
 		},

@@ -248,7 +248,7 @@ window.Karte = (function () {
 			this.uiElements.routes = document.getElementById("routes");
 			
 			// EventListener hinzufügen
-			this.uiElements.addButton.addEventListener("click", this.handler.enableAddSelection, false);
+			this.uiElements.addButton.addEventListener("click", this.handler.flags.enableAddSelection, false);
 			this.uiElements.searchButton.addEventListener("click", this.handler.handleSearch, false);
 			this.uiElements.exportButton.addEventListener("click", function (e) { console.log(e); }, false);
 			this.uiElements.importButton.addEventListener("click", function (e) { console.log(e); }, false);
@@ -463,59 +463,6 @@ window.Karte = (function () {
 				// Renderer anstoßen
 				renderer.start(data);
 			},
-			enableAddSelection : function (event) {
-				var container = document.createElement("ul");
-				var newPlace = document.createElement("li");
-				var newRoute = document.createElement("li");
-				
-				container.id = "addSelectionMask";
-				
-				newPlace.textContent = "Neuer Ort";
-				newPlace.addEventListener("click", controller.handler.newFlag, false);
-				
-				newRoute.textContent = "Neue Route";
-				newRoute.addEventListener("click", controller.handler.newRoute, false);
-				
-				container.appendChild(newPlace);
-				container.appendChild(newRoute);
-				
-				document.body.appendChild(container); // Einbindung ändern
-				
-				event.stopPropagation();
-				
-				document.addEventListener("click", controller.handler.handleAddSelection, false);
-			},
-			newFlag : function (event) {
-				controller.uiElements.toolbar.className = "addFlagEnabled";
-				controller.uiElements.mapRoot.addEventListener("click", controller.handler.flags.newPlace, false);
-				
-				document.addEventListener("keyup", controller.handler.abortAddNewFlag, false);
-			},
-			newRoute : function (event) {
-				console.log(event);
-			},
-			handleAddSelection : function (event) {
-				// Sollte noch unbenannt werden
-				if (event.currentTarget !== document.getElementById("addSelectionMask")) {
-					controller.handler.disableAddSelection();
-				}
-			},
-			disableAddSelection : function () {
-				document.body.removeChild(document.getElementById("addSelectionMask"));
-				document.removeEventListener("click", controller.handler.handleAddSelection, false);
-			},
-			abortAddNewFlag : function (event) {
-				if (event.keyCode === 27) {
-					controller.uiElements.toolbar.className = "";
-					document.removeEventListener("keyup", controller.handler.abortAddNewFlag, false);
-					controller.uiElements.mapRoot.removeEventListener("click", controller.handler.newPlace, false);
-				}
-			},
-			finishAddNewFlag : function (event) {
-				controller.uiElements.toolbar.className = "";
-				document.removeEventListener("keyup", controller.handler.abortAddNewFlag, false);
-				controller.uiElements.mapRoot.removeEventListener("click", controller.handler.newPlace, false);
-			},
 			flags : {
 				viewList : undefined,
 				pin : undefined,
@@ -537,7 +484,7 @@ window.Karte = (function () {
 						
 						renderer.drawPin(controller.handler.flags.pin, controller.handler.flags.x, controller.handler.flags.y);
 						
-						pin.setAttribute("class", "hover");
+						controller.handler.flags.pin.setAttribute("class", "hover");
 						
 						/*pin.addEventListener("click", function(e) {
 							//Verhindere, dass das Event im SVG Element ausgelößt wird
@@ -605,7 +552,7 @@ window.Karte = (function () {
 						controller.handler.flags.pin.addEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
 						
 						if (!controller.handler.flags.altKey && !event.shiftKey) {
-							controller.handler.finishAddNewFlag();
+							controller.handler.flags.finishAddNewFlag();
 						}
 					}
 				},
@@ -662,7 +609,60 @@ window.Karte = (function () {
 					event.currentTarget.className = controller.handler.flags.pinObject.visible ? "active" : "inactive";
 					
 					controller.handler.flags.pinObject.pinReference.style.display = controller.handler.flags.pinObject.visible ? "" : "none"; // Sollte eventuell in den Renderer
-				}
+				},
+				enableAddSelection : function (event) {
+					var container = document.createElement("ul");
+					var newPlace = document.createElement("li");
+					var newRoute = document.createElement("li");
+					
+					container.id = "addSelectionMask";
+					
+					newPlace.textContent = "Neuer Ort";
+					newPlace.addEventListener("click", controller.handler.flags.newFlag, false);
+					
+					newRoute.textContent = "Neue Route";
+					newRoute.addEventListener("click", controller.handler.flags.newRoute, false);
+					
+					container.appendChild(newPlace);
+					container.appendChild(newRoute);
+					
+					document.body.appendChild(container); // Einbindung ändern
+					
+					event.stopPropagation();
+					
+					document.addEventListener("click", controller.handler.flags.handleAddSelection, false);
+				},
+				newFlag : function (event) {
+					controller.uiElements.toolbar.className = "addFlagEnabled";
+					controller.uiElements.mapRoot.addEventListener("click", controller.handler.flags.newPlace, false);
+					
+					document.addEventListener("keyup", controller.handler.flags.abortAddNewFlag, false);
+				},
+				newRoute : function (event) {
+					console.log(event);
+				},
+				handleAddSelection : function (event) {
+					// Sollte noch unbenannt werden
+					if (event.currentTarget !== document.getElementById("addSelectionMask")) {
+						controller.handler.flags.disableAddSelection();
+					}
+				},
+				disableAddSelection : function () {
+					document.body.removeChild(document.getElementById("addSelectionMask"));
+					document.removeEventListener("click", controller.handler.flags.handleAddSelection, false);
+				},
+				abortAddNewFlag : function (event) {
+					if (event.keyCode === 27) {
+						controller.uiElements.toolbar.className = "";
+						document.removeEventListener("keyup", controller.handler.flags.abortAddNewFlag, false);
+						controller.uiElements.mapRoot.removeEventListener("click", controller.handler.flags.newPlace, false);
+					}
+				},
+				finishAddNewFlag : function (event) {
+					controller.uiElements.toolbar.className = "";
+					document.removeEventListener("keyup", controller.handler.flags.abortAddNewFlag, false);
+					controller.uiElements.mapRoot.removeEventListener("click", controller.handler.flags.newPlace, false);
+				},
 			}
 		},
 		loadMap : function (latitude, longitude, layers, handler) {
@@ -758,7 +758,7 @@ window.Karte = (function () {
 					node.setAttribute("clip-path", "url(#borderClip)");
 				}
 				
-				controller.uiElements.mapRoot.appendChild(node);
+				controller.uiElements.mapRoot.insertBefore(node, this.flags);
 			});
 		},
 		optimize : function () {

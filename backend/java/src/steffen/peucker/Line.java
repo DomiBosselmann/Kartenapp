@@ -6,6 +6,7 @@ public class Line {
 	private static Double	yratio	= 111.32;
 	
 	public static void main(String[] args) {
+		
 		// Tests
 		Line line = new Line(0.0, 0.0, 0.0, 1.0);
 		System.out.println(Line.xratio + "?: " + line.getDistanceOfPoint(1.0, 0.5));

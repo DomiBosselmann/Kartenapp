@@ -8,7 +8,6 @@
 
 	<xsl:template match="osm">
 		<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-			<xsl:attribute name="style">position:absolute;</xsl:attribute>
 			<xsl:text>&#10;</xsl:text>
 			<xsl:element name="g">
 				<xsl:attribute name="id">~~group_id~~</xsl:attribute>

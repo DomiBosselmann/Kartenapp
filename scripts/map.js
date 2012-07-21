@@ -47,7 +47,7 @@ window.Karte = (function () {
 					federal : {
 						name : "(Bundesstraßen & Kraftfahrstraßen)",
 						visible : false,
-						paramName : "s2",
+						paramName : "s1",
 						layerName : "primaries",
 						zIndex : 9
 					},
@@ -55,14 +55,14 @@ window.Karte = (function () {
 					landesstrasse : {
 						name : "Landesstraße",
 						visible : false,
-						paramName : "s3",
+						paramName : "s2",
 						layerName : "secondaries",
 						zIndex : 8
 					},
 					kreisstrasse : {
 						name : "Kreisstraße",
 						visible : false,
-						paramName : "s4",
+						paramName : "s3",
 						layerName : "tertiaries",
 						zIndex : 7
 					}

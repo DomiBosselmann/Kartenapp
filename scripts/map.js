@@ -648,29 +648,45 @@ window.Karte = (function () {
 	};
 	
 	var renderer = {
+		root : undefined,
 		data : undefined,
 		map : undefined,
 		layers : undefined,
 		flags : undefined,
+		clipPath : undefined,
+		hasClipPath : false,
 		start : function (data) {
 			// Verwaltungsmethode für den Renderer
 			this.data = data;
 			this.map = controller.uiElements.mapRoot;
+			this.flags = controller.uiElements.mapRoot.getElementById("flags");
+			this.clipPath = controller.uiElements.mapRoot.getElementById("borderClip");
 			
 			this.parse();
 			this.render();
 			this.optimize();
 			
 			this.layers = controller.uiElements.mapRoot.getElementsByTagName("g"); // Notwendigkeit?
-			this.flags = controller.uiElements.mapRoot.getElementById("flags");
 		},
 		parse : function () {
-			this.data = this.data.getElementsByTagName("svg")[0].childNodes;
+			this.root = this.data.getElementsByTagName("svg")[0];
+			this.data = this.root.childNodes;
+			
+			if (this.root.getElementById("federal") !== null) {
+				var path = this.root.getElementById("federal").childNodes[0].cloneNode();
+				this.clipPath.appendChild(path);
+				
+				renderer.hasClipPath = true;
+			}
 		},
 		render : function () {
 			var data = Array.prototype.slice.call(this.data);
 			
 			data.forEach(function (node) {
+				if (renderer.hasClipPath && node.id !== "federal") {
+					node.setAttribute("clip-path", "url(#borderClip)");
+				}
+				
 				controller.uiElements.mapRoot.appendChild(node);
 			});
 		},

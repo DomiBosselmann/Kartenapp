@@ -494,9 +494,12 @@ window.Karte = (function () {
 				pinObject : undefined,
 				panningDiffX : undefined,
 				panningDiffY : undefined,
+				isAdding : false,
 				newPlace : function (event) {
-					if (event.currentTarget !== event.target) { // Event war im Zeichenbereich von Bawü und nicht auf einem Pin
+					if (event.currentTarget !== event.target && !controller.handler.flags.isAdding) { // Event war im Zeichenbereich von Bawü und nicht auf einem Pin
 						/*  && !(event.target instanceof SVGElementInstance && event.target.correspondingUseElement.parentNode === renderer.flags) */
+						
+						controller.handler.flags.isAdding = true;
 						
 						controller.handler.flags.altKey = event.altKey;
 						controller.handler.flags.pin = document.createElementNS( "http://www.w3.org/2000/svg", "use");
@@ -552,6 +555,12 @@ window.Karte = (function () {
 					if (event.keyCode === 13 || event.keyCode === 39) {
 						// Es war ein Enter. Oder ein Rechtspfeil
 						
+						// Wenn der Name leer ist, abbrechen
+						if (controller.handler.flags.viewList.textContent === "") {
+							event.preventDefault();
+							return false;
+						}
+						
 						// Blur-Handler entfernen (UI-Aktion für Abbruch)
 						controller.handler.flags.viewList.removeEventListener("blur", controller.handler.flags.abortAddNewPlace, false);
 						
@@ -578,6 +587,8 @@ window.Karte = (function () {
 						controller.handler.flags.pin.addEventListener("mouseover", controller.handler.flags.highlightListView, false);
 						controller.handler.flags.pin.addEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
 						
+						controller.handler.flags.isAdding = false;
+						
 						if (!controller.handler.flags.altKey && !event.shiftKey) {
 							controller.handler.flags.finishAddNewFlag();
 						}
@@ -586,6 +597,8 @@ window.Karte = (function () {
 				abortAddNewPlace : function (event) {
 					controller.uiElements.places.removeChild(controller.handler.flags.viewList);
 					renderer.removePin(controller.handler.flags.pin);
+					
+					controller.handler.flags.isAdding = false;
 				},
 				enablePanning : function (event) {
 					// Aktuellen Translate ermitteln

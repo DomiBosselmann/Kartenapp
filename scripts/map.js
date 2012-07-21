@@ -38,26 +38,30 @@ window.Karte = (function () {
 						name : "Autobahnen",
 						visible : true,
 						paramName : "s",
-						layerName : "motorways"
+						layerName : "motorways",
+						zIndex : 10
 					},
 					federal : {
 						name : "(Bundesstraßen & Kraftfahrstraßen)",
 						visible : false,
 						paramName : "s2",
-						layerName : "primaries"
+						layerName : "primaries",
+						zIndex : 9
 					},
 					
 					landesstrasse : {
 						name : "Landesstraße",
 						visible : false,
 						paramName : "s3",
-						layerName : "secondaries"
+						layerName : "secondaries",
+						zIndex : 8
 					},
 					kreisstrasse : {
 						name : "Kreisstraße",
 						visible : false,
 						paramName : "s4",
-						layerName : "tertiaries"
+						layerName : "tertiaries",
+						zIndex : 7
 					}
 				}
 			},
@@ -69,31 +73,36 @@ window.Karte = (function () {
 						name : "Städte",
 						visible : true,
 						paramName : "c",
-						layerName : "cities"
+						layerName : "cities",
+						zIndex : 15
 					},
 					towns : {
 						name : "(Dörfer)",
 						visible : false,
 						paramName : "c1",
-						layerName : "towns"
+						layerName : "towns",
+						zIndex : 14
 					},
 					villages : {
 						name : "(Kuhdörfer)",
 						visible : false,
 						paramName : "c2",
-						layerName : "villages"
+						layerName : "villages",
+						zIndex : 13
 					},
 					hamlets : {
 						name : "(Kaffs)",
 						visible : false,
 						paramName : "c3",
-						layerName : "hamlets"
+						layerName : "hamlets",
+						zIndex : 12
 					},
 					suburbs : {
 						name : "(Bauernhof)",
 						visible : false,
 						paramName : "c4",
-						layerName : "suburbs"
+						layerName : "suburbs",
+						zIndex : 11
 					}
 				}
 			},
@@ -106,13 +115,15 @@ window.Karte = (function () {
 						name : "Bundesländer",
 						visible : true,
 						paramName : "b",
-						layerName : "federal"
+						layerName : "federal",
+						zIndex : 1
 					},
 					counties : {
 						name : "Landkreise",
 						visible : false,
 						paramName : "b1",
-						layerName : "counties"
+						layerName : "counties",
+						zIndex : 2
 					}
 				}
 			},
@@ -125,25 +136,29 @@ window.Karte = (function () {
 						name : "Flüsse",
 						visible : true,
 						paramName : "w",
-						layerName : "rivers"
+						layerName : "rivers",
+						zIndex : 6
 					},
 					canals : {
 						name : "Kanäle",
 						visible : false,
 						paramName : "w1",
-						layerName : "canals"
+						layerName : "canals",
+						zIndex : 5
 					},
 					namedLakes : {
 						name : "Seen",
 						visible : false,
 						paramName : "w2",
-						layerName : "namedLakes"
+						layerName : "namedLakes",
+						zIndex : 4
 					},
 					allLakes : {
 						name : "(Seen)",
 						visible : false,
 						paramName : "w3",
-						layerName : "allLakes"
+						layerName : "allLakes",
+						zIndex : 3
 					}
 				}
 			}
@@ -272,7 +287,7 @@ window.Karte = (function () {
 				if (map.layers.hasOwnProperty(type) && map.layers[type].visible) {
 					for (subtype in map.layers[type].sub) {
 						if (map.layers[type].sub.hasOwnProperty(subtype) && map.layers[type].sub[subtype].visible && map.layers[type].sub[subtype].paramName !== undefined) {
-							layers.push(map.layers[type].sub[subtype].paramName);
+							layers[map.layers[type].sub[subtype].zIndex] = map.layers[type].sub[subtype].paramName;
 						}
 					}
 				}

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg style="position:absolute;" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
 <g id="primaries" fill="none" stroke="black" stroke-width="1">
 <polyline points="191.726,56.182 191.822,56.328 " mw_ref="B3"/>
 <polyline points="108.800,220.282 108.201,219.942 106.382,218.091 " mw_ref="B500"/>

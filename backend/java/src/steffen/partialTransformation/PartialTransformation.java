@@ -50,12 +50,6 @@ public class PartialTransformation {
 		PartialTransformation.lat1 += margin / Constants.yRatio;
 		PartialTransformation.lat2 -= margin / Constants.yRatio;
 		
-		// System.out.println(lon1);
-		// System.out.println(lon2);
-		// System.out.println(lat1);
-		// System.out.println(lat2);
-		// System.exit(1);
-		
 		String fileSource = "";
 		if (bawu) {
 			fileSource += "bawu ";
@@ -83,7 +77,7 @@ public class PartialTransformation {
 		String rect_coord = null;
 		String rect_size = null;
 		if (layer.nodeLayer) {
-			xslFileSource = "cities_part_transform.xsl";
+			xslFileSource = "partial/cities_part_transform.xsl";
 			switch (layer) {
 				case Cities: {
 					rect_id = "city";
@@ -126,12 +120,12 @@ public class PartialTransformation {
 				}
 			}
 		} else {
-			xslFileSource = "part_transform.xsl";
+			xslFileSource = "partial/part_transform.xsl";
 		}
 		
 		BufferedReader reader = new BufferedReader(new FileReader(new File(Constants.pathToInternXSLs + xslFileSource)));
 		String newXSLFileName = xslFileSource + "2";
-		File tempXSL = new File(Constants.pathToInternXSLs + newXSLFileName);
+		File tempXSL = new File(Constants.pathToInternXSLs + "partial/" + newXSLFileName);
 		if (delete) {
 			tempXSL.deleteOnExit();
 		}

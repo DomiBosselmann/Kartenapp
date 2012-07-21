@@ -10,7 +10,7 @@ if ($_GET) {
 	$xmlHeader = '<?xml version="1.0" encoding="UTF-8"?>';
 	$xmlnsNamespace = "http://www.w3.org/2000/svg";
 	$xlinkNamespace = "http://www.w3.org/1999/xlink";
-	$newSVG = new simplexmlelement($xmlHeader . '<svg style="position:absolute;" xmlns="' . $xmlnsNamespace . '" xmlns:xlink="' . $xlinkNamespace . '" />');
+	$newSVG = new simplexmlelement($xmlHeader . '<svg xmlns="' . $xmlnsNamespace . '" xmlns:xlink="' . $xlinkNamespace . '" />');
 
 	//	$newSVG->addAttribute("style", "position:absolute;");
 	// $newSVG->addAttribute("xmlns", $xmlnsNamespace);
@@ -287,16 +287,31 @@ if ($_GET) {
 									{
 										$group = $newSVG->addChild($node0);
 										copyAllAttributes($value0, $group);
+										foreach ($value0->attributes() as $attr0 => $attrValue0) {
+											switch ($attr0) {
+												case "id":
+													{
+														switch ($attrValue0) {
+															case "federal":
+																{
+																	$group->addAttribute("filter", "url(#dropshadow)");
+																	break;
+																}
+														}
+														break;
+													}
+											}
+										}
 										foreach ($value0->children() as $node1 => $value1) {
 											switch ($node1) {
 												case "use":
 													{
 														$keep = false;
-														foreach ($value1->attributes() as $attr0 => $attrValue0) {
-															switch ($attr0) {
+														foreach ($value1->attributes() as $attr1 => $attrValue1) {
+															switch ($attr1) {
 																case "transform":
 																	{
-																		$translate = $attrValue0;
+																		$translate = $attrValue1;
 																		$keep = false;
 																		$begin = stripos($translate, "(") + 1;
 																		$space = stripos($translate, " ", $begin);
@@ -327,11 +342,11 @@ if ($_GET) {
 												case "polyline":
 													{
 														$keep = false;
-														foreach ($value1->attributes() as $attr0 => $attrValue0) {
-															switch ($attr0) {
+														foreach ($value1->attributes() as $attr1 => $attrValue1) {
+															switch ($attr1) {
 																case "points":
 																	{
-																		$points = explode(" ", $attrValue0);
+																		$points = explode(" ", $attrValue1);
 																		unset($value1[points]);
 																		$newPoints = "";
 																		foreach ($points as $point) {
@@ -363,11 +378,11 @@ if ($_GET) {
 													}
 												case "polygon":
 													{
-														foreach ($value1->attributes() as $attr0 => $attrValue0) {
-															switch ($attr0) {
+														foreach ($value1->attributes() as $attr1 => $attrValue1) {
+															switch ($attr1) {
 																case "points":
 																	{
-																		$points = explode(" ", $attrValue0);
+																		$points = explode(" ", $attrValue1);
 																		unset($value1[points]);
 																		$newPoints = "";
 																		foreach ($points as $point) {

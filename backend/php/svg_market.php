@@ -25,51 +25,55 @@ if ($_GET) {
 	if (isset($_GET['lon1'])) {
 		if ($_GET['lon1'] < $originLon1) {
 			$lon1 = getPixelForLon($originLon1);
-			$coords->addAttribute("lon1", $originLon1);
+			$lon1Attribute = $originLon1;
 		} else {
 			$lon1 = getPixelForLon($_GET['lon1']);
-			$coords->addAttribute("lon1", $_GET['lon1']);
+			$lon1Attribute = $_GET['lon1'];
 		}
 	} else {
 		$lon1 = getPixelForLon($originLon1);
-		$coords->addAttribute("lon1", $originLon1);
+		$lon1Attribute = $originLon1;
 	}
 	if (isset($_GET['lon2'])) {
 		if ($_GET['lon2'] > $originLon2) {
 			$lon2 = getPixelForLon($originLon2);
-			$coords->addAttribute("lon2", $originLon2);
+			$lon2Attribute = $originLon2;
 		} else {
 			$lon2 = getPixelForLon($_GET['lon2']);
-			$coords->addAttribute("lon2", $_GET['lon2']);
+			$lon2Attribute = $_GET['lon2'];
 		}
 	} else {
 		$lon2 = getPixelForLon($originLon2);
-		$coords->addAttribute("lon2", $originLon2);
+		$lon2Attribute = $originLon2;
 	}
 	if (isset($_GET['lat1'])) {
 		if ($_GET['lat1'] > $originLat1) {
 			$lat1 = getPixelForLat($originLat1);
-			$coords->addAttribute("lat1", $originLat1);
+			$lat1Attribute = $originLat1;
 		} else {
 			$lat1 = getPixelForLat($_GET['lat1']);
-			$coords->addAttribute("lat1", $_GET['lat1']);
+			$lat1Attribute = $_GET['lat1'];
 		}
 	} else {
 		$lat1 = getPixelForLat($originLat1);
-		$coords->addAttribute("lat1", $originLat1);
+		$lat1Attribute = $originLat1;
 	}
 	if (isset($_GET['lat2'])) {
 		if ($_GET['lat2'] < $originLat2) {
 			$lat2 = getPixelForLat($originLat2);
-			$coords->addAttribute("lat2", $originLat2);
+			$lat2Attribute = $originLat2;
 		} else {
 			$lat2 = getPixelForLat($_GET['lat2']);
-			$coords->addAttribute("lat2", $_GET['lat2']);
+			$lat2Attribute = $_GET['lat2'];
 		}
 	} else {
 		$lat2 = getPixelForLat($originLat2);
-		$coords->addAttribute("lat2", $originLat2);
+		$lat2Attribute = $originLat2;
 	}
+	$coords->addAttribute("lon1", number_format($lon1Attribute, $decimals, $dec_point, $thousands_sep));
+	$coords->addAttribute("lon2", number_format($lon2Attribute, $decimals, $dec_point, $thousands_sep));
+	$coords->addAttribute("lat1", number_format($lat1Attribute, $decimals, $dec_point, $thousands_sep));
+	$coords->addAttribute("lat2", number_format($lat2Attribute, $decimals, $dec_point, $thousands_sep));
 
 	// width + height detection
 	$originWidth = 490.0;

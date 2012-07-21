@@ -3,6 +3,7 @@
 	<head>
 		<title>Die Karte</title>
 		<link rel="stylesheet" href="styles/main.css" />
+		<link rel="stylesheet" href="styles/map.css" />
 		<script type="application/javascript" src="scripts/map.js"></script>
 		<script type="application/javascript" src="scripts/filter.js"></script>
 		<meta charset="utf-8" />
@@ -53,8 +54,16 @@
 			</form>
 		</aside>
 		<section id="mapcontainer">
-			<svg width="1000" height="1000"><!-- Defs clientseitig! -->
+			<svg width="1000" height="1000" id="map"><!-- Defs clientseitig! -->
 				<defs>
+					<filter id="dropshadow">
+				    	<feGaussianBlur result="blurOut" in="SourceAlpha" stdDeviation="2" />
+				    	<feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+				    </filter>
+				    <filter id="streetShadow">
+				    	<feGaussianBlur result="blurOut" in="SourceAlpha" stdDeviation="0.2" />
+				    	<feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+				    </filter>
 				    <clippath id="borderClip">
 				    </clippath>
 					<g id="pin">
@@ -63,7 +72,7 @@
 						<ellipse cx="0" cy="-225" rx="90" ry="30" style="fill:grey;stroke:black;stroke-width:5" />
 						<ellipse cx="0" cy="-250" rx="60" ry="20" style="fill:grey;stroke:black;stroke-width:5" />
 						<ellipse cx="0" cy="-270" rx="30" ry="10" style="fill:grey;stroke:black;stroke-width:5" />			
-					</g>			
+					</g>		
 				</defs>
 				<g id="flags">
 				</g>

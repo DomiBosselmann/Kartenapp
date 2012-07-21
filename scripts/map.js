@@ -22,11 +22,11 @@ window.Karte = (function () {
 			unit : "km",
 			scalerX : null,
 			scalablesX : [],
-			scaleFactor : undefined
+			scaleFactor : 1
 		},
 		panning : {
-			x : undefined,
-			y : undefined
+			x : 0,
+			y : 0
 		},
 		layers : {
 			roads : {
@@ -553,18 +553,9 @@ window.Karte = (function () {
 								controller.handler.flags.finishAddNewPlace(event);
 							}
 						}, false);
-						controller.handler.flags.viewList.addEventListener("mouseover", function (event) {
-							map.places[event.currentTarget.getAttribute("data-interimPinID") - 1].pinReference.setAttribute("class", "hover");
-						}, false);
-						controller.handler.flags.viewList.addEventListener("mouseout", function (event) {
-							map.places[event.currentTarget.getAttribute("data-interimPinID") - 1].pinReference.removeAttribute("class");
-						}, false);
-						controller.handler.flags.viewList.addEventListener("click", function (event) {
-							controller.handler.flags.pinObject.visible = controller.handler.flags.pinObject.visible ? false : true;
-							event.currentTarget.className = controller.handler.flags.pinObject.visible ? "active" : "inactive";
-							
-							controller.handler.flags.pinObject.pinReference.style.display = controller.handler.flags.pinObject.visible ? "" : "none"; // Sollte eventuell in den Renderer
-						}, false);
+						controller.handler.flags.viewList.addEventListener("mouseover", controller.handler.flags.highlightPin, false);
+						controller.handler.flags.viewList.addEventListener("mouseout", controller.handler.flags.deHighlightPin, false);
+						controller.handler.flags.viewList.addEventListener("click", controller.handler.flags.setVisibility, false);
 						
 						controller.handler.flags.pin.addEventListener("mousedown", controller.handler.flags.enablePanning, false);
 						
@@ -572,6 +563,18 @@ window.Karte = (function () {
 						controller.uiElements.places.appendChild(controller.handler.flags.viewList);
 						controller.handler.flags.viewList.focus();
 					}
+				},
+				highlightPin : function (event) {
+					map.places[event.currentTarget.getAttribute("data-interimPinID") - 1].pinReference.setAttribute("class", "hover");
+				},
+				highlightListView : function (event) {
+					map.places[event.currentTarget.getAttribute("data-interimPinID") - 1].listReference.classList.add("hover");
+				},
+				deHighlightPin : function (event) { // Super Funktionsname
+					map.places[event.currentTarget.getAttribute("data-interimPinID") - 1].pinReference.removeAttribute("class");
+				},
+				deHighlightListView : function (event) {
+					map.places[event.currentTarget.getAttribute("data-interimPinID") - 1].listReference.classList.remove("hover");
 				},
 				finishAddNewPlace : function (event) {
 					if (event.keyCode === 13 || event.keyCode === 39) {
@@ -596,15 +599,8 @@ window.Karte = (function () {
 						controller.handler.flags.pin.setAttribute("data-interimPinID", pinID);
 						event.target.setAttribute("data-interimPinID", pinID);
 						
-						controller.handler.flags.pin.addEventListener("mouseover", function (event) {
-							console.log(map.places[event.currentTarget.getAttribute("data-interimPinID") - 1]);
-							map.places[event.currentTarget.getAttribute("data-interimPinID") - 1].listReference.classList.add("hover");
-						}, false);
-						
-						controller.handler.flags.pin.addEventListener("mouseout", function (event) {
-							console.log(map.places[event.currentTarget.getAttribute("data-interimPinID") - 1]);
-							map.places[event.currentTarget.getAttribute("data-interimPinID") - 1].listReference.classList.remove("hover");
-						}, false);
+						controller.handler.flags.pin.addEventListener("mouseover", controller.handler.flags.highlightListView, false);
+						controller.handler.flags.pin.addEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
 						
 						if (!controller.handler.flags.altKey && !event.shiftKey) {
 							controller.handler.finishAddNewFlag();
@@ -612,8 +608,15 @@ window.Karte = (function () {
 					}
 				},
 				enablePanning : function (event) {
+					controller.handler.flags.pinObject = map.places[event.currentTarget.getAttribute("data-interimPinID") - 1];
+					controller.handler.flags.viewList = controller.handler.flags.pinObject.listReference;
+					controller.handler.flags.pin = controller.handler.flags.pinObject.pinReference;
+					
 					document.addEventListener("mousemove", controller.handler.flags.performPanning, false);
 					document.addEventListener("mouseup", controller.handler.flags.finishPanning, false);
+					
+					controller.handler.flags.pin.removeEventListener("mouseover", controller.handler.flags.highlightListView, false);
+					controller.handler.flags.pin.removeEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
 					
 					event.stopPropagation();
 					event.preventDefault();
@@ -623,8 +626,6 @@ window.Karte = (function () {
 					var y = event.offsetY ? event.offsetY : event.layerY;
 					controller.handler.flags.pin.setAttribute("transform", "translate(" + x + " " + y + ") scale(0.1)");
 					
-					console.log(event);
-					
 					event.stopPropagation();
 					event.preventDefault();		
 				},
@@ -632,16 +633,24 @@ window.Karte = (function () {
 					var x = event.offsetX ? event.offsetX : event.layerX;
 					var y = event.offsetY ? event.offsetY : event.layerY;
 					
-					
-					console.log(map.places[event.target.getAttribute("data-interimPinID") - 1]);
-					map.places[event.target.getAttribute("data-interimPinID") - 1].coordinates = units.pixelCoordinateToGeoCoordinate(x, y);
-					//controller.handler.flags.pinObject.coordinates = units.pixelCoordinateToGeoCoordinate(x, y); // TODO
+					controller.handler.flags.pinObject.coordinates = units.pixelCoordinateToGeoCoordinate(x, y);
 					
 					document.removeEventListener("mousemove", controller.handler.flags.performPanning, false);
 					document.removeEventListener("mouseup", controller.handler.flags.finishPanning, false);
 					
 					event.stopPropagation();
 					event.preventDefault();
+					
+					controller.handler.flags.viewList.classList.remove("hover");
+					
+					controller.handler.flags.pin.addEventListener("mouseover", controller.handler.flags.highlightListView, false);
+					controller.handler.flags.pin.addEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
+				},
+				setVisibility : function (event) {
+					controller.handler.flags.pinObject.visible = controller.handler.flags.pinObject.visible ? false : true;
+					event.currentTarget.className = controller.handler.flags.pinObject.visible ? "active" : "inactive";
+					
+					controller.handler.flags.pinObject.pinReference.style.display = controller.handler.flags.pinObject.visible ? "" : "none"; // Sollte eventuell in den Renderer
 				}
 			}
 		},

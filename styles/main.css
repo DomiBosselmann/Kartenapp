@@ -254,6 +254,6 @@ aside {
 	opacity: 0.7;
 }
 
-#flags .hover {
+#flags .hover, #flags :active {
 	opacity: 1;
 }

@@ -460,7 +460,7 @@ window.Karte = (function () {
 				
 				// EventListener wieder entfernen
 				document.removeEventListener("mousemove", controller.handler.handlePanning, false);
-				document.removeEventListener("mouseup", controller.handler.finsihPanning, false);
+				document.removeEventListener("mouseup", controller.handler.finishPanning, false);
 			},
 			setVisibility : function (event, object) {
 				object.visible = object.visible ? false : true;

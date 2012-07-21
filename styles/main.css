@@ -222,12 +222,25 @@ aside {
 #visibilities {
 	padding: 10px;
 	-webkit-column-count: 2;
+	-moz-column-count: 2;
+	column-count: 2;
 }
 
 #visibilities ul {
 	list-style: none;
 	padding: 0;
+	margin-top: 0;
 	-webkit-column-break-inside: avoid;
+	-moz-column-break-inside: avoid;
+	break-inside: avoid;
+}
+
+#visibilities ul:nth-child(4) li:last-child::after {
+	/* Ekelhafter Fix, damit beide Spalten etwa gleichlang sind. Leider sind die Umbrüche der Browser wenig durchdacht. */
+	content: "Bla";
+	display: block;
+	position: relative;
+	visibility: hidden;
 }
 
 #visibilities h1 {
@@ -235,6 +248,9 @@ aside {
 	font-weight: bold;
 	text-transform: uppercase;
 	-webkit-column-break-after: avoid;
+	-moz-column-break-after: avoid;
+	break-after: avoid;
+	margin-top: 0;
 }
 
 #visibilities li.inactive {

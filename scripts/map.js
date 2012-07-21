@@ -32,42 +32,6 @@ window.Karte = (function () {
 			startY : 0,
 		},
 		layers : {
-			roads : {
-				name : "Straßen",
-				visible : true,
-				paramName : undefined,
-				sub : {
-					motorways : {
-						name : "Autobahnen",
-						visible : true,
-						paramName : "s",
-						layerName : "motorways",
-						zIndex : 10
-					},
-					federal : {
-						name : "(Bundesstraßen & Kraftfahrstraßen)",
-						visible : false,
-						paramName : "s1",
-						layerName : "primaries",
-						zIndex : 9
-					},
-					
-					landesstrasse : {
-						name : "Landesstraße",
-						visible : false,
-						paramName : "s2",
-						layerName : "secondaries",
-						zIndex : 8
-					},
-					kreisstrasse : {
-						name : "Kreisstraße",
-						visible : false,
-						paramName : "s3",
-						layerName : "tertiaries",
-						zIndex : 7
-					}
-				}
-			},
 			places : {
 				name : "Städte",
 				visible : true,
@@ -127,6 +91,42 @@ window.Karte = (function () {
 						paramName : "b1",
 						layerName : "counties",
 						zIndex : 2
+					}
+				}
+			},
+			roads : {
+				name : "Straßen",
+				visible : true,
+				paramName : undefined,
+				sub : {
+					motorways : {
+						name : "Autobahnen",
+						visible : true,
+						paramName : "s",
+						layerName : "motorways",
+						zIndex : 10
+					},
+					federal : {
+						name : "(B&K)",
+						visible : false,
+						paramName : "s1",
+						layerName : "primaries",
+						zIndex : 9
+					},
+					
+					landesstrasse : {
+						name : "Landesstraße",
+						visible : false,
+						paramName : "s2",
+						layerName : "secondaries",
+						zIndex : 8
+					},
+					kreisstrasse : {
+						name : "Kreisstraße",
+						visible : false,
+						paramName : "s3",
+						layerName : "tertiaries",
+						zIndex : 7
 					}
 				}
 			},

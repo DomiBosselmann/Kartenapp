@@ -523,6 +523,8 @@ window.Karte = (function () {
 				y : undefined,
 				altKey : undefined,
 				pinObject : undefined,
+				panningDiffX : undefined,
+				panningDiffY : undefined,
 				newPlace : function (event) {
 					if (event.currentTarget !== event.target && !(event.target instanceof SVGElementInstance && event.target.correspondingUseElement.parentNode === renderer.flags)) { // Event war im Zeichenbereich von Bawü und nicht auf einem Pin
 						
@@ -608,10 +610,19 @@ window.Karte = (function () {
 					}
 				},
 				enablePanning : function (event) {
+					// Aktuellen Translate ermitteln
+					var transform, x = event.offsetX ? event.offsetX : event.layerX, y = event.offsetY ? event.offsetY : event.layerY;
+					
 					controller.handler.flags.pinObject = map.places[event.currentTarget.getAttribute("data-interimPinID") - 1];
 					controller.handler.flags.viewList = controller.handler.flags.pinObject.listReference;
 					controller.handler.flags.pin = controller.handler.flags.pinObject.pinReference;
 					
+					transform = controller.handler.flags.pin.transform.baseVal.getItem(0);
+					if (transform.type == SVGTransform.SVG_TRANSFORM_TRANSLATE) {
+						controller.handler.flags.panningDiffX = x - transform.matrix.e,
+						controller.handler.flags.panningDiffY = y - transform.matrix.f;
+      				}
+      				      									
 					document.addEventListener("mousemove", controller.handler.flags.performPanning, false);
 					document.addEventListener("mouseup", controller.handler.flags.finishPanning, false);
 					
@@ -622,16 +633,16 @@ window.Karte = (function () {
 					event.preventDefault();
 				},
 				performPanning : function (event) {
-					var x = event.offsetX ? event.offsetX : event.layerX;
-					var y = event.offsetY ? event.offsetY : event.layerY;
+					var x = (event.offsetX ? event.offsetX : event.layerX) - controller.handler.flags.panningDiffX;
+					var y = (event.offsetY ? event.offsetY : event.layerY) - controller.handler.flags.panningDiffY;
 					controller.handler.flags.pin.setAttribute("transform", "translate(" + x + " " + y + ") scale(0.1)");
 					
 					event.stopPropagation();
 					event.preventDefault();		
 				},
 				finishPanning : function (event) {
-					var x = event.offsetX ? event.offsetX : event.layerX;
-					var y = event.offsetY ? event.offsetY : event.layerY;
+					var x = (event.offsetX ? event.offsetX : event.layerX) - controller.handler.flags.panningDiffX;
+					var y = (event.offsetY ? event.offsetY : event.layerY) - controller.handler.flags.panningDiffY;
 					
 					controller.handler.flags.pinObject.coordinates = units.pixelCoordinateToGeoCoordinate(x, y);
 					

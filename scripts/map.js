@@ -21,7 +21,12 @@ window.Karte = (function () {
 			zoomLevelValue : undefined,
 			unit : "km",
 			scalerX : null,
-			scalablesX : []
+			scalablesX : [],
+			scaleFactor : undefined
+		},
+		panning : {
+			x : undefined,
+			y : undefined
 		},
 		layers : {
 			roads : {
@@ -363,7 +368,10 @@ window.Karte = (function () {
 				var transform = "translate(%d)",
 					transformValue;
 				
-				console.log(scaleValue);
+				// Zoom-Level wegschreiben
+				map.scaling.scaleFactor = map.scaling.zoomLevelValue / scaleValue;
+				console.log(map.scaling.scaleFactor);
+				
 				controller.uiElements.mapScaleText.textContent = scaleValue + map.scaling.unit;
 				
 				var length = controller.uiElements.scalables.length;
@@ -402,10 +410,12 @@ window.Karte = (function () {
 				document.addEventListener("mouseup", controller.handler.finishPanning, false);
 			},
 			handlePanning : function (event) {
-				controller.tmp.pan.left = event.pageX - controller.tmp.pan.startX;
-				controller.tmp.pan.top = event.pageY - controller.tmp.pan.startY;
+				map.panning.x = event.pageX - controller.tmp.pan.startX;
+				map.panning.y = event.pageY - controller.tmp.pan.startY;
+								
+				renderer.pan(map.panning.x, map.panning.y);
 				
-				renderer.pan(controller.tmp.pan.left, controller.tmp.pan.top);
+				console.log(map.panning.x, map.panning.y);
 			},
 			finishPanning : function (event) {
 				controller.tmp.pan.left = event.pageX - controller.tmp.pan.startX;

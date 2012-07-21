@@ -477,7 +477,8 @@ window.Karte = (function () {
 				panningDiffX : undefined,
 				panningDiffY : undefined,
 				newPlace : function (event) {
-					if (event.currentTarget !== event.target && !(event.target instanceof SVGElementInstance && event.target.correspondingUseElement.parentNode === renderer.flags)) { // Event war im Zeichenbereich von Bawü und nicht auf einem Pin
+					if (event.currentTarget !== event.target) { // Event war im Zeichenbereich von Bawü und nicht auf einem Pin
+						/*  && !(event.target instanceof SVGElementInstance && event.target.correspondingUseElement.parentNode === renderer.flags) */
 						
 						controller.handler.flags.altKey = event.altKey;
 						controller.handler.flags.pin = document.createElementNS( "http://www.w3.org/2000/svg", "use");
@@ -780,7 +781,7 @@ window.Karte = (function () {
 					node.setAttribute("clip-path", "url(#borderClip)");
 				}
 				
-				controller.uiElements.mapRoot.insertBefore(node, this.flags);
+				controller.uiElements.mapRoot.insertBefore(node, renderer.flags);
 			});
 		},
 		optimize : function () {

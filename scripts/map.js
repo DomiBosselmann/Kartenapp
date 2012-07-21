@@ -5,6 +5,7 @@ window.Karte = (function () {
 	};
 	
 	var map = {
+		isLoaded : false,
 		dimensions : {
 			width : undefined,
 			height : undefined,
@@ -26,7 +27,9 @@ window.Karte = (function () {
 		},
 		panning : {
 			x : 0,
-			y : 0
+			y : 0,
+			startX : 0,
+			startY : 0,
 		},
 		layers : {
 			roads : {
@@ -303,6 +306,9 @@ window.Karte = (function () {
 			
 			// Ansichten anzeigen
 			sideView.render();
+			
+			// Tastatur-Navigation einrichten
+			document.addEventListener("keyup", controller.handler.keyboardNavigation, false);
 		},
 		handler : {
 			handleSearch : function (event) {
@@ -418,23 +424,21 @@ window.Karte = (function () {
 				document.removeEventListener("mousemove", controller.handler.handleScaling, false);
 			},
 			enablePanning : function (event) {
-				controller.tmp.pan.startX = event.pageX - controller.tmp.pan.left;
-				controller.tmp.pan.startY = event.pageY - controller.tmp.pan.top;
+				map.panning.startX = event.pageX - map.panning.x;
+				map.panning.startY = event.pageY - map.panning.y;
 			
 				document.addEventListener("mousemove", controller.handler.handlePanning, false);
 				document.addEventListener("mouseup", controller.handler.finishPanning, false);
 			},
 			handlePanning : function (event) {
-				map.panning.x = event.pageX - controller.tmp.pan.startX;
-				map.panning.y = event.pageY - controller.tmp.pan.startY;
+				map.panning.x = event.pageX - map.panning.startX;
+				map.panning.y = event.pageY - map.panning.startY;
 								
-				renderer.pan(map.panning.x, map.panning.y);
-				
-				console.log(map.panning.x, map.panning.y);
+				renderer.pan(map.panning.x, map.panning.y);				
 			},
 			finishPanning : function (event) {
-				controller.tmp.pan.left = event.pageX - controller.tmp.pan.startX;
-				controller.tmp.pan.top = event.pageY - controller.tmp.pan.startY;
+				map.panning.x = event.pageX - map.panning.startX;
+				map.panning.y = event.pageY - map.panning.startY;
 				
 				// EventListener wieder entfernen
 				document.removeEventListener("mousemove", controller.handler.handlePanning, false);
@@ -663,12 +667,29 @@ window.Karte = (function () {
 					document.removeEventListener("keyup", controller.handler.flags.abortAddNewFlag, false);
 					controller.uiElements.mapRoot.removeEventListener("click", controller.handler.flags.newPlace, false);
 				},
+			},
+			keyboardNavigation : function (event) {
+				// Bei Pfeiltasten: Navigation durch die Karte
+				if (map.isLoaded && event.keyCode >= 37 && event.keyCode <= 40) {
+					var panValue = event.shiftKey ? 250 : (event.altKey ? 10 : 50);
+					
+					switch (event.keyCode) {
+						case 37 : map.panning.x -= panValue; break; // Links
+						case 38 : map.panning.y -= panValue; break; // Oben
+						case 39 : map.panning.x += panValue; break; // Rechts
+						case 40 : map.panning.y += panValue; break; // Unten
+					}
+					
+					renderer.pan(map.panning.x, map.panning.y);
+				}
 			}
 		},
 		loadMap : function (latitude, longitude, layers, handler) {
 			
 			var parameters, params = [], requestURL = constants.url, request,
 				key;
+				
+			map.isLoaded = false;
 						
 			// Parameter für die Übergabe zusammenschustern
 			
@@ -700,6 +721,7 @@ window.Karte = (function () {
 			request.send(null);
 			request.onreadystatechange = function () {
 				if (request.readyState === 4) {
+					map.isLoaded = true;
 					handler.onSuccess({
 						statusCode : request.statusCode,
 						data: request.responseXML,
@@ -707,14 +729,6 @@ window.Karte = (function () {
 					});
 				}
 			}	
-		},
-		tmp : {
-			pan : {
-				startX : undefined,
-				startY : undefined,
-				left : 0,
-				top : 0
-			}
 		}
 	};
 	

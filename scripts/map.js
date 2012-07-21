@@ -811,8 +811,12 @@ window.Karte = (function () {
 			return [x,y];
 		},
 		pixelCoordinateToGeoCoordinate : function (x, y) { //TODO: Sascha
-			latitude = ((x*(map.coordinates.bottomRight[0] - map.coordinates.topLeft[0]))/map.dimensions.width)+map.coordinates.topLeft[0];
-			longitude = ((y*(map.coordinates.bottomRight[1] - map.coordinates.topLeft[1]))/map.dimensions.height)+map.coordinates.topLeft[1];
+			var newX,newY
+			newX=(x+map.panning.x)*map.scaling.scaleFactor;
+			newY=(y+map.panning.y)*map.scaling.scaleFactor;
+		
+			latitude = ((newX*(map.coordinates.bottomRight[0] - map.coordinates.topLeft[0]))/map.dimensions.width)+map.coordinates.topLeft[0];
+			longitude = ((newY*(map.coordinates.bottomRight[1] - map.coordinates.topLeft[1]))/map.dimensions.height)+map.coordinates.topLeft[1];
 			
 			return [latitude, longitude];
 		}

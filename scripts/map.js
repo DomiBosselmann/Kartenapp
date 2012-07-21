@@ -266,6 +266,9 @@ window.Karte = (function () {
 			
 			this.uiElements.map.addEventListener("mousedown", this.handler.enablePanning, false);
 			
+			this.uiElements.map.addEventListener("MozMousePixelScroll", this.handler.scaleViaMouse, false);
+			this.uiElements.map.addEventListener("mousewheel", this.handler.scaleViaMouse, false);
+			
 			// Attribute für Geschwindigkeit zwischenspeichern
 			var length = controller.uiElements.scalables.length;
 			for (var i = 0; i < length; i++) {
@@ -440,6 +443,14 @@ window.Karte = (function () {
 				
 				document.removeEventListener("mousemove", controller.handler.handleScaling, false);
 				document.removeEventListener("mouseup", controller.handler.finishScaling, false);
+			},
+			scaleViaMouse : function (event) {
+				var delta = event.wheelDelta || -event.detail;
+				var newScaleValue = (map.scaling.value/Math.abs(100 - delta)) * 100;
+				
+				map.scaling.value = newScaleValue;
+				renderer.zoom(map.scaling.zoomLevelValue, map.scaling.value);
+				
 			},
 			enablePanning : function (event) {
 				map.panning.startX = event.pageX - map.panning.x;

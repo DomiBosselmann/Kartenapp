@@ -1,7 +1,8 @@
 window.Karte = (function () {
 
 	var constants = {
-		url : "http://karte.localhost/backend/php/svg_market.php"
+		url : "http://karte.localhost/backend/php/svg_market.php",
+		epsilon : Number.MIN_VALUE // Viele Grüße Herr Gröll!
 	};
 	
 	var map = {
@@ -23,7 +24,8 @@ window.Karte = (function () {
 			unit : "km",
 			scalerX : null,
 			scalablesX : [],
-			scaleFactor : 1
+			scaleFactor : 1,
+			scalable : true
 		},
 		panning : {
 			x : 0,
@@ -280,7 +282,7 @@ window.Karte = (function () {
 			
 			// Automatische UI-Änderungen
 			map.scaling.observe("value",function (event) {
-				controller.uiElements.mapScaleText.textContent = Math.round(event.data * 100) / 100 + map.scaling.unit;
+				controller.uiElements.mapScaleText.textContent = event.data === Number.POSITIVE_INFINITY ? "Ungültiger Maßstab" : event.data.toFixed(2) + map.scaling.unit;
 			});
 			
 			// Benötigte Layer bestimmen
@@ -379,7 +381,14 @@ window.Karte = (function () {
 			handleScaling : function (event) {
 				// Aktuellen Maßstab berechnen
 				var diff = event.pageX - map.scaling.scalerX;
-				var scaleValue = Math.round((map.scaling.value/Math.abs(100 - diff)) * 10000) / 100;
+				if (diff >= 100) {
+					map.scaling.isScalable = false;
+					diff = 100 - constants.epsilon;
+				} else {
+					map.scaling.isScalable = true;	
+				}
+				
+				var scaleValue = (map.scaling.value/Math.abs(100 - diff)) * 100;
 			
 				// Karte skalieren
 				
@@ -391,9 +400,8 @@ window.Karte = (function () {
 				
 				// Zoom-Level wegschreiben
 				map.scaling.scaleFactor = map.scaling.zoomLevelValue / scaleValue;
-				console.log(map.scaling.scaleFactor);
 				
-				controller.uiElements.mapScaleText.textContent = scaleValue + map.scaling.unit;
+				controller.uiElements.mapScaleText.textContent = scaleValue === Number.POSITIVE_INFINITY ? "Ungültiger Maßstab" : scaleValue.toFixed(2) + map.scaling.unit;
 				
 				var length = controller.uiElements.scalables.length;
 				
@@ -403,13 +411,22 @@ window.Karte = (function () {
 				}
 			},
 			finishScaling : function (event) {
-				var diff = event.pageX - map.scaling.scalerX
-				map.scaling.value = (map.scaling.value/Math.abs(100 - diff)) * 100;
+				if (map.scaling.isScalable) {
+					// Die Karte ist noch darstellbar und deshalb kann der Zoom-Vorgang abgeschlossen werden
+					
+					var diff = event.pageX - map.scaling.scalerX
+					map.scaling.value = (map.scaling.value/Math.abs(100 - diff)) * 100;
+					
+					// Bei Bedarf neue Daten laden — TODO: Bedarf ermitteln
+									
+				} else {
+					// Die Karte ist nicht mehr darstellbar, der Zoom-Vorgang wird unterbrochen und zurückgesetzt
+					controller.uiElements.mapScaleText.textContent = map.scaling.value.toFixed(2) + map.scaling.unit;
+					renderer.zoom(map.scaling.zoomLevelValue, map.scaling.value);
+				}
 				
-				// Bei Bedarf neue Daten laden — TODO: Bedarf ermitteln
-								
 				// Maßstab-UI anpassen
-				
+					
 				controller.uiElements.mapScale.setAttribute("class","finishScaling");
 								
 				window.setTimeout(function () {
@@ -422,6 +439,7 @@ window.Karte = (function () {
 
 				
 				document.removeEventListener("mousemove", controller.handler.handleScaling, false);
+				document.removeEventListener("mouseup", controller.handler.finishScaling, false);
 			},
 			enablePanning : function (event) {
 				map.panning.startX = event.pageX - map.panning.x;

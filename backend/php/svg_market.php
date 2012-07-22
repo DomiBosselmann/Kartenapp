@@ -261,7 +261,7 @@ if ($_GET) {
 							}
 						case "w3":
 							{
-								$filename .= "waters/allLakes.svg";
+								$filename .= "waters/unnamedLakes.svg";
 								break;
 							}
 						default:

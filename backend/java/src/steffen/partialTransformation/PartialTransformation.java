@@ -14,7 +14,7 @@ import steffen.layer.Layer;
 
 public class PartialTransformation {
 	
-	private static Layer		myLayer				= Layer.Counties;
+	private static Layer		myLayer				= Layer.UnnamedLakes;
 	private static boolean	myBawu				= true;
 	
 	private static int		width					= 500;
@@ -77,7 +77,7 @@ public class PartialTransformation {
 		String rect_coord = null;
 		String rect_size = null;
 		if (layer.nodeLayer) {
-			xslFileSource = "partial/cities_part_transform.xsl";
+			xslFileSource = "cities_part_transform.xsl";
 			switch (layer) {
 				case Cities: {
 					rect_id = "city";
@@ -120,10 +120,11 @@ public class PartialTransformation {
 				}
 			}
 		} else {
-			xslFileSource = "partial/part_transform.xsl";
+			xslFileSource = "part_transform.xsl";
 		}
 		
-		BufferedReader reader = new BufferedReader(new FileReader(new File(Constants.pathToInternXSLs + xslFileSource)));
+		BufferedReader reader = new BufferedReader(new FileReader(new File(Constants.pathToInternXSLs + "partial/"
+				+ xslFileSource)));
 		String newXSLFileName = xslFileSource + "2";
 		File tempXSL = new File(Constants.pathToInternXSLs + "partial/" + newXSLFileName);
 		if (delete) {

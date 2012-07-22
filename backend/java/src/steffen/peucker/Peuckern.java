@@ -12,10 +12,10 @@ import java.util.Hashtable;
 import steffen.Constants;
 
 public class Peuckern {
-	private static String								myFileSource		= "bawu counties.xml";
+	private static String								myFileSource		= "bawu unnamedLakes.xml";
 	private static Hashtable<Integer, Node>		nodes					= null;
 	private static Hashtable<Integer, Boolean>	neededNodes			= null;
-	private static double								myPeuckerDistance	= 0.1;
+	private static double								myPeuckerDistance	= 0.01;
 	
 	public static void main(String[] args) throws IOException {
 		Peuckern.peuckern(Peuckern.myFileSource, Peuckern.myPeuckerDistance, false);

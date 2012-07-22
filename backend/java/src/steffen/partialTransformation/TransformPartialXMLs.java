@@ -52,7 +52,7 @@ public class TransformPartialXMLs {
 				return name.indexOf(xmlFileSource) >= 0;
 			}
 		}).length;
-		Source xsltSource = new StreamSource(new File(Constants.pathToInternXSLs + xsltFileSource));
+		Source xsltSource = new StreamSource(new File(Constants.pathToInternXSLs + "partial/" + xsltFileSource));
 		
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Templates xslt = transformerFactory.newTemplates(xsltSource);

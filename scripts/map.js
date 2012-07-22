@@ -12,7 +12,11 @@ window.Karte = (function () {
 			width : undefined,
 			height : undefined,
 			maxWidth : undefined,
-			maxHeight : undefined
+			maxHeight : undefined,
+			currentWidth : undefined,
+			currentHeight : undefined,
+			x : undefined,
+			y : undefined
 		},
 		coordinates : {
 			topLeft: [],
@@ -135,7 +139,7 @@ window.Karte = (function () {
 			},
 			waters : {
 				name : "Gewässer",
-				visible : true,
+				visible : false,
 				paramName : undefined,
 				sub : {
 					rivers : {
@@ -487,25 +491,23 @@ window.Karte = (function () {
 					coordinates = data.getElementsByTagName("coords")[0],
 					dimensions = data.getElementsByTagName("dimensions")[0];
 				
-				// Koordinaten auslesen
-				var topLeft = [parseFloat(coordinates.getAttribute("lat1")), parseFloat(coordinates.getAttribute("lon1"))];
-				var bottomRight = [parseFloat(coordinates.getAttribute("lat2")), parseFloat(coordinates.getAttribute("lon2"))];
-				var x = parseFloat(dimensions.getAttribute("x"));
-				var y = parseFloat(dimensions.getAttribute("y"));
-				var width = parseFloat(dimensions.getAttribute("width"));
-				var height = parseFloat(dimensions.getAttribute("height"));
+				// Metadaten auslesen
+				map.coordinates.topLeft = [parseFloat(coordinates.getAttribute("lat1")), parseFloat(coordinates.getAttribute("lon1"))];
+				map.coordinates.bottomRight = [parseFloat(coordinates.getAttribute("lat2")), parseFloat(coordinates.getAttribute("lon2"))];
+				map.dimensions.x = parseFloat(dimensions.getAttribute("x"));
+				map.dimensions.y = parseFloat(dimensions.getAttribute("y"));
+				map.dimensions.currentWidth = parseFloat(dimensions.getAttribute("width"));
+				map.dimensions.currentHeight = parseFloat(dimensions.getAttribute("height"));
 				//map.coordinates.center = [(map.coordinates.topLeft[0] - map.coordinates.bottomRight[0])/2 + map.coordinates.topLeft[0], (map.coordinates.topLeft[1] - map.coordinates.bottomRight[1])/2 + map.coordinates.topLeft[1]];
 				
 				if (map.isInvalid) {
 					// Detaillevel hat sich geändert, altes Kartenrendering muss entfernt werden und neu gerendert werden.
 				}
-				
-				map.coordinates.topLeft = topLeft;
-				map.coordinates.bottomRight = bottomRight;
+
 				
 				// Maßstab neu berechnen
 				var scaleFactor = map.scaling.scaleFactor;
-				map.scaling.zoomLevelValue = units.geoCoordinatesToDistance(map.coordinates.topLeft, map.coordinates.bottomRight) / width * 100;
+				map.scaling.zoomLevelValue = units.geoCoordinatesToDistance(map.coordinates.topLeft, map.coordinates.bottomRight) / map.dimensions.currentWidth * 100;
 				map.scaling.value = map.scaling.zoomLevelValue / map.scaling.scaleFactor;
 				
 				console.log(scaleFactor, map.scaling.value);
@@ -761,9 +763,14 @@ window.Karte = (function () {
 						
 			// Parameter für die Übergabe zusammenschustern
 			
+			latitude = [49.79, 47.579];
+			longitude = [7.484, 10.51];
+			
 			parameters = {
-				lat : latitude,
-				lon : longitude,
+				/*lat1 : latitude[0],
+				lat2 : latitude[1],
+				lon1 : longitude[0],
+				lon2 : longitude[1],*/
 				width: map.dimensions.width,
 				height : map.dimensions.height
 			};
@@ -824,6 +831,9 @@ window.Karte = (function () {
 		parse : function () {
 			this.root = this.data.getElementsByTagName("svg")[0];
 			this.data = this.root.childNodes;
+			
+			// Dimensionen und Koordinaten ermitteln
+			
 			
 			if (this.root.getElementById("federal") !== null) {
 				var path = this.root.getElementById("federal").childNodes[0].cloneNode();
@@ -974,18 +984,20 @@ window.Karte = (function () {
 			return [newTopLeft, newBottomRight];
 		},
 		geoCoordinateToPixelCoordinate : function (latitude, longitude) {
-			x = (latitude - map.coordinates.topLeft[0]) / (map.coordinates.bottomRight[0] - map.coordinates.topLeft[0]) * map.dimensions.width;
-			y = (longitude - map.coordinates.topLeft[1]) / (map.coordinates.bottomRight[1] - map.coordinates.topLeft[1]) * map.dimensions.height;
+			var y = (latitude - map.coordinates.topLeft[0]) / (map.coordinates.bottomRight[0] - map.coordinates.topLeft[0]) * map.dimensions.height;
+			var x = (longitude - map.coordinates.topLeft[1]) / (map.coordinates.bottomRight[1] - map.coordinates.topLeft[1]) * map.dimensions.width;
 			
-			return [x,y];
+			x = (x - map.panning.x + map.dimensions.x) * map.scaling.scaleFactor;
+			y = (y - map.panning.y + map.dimensions.y) * map.scaling.scaleFactor;
+			
+			return [x, y];
 		},
-		pixelCoordinateToGeoCoordinate : function (x, y) { //TODO: Sascha
-			var newX,newY
-			newX=(x+map.panning.x)*map.scaling.scaleFactor;
-			newY=(y+map.panning.y)*map.scaling.scaleFactor;
+		pixelCoordinateToGeoCoordinate : function (x, y, topLeft, topRight, witdh, height) {
+			var newX = (x + map.panning.x - map.dimensions.x) / map.scaling.scaleFactor; // Skalierung noch fehlerhaft!
+			var newY = (y + map.panning.y - map.dimensions.y) / map.scaling.scaleFactor;
 		
-			latitude = ((newX*(map.coordinates.bottomRight[0] - map.coordinates.topLeft[0]))/map.dimensions.width)+map.coordinates.topLeft[0];
-			longitude = ((newY*(map.coordinates.bottomRight[1] - map.coordinates.topLeft[1]))/map.dimensions.height)+map.coordinates.topLeft[1];
+			latitude = ((newY * (map.coordinates.bottomRight[0] - map.coordinates.topLeft[0])) / map.dimensions.currentWidth) + map.coordinates.topLeft[0];
+			longitude = ((newX * (map.coordinates.bottomRight[1] - map.coordinates.topLeft[1])) / map.dimensions.currentHeight) + map.coordinates.topLeft[1];
 			
 			return [latitude, longitude];
 		}
@@ -1001,8 +1013,24 @@ window.Karte = (function () {
 		zoom : function (oldDistance, newDistance) {
 			renderer.zoom(oldDistance, newDistance);
 		},
-		units : units
-	,
+		units : units,
+		getPlaces : function () {
+			var value = [];
+			
+			map.places.forEach(function (place) {
+				if (place.coordinates.length !== 0) {
+					value.push(place.coordinates.join(","));
+				}
+			});
+			
+			return {
+				topLeft : map.coordinates.topLeft,
+				bottomRight : map.coordinates.bottomRight,
+				width : map.dimensions.currentWidth,
+				height : map.dimensions.currentHeight,
+				places : value
+			};
+		},
 		filter : function (filters) {
 			renderer.filter(filters);
 		}

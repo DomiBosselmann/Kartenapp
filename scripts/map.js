@@ -8,6 +8,7 @@ window.Karte = (function () {
 	var map = {
 		isLoaded : false,
 		inInvalid : false,
+		isInitital : true,
 		dimensions : {
 			width : undefined,
 			height : undefined,
@@ -514,6 +515,8 @@ window.Karte = (function () {
 									
 				// Renderer anstoßen
 				renderer.start(data);
+				
+				map.isInitial = false;
 			},
 			flags : {
 				viewList : undefined,
@@ -813,6 +816,7 @@ window.Karte = (function () {
 		map : undefined,
 		layers : undefined,
 		flags : undefined,
+		defs : undefined,
 		clipPath : undefined,
 		hasClipPath : false,
 		start : function (data) {
@@ -821,6 +825,7 @@ window.Karte = (function () {
 			this.map = controller.uiElements.mapRoot;
 			this.flags = controller.uiElements.mapRoot.getElementById("flags");
 			this.clipPath = controller.uiElements.mapRoot.getElementById("borderClip");
+			this.defs = controller.uiElements.mapRoot.getElementsByTagName("defs")[0];
 			
 			this.parse();
 			this.render();
@@ -832,7 +837,14 @@ window.Karte = (function () {
 			this.root = this.data.getElementsByTagName("svg")[0];
 			this.data = this.root.childNodes;
 			
-			// Dimensionen und Koordinaten ermitteln
+			var defs = this.root.getElementsByTagName("defs")[0];
+			if (defs !== undefined) {
+				for (var i = 0; i < defs.childNodes.length; i++) {
+					renderer.defs.appendChild(defs.childNodes[i]);
+				}
+				
+				this.root.removeChild(defs);
+			}
 			
 			
 			if (this.root.getElementById("federal") !== null) {
@@ -846,7 +858,11 @@ window.Karte = (function () {
 			var data = Array.prototype.slice.call(this.data);
 			
 			data.forEach(function (node) {
-				if (renderer.hasClipPath && node.id !== "federal") {
+				if (!map.isInitial && (node.nodeName === "dimensions" || node.nodeName === "coords")) {
+					return;
+				}
+				
+				if (renderer.hasClipPath && node.nodeName === "g" && node.id !== "federal") {
 					node.setAttribute("clip-path", "url(#borderClip)");
 				}
 				

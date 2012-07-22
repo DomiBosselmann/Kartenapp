@@ -7,6 +7,7 @@ window.Karte = (function () {
 	
 	var map = {
 		isLoaded : false,
+		inInvalid : false,
 		dimensions : {
 			width : undefined,
 			height : undefined,
@@ -449,6 +450,8 @@ window.Karte = (function () {
 				var newScaleValue = (map.scaling.value/Math.abs(100 - delta)) * 100;
 				
 				map.scaling.value = newScaleValue;
+				
+				map.scaling.scaleFactor = map.scaling.zoomLevelValue / newScaleValue;
 				renderer.zoom(map.scaling.zoomLevelValue, map.scaling.value);
 				
 			},
@@ -480,18 +483,32 @@ window.Karte = (function () {
 				renderer.filter(object, !object.visible);
 			},
 			loadMap : function (event) {
-				//console.log(event.textData);
 				var data = event.data,
-					coordinates = data.getElementsByTagName("coords")[0];
+					coordinates = data.getElementsByTagName("coords")[0],
+					dimensions = data.getElementsByTagName("dimensions")[0];
 				
 				// Koordinaten auslesen
-				map.coordinates.topLeft = [parseFloat(coordinates.getAttribute("lat1")), parseFloat(coordinates.getAttribute("lon1"))];
-				map.coordinates.bottomRight = [parseFloat(coordinates.getAttribute("lat2")), parseFloat(coordinates.getAttribute("lon2"))];
+				var topLeft = [parseFloat(coordinates.getAttribute("lat1")), parseFloat(coordinates.getAttribute("lon1"))];
+				var bottomRight = [parseFloat(coordinates.getAttribute("lat2")), parseFloat(coordinates.getAttribute("lon2"))];
+				var x = parseFloat(dimensions.getAttribute("x"));
+				var y = parseFloat(dimensions.getAttribute("y"));
+				var width = parseFloat(dimensions.getAttribute("width"));
+				var height = parseFloat(dimensions.getAttribute("height"));
 				//map.coordinates.center = [(map.coordinates.topLeft[0] - map.coordinates.bottomRight[0])/2 + map.coordinates.topLeft[0], (map.coordinates.topLeft[1] - map.coordinates.bottomRight[1])/2 + map.coordinates.topLeft[1]];
 				
+				if (map.isInvalid) {
+					// Detaillevel hat sich geändert, altes Kartenrendering muss entfernt werden und neu gerendert werden.
+				}
+				
+				map.coordinates.topLeft = topLeft;
+				map.coordinates.bottomRight = bottomRight;
+				
 				// Maßstab neu berechnen
-				map.scaling.value = units.geoCoordinatesToDistance(map.coordinates.topLeft, map.coordinates.bottomRight) / map.dimensions.width * 100;
-				map.scaling.zoomLevelValue = map.scaling.value;
+				var scaleFactor = map.scaling.scaleFactor;
+				map.scaling.zoomLevelValue = units.geoCoordinatesToDistance(map.coordinates.topLeft, map.coordinates.bottomRight) / width * 100;
+				map.scaling.value = map.scaling.zoomLevelValue / map.scaling.scaleFactor;
+				
+				console.log(scaleFactor, map.scaling.value);
 									
 				// Renderer anstoßen
 				renderer.start(data);

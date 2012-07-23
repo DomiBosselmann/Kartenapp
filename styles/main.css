@@ -273,3 +273,7 @@ aside {
 #flags >.hover, #flags >:active {
 	opacity: 1;
 }
+
+#importFlags {
+	display: none;
+}

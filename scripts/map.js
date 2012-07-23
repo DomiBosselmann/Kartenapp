@@ -5,7 +5,7 @@ window.Karte = (function () {
 			maps : "http://karte.localhost/backend/php/svg_market.php",
 			login : "http://karte.localhost/backend/login/login.php",
 			save : "http://karte.localhost/backend/php/save.php",
-			import : "",
+			import : "http://karte.localhost/backend/php/import.php",
 			export : ""
 		},
 		math : {
@@ -270,7 +270,7 @@ window.Karte = (function () {
 			this.uiElements.addButton.addEventListener("click", this.handler.flags.enableAddSelection, false);
 			this.uiElements.searchButton.addEventListener("click", this.handler.handleSearch, false);
 			this.uiElements.exportButton.addEventListener("click", function (e) { console.log(e); }, false);
-			this.uiElements.importButton.addEventListener("click", function (e) { console.log(e); }, false);
+			this.uiElements.importButton.addEventListener("click", this.handler.import.enable, false);
 			this.uiElements.saveButton.addEventListener("click", this.save, false);
 			
 			this.uiElements.searchField.addEventListener("keyup", controller.handler.handleSearchInput, false);
@@ -763,7 +763,38 @@ window.Karte = (function () {
 					
 					renderer.pan(map.panning.x, map.panning.y);
 				}
-			}
+			},
+			import : {
+				form : undefined,
+				enable : function (event) {
+					controller.handler.import.form = document.createElement("form");
+					controller.handler.import.form.id = "importFlags";
+					
+					var fileInput = document.createElement("input");
+					fileInput.type = "file";
+					fileInput.name = "importFile";
+					fileInput.accept = "text/xml";
+					fileInput.addEventListener("change", controller.handler.import.perform, false);
+					
+					controller.handler.import.form.appendChild(fileInput);
+					controller.uiElements.toolbar.appendChild(controller.handler.import.form);
+					
+					fileInput.click();
+				},
+				perform : function (event) {
+					var data;
+					
+					if ("getFormData" in controller.handler.import.form) {
+						// Firefox macht das einfacher
+						data = controller.handler.import.form.getFormData();
+					} else {
+						data = new FormData();
+						data.append("importFile", controller.handler.import.form.firstChild);
+					}
+					
+					controller.import(data);
+				}	
+			},
 		},
 		loadMap : function (latitude, longitude, layers, handler) {
 			
@@ -847,8 +878,17 @@ window.Karte = (function () {
 				}
 			}
 		},
-		import : function () {
-			
+		import : function (data) {
+			console.log(data);
+			// Request absetzen
+			request = new XMLHttpRequest();
+			request.open("post", constants.locations.import, true);
+			request.send(data);
+			request.onreadystatechange = function () {
+				if (request.readyState === 4) {
+					console.log(request.responseText);
+				}
+			}
 		},
 		export : function () {
 			

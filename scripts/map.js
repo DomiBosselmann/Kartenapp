@@ -747,10 +747,10 @@ window.Karte = (function () {
 					var panValue = event.shiftKey ? 250 : (event.altKey ? 10 : 50);
 					
 					switch (event.keyCode) {
-						case 37 : map.panning.x -= panValue; break; // Links
-						case 38 : map.panning.y -= panValue; break; // Oben
-						case 39 : map.panning.x += panValue; break; // Rechts
-						case 40 : map.panning.y += panValue; break; // Unten
+						case 37 : map.panning.x += panValue; break; // Links
+						case 38 : map.panning.y += panValue; break; // Oben
+						case 39 : map.panning.x -= panValue; break; // Rechts
+						case 40 : map.panning.y -= panValue; break; // Unten
 					}
 					
 					renderer.pan(map.panning.x, map.panning.y);

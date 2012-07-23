@@ -538,50 +538,49 @@ window.Karte = (function () {
 				panningDiffY : undefined,
 				isAdding : false,
 				newPlace : function (event) {
-					if (event.currentTarget !== event.target && !controller.handler.flags.isAdding) { // Event war im Zeichenbereich von Bawü und nicht auf einem Pin
-						/*  && !(event.target instanceof SVGElementInstance && event.target.correspondingUseElement.parentNode === renderer.flags) */
-						
-						controller.handler.flags.isAdding = true;
-						
-						controller.handler.flags.altKey = event.altKey;
-						controller.handler.flags.pin = document.createElementNS( "http://www.w3.org/2000/svg", "use");
-						
-						// 1 Für Chrome + Safarie 2 für FF
-						controller.handler.flags.x = event.offsetX ? event.offsetX : event.layerX;
-						controller.handler.flags.y = event.offsetY ? event.offsetY : event.layerY;
-						
-						renderer.drawPin(controller.handler.flags.pin, controller.handler.flags.x, controller.handler.flags.y);
-						
-						controller.handler.flags.pin.setAttribute("class", "hover");
-						
-						/*pin.addEventListener("click", function(e) {
-							//Verhindere, dass das Event im SVG Element ausgelößt wird
-							e.stopPropagation();
-						});*/
-						
-						controller.handler.flags.pin.addEventListener("mousedown", controller.handler.flags.enablePanning, false);
-					
-						controller.handler.flags.viewList = document.createElement("li");
-						controller.handler.flags.viewList.contentEditable = true;
-						controller.handler.flags.viewList.addEventListener("keypress", controller.handler.flags.finishAddNewPlace, false);
-						controller.handler.flags.viewList.addEventListener("keyup", function (event) {
-							if (event.keyCode === 27) {
-								// Es war ein Esc
-								controller.handler.flags.abortAddNewPlace(event);
-							} else {
-								controller.handler.flags.finishAddNewPlace(event);
-							}
-							
-							event.stopPropagation();
-						}, false);
-						controller.handler.flags.viewList.addEventListener("mouseover", controller.handler.flags.highlightPin, false);
-						controller.handler.flags.viewList.addEventListener("mouseout", controller.handler.flags.deHighlightPin, false);
-						controller.handler.flags.viewList.addEventListener("click", controller.handler.flags.setVisibility, false);
-						controller.handler.flags.viewList.addEventListener("blur", controller.handler.flags.abortAddNewPlace, false);
-						
-						controller.uiElements.places.appendChild(controller.handler.flags.viewList);
-						controller.handler.flags.viewList.focus();
+					console.log(event);
+					if (event.currentTarget === event.target || controller.handler.flags.isAdding) { // Event war nicht im Zeichenbereich von Bawü
+						return;
 					}
+					
+					if (("SVGElementInstance" in window && event.target instanceof SVGElementInstance && event.target.correspondingUseElement.parentNode === renderer.flags) || event.target.parentNode === renderer.flags) { // War der Klick auf einem Pin? (Variante 1 für Webkit, 2 für FF)
+						return;
+					}
+						
+					controller.handler.flags.isAdding = true;
+					
+					controller.handler.flags.altKey = event.altKey;
+					controller.handler.flags.pin = document.createElementNS( "http://www.w3.org/2000/svg", "use");
+					
+					// 1 Für Chrome + Safarie 2 für FF
+					controller.handler.flags.x = event.offsetX ? event.offsetX : event.layerX;
+					controller.handler.flags.y = event.offsetY ? event.offsetY : event.layerY;
+					
+					renderer.drawPin(controller.handler.flags.pin, controller.handler.flags.x, controller.handler.flags.y);
+					
+					controller.handler.flags.pin.setAttribute("class", "hover");
+					controller.handler.flags.pin.addEventListener("mousedown", controller.handler.flags.enablePanning, false);
+				
+					controller.handler.flags.viewList = document.createElement("li");
+					controller.handler.flags.viewList.contentEditable = true;
+					controller.handler.flags.viewList.addEventListener("keypress", controller.handler.flags.finishAddNewPlace, false);
+					controller.handler.flags.viewList.addEventListener("keyup", function (event) {
+						if (event.keyCode === 27) {
+							// Es war ein Esc
+							controller.handler.flags.abortAddNewPlace(event);
+						} else {
+							controller.handler.flags.finishAddNewPlace(event);
+						}
+						
+						event.stopPropagation();
+					}, false);
+					controller.handler.flags.viewList.addEventListener("mouseover", controller.handler.flags.highlightPin, false);
+					controller.handler.flags.viewList.addEventListener("mouseout", controller.handler.flags.deHighlightPin, false);
+					controller.handler.flags.viewList.addEventListener("click", controller.handler.flags.setVisibility, false);
+					controller.handler.flags.viewList.addEventListener("blur", controller.handler.flags.abortAddNewPlace, false);
+					
+					controller.uiElements.places.appendChild(controller.handler.flags.viewList);
+					controller.handler.flags.viewList.focus();
 				},
 				highlightPin : function (event) {
 					map.places[event.currentTarget.getAttribute("data-interimPinID") - 1].pinReference.setAttribute("class", "hover");

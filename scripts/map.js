@@ -798,12 +798,7 @@ window.Karte = (function () {
 			export : {
 				downloader : null,
 				perform : function (event) {
-					if (controller.handler.export.downloader === null) {
-						controller.handler.export.downloader = document.createElement("iframe");
-						document.body.appendChild(controller.handler.export.downloader);
-					}
-					
-					controller.handler.export.downloader.src = constants.locations.export;
+					window.location.href = constants.locations.export;
 				}
 			}
 		},

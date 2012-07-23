@@ -6,7 +6,7 @@ window.Karte = (function () {
 			login : "http://karte.localhost/backend/login/login.php",
 			save : "http://karte.localhost/backend/php/save.php",
 			import : "http://karte.localhost/backend/php/import.php",
-			export : ""
+			export : "http://karte.localhost/backend/php/export.php"
 		},
 		math : {
 			epsilon : Number.MIN_VALUE // Viele Grüße Herr Gröll!
@@ -269,7 +269,7 @@ window.Karte = (function () {
 			// EventListener hinzufügen
 			this.uiElements.addButton.addEventListener("click", this.handler.flags.enableAddSelection, false);
 			this.uiElements.searchButton.addEventListener("click", this.handler.handleSearch, false);
-			this.uiElements.exportButton.addEventListener("click", function (e) { console.log(e); }, false);
+			this.uiElements.exportButton.addEventListener("click", this.handler.export.perform, false);
 			this.uiElements.importButton.addEventListener("click", this.handler.import.enable, false);
 			this.uiElements.saveButton.addEventListener("click", this.save, false);
 			
@@ -795,6 +795,17 @@ window.Karte = (function () {
 					controller.import(data);
 				}	
 			},
+			export : {
+				downloader : null,
+				perform : function (event) {
+					if (controller.handler.export.downloader === null) {
+						controller.handler.export.downloader = document.createElement("iframe");
+						document.body.appendChild(controller.handler.export.downloader);
+					}
+					
+					controller.handler.export.downloader.src = constants.locations.export;
+				}
+			}
 		},
 		loadMap : function (latitude, longitude, layers, handler) {
 			

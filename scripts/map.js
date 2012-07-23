@@ -354,6 +354,7 @@ window.Karte = (function () {
 					}
 				} else if (event.type === "keyup") {
 					controller.handler.performSearch();
+					event.stopPropagation();
 				}
 			},
 			performSearch : function (event) {
@@ -570,6 +571,8 @@ window.Karte = (function () {
 							} else {
 								controller.handler.flags.finishAddNewPlace(event);
 							}
+							
+							event.stopPropagation();
 						}, false);
 						controller.handler.flags.viewList.addEventListener("mouseover", controller.handler.flags.highlightPin, false);
 						controller.handler.flags.viewList.addEventListener("mouseout", controller.handler.flags.deHighlightPin, false);
@@ -758,7 +761,16 @@ window.Karte = (function () {
 				// Alle Tastaturkurzbefehle, die nicht zur Navigation in der Karte dienen (alle mit ctrl)
 				if (event.ctrlKey) {
 					switch (event.keyCode) {
-						case 70 : controller.handler.enableSearch(); break; // F
+						case 70 : 
+							if (event.altKey) {
+								controller.uiElements.searchField.value = "";
+								sideView.renderFlags(true);
+								sideView.renderFlags(false);
+							} else {
+								controller.handler.enableSearch();
+							}
+							
+							break; // F
 						case 73 : controller.handler.import.enable(); break; // I
 						case 79 : controller.handler.export.perform(); break; // O
 						case 83 : controller.save(); break; // S

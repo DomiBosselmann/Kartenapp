@@ -1009,11 +1009,11 @@ window.Karte = (function () {
 			return [x, y];
 		},
 		pixelCoordinateToGeoCoordinate : function (x, y, topLeft, topRight, witdh, height) {
-			var newX = (x + map.panning.x - map.dimensions.x) / map.scaling.scaleFactor; // Skalierung noch fehlerhaft!
-			var newY = (y + map.panning.y - map.dimensions.y) / map.scaling.scaleFactor;
+			var newX = (x + map.panning.x - map.dimensions.x) * map.scaling.scaleFactor; // Skalierung noch fehlerhaft!
+			var newY = (y + map.panning.y - map.dimensions.y) * map.scaling.scaleFactor;
 		
-			latitude = ((newY * (map.coordinates.bottomRight[0] - map.coordinates.topLeft[0])) / map.dimensions.currentWidth) + map.coordinates.topLeft[0];
-			longitude = ((newX * (map.coordinates.bottomRight[1] - map.coordinates.topLeft[1])) / map.dimensions.currentHeight) + map.coordinates.topLeft[1];
+			latitude = ((newY * (map.coordinates.bottomRight[0] - map.coordinates.topLeft[0])) / map.dimensions.currentHeight) + map.coordinates.topLeft[0];
+			longitude = ((newX * (map.coordinates.bottomRight[1] - map.coordinates.topLeft[1])) / map.dimensions.currentWidth) + map.coordinates.topLeft[1];
 			
 			return [latitude, longitude];
 		}

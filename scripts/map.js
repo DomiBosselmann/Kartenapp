@@ -1,8 +1,16 @@
 window.Karte = (function () {
 
 	var constants = {
-		url : "http://karte.localhost/backend/php/svg_market.php",
-		epsilon : Number.MIN_VALUE // Viele Grüße Herr Gröll!
+		locations : {
+			maps : "http://karte.localhost/backend/php/svg_market.php",
+			login : "http://karte.localhost/backend/login/login.php",
+			save : "http://karte.localhost/backend/php/save.php",
+			import : "",
+			export : ""
+		},
+		math : {
+			epsilon : Number.MIN_VALUE // Viele Grüße Herr Gröll!
+		}
 	};
 	
 	var map = {
@@ -218,7 +226,7 @@ window.Karte = (function () {
 				listReference : undefined
 			}
 		]
-	}
+	};
 	
 	var controller = {
 		uiElements : {
@@ -263,7 +271,7 @@ window.Karte = (function () {
 			this.uiElements.searchButton.addEventListener("click", this.handler.handleSearch, false);
 			this.uiElements.exportButton.addEventListener("click", function (e) { console.log(e); }, false);
 			this.uiElements.importButton.addEventListener("click", function (e) { console.log(e); }, false);
-			this.uiElements.saveButton.addEventListener("click", function (e) { console.log(e); }, false);
+			this.uiElements.saveButton.addEventListener("click", this.save, false);
 			
 			this.uiElements.searchField.addEventListener("keyup", controller.handler.handleSearchInput, false);
 			this.uiElements.searchField.addEventListener("keydown", controller.handler.handleSearchInput, false);
@@ -392,7 +400,7 @@ window.Karte = (function () {
 				var diff = event.pageX - map.scaling.scalerX;
 				if (diff >= 100) {
 					map.scaling.isScalable = false;
-					diff = 100 - constants.epsilon;
+					diff = 100 - constants.math.epsilon;
 				} else {
 					map.scaling.isScalable = true;	
 				}
@@ -759,7 +767,7 @@ window.Karte = (function () {
 		},
 		loadMap : function (latitude, longitude, layers, handler) {
 			
-			var parameters, params = [], requestURL = constants.url, request,
+			var parameters, params = [], requestURL = constants.locations.maps, request,
 				key;
 				
 			map.isLoaded = false;
@@ -807,6 +815,43 @@ window.Karte = (function () {
 					});
 				}
 			}	
+		},
+		save : function () {			
+			// Daten aufbereiten
+			var data = new FormData();
+			var places = [];
+			var routes = [];
+			
+			// DOM-Referenzen entfernen
+			map.places.forEach(function (place) {
+				places.push({
+					name : place.name,
+					visible : place.visible,
+					note : place.note,
+					coordinates : place.coordinates
+				});
+			});
+			
+			data.append("places", encodeURIComponent(JSON.stringify(places)));
+			//data.append("routes", JSON.stringify(map.routes));
+			
+			console.log(data);
+			
+			// Request absetzen
+			request = new XMLHttpRequest();
+			request.open("post", constants.locations.save, true);
+			request.send(data);
+			request.onreadystatechange = function () {
+				if (request.readyState === 4) {
+					console.log(request.responseText);
+				}
+			}
+		},
+		import : function () {
+			
+		},
+		export : function () {
+			
 		}
 	};
 	

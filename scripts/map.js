@@ -750,8 +750,27 @@ window.Karte = (function () {
 				},
 			},
 			keyboardNavigation : function (event) {
+				
+				if (!map.isLoaded) { // Wenn die Karte nicht geladen ist, kann auch keine UI-Interaktion erfolgen
+					return;
+				}
+				
+				// Alle Tastaturkurzbefehle, die nicht zur Navigation in der Karte dienen (alle mit ctrl)
+				if (event.ctrlKey) {
+					switch (event.keyCode) {
+						case 70 : controller.handler.enableSearch(); break; // F
+						case 73 : controller.handler.import.enable(); break; // I
+						case 79 : controller.handler.export.perform(); break; // O
+						case 83 : controller.save(); break; // S
+						case 80 : controller.handler.flags.newFlag(); break; // N
+						case 82 : controller.handler.flags.newRoute(); break; // R
+					}
+					
+					return;
+				}
+			
 				// Bei Pfeiltasten: Navigation durch die Karte
-				if (map.isLoaded && event.keyCode >= 37 && event.keyCode <= 40) {
+				if (event.keyCode >= 37 && event.keyCode <= 40) {
 					var panValue = event.shiftKey ? 250 : (event.altKey ? 10 : 50);
 					
 					switch (event.keyCode) {
@@ -762,6 +781,30 @@ window.Karte = (function () {
 					}
 					
 					renderer.pan(map.panning.x, map.panning.y);
+					
+					return;
+				}
+				
+				if (event.keyCode === 73) { // Ein I => Zoom in die Karte
+					map.scaling.value = (map.scaling.value/Math.abs(100 + 30)) * 100;
+				
+					map.scaling.scaleFactor = map.scaling.zoomLevelValue / map.scaling.value;
+					renderer.zoom(map.scaling.zoomLevelValue, map.scaling.value);
+					
+					return;
+				}
+				
+				if (event.keyCode === 79) { // Ein O => Zoom aus der Karte
+					map.scaling.value = (map.scaling.value/Math.abs(100 - 30)) * 100;
+				
+					map.scaling.scaleFactor = map.scaling.zoomLevelValue / map.scaling.value;
+					renderer.zoom(map.scaling.zoomLevelValue, map.scaling.value);
+					
+					return;
+				}
+				
+				if (event.keyCode) { // Eine 0 => Zurücksetzung der Zoomstufe
+				
 				}
 			},
 			import : {

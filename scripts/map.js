@@ -180,7 +180,7 @@ window.Karte = (function () {
 						name : "Wasserstelle",
 						visible : false,
 						paramName : "w3",
-						layerName : "allLakes",
+						layerName : "unnamedLakes",
 						zIndex : 3
 					}
 				}

@@ -154,42 +154,63 @@ if ($_SESSION['loggedin'] === true) {
 						}
 					case "s":
 						{
-							// save routes into the database
-							if ($_POST['data']) {
-								$data = json_decode($_POST['data']);
-								$route_name = $data['name'];
-								$route_length = $data['distance'];
-								$route_coordinates = $data['coordinates'];
+							// save routes
+							if ($_POST['routes'] && $_POST['places']) {
+								$json = array();
+								if ($_POST['routes']) {
+									$data = json_decode($_POST['data']);
+									$route_name = $data['name'];
+									$route_length = $data['distance'];
+									$route_coordinates = $data['coordinates'];
 
-								$query = "insert into `TROUTES` ( `CNAME`, `CLENGTH`, `CUSER` ) values ( '$route_name', $route_length, '$username' )";
-								$result = mysql_query($query);
-								if (!$result) {
-									echo_mysql_error($link, "Route insertion error");
-								} else {
-									$route_id = mysql_insert_id();
-									$order = 0;
-									foreach ($route_coordinates as $coordinate) {
-										$longitude = $coordinate[0];
-										$latitude = $coordinate[1];
-										$query = "insert into `TWAYPOINTS` ( `CRELROUTEID`, `CORDER`, `CXKOORD`, `CYKOORD` ) values ($route_id, $order, $longitude, $latitude)";
-										$result = mysql_query($query);
-										if (!$result) {
-											echo_mysql_error($link, "Waypoint insertion error");
-										} else {
-											$order++;
+									$query = "insert into `TROUTES` ( `CNAME`, `CLENGTH`, `CUSER` ) values ( '$route_name', $route_length, '$username' )";
+									$result = mysql_query($query);
+									if (!$result) {
+										echo_mysql_error($link, "Route insertion error");
+									} else {
+										$route_id = mysql_insert_id();
+										$order = 0;
+										foreach ($route_coordinates as $coordinate) {
+											$longitude = $coordinate[0];
+											$latitude = $coordinate[1];
+											$query = "insert into `TWAYPOINTS` ( `CRELROUTEID`, `CORDER`, `CXKOORD`, `CYKOORD` ) values ($route_id, $order, $longitude, $latitude)";
+											$result = mysql_query($query);
+											if (!$result) {
+												echo_mysql_error($link, "Waypoint insertion error");
+											} else {
+												$order++;
+											}
 										}
+										$routes_json = json_encode(array("success"=>true, "message"=>"Routes successfully added!"));
 									}
-									$arr = array("success"=>true, "error"=>null);
-									echo(json_encode($arr));
 								}
+								// saving places
+								if ($_POST['places']) {
+									$data = json_decode($_POST['places']);
+									$place_name = $data['name'];
+									$place_visible = $data['visible'];
+									$place_coordinates = $data['coordinates'];
+									$longitude = $place_coordinates[0];
+									$latitude = $place_coordinates[1];
+
+									$query = "insert into `TLOCATIONS` ( `CNAME`, `CUSER`, `CVISIBLE`, `CXKOORD`, `CYKOORD` ) values ( '$place_name', '$username', $place_visible, $longitude, $latitude )";
+									$result = mysql_query($query);
+									if (!$result) {
+										echo_mysql_error($link, "Route insertion error");
+									} else {
+										$places_json = json_encode(array("success"=>true, "message"=>"Places successfully added!"));
+									}
+								}
+								exit(json_encode("routes"=>$routes_json, "places"=>$places_json));
 							} else {
-								exit(json_encode("success"=>false, "error"=>"No data submitted!");
+								// neither routes nor places submitted
+								exit(json_encode("success"=>false, "message"=>"No routes or places submitted!");
 							}
 							break;
 						}
 					default:
 						{
-							exit(json_encode("success"=>false, "error"=>"Wrong action submitted!");
+							exit(json_encode("success"=>false, "message"=>"Wrong action submitted!");
 							break;
 						}
 				}
@@ -197,17 +218,17 @@ if ($_SESSION['loggedin'] === true) {
 			}
 		}
 	} else {
-		exit(json_encode("success"=>false, "error"=>"No action submitted!");
+		exit(json_encode("success"=>false, "message"=>"No action submitted!");
 	}
 } else {
-	exit(json_encode("success"=>false, "error"=>"Not logged in!");
+	exit(json_encode("success"=>false, "message"=>"Not logged in!");
 }
 
 function echo_mysql_error($link, $error) {
 	if ($link) {
 		mysql_close($link);
 	}
-	exit(json_encode("success"=>false, "error"=>$error . ": " . mysql_error());
+	exit(json_encode("success"=>false, "message"=>$error . ": " . mysql_error());
 }
 
 ?>

@@ -2,7 +2,7 @@
 
 session_start();
 
-if ($_POST) {
+if ($_GET) {
 
 	$db_host = "127.0.0.1:3306";
 	$db_username = "user";
@@ -21,8 +21,8 @@ if ($_POST) {
 				echo_mysql_error($link, "Database selection error");
 			} else {
 
-				$username = mysql_real_escape_string($_POST['username']);
-				$password = md5($_POST['password']);
+				$username = mysql_real_escape_string($_GET['username']);
+				$password = md5($_GET['password']);
 
 				if ($username && $password) {
 					$query = "select `CNAME` from `TUSER` where ( `CNAME` = '$username' and `CPASSWORD` = '$password' )";
@@ -40,14 +40,16 @@ if ($_POST) {
 							echo json_encode(array("success"=>true, "error"=>null));
 						} else {
 							// login failed
-							echo json_encode(array("success"=>false, "error"=>"login failed"));
+							echo json_encode(array("success"=>false, "error"=>"Login failed!"));
 						}
 					}
+				} else {
+					exit(json_encode(array("success"=>false, "error"=>"Not logged in!")));
 				}
 			}
 		}
 	} else {
-
+		exit(json_encode(array("success"=>false, "error"=>"Already logged in!")));
 	}
 }
 
@@ -55,7 +57,7 @@ function echo_mysql_error($link, $error) {
 	if ($link) {
 		mysql_close($link);
 	}
-	exit(json_encode("success"=>false, "error"=>$error . ": " . mysql_error()));
+	exit(json_encode(array("success"=>false, "error"=>$error . ": " . mysql_error())));
 }
 
 ?>

@@ -1018,16 +1018,17 @@ window.Karte = (function () {
 			performLogin : function (event) {
 			
 				request = new XMLHttpRequest();
-				request.open("post", constants.loginURL, true);
+				request.open("post", constants.locations.login, true);
 				request.send(new FormData(controller.uiElements.loginForm));
-				/*request.onreadystatechange = function () {
+				request.onreadystatechange = function () {
 					if (request.readyState === 4) {
 						// TODO: Anpassen
 						if (request.responseText) {
+							alert(request.responseText);
 							controller.handler.login(); // Zusammenführen?	
 						}
 					}
-				}*/
+				}
 				
 				controller.handler.login();
 				

@@ -531,8 +531,8 @@ window.Karte = (function () {
 				listReference : undefined,
 				flagReference : undefined,
 				pinReferences : [],
-				x : undefined,
-				y : undefined,
+				x : [],
+				y : [],
 				altKey : undefined,
 				flagObject : undefined,
 				panningDiffX : undefined,
@@ -582,18 +582,18 @@ window.Karte = (function () {
 						return false;
 					}
 					
-					var pinReference = isRoute ? controller.handler.flags.pinReferences[controller.handler.flags.pinReferences.length] : controller.handler.flags.flagReference;
-					
-					pinReference = document.createElementNS("http://www.w3.org/2000/svg", "use");
-					
+					var pinReference = renderer.addPin();
+										
 					// 1 Für Chrome + Safarie 2 für FF
-					controller.handler.flags.x = event.offsetX ? event.offsetX : event.layerX;
-					controller.handler.flags.y = event.offsetY ? event.offsetY : event.layerY;
+					var pinCounter = controller.handler.flags.x.push(event.offsetX ? event.offsetX : event.layerX);
+					controller.handler.flags.y.push(event.offsetY ? event.offsetY : event.layerY);
 					
 					if (isRoute) {
-						renderer.drawRoute(pinReference, controller.handler.flags.x, controller.handler.flags.y, controller.handler.flags.flagReference);
+						controller.handler.flags.pinReferences.push(pinReference);
+						renderer.drawRoute(pinReference, controller.handler.flags.x[pinCounter - 1], controller.handler.flags.y[pinCounter - 1], controller.handler.flags.flagReference);
 					} else {
-						renderer.drawPin(pinReference, controller.handler.flags.x, controller.handler.flags.y);
+						controller.handler.flags.flagReference = pinReference;
+						renderer.drawPin(pinReference, controller.handler.flags.x[pinCounter - 1], controller.handler.flags.y[pinCounter - 1]);
 					}
 					
 					pinReference.setAttribute("class", "hover");
@@ -613,7 +613,11 @@ window.Karte = (function () {
 					controller.handler.flags.listReference.addEventListener("keyup", checkHandler, false);
 					controller.handler.flags.listReference.addEventListener("blur", abortHandler, false);
 					
-					controller.uiElements.places.appendChild(controller.handler.flags.listReference);
+					if (isRoute) {
+						controller.uiElements.routes.appendChild(controller.handler.flags.listReference);
+					} else {
+						controller.uiElements.places.appendChild(controller.handler.flags.listReference);
+					}
 					controller.handler.flags.listReference.focus();
 				},
 				checkAddNewFlag : function (event) {
@@ -660,14 +664,14 @@ window.Karte = (function () {
 					if (event.keyCode === 13 || event.keyCode === 39) {
 						// Es war ein Enter. Oder ein Rechtspfeil
 						
-						controller.handler.finishAddNewFlag(event);
+						controller.handler.flags.finishAddNewFlag(event);
 						
 						// Neuen Ort wegschreiben
 						controller.handler.flags.flagObject = {
 							name : controller.handler.flags.listReference.textContent,
 							visible : true,
 							note : "",
-							coordinates : units.pixelCoordinateToGeoCoordinate(controller.handler.flags.x, controller.handler.flags.y),
+							coordinates : units.pixelCoordinateToGeoCoordinate(controller.handler.flags.x[0], controller.handler.flags.y[0]),
 							flagReference : controller.handler.flags.flagReference,
 							listReference : controller.handler.flags.listReference
 						};
@@ -676,7 +680,9 @@ window.Karte = (function () {
 						
 						// flag mit ID versehen
 						controller.handler.flags.flagReference.setAttribute("data-interimFlagID", flagID);
+						controller.handler.flags.flagReference.setAttribute("data-type", "place");
 						event.target.setAttribute("data-interimFlagID", flagID);
+						event.target.setAttribute("data-type", "place");
 						
 						controller.handler.flags.flagReference.addEventListener("mouseover", controller.handler.flags.highlightListView, false);
 						controller.handler.flags.flagReference.addEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
@@ -731,22 +737,31 @@ window.Karte = (function () {
 				finishAddNewRoutePins : function (event) {
 					if (event.keyCode === 13) {
 						controller.handler.flags.performAddMeta(event, true);
+						document.removeEventListener("keyup", controller.handler.flags.finishAddNewRoutePins, false);
 					}
 				},
 				finishAddNewRoute : function (event) {
 					if (event.keyCode === 13 || event.keyCode === 39) {
 						// Es war ein Enter. Oder ein Rechtspfeil
 						
-						controller.handler.finishAddNewFlag(event);
+						controller.handler.flags.finishAddNewFlag(event);
+												
+						var pins = [];
+						controller.handler.flags.pinReferences.forEach(function (pin, index) {
+							pins.push({
+								coordinates : [controller.handler.flags.x[index], controller.handler.flags.y[index]],
+								reference : pin
+							});
+						});
 						
 						// Neuen Ort wegschreiben
 						controller.handler.flags.flagObject = {
 							name : controller.handler.flags.listReference.textContent,
 							visible : true,
 							note : "",
-							coordinates : units.pixelCoordinateToGeoCoordinate(controller.handler.flags.x, controller.handler.flags.y),
+							//coordinates : units.pixelCoordinateToGeoCoordinate(controller.handler.flags.x, controller.handler.flags.y),
 							flagReference : controller.handler.flags.flagReference,
-							pinReferences : controller.handler.flags.pinReferences,
+							pins : pin,
 							listReference : controller.handler.flags.listReference
 						};
 						
@@ -754,7 +769,9 @@ window.Karte = (function () {
 						
 						// flag mit ID versehen
 						controller.handler.flags.flagReference.setAttribute("data-interimFlagID", flagID);
+						controller.handler.flags.flagReference.setAttribute("data-type", "route");
 						event.target.setAttribute("data-interimFlagID", flagID);
+						event.target.setAttribute("data-type", "route");
 						
 						controller.handler.flags.flagReference.addEventListener("mouseover", controller.handler.flags.highlightListView, false);
 						controller.handler.flags.flagReference.addEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
@@ -767,22 +784,28 @@ window.Karte = (function () {
 						if (!controller.handler.flags.altKey && !event.shiftKey) {
 							controller.handler.flags.disableAddNewFlag();
 						}
+						
+						event.stopPropagation();						
 					}
 				},
 				abortAddNewRoute : function (event) {
 				
 				},
 				highlightFlag : function (event) {
-					map.places[event.currentTarget.getAttribute("data-interimFlagID") - 1].flagReference.setAttribute("class", "hover");
+					var flagObject = event.currentTarget.getAttribute("data-type") === "route" ? map.routes : map.places;
+					flagObject[event.currentTarget.getAttribute("data-interimFlagID") - 1].flagReference.setAttribute("class", "hover");
 				},
 				highlightListView : function (event) {
-					map.places[event.currentTarget.getAttribute("data-interimFlagID") - 1].listReference.classList.add("hover");
+					var flagObject = event.currentTarget.getAttribute("data-type") === "route" ? map.routes : map.places;
+					flagObject[event.currentTarget.getAttribute("data-interimFlagID") - 1].listReference.classList.add("hover");
 				},
 				deHighlightFlag : function (event) { // Super Funktionsname
-					map.places[event.currentTarget.getAttribute("data-interimFlagID") - 1].flagReference.removeAttribute("class");
+					var flagObject = event.currentTarget.getAttribute("data-type") === "route" ? map.routes : map.places;
+					flagObject[event.currentTarget.getAttribute("data-interimFlagID") - 1].flagReference.removeAttribute("class");
 				},
 				deHighlightListView : function (event) {
-					map.places[event.currentTarget.getAttribute("data-interimFlagID") - 1].listReference.classList.remove("hover");
+					var flagObject = event.currentTarget.getAttribute("data-type") === "route" ? map.routes : map.places;
+					flagObject[event.currentTarget.getAttribute("data-interimFlagID") - 1].listReference.classList.remove("hover");
 				},
 				enablePanning : function (event) {
 					// Aktuellen Translate ermitteln
@@ -1125,6 +1148,9 @@ window.Karte = (function () {
 		},
 		pan : function (x, y) {
 			controller.uiElements.mapRoot.style.cssText += "left: " + x + "px; top: " + y + "px;";
+		},
+		addPin : function () {
+			return document.createElementNS("http://www.w3.org/2000/svg", "use");
 		},
 		drawPin : function (pin, x, y, flagReference) {
 			pin.setAttributeNS(null, "transform", "translate(" + x + " " + y + ") scale(0.1)"); 

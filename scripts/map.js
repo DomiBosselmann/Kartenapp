@@ -1122,13 +1122,13 @@ window.Karte = (function () {
 							
 							if (response.success === true) {
 								controller.handler.login();
+							} else {
+								alert(response.error);
 							}
 						}
 					}
 				}
-				
-				controller.handler.login();
-				
+								
 				event.preventDefault();
 				return false;
 			},

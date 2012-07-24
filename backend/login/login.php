@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 if ($_POST) {
 
 	$db_host = "127.0.0.1:3306";
@@ -7,45 +9,50 @@ if ($_POST) {
 	$db_password = "password";
 	$db_database = "database";
 
-	session_start();
+	if ($_session['loggedin'] === true) {
+		$link = mysql_connect($db_host, $db_username, $db_password);
 
-	# Datenbankverbindung herstellen
-	$link = mysql_connect($db_host, $db_username, $db_password);
-
-	# Hat die Verbindung geklappt ?
-	if (!$link) {
-		die("Database connection error: " . mysql_error());
-	}
-
-	# Verbindung zur richtigen Datenbank herstellen
-	$database = mysql_select_db($db_database, $link);
-
-	if (!$database) {
-		echo "Database selection error: " . mysql_error();
-		mysql_close($link);        # Datenbank schliessen
-		exit;                    # Programm beenden !
-	}
-
-	$username = mysql_real_escape_string($_POST['username']);
-	$password = mysql_real_escape_string(md5($_POST['pw']));
-
-	if ($username && $password) {
-
-		$query = "SELECT CNAME FROM TUSER WHERE CNAME='$username' and CPASSWORD='$password'";
-		$result = mysql_query($query) or die ("Query error: " . mysql_error());
-
-		if(!$result){
-			echo mysql_error($link);
-			# Datenbank wieder schliessen
-			mysql_close($link);
-			exit();
+		if (!$link) {
+			echo_mysql_error($link, "Database connection error");
 		} else {
-			$_SESSION["loggedin"] = true;
-			$response = array("succes"=>true, "error"=>null);
-			echo json_encode($response);
+			$database = mysql_select_db($db_database, $link);
+
+			if (!$database) {
+				echo_mysql_error($link, "Database selection error");
+			} else {
+
+				$username = mysql_real_escape_string($_post['username']);
+				$password = mysql_real_escape_string(md5($_post['password']));
+
+				if ($username && $password) {
+					$query = "SELECT CNAME FROM TUSER WHERE CNAME='$username' and CPASSWORD='$password'";
+					$result = mysql_query($query);
+
+					if(!$result){
+						echo_mysql_error($link, "Query error");
+					} else {
+						$resultarray = mysql_fetch_array($result);
+
+						if (count($resultarray) >= 1) {
+							// successfully logged in
+							$_session["loggedin"] = true;
+							$response = array("success"=>true, "error"=>null);
+							echo json_encode($response);
+						} else {
+							// login failed
+							$response = array("success"=>false, "error"=>"login failed");
+							echo json_encode($response);
+						}
+					}
+				}
+			}
 		}
 	}
+}
 
+function echo_mysql_error($link, $error) {
+	mysql_close($link);
+	exit($error . ": " . mysql_error());
 }
 
 ?>

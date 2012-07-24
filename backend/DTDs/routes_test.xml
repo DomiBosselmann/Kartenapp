@@ -1,24 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE routes [
-<!ELEMENT routes (route)+>
-<!ELEMENT route (user, note, longitude, latitude)>
+<!ELEMENT routes (route)*>
+<!ELEMENT route (user, name, node+)>
 
 <!ELEMENT user (#PCDATA)>
-<!ELEMENT note (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT node (longitude, latitude)>
+
 <!ELEMENT longitude (#PCDATA)>
 <!ELEMENT latitude (#PCDATA)>
 ]>
 <routes>
 	<route>
 		<user>steff</user>
-		<note>karlsruhe</note>
-		<longitude>8.0</longitude>
-		<latitude>48.0</latitude>
+		<name>karlsruhe</name>
+		<node>
+			<longitude>8.0</longitude>
+			<latitude>48.0</latitude>
+		</node>
+		<node>
+			<longitude>8.0</longitude>
+			<latitude>48.0</latitude>
+		</node>
+		<node>
+			<longitude>8.0</longitude>
+			<latitude>48.0</latitude>
+		</node>
 	</route>
 	<route>
 		<user>steff</user>
-		<note>karlsruhe</note>
-		<longitude>8.0</longitude>
-		<latitude>48.0</latitude>
+		<name>karlsruhe</name>
+		<node>
+			<longitude>8.0</longitude>
+			<latitude>48.0</latitude>
+		</node>
 	</route>
 </routes>

@@ -4,7 +4,7 @@ window.Karte = (function () {
 	var constants = {
 		locations : {
 			maps : "http://karte.localhost/backend/php/svg_market.php",
-			login : "http://karte.localhost/backend/login/login.php",
+			login : "http://karte.localhost/backend/php/login.php",
 			save : "http://karte.localhost/backend/php/db.php?a=s",
 			import : "http://karte.localhost/backend/php/import.php",
 			export : "http://karte.localhost/backend/php/export.php"
@@ -1122,13 +1122,13 @@ window.Karte = (function () {
 							
 							if (response.success === true) {
 								controller.handler.login();
+							} else {
+								alert(response.error);
 							}
 						}
 					}
 				}
-				
-				controller.handler.login();
-				
+								
 				event.preventDefault();
 				return false;
 			},

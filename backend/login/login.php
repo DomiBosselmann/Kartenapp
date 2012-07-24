@@ -2,14 +2,14 @@
 
 session_start();
 
-if ($_POST) {
+if ($_post) {
 
 	$db_host = "127.0.0.1:3306";
 	$db_username = "dhbwweb";
-	$db_password = "password";
-	$db_database = "database";
+	$db_password = "";
+	$db_database = "";
 
-	if ($_session['loggedin'] === true) {
+	if (!$_session['loggedin']) {
 		$link = mysql_connect($db_host, $db_username, $db_password);
 
 		if (!$link) {
@@ -22,14 +22,14 @@ if ($_POST) {
 			} else {
 
 				$username = mysql_real_escape_string($_post['username']);
-				$password = mysql_real_escape_string(md5($_post['password']));
+				$password = md5($_post['password']);
 
 				if ($username && $password) {
-					$query = "SELECT CNAME FROM TUSER WHERE CNAME='$username' and CPASSWORD='$password'";
+					$query = "select `CNAME` from `TUSER` where ( `CNAME` = '$username' and `CPASSWORD` = '$password' )";
 					$result = mysql_query($query);
 
 					if(!$result){
-						echo_mysql_error($link, "Query error");
+						echo_mysql_error($link, "User selection error");
 					} else {
 						$resultarray = mysql_fetch_array($result);
 
@@ -37,23 +37,25 @@ if ($_POST) {
 							// successfully logged in
 							$_session['loggedin'] = true;
 							$_session['username'] = $username;
-							$response = array("success"=>true, "error"=>null);
-							echo json_encode($response);
+							echo json_encode(array("success"=>true, "error"=>null));
 						} else {
 							// login failed
-							$response = array("success"=>false, "error"=>"login failed");
-							echo json_encode($response);
+							echo json_encode(array("success"=>false, "error"=>"login failed"));
 						}
 					}
 				}
 			}
 		}
+	} else {
+
 	}
 }
 
 function echo_mysql_error($link, $error) {
-	mysql_close($link);
-	exit($error . ": " . mysql_error());
+	if ($link) {
+		mysql_close($link);
+	}
+	exit(json_encode("success"=>false, "error"=>$error . ": " . mysql_error()));
 }
 
 ?>

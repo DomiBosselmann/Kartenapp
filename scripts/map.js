@@ -239,6 +239,7 @@ window.Karte = (function () {
 			mapScaleText : null,
 			scalables : null,
 			visibilities : null,
+			flaglist : null,
 			places : null,
 			routes : null
 		},
@@ -258,6 +259,7 @@ window.Karte = (function () {
 			this.uiElements.mapScaleText = document.getElementById("scalevalue");
 			this.uiElements.scalables = this.uiElements.mapScale.getElementsByClassName("scalable");
 			this.uiElements.visibilities = document.getElementById("visibilities");
+			this.uiElements.flaglist = document.getElementById("flaglist");
 			this.uiElements.places = document.getElementById("places");
 			this.uiElements.routes = document.getElementById("routes");
 			
@@ -272,6 +274,8 @@ window.Karte = (function () {
 			this.uiElements.searchField.addEventListener("keydown", controller.handler.handleSearchInput, false);
 			
 			this.uiElements.mapScaler.addEventListener("mousedown", this.handler.enableScaling, false);
+			
+			this.uiElements.flaglist.addEventListener("drop", this.handler.import.viaDrop , false);
 			
 			// Attribute für Geschwindigkeit zwischenspeichern
 			var length = controller.uiElements.scalables.length;
@@ -985,7 +989,48 @@ window.Karte = (function () {
 					}
 					
 					controller.import(data);
-				}	
+				},
+				viaDrop : function (event) {
+					event.preventDefault();
+					event.stopPropagation();
+					
+					var files = event.dataTransfer.files;
+					var length = files.length;
+					
+					for (var i = 0; i < length; i++) {
+						var file = new FileReader();
+						file.addEventListener("load", controller.handler.import.addFlags, false);
+						file.readAsText(files[i]);
+					}
+				},
+				addFlags : function (event) {
+					var flags = new DOMParser().parseFromString(event.target.result, "text/xml");
+					var routes = flags.getElementsByTagName("route");
+					var noRoutes = routes.length;
+					
+					for (var i = 0; i < noRoutes; i++) {
+						var name = routes[i].getElementsByTagName("name")[0].textContent;
+						var nodes = routes[i].getElementsByTagName("node");
+						var pins = [];
+						
+						for (var j = 0; j < nodes.length; j++) {
+							var latitude = parseInt(nodes[j].getElementsByTagName("latitude")[0].textContent);
+							var longitude = parseInt(nodes[j].getElementsByTagName("longitude")[0].textContent);
+							
+							pins.push({ reference : null, coordinates : units.geoCoordinateToPixelCoordinate(latitude, longitude) });
+						}
+						
+						map.routes.push({
+							name : name,
+							distance : "0km",
+							pins : pins,
+							visible : true
+						});
+						
+					}
+					
+					sideView.renderFlags(true);
+				}
 			},
 			export : {
 				downloader : null,

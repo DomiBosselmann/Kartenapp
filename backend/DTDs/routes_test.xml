@@ -1,15 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE routes [
-<!ELEMENT routes (route)*>
-<!ELEMENT route (user, name, node+)>
-
-<!ELEMENT user (#PCDATA)>
-<!ELEMENT name (#PCDATA)>
-<!ELEMENT node (longitude, latitude)>
-
-<!ELEMENT longitude (#PCDATA)>
-<!ELEMENT latitude (#PCDATA)>
-]>
 <routes>
 	<route>
 		<user>steff</user>

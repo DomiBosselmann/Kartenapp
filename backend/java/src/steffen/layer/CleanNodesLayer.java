@@ -20,9 +20,10 @@ public class CleanNodesLayer {
 		
 		if (layer == Layer.Cities || layer == Layer.Towns || layer == Layer.Villages || layer == Layer.Hamlets
 				|| layer == Layer.Suburbs) {
-			CleanNodesLayer.tagsToKeep = new String[2];
+			CleanNodesLayer.tagsToKeep = new String[3];
 			CleanNodesLayer.tagsToKeep[0] = "k=\"name\"";
 			CleanNodesLayer.tagsToKeep[1] = "k=\"place\"";
+			CleanNodesLayer.tagsToKeep[2] = "k=\"population\"";
 		} else {
 			System.exit(1);
 		}

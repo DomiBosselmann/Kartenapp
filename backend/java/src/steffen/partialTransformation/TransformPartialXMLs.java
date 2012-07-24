@@ -41,9 +41,9 @@ public class TransformPartialXMLs {
 		
 		String xsltFileSource = null;
 		if (layer.nodeLayer) {
-			xsltFileSource = "cities_part_transform.xsl2";
+			xsltFileSource = "places_part_transform.xsl2";
 		} else {
-			xsltFileSource = "part_transform.xsl2";
+			xsltFileSource = "ways_part_transform.xsl2";
 		}
 		String fileTargetName = layer.name;
 		

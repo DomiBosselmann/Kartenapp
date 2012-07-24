@@ -36,19 +36,19 @@ if ($_GET) {
 								// successfully logged in
 								$_SESSION['loggedin'] = true;
 								$_SESSION['username'] = $username;
-								exit(json_encode(array("success"=>true, "error"=>null)));
+								exit(json_encode(array("success"=>true, "message"=>null)));
 							}
 						}
 						// login failed
-						exit(json_encode(array("success"=>false, "error"=>"Wrong username or password!")));
+						exit(json_encode(array("success"=>false, "message"=>"Wrong username or password!")));
 					}
 				} else {
-					exit(json_encode(array("success"=>false, "error"=>"Not logged in!")));
+					exit(json_encode(array("success"=>false, "message"=>"Not logged in!")));
 				}
 			}
 		}
 	} else {
-		exit(json_encode(array("success"=>true, "error"=>"Already logged in!")));
+		exit(json_encode(array("success"=>true, "message"=>"Already logged in!")));
 	}
 }
 
@@ -56,7 +56,7 @@ function echo_mysql_error($link, $error) {
 	if ($link) {
 		mysql_close($link);
 	}
-	exit(json_encode(array("success"=>false, "error"=>$error . ": " . mysql_error())));
+	exit(json_encode(array("success"=>false, "message"=>$error . ": " . mysql_error())));
 }
 
 ?>

@@ -35,7 +35,8 @@ if ($_POST) {
 
 						if (count($resultarray) >= 1) {
 							// successfully logged in
-							$_session["loggedin"] = true;
+							$_session['loggedin'] = true;
+							$_session['username'] = $username;
 							$response = array("success"=>true, "error"=>null);
 							echo json_encode($response);
 						} else {

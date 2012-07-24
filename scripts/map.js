@@ -530,13 +530,14 @@ window.Karte = (function () {
 			flags : {
 				listReference : undefined,
 				flagReference : undefined,
+				pinReferences : [],
 				x : undefined,
 				y : undefined,
 				altKey : undefined,
 				flagObject : undefined,
 				panningDiffX : undefined,
 				panningDiffY : undefined,
-				isAdding : false,
+				isAddingAllowed : true,
 				enableNewFlagMask : function (event) {
 					var container = document.createElement("ul");
 					var newPlace = document.createElement("li");
@@ -572,7 +573,7 @@ window.Karte = (function () {
 					controller.uiElements.toolbar.className = "addFlagEnabled";
 					document.addEventListener("keyup", controller.handler.flags.checkAddNewFlag, false);
 				},
-				performAddNewPin : function (event) {
+				performAddNewPin : function (event, isRoute) {
 					if (event.currentTarget === event.target) { // Event war nicht im Zeichenbereich von Bawü
 						return false;
 					}
@@ -581,35 +582,36 @@ window.Karte = (function () {
 						return false;
 					}
 					
-					controller.handler.flags.flagReference = document.createElementNS( "http://www.w3.org/2000/svg", "use");
+					var pinReference = isRoute ? controller.handler.flags.pinReferences[controller.handler.flags.pinReferences.length] : controller.handler.flags.flagReference;
+					
+					pinReference = document.createElementNS("http://www.w3.org/2000/svg", "use");
 					
 					// 1 Für Chrome + Safarie 2 für FF
 					controller.handler.flags.x = event.offsetX ? event.offsetX : event.layerX;
 					controller.handler.flags.y = event.offsetY ? event.offsetY : event.layerY;
 					
-					renderer.drawPin(controller.handler.flags.flagReference, controller.handler.flags.x, controller.handler.flags.y);
+					if (isRoute) {
+						renderer.drawRoute(pinReference, controller.handler.flags.x, controller.handler.flags.y, controller.handler.flags.flagReference);
+					} else {
+						renderer.drawPin(pinReference, controller.handler.flags.x, controller.handler.flags.y);
+					}
 					
-					controller.handler.flags.flagReference.setAttribute("class", "hover");
+					pinReference.setAttribute("class", "hover");
 					
-					controller.handler.flags.flagReference.addEventListener("mousedown", controller.handler.flags.enablePanning, false);
+					pinReference.addEventListener("mousedown", controller.handler.flags.enablePanning, false); // ORT?
 					
 					return true;
 				},
-				performAddMeta : function (event) {
+				performAddMeta : function (event, isRoute) {
+					var keypressHandler = isRoute ? controller.handler.flags.finishAddNewRoute : controller.handler.flags.finishAddNewPlace;
+					var abortHandler = isRoute ? controller.handler.flags.abortAddNewRoute : controller.handler.flags.abortAddNewPlace;
+					var checkHandler = isRoute ? controller.handler.flags.checkAddNewRoute : controller.handler.flags.checkAddNewPlace;
+					
 					controller.handler.flags.listReference = document.createElement("li");
 					controller.handler.flags.listReference.contentEditable = true;
-					controller.handler.flags.listReference.addEventListener("keypress", controller.handler.flags.finishAddNewPlace, false);
-					controller.handler.flags.listReference.addEventListener("keyup", function (event) {
-						if (event.keyCode === 27) {
-							// Es war ein Esc
-							controller.handler.flags.abortAddNewPlace(event);
-						} else {
-							controller.handler.flags.finishAddNewPlace(event);
-						}
-						
-						event.stopPropagation();
-					}, false);
-					controller.handler.flags.listReference.addEventListener("blur", controller.handler.flags.abortAddNewPlace, false);
+					controller.handler.flags.listReference.addEventListener("keypress", keypressHandler, false);
+					controller.handler.flags.listReference.addEventListener("keyup", checkHandler, false);
+					controller.handler.flags.listReference.addEventListener("blur", abortHandler, false);
 					
 					controller.uiElements.places.appendChild(controller.handler.flags.listReference);
 					controller.handler.flags.listReference.focus();
@@ -628,33 +630,37 @@ window.Karte = (function () {
 					controller.uiElements.mapRoot.addEventListener("click", controller.handler.flags.performAddNewPlace, false);
 				},
 				performAddNewPlace : function (event) {
-					if (controller.handler.flags.isAdding) {
+					if (!controller.handler.flags.isAddingAllowed) {
 						return;
 					}
 					
-					controller.handler.flags.isAdding = true;
+					controller.handler.flags.isAddingAllowed = true;
 					controller.handler.flags.altKey = event.altKey;
 					
 					if (controller.handler.flags.performAddNewPin(event)) {
+						controller.handler.flags.isAddingAllowed = false;
 						controller.handler.flags.performAddMeta(event);
 					}
+				},
+				finishAddNewFlag : function (event) {
+					// Wenn der Name leer ist, abbrechen
+					if (controller.handler.flags.listReference.textContent === "") {
+						event.preventDefault();
+						return false;
+					}
+					
+					// Blur-Handler entfernen (UI-Aktion für Abbruch)
+					controller.handler.flags.listReference.removeEventListener("blur", controller.handler.flags.abortAddNewPlace, false);
+					
+					controller.handler.flags.listReference.blur();
+					controller.handler.flags.flagReference.removeAttribute("class");
+					controller.handler.flags.listReference.contentEditable = false;
 				},
 				finishAddNewPlace : function (event) {
 					if (event.keyCode === 13 || event.keyCode === 39) {
 						// Es war ein Enter. Oder ein Rechtspfeil
 						
-						// Wenn der Name leer ist, abbrechen
-						if (controller.handler.flags.listReference.textContent === "") {
-							event.preventDefault();
-							return false;
-						}
-						
-						// Blur-Handler entfernen (UI-Aktion für Abbruch)
-						controller.handler.flags.listReference.removeEventListener("blur", controller.handler.flags.abortAddNewPlace, false);
-						
-						controller.handler.flags.listReference.blur();
-						controller.handler.flags.flagReference.removeAttribute("class");
-						controller.handler.flags.listReference.contentEditable = false;
+						controller.handler.finishAddNewFlag(event);
 						
 						// Neuen Ort wegschreiben
 						controller.handler.flags.flagObject = {
@@ -678,7 +684,7 @@ window.Karte = (function () {
 						controller.handler.flags.listReference.addEventListener("mouseout", controller.handler.flags.deHighlightFlag, false);
 						controller.handler.flags.listReference.addEventListener("click", controller.handler.flags.setVisibility, false);
 						
-						controller.handler.flags.isAdding = false;
+						controller.handler.flags.isAddingAllowed = true;
 						
 						if (!controller.handler.flags.altKey && !event.shiftKey) {
 							controller.handler.flags.disableAddNewFlag();
@@ -692,21 +698,76 @@ window.Karte = (function () {
 					controller.uiElements.places.removeChild(controller.handler.flags.listReference);
 					renderer.removePin(controller.handler.flags.flagReference);
 					
-					controller.handler.flags.isAdding = false;
+					controller.handler.flags.isAddingAllowed = true;
+				},
+				checkAddNewPlace : function (event) {
+					if (event.keyCode === 27) {
+						// Es war ein Esc
+						controller.handler.flags.abortAddNewPlace(event);
+					} else {
+						controller.handler.flags.finishAddNewPlace(event);
+					}
+					
+					event.stopPropagation();
 				},
 				enableAddNewRoute : function (event) {
 					controller.handler.flags.enableAddNewFlag();
-					console.log(event);
+					
+					// Neue Gruppierung für Route
+					controller.handler.flags.flagReference = renderer.addRoute();
+					
+					controller.uiElements.mapRoot.addEventListener("click", controller.handler.flags.performAddNewRoute, false);
+					document.addEventListener("keyup", controller.handler.flags.finishAddNewRoutePins, false);
 				},
 				performAddNewRoute : function (event) {
-					if (!controller.handler.flags.performAddNewPin(event)) {
+					if (!controller.handler.flags.isAddingAllowed) {
 						return;
 					}
 					
+					controller.handler.flags.isAddingAllowed = true;
+					controller.handler.flags.performAddNewPin(event, true);
 					
 				},
+				finishAddNewRoutePins : function (event) {
+					if (event.keyCode === 13) {
+						controller.handler.flags.performAddMeta(event, true);
+					}
+				},
 				finishAddNewRoute : function (event) {
-				
+					if (event.keyCode === 13 || event.keyCode === 39) {
+						// Es war ein Enter. Oder ein Rechtspfeil
+						
+						controller.handler.finishAddNewFlag(event);
+						
+						// Neuen Ort wegschreiben
+						controller.handler.flags.flagObject = {
+							name : controller.handler.flags.listReference.textContent,
+							visible : true,
+							note : "",
+							coordinates : units.pixelCoordinateToGeoCoordinate(controller.handler.flags.x, controller.handler.flags.y),
+							flagReference : controller.handler.flags.flagReference,
+							pinReferences : controller.handler.flags.pinReferences,
+							listReference : controller.handler.flags.listReference
+						};
+						
+						var flagID = map.routes.push(controller.handler.flags.flagObject);
+						
+						// flag mit ID versehen
+						controller.handler.flags.flagReference.setAttribute("data-interimFlagID", flagID);
+						event.target.setAttribute("data-interimFlagID", flagID);
+						
+						controller.handler.flags.flagReference.addEventListener("mouseover", controller.handler.flags.highlightListView, false);
+						controller.handler.flags.flagReference.addEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
+						controller.handler.flags.listReference.addEventListener("mouseover", controller.handler.flags.highlightFlag, false);
+						controller.handler.flags.listReference.addEventListener("mouseout", controller.handler.flags.deHighlightFlag, false);
+						controller.handler.flags.listReference.addEventListener("click", controller.handler.flags.setVisibility, false);
+						
+						controller.handler.flags.isAddingAllowed = true;
+						
+						if (!controller.handler.flags.altKey && !event.shiftKey) {
+							controller.handler.flags.disableAddNewFlag();
+						}
+					}
 				},
 				abortAddNewRoute : function (event) {
 				
@@ -1065,14 +1126,41 @@ window.Karte = (function () {
 		pan : function (x, y) {
 			controller.uiElements.mapRoot.style.cssText += "left: " + x + "px; top: " + y + "px;";
 		},
-		drawPin : function (pin, x, y) {
+		drawPin : function (pin, x, y, flagReference) {
 			pin.setAttributeNS(null, "transform", "translate(" + x + " " + y + ") scale(0.1)"); 
 			pin.setAttributeNS("http://www.w3.org/1999/xlink", "href", "#pin");
 			
-			renderer.flags.appendChild(pin);
+			if (flagReference) {
+				flagReference.appendChild(pin);
+			} else {
+				renderer.flags.appendChild(pin);
+			}
 		},
-		drawRoute : function (pins) {
+		addRoute : function () {
+			// Pfad und Gruppe generieren
+			var flagReference = document.createElementNS("http://www.w3.org/2000/svg", "g");
+			var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
 			
+			flagReference.appendChild(path);
+			renderer.flags.appendChild(flagReference);
+			
+			return flagReference;
+		},
+		drawRoute : function (newPin, x, y, flagReference) {
+			// Pfad zum aktuellen Punkt verlängern
+			var pathElement = flagReference.getElementsByTagName("path")[0];
+			var path = pathElement.getAttribute("d");
+			
+			if (path === null) {
+				// Pfad ist initial und wird zum ersten Mal gezeichnet
+				path = "M " + x + " " + y;
+			} else {
+				path += " L " + x + " " + y;
+			}
+			
+			pathElement.setAttribute("d", path)
+			
+			renderer.drawPin(newPin, x, y, flagReference);
 		},
 		removePin : function (pin) {
 			renderer.flags.removeChild(pin);

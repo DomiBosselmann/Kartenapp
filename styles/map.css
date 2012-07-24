@@ -18,3 +18,8 @@
 #motorways {
 	stroke-width: 1.5;
 }
+
+#flags path {
+	stroke: black;
+	fill: none;
+}

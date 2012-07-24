@@ -152,7 +152,7 @@ window.Karte = (function () {
 			},
 			waters : {
 				name : "Gewässer",
-				visible : false,
+				visible : true,
 				paramName : undefined,
 				sub : {
 					rivers : {

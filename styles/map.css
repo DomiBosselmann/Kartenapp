@@ -11,7 +11,7 @@
 	stroke: #ffd721;
 }
 
-#rivers {
+#rivers, #namedLakes, #unnamedLakes, #canals {
 	stroke: #2594d4;
 }
 

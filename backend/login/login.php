@@ -2,14 +2,14 @@
 
 session_start();
 
-if ($_post) {
+if ($_POST) {
 
 	$db_host = "127.0.0.1:3306";
-	$db_username = "dhbwweb";
-	$db_password = "";
-	$db_database = "";
+	$db_username = "user";
+	$db_password = "pw";
+	$db_database = "dhbwweb";
 
-	if (!$_session['loggedin']) {
+	if (!$_SESSION['loggedin']) {
 		$link = mysql_connect($db_host, $db_username, $db_password);
 
 		if (!$link) {
@@ -21,8 +21,8 @@ if ($_post) {
 				echo_mysql_error($link, "Database selection error");
 			} else {
 
-				$username = mysql_real_escape_string($_post['username']);
-				$password = md5($_post['password']);
+				$username = mysql_real_escape_string($_POST['username']);
+				$password = md5($_POST['password']);
 
 				if ($username && $password) {
 					$query = "select `CNAME` from `TUSER` where ( `CNAME` = '$username' and `CPASSWORD` = '$password' )";
@@ -35,8 +35,8 @@ if ($_post) {
 
 						if (count($resultarray) >= 1) {
 							// successfully logged in
-							$_session['loggedin'] = true;
-							$_session['username'] = $username;
+							$_SESSION['loggedin'] = true;
+							$_SESSION['username'] = $username;
 							echo json_encode(array("success"=>true, "error"=>null));
 						} else {
 							// login failed

@@ -627,6 +627,7 @@ window.Karte = (function () {
 					var checkHandler = isRoute ? controller.handler.flags.checkAddNewRoute : controller.handler.flags.checkAddNewPlace;
 					
 					controller.handler.flags.listReference = document.createElement("li");
+					controller.handler.flags.listReference.title = "Klicken, um " + (isRoute ? "diese Strecke" : "diesen Ort") + " zu verbergen";
 					controller.handler.flags.listReference.contentEditable = true;
 					controller.handler.flags.listReference.addEventListener("keypress", keypressHandler, false);
 					controller.handler.flags.listReference.addEventListener("keyup", checkHandler, false);
@@ -637,6 +638,7 @@ window.Karte = (function () {
 					} else {
 						controller.uiElements.places.appendChild(controller.handler.flags.listReference);
 					}
+
 					controller.handler.flags.listReference.focus();
 				},
 				checkAddNewFlag : function (event) {
@@ -782,14 +784,14 @@ window.Karte = (function () {
 							});
 						});
 						
-						// Neuen Ort wegschreiben
+						// Neuen Route wegschreiben
 						controller.handler.flags.flagObject = {
 							name : controller.handler.flags.listReference.textContent,
 							visible : true,
 							note : "",
 							//coordinates : units.pixelCoordinateToGeoCoordinate(controller.handler.flags.x, controller.handler.flags.y),
 							flagReference : controller.handler.flags.flagReference,
-							pins : pin,
+							pins : pins,
 							listReference : controller.handler.flags.listReference
 						};
 						
@@ -887,7 +889,10 @@ window.Karte = (function () {
 					controller.handler.flags.flagReference.addEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
 				},
 				setVisibility : function (event) {
+					isRoute = controller.handler.flags.flagObject.pins !== undefined ? true : false;
+					
 					controller.handler.flags.flagObject.visible = !controller.handler.flags.flagObject.visible;
+					controller.handler.flags.listReference.title = "Klicken, um " + (isRoute ? "diese Strecke" : "diesen Ort") + " zu " + (controller.handler.flags.flagObject.visible ? "verbergen" : "anzuzeigen");
 					event.currentTarget.className = controller.handler.flags.flagObject.visible ? "active" : "inactive";
 					
 					controller.handler.flags.flagReference.style.display = controller.handler.flags.flagObject.visible ? "" : "none"; // Sollte eventuell in den Renderer
@@ -1268,17 +1273,11 @@ window.Karte = (function () {
 			
 			content.forEach(function (place) {
 				item = document.createElement("li");
-				
-				note = document.createElement("span");
-				name = document.createElement("span");
-				
+								
 				item.className = place.visible ? "active" : "inactive";
+				item.textContent = place.name;
+				item.title = "Klicken, um " + (routes ? "diese Strecke" : "diesen Ort") + " zu " + (place.visible ? "verbergen" : "anzuzeigen");
 				
-				name.textContent = place.name;
-				note.textContent = place.note;
-				
-				item.appendChild(name);
-				item.appendChild(note);
 				list.appendChild(item);
 			});
 		},

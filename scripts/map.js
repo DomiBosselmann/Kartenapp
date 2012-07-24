@@ -464,8 +464,8 @@ window.Karte = (function () {
 				document.removeEventListener("mouseup", controller.handler.finishScaling, false);
 			},
 			scaleViaMouse : function (event) {
-				var delta = event.wheelDelta || -event.detail;
-				var newScaleValue = (map.scaling.value/Math.abs(100 - delta)) * 100;
+				var delta = event.wheelDelta / 45 || -event.detail / 90;
+				var newScaleValue = (map.scaling.value/Math.abs(100 + delta)) * 100;
 				
 				map.scaling.value = newScaleValue;
 				

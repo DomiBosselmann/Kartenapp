@@ -53,35 +53,39 @@ window.Karte = (function () {
 				visible : true,
 				sub : {
 					cities : {
-						name : "Städte",
+						name : "Großstadt",
 						visible : true,
 						paramName : "c",
 						layerName : "cities",
-						zIndex : 15
+						zIndex : 15,
+						tooltip : "> 100.000 Einwohner"
 					},
 					towns : {
-						name : "(Dörfer)",
+						name : "Kleinstadt",
 						visible : false,
 						paramName : "c1",
 						layerName : "towns",
-						zIndex : 14
+						zIndex : 14,
+						tooltip : "> 10.000 Einwohner"
 					},
 					villages : {
-						name : "(Kuhdörfer)",
+						name : "Dorf",
 						visible : false,
 						paramName : "c2",
 						layerName : "villages",
-						zIndex : 13
+						zIndex : 13,
+						tooltip : "≤ 10.000 Einwohner"
 					},
 					hamlets : {
-						name : "(Kaffs)",
+						name : "Kleines Dorf",
 						visible : false,
 						paramName : "c3",
 						layerName : "hamlets",
-						zIndex : 12
+						zIndex : 12,
+						tooltip : "< 1.000 Einwohner"
 					},
 					suburbs : {
-						name : "(Bauernhof)",
+						name : "Stadtteile",
 						visible : false,
 						paramName : "c4",
 						layerName : "suburbs",
@@ -95,14 +99,14 @@ window.Karte = (function () {
 				paramName : undefined,
 				sub : {
 					federal : {
-						name : "Bundesländer",
+						name : "Bundesland",
 						visible : true,
 						paramName : "b",
 						layerName : "federal",
 						zIndex : 1
 					},
 					counties : {
-						name : "Landkreise",
+						name : "Landkreis",
 						visible : false,
 						paramName : "b1",
 						layerName : "counties",
@@ -116,14 +120,14 @@ window.Karte = (function () {
 				paramName : undefined,
 				sub : {
 					motorways : {
-						name : "Autobahnen",
+						name : "Autobahn",
 						visible : true,
 						paramName : "s",
 						layerName : "motorways",
 						zIndex : 10
 					},
 					federal : {
-						name : "(B&K)",
+						name : "Bundesstraße",
 						visible : false,
 						paramName : "s1",
 						layerName : "primaries",
@@ -152,28 +156,28 @@ window.Karte = (function () {
 				paramName : undefined,
 				sub : {
 					rivers : {
-						name : "Flüsse",
+						name : "Fluss",
 						visible : true,
 						paramName : "w",
 						layerName : "rivers",
 						zIndex : 6
 					},
 					canals : {
-						name : "Kanäle",
+						name : "Kanal",
 						visible : false,
 						paramName : "w1",
 						layerName : "canals",
 						zIndex : 5
 					},
 					namedLakes : {
-						name : "Seen",
+						name : "See",
 						visible : false,
 						paramName : "w2",
 						layerName : "namedLakes",
 						zIndex : 4
 					},
 					allLakes : {
-						name : "(Seen)",
+						name : "Wasserstelle",
 						visible : false,
 						paramName : "w3",
 						layerName : "allLakes",
@@ -1223,6 +1227,10 @@ window.Karte = (function () {
 							value = map.layers[type].sub[subtype];
 							item = document.createElement("li");
 							item.className = value.visible ? "active" : "inactive";
+							
+							if (value.tooltip) {
+								item.title = value.tooltip;
+							}
 							
 							(function (subtype) {
 								item.addEventListener("click", function (event) { controller.handler.setVisibility(event, subtype); }, false);

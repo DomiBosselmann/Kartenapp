@@ -1055,23 +1055,54 @@ window.Karte = (function () {
 						var nodes = routes[i].getElementsByTagName("node");
 						var pins = [];
 						
+						var flagReference = renderer.addRoute();
+						
 						for (var j = 0; j < nodes.length; j++) {
-							var latitude = parseInt(nodes[j].getElementsByTagName("latitude")[0].textContent);
-							var longitude = parseInt(nodes[j].getElementsByTagName("longitude")[0].textContent);
-							
-							pins.push({ reference : null, coordinates : units.geoCoordinateToPixelCoordinate(latitude, longitude) });
+							var latitude = parseFloat(nodes[j].getElementsByTagName("latitude")[0].textContent);
+							var longitude = parseFloat(nodes[j].getElementsByTagName("longitude")[0].textContent);
+							var position = units.geoCoordinateToPixelCoordinate(latitude, longitude);
+														
+							var pinReference = renderer.addPin();
+							renderer.drawRoute(pinReference, position[0], position[1], flagReference);
+					
+							pins.push({ reference : pinReference, coordinates : position });
 						}
 						
-						map.routes.push({
+						flagReference.addEventListener("mousedown", controller.handler.flags.enablePanning, false);
+						flagReference.addEventListener("mouseover", controller.handler.flags.highlightListView, false);
+						flagReference.addEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
+						
+						// Zugehöriges Listen-Element erstellen
+						var listItem = document.createElement("li");
+								
+						listItem.className = "active";
+						listItem.textContent = name;
+						listItem.addEventListener("mouseover", controller.handler.flags.highlightFlag, false);
+						listItem.addEventListener("mouseout", controller.handler.flags.deHighlightFlag, false);
+						listItem.addEventListener("click", controller.handler.flags.setVisibility, false);
+						//listItem.title = "Klicken, um " + (routes ? "diese Strecke" : "diesen Ort") + " zu " + (place.visible ? "verbergen" : "anzuzeigen");
+						
+						var flagID = map.routes.push({
 							name : name,
 							distance : "0km",
 							pins : pins,
-							visible : true
+							visible : true,
+							listReference : listItem,
+							flagReference : flagReference
 						});
 						
+						debugger;
+												
+						// flag und Liste mit ID versehen
+						listItem.setAttribute("data-interimFlagID", flagID);
+						listItem.setAttribute("data-type", "route");
+						flagReference.setAttribute("data-interimFlagID", flagID);
+						flagReference.setAttribute("data-type", "route");
+						
+						controller.uiElements.routes.appendChild(listItem);
 					}
 					
-					sideView.renderFlags(true);
+					//sideView.renderFlags(true);
 				}
 			},
 			export : {

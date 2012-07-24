@@ -323,7 +323,6 @@ body[data-loggedin=false] #flaglist button {
 	-webkit-filter: blur(2px);
 }
 
-#flags *:not(:hover) {
 #flags > *, #scaler {
 	cursor: default;
 	cursor: -webkit-grab;

@@ -5,8 +5,8 @@ session_start();
 if ($_GET) {
 
 	$db_host = "127.0.0.1:3306";
-	$db_username = "user";
-	$db_password = "pw";
+	$db_username = "dhbwweb";
+	$db_password = "VeadojcobcinbebWadod";
 	$db_database = "dhbwweb";
 
 	if (!$_SESSION['loggedin']) {
@@ -25,23 +25,22 @@ if ($_GET) {
 				$password = md5($_GET['password']);
 
 				if ($username && $password) {
-					$query = "select `CNAME` from `TUSER` where ( `CNAME` = '$username' and `CPASSWORD` = '$password' )";
+					$query = "select `CPASSWORD` from `TUSER` where ( `CNAME` = '$username' )";
 					$result = mysql_query($query);
 
-					if(!$result){
+					if (!$result) {
 						echo_mysql_error($link, "User selection error");
 					} else {
-						$resultarray = mysql_fetch_array($result);
-
-						if (count($resultarray) >= 1) {
-							// successfully logged in
-							$_SESSION['loggedin'] = true;
-							$_SESSION['username'] = $username;
-							echo json_encode(array("success"=>true, "error"=>null));
-						} else {
-							// login failed
-							echo json_encode(array("success"=>false, "error"=>"Login failed!"));
+						while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+							if ($row['CPASSWORD'] == $password) {
+								// successfully logged in
+								$_SESSION['loggedin'] = true;
+								$_SESSION['username'] = $username;
+								exit(json_encode(array("success"=>true, "error"=>null)));
+							}
 						}
+						// login failed
+						exit(json_encode(array("success"=>false, "error"=>"Wrong username or password!")));
 					}
 				} else {
 					exit(json_encode(array("success"=>false, "error"=>"Not logged in!")));
@@ -49,7 +48,7 @@ if ($_GET) {
 			}
 		}
 	} else {
-		exit(json_encode(array("success"=>false, "error"=>"Already logged in!")));
+		exit(json_encode(array("success"=>true, "error"=>"Already logged in!")));
 	}
 }
 

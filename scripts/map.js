@@ -187,40 +187,7 @@ window.Karte = (function () {
 				}
 			}
 		},
-		places : [
-			{
-				name : "Feierabendweg 17",
-				visible : true,
-				note : "Mein Zuhause",
-				coordinates : [],
-				flagReference : undefined,
-				listReference : undefined
-			},
-			{
-				name : "Erzbergerstraße 121",
-				visible : true,
-				note : "Meine Uni",
-				coordinates : [],
-				flagReference : undefined,
-				listReference : undefined
-			},
-			{
-				name : "Medienallee 1",
-				visible : true,
-				note : "Mein Lieblingsfernsehsender",
-				coordinates : [],
-				flagReference : undefined,
-				listReference : undefined
-			},
-			{
-				name : "Dietmar-Hopp-Alle 2",
-				visible : true,
-				note : "Mein Arbeitsplatz",
-				coordinates : [],
-				flagReference : undefined,
-				listReference : undefined
-			},
-		],
+		places : [],
 		routes : []
 	};
 	
@@ -1048,18 +1015,23 @@ window.Karte = (function () {
 				addFlags : function (event) {
 					var flags = new DOMParser().parseFromString(event.target.result, "text/xml");
 					var routes = flags.getElementsByTagName("route");
+					var places = flags.getElementsByTagName("place");
 					var noRoutes = routes.length;
+					var noPlaces = places.length;
+					var i = 0;
 					
-					for (var i = 0; i < noRoutes; i++) {
+					for (i; i < noRoutes; i++) {
+						debugger;
 						var name = routes[i].getElementsByTagName("name")[0].textContent;
-						var nodes = routes[i].getElementsByTagName("node");
+						var length = routes[i].getElementsByTagName("length")[0].textContent
+						var nodes = routes[i].getElementsByTagName("coord");
 						var pins = [];
 						
 						var flagReference = renderer.addRoute();
 						
 						for (var j = 0; j < nodes.length; j++) {
-							var latitude = parseFloat(nodes[j].getElementsByTagName("latitude")[0].textContent);
-							var longitude = parseFloat(nodes[j].getElementsByTagName("longitude")[0].textContent);
+							var latitude = parseFloat(nodes[j].getAttribute("lat"));
+							var longitude = parseFloat(nodes[j].getAttribute("lon"));
 							var position = units.geoCoordinateToPixelCoordinate(latitude, longitude);
 														
 							var pinReference = renderer.addPin();
@@ -1084,15 +1056,13 @@ window.Karte = (function () {
 						
 						var flagID = map.routes.push({
 							name : name,
-							distance : "0km",
+							distance : length,
 							pins : pins,
 							visible : true,
 							listReference : listItem,
 							flagReference : flagReference
 						});
-						
-						debugger;
-												
+																		
 						// flag und Liste mit ID versehen
 						listItem.setAttribute("data-interimFlagID", flagID);
 						listItem.setAttribute("data-type", "route");
@@ -1101,7 +1071,45 @@ window.Karte = (function () {
 						
 						controller.uiElements.routes.appendChild(listItem);
 					}
-					
+					for (i = 0; i < noPlaces; i++) {
+						var name = places[i].getElementsByTagName("name")[0].textContent;
+						var latitude = parseFloat(places[i].getElementsByTagName("coord")[0].getAttribute("lat"));
+						var longitude = parseFloat(places[i].getElementsByTagName("coord")[0].getAttribute("lon"));
+						var position = units.geoCoordinateToPixelCoordinate(latitude, longitude);
+						
+						
+						var flagReference = renderer.addPin();
+						renderer.drawPin(flagReference, position[0], position[1]);
+						
+						flagReference.addEventListener("mousedown", controller.handler.flags.enablePanning, false);
+						flagReference.addEventListener("mouseover", controller.handler.flags.highlightListView, false);
+						flagReference.addEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
+						
+						// Zugehöriges Listen-Element erstellen
+						var listItem = document.createElement("li");
+								
+						listItem.className = "active";
+						listItem.textContent = name;
+						listItem.addEventListener("mouseover", controller.handler.flags.highlightFlag, false);
+						listItem.addEventListener("mouseout", controller.handler.flags.deHighlightFlag, false);
+						listItem.addEventListener("click", controller.handler.flags.setVisibility, false);
+						
+						var flagID = map.places.push({
+							name : name,
+							coordinates : position,
+							visibile : true,
+							listReference : listItem,
+							flagReference : flagReference
+						});
+						
+						// flag und Liste mit ID versehen
+						listItem.setAttribute("data-interimFlagID", flagID);
+						listItem.setAttribute("data-type", "place");
+						flagReference.setAttribute("data-interimFlagID", flagID);
+						flagReference.setAttribute("data-type", "place");
+						
+						controller.uiElements.places.appendChild(listItem);
+					}
 					//sideView.renderFlags(true);
 				}
 			},

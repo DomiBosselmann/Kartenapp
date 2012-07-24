@@ -1,0 +1,13 @@
+<!ELEMENT locations (route*, place*)>
+
+<!ELEMENT route (user, name, length, coordinates)>
+<!ELEMENT place (user, name, coord)>
+
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT length (#PCDATA)>
+<!ELEMENT user (#PCDATA)>
+<!ELEMENT coordinates (coord+)>
+<!ELEMENT coord (#PCDATA)>
+
+<!ATTLIST coord lon CDATA #REQUIRED>
+<!ATTLIST coord lat CDATA #REQUIRED>

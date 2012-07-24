@@ -559,6 +559,7 @@ window.Karte = (function () {
 					event.stopPropagation();
 					
 					document.addEventListener("click", controller.handler.flags.checkNewFlagMask, false);
+					document.addEventListener("keyup", controller.handler.flags.checkNewFlagMask, false);
 				},
 				checkNewFlagMask : function (event) {
 					if (event.currentTarget !== document.getElementById("addSelectionMask") || event.keyCode === 27) {
@@ -568,6 +569,7 @@ window.Karte = (function () {
 				disableNewFlagMask : function () {
 					document.body.removeChild(document.getElementById("addSelectionMask"));
 					document.removeEventListener("click", controller.handler.flags.checkNewFlagMask, false);
+					document.removeEventListener("keyup", controller.handler.flags.checkNewFlagMask, false);
 				},
 				enableAddNewFlag : function (event) {
 					controller.uiElements.toolbar.className = "addFlagEnabled";

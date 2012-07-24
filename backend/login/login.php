@@ -1,48 +1,51 @@
 <?php
-	$_db_host = "127.0.0.1:3306"; 
-	$_db_username = "dhbwweb";
-	$_db_passwort = "VeadojcobcinbebWadod";
-	
+
+if ($_POST) {
+
+	$db_host = "127.0.0.1:3306";
+	$db_username = "dhbwweb";
+	$db_password = "password";
+	$db_database = "database";
+
 	session_start();
-	
+
 	# Datenbankverbindung herstellen
-	$link = mysql_connect($_db_host, $_db_username, $_db_passwort);
-	
+	$link = mysql_connect($db_host, $db_username, $db_password);
+
 	# Hat die Verbindung geklappt ?
 	if (!$link) {
-		die("Keine Datenbankverbindung möglich: " . mysql_error());
+		die("Database connection error: " . mysql_error());
 	}
-	
+
 	# Verbindung zur richtigen Datenbank herstellen
-	$datenbank = mysql_select_db($_db_datenbank, $link);
-	
-	if (!$datenbank) {
-		echo "Kann die Datenbank nicht benutzen: " . mysql_error();
+	$database = mysql_select_db($db_database, $link);
+
+	if (!$database) {
+		echo "Database selection error: " . mysql_error();
 		mysql_close($link);        # Datenbank schliessen
 		exit;                    # Programm beenden !
 	}
-	
-	if (!empty($_POST["submit"])) {
-		#UserDaten verbergen
-		$_username = mysql_real_escape_string($_POST["username"]);
-		$_passwort = mysql_real_escape_string($_POST["passwort"]);
-	
-		# Befehl für die MySQL Datenbank
-	}
-	
-	function logIn($_cName, $_password) {
-		$_query = "SELECT CNAME, CPASSWORD FROM TUSER WHERE CNAME='$_cName' and CPASSWORD='$_password'";
-		$_result = mysql_query($_query) or die ("Fehler: " . mysql_error());
-		
-		if(!$_query){
-		echo mysql_error($link);
-		# Datenbank wieder schliessen
-		mysql_close($link);
-		exit();
+
+	$username = mysql_real_escape_string($_POST['username']);
+	$password = mysql_real_escape_string(md5($_POST['pw']));
+
+	if ($username && $password) {
+
+		$query = "SELECT CNAME FROM TUSER WHERE CNAME='$username' and CPASSWORD='$password'";
+		$result = mysql_query($query) or die ("Query error: " . mysql_error());
+
+		if(!$result){
+			echo mysql_error($link);
+			# Datenbank wieder schliessen
+			mysql_close($link);
+			exit();
+		} else {
+			$_SESSION["loggedin"] = true;
+			$response = array("succes"=>true, "error"=>null);
+			echo json_encode($response);
 		}
-		$_SESSION["loggedin"] = true;
-		echo json_encode("{ success : true, error : [] }");
 	}
-	
+
+}
 
 ?>

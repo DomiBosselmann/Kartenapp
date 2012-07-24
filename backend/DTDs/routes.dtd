@@ -1,7 +1,10 @@
-<!ELEMENT routes (route)+>
-<!ELEMENT route (user, note, longitude, latitude)>
+<!ELEMENT routes (route)*>
+<!ELEMENT route (name, length, user, node*)>
 
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT length (#PCDATA)>
 <!ELEMENT user (#PCDATA)>
-<!ELEMENT note (#PCDATA)>
+<!ELEMENT node (longitude, latitude)>
+
 <!ELEMENT longitude (#PCDATA)>
 <!ELEMENT latitude (#PCDATA)>

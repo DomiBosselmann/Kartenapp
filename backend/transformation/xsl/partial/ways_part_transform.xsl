@@ -48,6 +48,9 @@
 			<xsl:when test="@k = &#34;ref&#34;">
 				<xsl:attribute name="mw_ref"><xsl:value-of select="@v"></xsl:value-of></xsl:attribute>
 			</xsl:when>
+			<xsl:when test="@k = &#34;int_ref&#34;">
+				<xsl:attribute name="mw_int_ref"><xsl:value-of select="@v"></xsl:value-of></xsl:attribute>
+			</xsl:when>
 			<xsl:when test="@k = &#34;water&#34;">
 				<xsl:attribute name="water"><xsl:value-of select="@v"></xsl:value-of></xsl:attribute>
 			</xsl:when>

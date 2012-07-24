@@ -70,10 +70,10 @@ if ($_GET) {
 		$lat2 = getPixelForLat($originLat2);
 		$lat2Attribute = $originLat2;
 	}
-	$coords->addAttribute("lon1", number_format($lon1Attribute, $decimals, $dec_point, $thousands_sep));
-	$coords->addAttribute("lon2", number_format($lon2Attribute, $decimals, $dec_point, $thousands_sep));
-	$coords->addAttribute("lat1", number_format($lat1Attribute, $decimals, $dec_point, $thousands_sep));
-	$coords->addAttribute("lat2", number_format($lat2Attribute, $decimals, $dec_point, $thousands_sep));
+	$coords->addAttribute("lon1", $lon1Attribute);
+	$coords->addAttribute("lon2", $lon2Attribute);
+	$coords->addAttribute("lat1", $lat1Attribute);
+	$coords->addAttribute("lat2", $lat2Attribute);
 
 	// width + height detection
 	$originWidth = 490.0;

@@ -14,10 +14,6 @@ public class FilterNodesLayer {
 	private static String	myFileSource	= "bawu.xml";
 	private static Layer		myLayer			= Layer.Cities;
 	
-	public static void main(String[] args) throws IOException {
-		filterNodesLayer(myFileSource, myLayer, true);
-	}
-	
 	public static void filterNodesLayer(String fileSource, Layer layer, boolean deleteOldFile) throws IOException {
 		System.out.println("Begin filtering layer " + layer.name + "...");
 		
@@ -113,5 +109,9 @@ public class FilterNodesLayer {
 		System.out.println("Done");
 		
 		CleanNodesLayer.cleanLayer(fileTarget, layer, deleteOldFile);
+	}
+	
+	public static void main(String[] args) throws IOException {
+		FilterNodesLayer.filterNodesLayer(FilterNodesLayer.myFileSource, FilterNodesLayer.myLayer, false);
 	}
 }

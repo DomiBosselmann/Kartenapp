@@ -46,13 +46,11 @@ public class CleanWaysLayer {
 							|| layer == Layer.Tertiaries) {
 						noNodeTags = true;
 						optimizeRefs = true;
-						CleanWaysLayer.tagsToKeep = new String[6];
+						CleanWaysLayer.tagsToKeep = new String[4];
 						CleanWaysLayer.tagsToKeep[0] = "k=\"highway\"";
 						CleanWaysLayer.tagsToKeep[1] = "k=\"name\"";
 						CleanWaysLayer.tagsToKeep[2] = "k=\"int_ref\"";
 						CleanWaysLayer.tagsToKeep[3] = "k=\"ref\"";
-						CleanWaysLayer.tagsToKeep[4] = "k=\"lanes\"";
-						CleanWaysLayer.tagsToKeep[5] = "k=\"oneway\"";
 					} else {
 						System.exit(1);
 					}

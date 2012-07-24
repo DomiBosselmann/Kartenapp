@@ -14,7 +14,7 @@ import steffen.layer.Layer;
 
 public class PartialTransformation {
 	
-	private static Layer		myLayer				= Layer.UnnamedLakes;
+	private static Layer		myLayer				= Layer.Motorways;
 	private static boolean	myBawu				= true;
 	
 	private static int		width					= 500;
@@ -44,11 +44,6 @@ public class PartialTransformation {
 			PartialTransformation.lat1 = 55.3372787;
 			PartialTransformation.lat2 = 47.236307;
 		}
-		double margin = 2.0; // Km
-		PartialTransformation.lon1 -= margin / Constants.xRatio;
-		PartialTransformation.lon2 += margin / Constants.xRatio;
-		PartialTransformation.lat1 += margin / Constants.yRatio;
-		PartialTransformation.lat2 -= margin / Constants.yRatio;
 		
 		String fileSource = "";
 		if (bawu) {
@@ -77,7 +72,7 @@ public class PartialTransformation {
 		String rect_coord = null;
 		String rect_size = null;
 		if (layer.nodeLayer) {
-			xslFileSource = "cities_part_transform.xsl";
+			xslFileSource = "places_part_transform.xsl";
 			switch (layer) {
 				case Cities: {
 					rect_id = "city";
@@ -120,7 +115,7 @@ public class PartialTransformation {
 				}
 			}
 		} else {
-			xslFileSource = "part_transform.xsl";
+			xslFileSource = "ways_part_transform.xsl";
 		}
 		
 		BufferedReader reader = new BufferedReader(new FileReader(new File(Constants.pathToInternXSLs + "partial/"

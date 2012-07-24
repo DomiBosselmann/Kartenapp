@@ -47,6 +47,9 @@
 			<xsl:when test="@k = &#34;place&#34;">
 				<xsl:attribute name="xlink:href">#<xsl:value-of select="@v" /></xsl:attribute>
 			</xsl:when>
+			<xsl:when test="@k = &#34;population&#34;">
+				<xsl:attribute name="population"><xsl:value-of select="@v" /></xsl:attribute>
+			</xsl:when>
 		</xsl:choose>
 	</xsl:template>
 

@@ -1117,10 +1117,12 @@ window.Karte = (function () {
 				request.send(new FormData(controller.uiElements.loginForm));
 				request.onreadystatechange = function () {
 					if (request.readyState === 4) {
-						// TODO: Anpassen
 						if (request.responseText) {
-							alert(request.responseText);
-							controller.handler.login(); // Zusammenführen?	
+							var response = JSON.parse(request.responseText);
+							
+							if (response.success === true) {
+								controller.handler.login();
+							}
 						}
 					}
 				}

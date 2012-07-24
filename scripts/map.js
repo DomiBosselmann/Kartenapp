@@ -4,7 +4,7 @@ window.Karte = (function () {
 		locations : {
 			maps : "http://karte.localhost/backend/php/svg_market.php",
 			login : "http://karte.localhost/backend/login/login.php",
-			save : "http://karte.localhost/backend/php/save.php",
+			save : "http://karte.localhost/backend/php/db.php?a=s",
 			import : "http://karte.localhost/backend/php/import.php",
 			export : "http://karte.localhost/backend/php/export.php"
 		},
@@ -220,16 +220,7 @@ window.Karte = (function () {
 				listReference : undefined
 			},
 		],
-		routes : [
-			{
-				name : "Weg zur Hochschule",
-				distance : "3km",
-				note : "Blafaselblubber",
-				points : [],
-				visible : true,
-				listReference : undefined
-			}
-		]
+		routes : []
 	};
 	
 	var controller = {
@@ -1070,11 +1061,24 @@ window.Karte = (function () {
 				});
 			});
 			
-			data.append("places", encodeURIComponent(JSON.stringify(places)));
-			//data.append("routes", JSON.stringify(map.routes));
+			map.routes.forEach(function (route) {
+				var coordinates = [];
+				route.pins.forEach(function (pin) {
+					coordinates.push(units.pixelCoordinateToGeoCoordinate(pin.coordinates[0], pin.coordinates[1]));
+				});
+				
+				routes.push({
+					name : route.name,
+					visible : route.visible,
+					coordinates : coordinates,
+					distance : "0km",
+					note : route.note
+				});
+			});
 			
-			console.log(data);
-			
+			data.append("places", JSON.stringify(places));
+			data.append("routes", JSON.stringify(routes));
+						
 			// Request absetzen
 			request = new XMLHttpRequest();
 			request.open("post", constants.locations.save, true);

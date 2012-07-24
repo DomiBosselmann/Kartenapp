@@ -273,7 +273,7 @@ aside {
 	padding: 5px;
 }
 
-#flags > *, #scaler, #map > g {
+#flags > *, #scaler {
 	cursor: default;
 	cursor: -webkit-grab;
 	cursor: -moz-grab;

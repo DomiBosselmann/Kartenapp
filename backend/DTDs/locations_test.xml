@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE locations [
+<!ELEMENT locations (route*, place*)>
+
+<!ELEMENT route (user, name, length, coordinates)>
+<!ELEMENT place (user, name, coord)>
+
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT length (#PCDATA)>
+<!ELEMENT user (#PCDATA)>
+<!ELEMENT coordinates (coord+)>
+<!ELEMENT coord (#PCDATA)>
+
+<!ATTLIST coord lon CDATA #REQUIRED>
+<!ATTLIST coord lat CDATA #REQUIRED>
+]>
+<locations>
+	<route>
+		<user>user1</user>
+		<name>route1</name>
+		<length>50</length>
+		<coordinates>
+			<coord lon="1.0" lat="2.0" />
+			<coord lon="2.0" lat="3.0" />
+			<coord lon="3.0" lat="4.0" />
+			<coord lon="4.0" lat="5.0" />
+			<coord lon="5.0" lat="6.0" />
+		</coordinates>
+	</route>
+	<route>
+		<user>user2</user>
+		<name>route2</name>
+		<length>100</length>
+		<coordinates>
+			<coord lon="10.0" lat="20.0" />
+			<coord lon="20.0" lat="30.0" />
+			<coord lon="30.0" lat="40.0" />
+			<coord lon="40.0" lat="50.0" />
+			<coord lon="50.0" lat="60.0" />
+		</coordinates>
+	</route>
+	<place>
+		<user>user3</user>
+		<name>place1</name>
+		<coord lon="100.0" lat="80.0" />
+	</place>
+	<place>
+		<user>user4</user>
+		<name>place2</name>
+		<coord lon="13.0" lat="42.0" />
+	</place>
+</locations>

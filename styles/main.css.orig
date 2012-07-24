@@ -7,7 +7,6 @@ body {
 	width: 100%;
 	overflow: hidden;
 	font-family: "Corbel";
-	cursor: default;
 	display: -webkit-box;
 	-webkit-box-align: center;
 	-webkit-box-pack: center;
@@ -15,10 +14,6 @@ body {
 	-moz-box-align: center;
 	-moz-box-pack: center;
 	-moz-box-orient: horizontal;
-}
-
-[type=search], :focus {
-	cursor: auto;
 }
 
 aside {
@@ -94,9 +89,14 @@ aside {
 	left: 320px;
 	right: 0;
 	bottom: 0;
+<<<<<<< HEAD
+	background: #83ab39;
+	overflow: hidden;
+=======
 	background: #e9e6df url("../images/textur.png") repeat;
 	overflow: hidden;
 	-webkit-transform: translateZ(0);
+>>>>>>> refs/heads/master
 }
 
 #mapcontainer svg {
@@ -184,7 +184,6 @@ aside {
 	background: transparent;
 	color: white;
 	opacity: 0;
-	z-index: -1;
 	-webkit-transition: opacity 0.2s ease-in-out;
 	-moz-transition: opacity 0.2s ease-in-out;
 	outline: none;
@@ -220,7 +219,6 @@ aside {
 }
 
 #toolbar.searchEnabled #searchField {
-	z-index: 0;
 	opacity: 1;
 	right: 10px;
 	-webkit-transition-delay: 0.7s;
@@ -244,9 +242,11 @@ aside {
 	padding: 10px;
 	-webkit-column-count: 2;
 	-moz-column-count: 2;
-	column-count: 2;
-	-moz-column-count: 2;
+<<<<<<< HEAD
 	-webkit-transition: -webkit-filter 1s ease-in-out;
+=======
+	column-count: 2;
+>>>>>>> refs/heads/master
 }
 
 #visibilities ul {
@@ -271,8 +271,11 @@ aside {
 	font-weight: bold;
 	text-transform: uppercase;
 	-webkit-column-break-after: avoid;
+<<<<<<< HEAD
+=======
 	-moz-column-break-after: avoid;
 	break-after: avoid;
+>>>>>>> refs/heads/master
 	margin-top: 0;
 }
 
@@ -293,6 +296,7 @@ aside {
 	padding: 5px;
 }
 
+<<<<<<< HEAD
 body[data-loggedin=false] #login {
 	background: white;
 	padding: 30px;
@@ -311,27 +315,24 @@ body[data-loggedin=false] #login::after {
 }
 
 body[data-loggedin=false] aside, body[data-loggedin=false] #mapcontainer {
-	z-index: -2;
-	-webkit-transform: inherit;
+	z-index: -2
 }
 
-body[data-loggedin=false] #mapcontainer svg, body[data-loggedin=false] #flaglist .container, body[data-loggedin=false] #visibilities, body[data-loggedin=false] #mapscaler {
+body[data-loggedin=false] #mapcontainer svg, body[data-loggedin=false] #flags .container, body[data-loggedin=false] #visibilities, body[data-loggedin=false] #mapscaler {
+	-webkit-transition: -webkit-filter 1s ease-in-out;
 	-webkit-filter: blur(10px);
 }
 
-body[data-loggedin=false] #flaglist button {
+body[data-loggedin=false] #flags button {
 	-webkit-filter: blur(2px);
 }
 
 #flags *:not(:hover) {
-#flags > *, #scaler {
-	cursor: default;
-	cursor: -webkit-grab;
-	cursor: -moz-grab;
-}
-
+	opacity: 0.2;
+=======
 #flags >:not(:hover) {
 	opacity: 0.7;
+>>>>>>> refs/heads/master
 }
 
 #flags >.hover, #flags >:active {
@@ -340,13 +341,4 @@ body[data-loggedin=false] #flaglist button {
 
 #importFlags {
 	display: none;
-}
-
-body.dragging * {
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	user-select: none;
-	cursor: move !important;
-	cursor: -webkit-grabbing !important;
-	cursor: -moz-grabbing !important;
 }

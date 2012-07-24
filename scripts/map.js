@@ -1,4 +1,5 @@
 window.Karte = (function () {
+	var loggedin = undefined;
 
 	var constants = {
 		locations : {
@@ -225,6 +226,7 @@ window.Karte = (function () {
 	
 	var controller = {
 		uiElements : {
+			aside : null,
 			toolbar : null,
 			addButton : null,
 			searchButton: null,
@@ -241,10 +243,12 @@ window.Karte = (function () {
 			visibilities : null,
 			flaglist : null,
 			places : null,
-			routes : null
+			routes : null,
+			loginForm : null
 		},
 		init : function () {
 			// UI-Elemente mit Referenzen versehen
+			this.uiElements.aside = document.getElementsByTagName("aside")[0];
 			this.uiElements.toolbar = document.getElementById("toolbar");
 			this.uiElements.addButton = document.querySelector("button[title='Route oder Punkt hinzufügen']");
 			this.uiElements.searchButton = document.querySelector("button[title='Suchen']");
@@ -262,6 +266,7 @@ window.Karte = (function () {
 			this.uiElements.flaglist = document.getElementById("flaglist");
 			this.uiElements.places = document.getElementById("places");
 			this.uiElements.routes = document.getElementById("routes");
+			this.uiElements.loginForm = document.getElementById("login");
 			
 			// EventListener hinzufügen
 			this.uiElements.addButton.addEventListener("click", this.handler.flags.enableNewFlagMask, false);
@@ -276,6 +281,43 @@ window.Karte = (function () {
 			this.uiElements.mapScaler.addEventListener("mousedown", this.handler.enableScaling, false);
 			
 			this.uiElements.flaglist.addEventListener("drop", this.handler.import.viaDrop , false);
+			
+			this.uiElements.loginForm.addEventListener("submit", this.handler.performLogin, false);
+			
+			
+			
+			// Login-Status sicher wegschreiben und Manipulation verhindern
+			loggedin = document.body.getAttribute("data-loggedin");
+			
+			// Drecks-Browser-Kompatibilität. Das ist in DOM2 spezifiziert, verdammt noch mal. Ironischerweise fixbar durch DOM4.
+			var observer = ("WebKitMutationObserver" in window) ? new WebKitMutationObserver(controller.handler.observation) : (("MutationObserver" in window) ? new MutationObserver(controller.handler.observation) : undefined);
+			
+			if (observer !== undefined) {
+				observer.observe(document.body, { attributes : true, subtree : false });
+				observer.observe(this.uiElements.aside, { attributes : true, subtree : false });
+			} else {
+				document.body.addEventListener("DOMAttrModified", function (event) {
+					controller.handler.detectManipulation({
+						name : event.attrName,
+						newValue : event.newValue,
+						target : event.target
+					});
+				}, false);
+				this.uiElements.aside.addEventListener("DOMAttrModified", function (event) {
+					controller.handler.detectManipulation({
+						name : event.attrName,
+						newValue : event.newValue,
+						target : event.target
+					});
+				}, false);
+			}
+			/*document.styleSheets[0].cssRules[2].observe("style", function (event) {
+				controller.handler.detectManipulation({
+					name : "stylesheet",
+					target : undefined,
+					newValue : document.styleSheets[0].cssRules[2]
+				});
+			});*/
 			
 			// Attribute für Geschwindigkeit zwischenspeichern
 			var length = controller.uiElements.scalables.length;
@@ -1037,6 +1079,60 @@ window.Karte = (function () {
 				perform : function (event) {
 					window.location.href = constants.locations.export;
 				}
+			},
+			observation : function (mutations) {
+				mutations.forEach(function (event) {
+					controller.handler.detectManipulation({
+						name : event.attributeName,
+						newValue : event.target.getAttribute(event.attributeName),
+						target : event.target
+					});
+				});
+			},
+			detectManipulation : function (event) {
+				console.log(event);
+				
+				var wasManipulated = false;
+				
+				if (event.target === document.body && event.name === "data-loggedin" && event.newValue !== loggedin.toString()) {
+					// Manipulation durch Attributänderung
+					wasManipulated = true;
+				} else if (event.name === "stylesheet" && event.target === undefined) {
+					// Manipulation durch Löschen
+					wasManipulated = true;
+				} else if (event.target === controller.uiElements.aside && event.name === "style") {
+					// Manipulation durch Style-Änderung
+					wasManipulated = true;
+				}
+				
+				if (wasManipulated) {
+					alert("Netter Versuch ;)");
+					window.location.reload();
+				}
+			},
+			performLogin : function (event) {
+			
+				request = new XMLHttpRequest();
+				request.open("post", constants.locations.login, true);
+				request.send(new FormData(controller.uiElements.loginForm));
+				request.onreadystatechange = function () {
+					if (request.readyState === 4) {
+						// TODO: Anpassen
+						if (request.responseText) {
+							alert(request.responseText);
+							controller.handler.login(); // Zusammenführen?	
+						}
+					}
+				}
+				
+				controller.handler.login();
+				
+				event.preventDefault();
+				return false;
+			},
+			login : function () {
+				loggedin = true;
+				document.body.setAttribute("data-loggedin", "true");
 			}
 		},
 		loadMap : function (latitude, longitude, layers, handler) {

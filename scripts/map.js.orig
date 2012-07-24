@@ -1,6 +1,16 @@
 window.Karte = (function () {
+<<<<<<< HEAD
 
 	var constants = {
+=======
+	var loggedin = undefined;
+
+	var constants = {
+<<<<<<< HEAD
+		url : "http://karte.localhost/backend/php/svg_market.php",
+		loginURL : "http://karte.localhost/backend/login/login.php"
+=======
+>>>>>>> refs/heads/Login
 		locations : {
 			maps : "http://karte.localhost/backend/php/svg_market.php",
 			login : "http://karte.localhost/backend/login/login.php",
@@ -11,6 +21,10 @@ window.Karte = (function () {
 		math : {
 			epsilon : Number.MIN_VALUE // Viele Grüße Herr Gröll!
 		}
+<<<<<<< HEAD
+=======
+>>>>>>> refs/heads/master
+>>>>>>> refs/heads/Login
 	};
 	
 	var map = {
@@ -230,6 +244,10 @@ window.Karte = (function () {
 	
 	var controller = {
 		uiElements : {
+<<<<<<< HEAD
+=======
+			aside : null,
+>>>>>>> refs/heads/Login
 			toolbar : null,
 			addButton : null,
 			searchButton: null,
@@ -245,10 +263,19 @@ window.Karte = (function () {
 			scalables : null,
 			visibilities : null,
 			places : null,
+<<<<<<< HEAD
 			routes : null
 		},
 		init : function () {
 			// UI-Elemente mit Referenzen versehen
+=======
+			routes : null,
+			loginForm : null
+		},
+		init : function () {
+			// UI-Elemente mit Referenzen versehen
+			this.uiElements.aside = document.getElementsByTagName("aside")[0];
+>>>>>>> refs/heads/Login
 			this.uiElements.toolbar = document.getElementById("toolbar");
 			this.uiElements.addButton = document.querySelector("button[title='Route oder Punkt hinzufügen']");
 			this.uiElements.searchButton = document.querySelector("button[title='Suchen']");
@@ -265,6 +292,10 @@ window.Karte = (function () {
 			this.uiElements.visibilities = document.getElementById("visibilities");
 			this.uiElements.places = document.getElementById("places");
 			this.uiElements.routes = document.getElementById("routes");
+<<<<<<< HEAD
+=======
+			this.uiElements.loginForm = document.getElementById("login");
+>>>>>>> refs/heads/Login
 			
 			// EventListener hinzufügen
 			this.uiElements.addButton.addEventListener("click", this.handler.flags.enableNewFlagMask, false);
@@ -280,8 +311,52 @@ window.Karte = (function () {
 			
 			this.uiElements.map.addEventListener("mousedown", this.handler.enablePanning, false);
 			
+<<<<<<< HEAD
 			this.uiElements.map.addEventListener("MozMousePixelScroll", this.handler.scaleViaMouse, false);
 			this.uiElements.map.addEventListener("mousewheel", this.handler.scaleViaMouse, false);
+=======
+<<<<<<< HEAD
+			this.uiElements.loginForm.addEventListener("submit", this.handler.performLogin, false);
+			
+			
+			
+			// Login-Status sicher wegschreiben und Manipulation verhindern
+			loggedin = document.body.getAttribute("data-loggedin");
+			
+			// Drecks-Browser-Kompatibilität. Das ist in DOM2 spezifiziert, verdammt noch mal. Ironischerweise fixbar durch DOM4.
+			var observer = ("WebKitMutationObserver" in window) ? new WebKitMutationObserver(controller.handler.observation) : (("MutationObserver" in window) ? new MutationObserver(controller.handler.observation) : undefined);
+			
+			if (observer !== undefined) {
+				observer.observe(document.body, { attributes : true, subtree : false });
+				observer.observe(this.uiElements.aside, { attributes : true, subtree : false });
+			} else {
+				document.body.addEventListener("DOMAttrModified", function (event) {
+					controller.handler.detectManipulation({
+						name : event.attrName,
+						newValue : event.newValue,
+						target : event.target
+					});
+				}, false);
+				this.uiElements.aside.addEventListener("DOMAttrModified", function (event) {
+					controller.handler.detectManipulation({
+						name : event.attrName,
+						newValue : event.newValue,
+						target : event.target
+					});
+				}, false);
+			}
+			/*document.styleSheets[0].cssRules[2].observe("style", function (event) {
+				controller.handler.detectManipulation({
+					name : "stylesheet",
+					target : undefined,
+					newValue : document.styleSheets[0].cssRules[2]
+				});
+			});*/
+=======
+			this.uiElements.map.addEventListener("MozMousePixelScroll", this.handler.scaleViaMouse, false);
+			this.uiElements.map.addEventListener("mousewheel", this.handler.scaleViaMouse, false);
+>>>>>>> refs/heads/master
+>>>>>>> refs/heads/Login
 			
 			// Attribute für Geschwindigkeit zwischenspeichern
 			var length = controller.uiElements.scalables.length;
@@ -531,8 +606,13 @@ window.Karte = (function () {
 				listReference : undefined,
 				flagReference : undefined,
 				pinReferences : [],
+<<<<<<< HEAD
 				x : [],
 				y : [],
+=======
+				x : undefined,
+				y : undefined,
+>>>>>>> refs/heads/Login
 				altKey : undefined,
 				flagObject : undefined,
 				panningDiffX : undefined,
@@ -582,6 +662,7 @@ window.Karte = (function () {
 						return false;
 					}
 					
+<<<<<<< HEAD
 					var pinReference = renderer.addPin();
 										
 					// 1 Für Chrome + Safarie 2 für FF
@@ -594,6 +675,20 @@ window.Karte = (function () {
 					} else {
 						controller.handler.flags.flagReference = pinReference;
 						renderer.drawPin(pinReference, controller.handler.flags.x[pinCounter - 1], controller.handler.flags.y[pinCounter - 1]);
+=======
+					var pinReference = isRoute ? controller.handler.flags.pinReferences[controller.handler.flags.pinReferences.length] : controller.handler.flags.flagReference;
+					
+					pinReference = document.createElementNS("http://www.w3.org/2000/svg", "use");
+					
+					// 1 Für Chrome + Safarie 2 für FF
+					controller.handler.flags.x = event.offsetX ? event.offsetX : event.layerX;
+					controller.handler.flags.y = event.offsetY ? event.offsetY : event.layerY;
+					
+					if (isRoute) {
+						renderer.drawRoute(pinReference, controller.handler.flags.x, controller.handler.flags.y, controller.handler.flags.flagReference);
+					} else {
+						renderer.drawPin(pinReference, controller.handler.flags.x, controller.handler.flags.y);
+>>>>>>> refs/heads/Login
 					}
 					
 					pinReference.setAttribute("class", "hover");
@@ -613,11 +708,15 @@ window.Karte = (function () {
 					controller.handler.flags.listReference.addEventListener("keyup", checkHandler, false);
 					controller.handler.flags.listReference.addEventListener("blur", abortHandler, false);
 					
+<<<<<<< HEAD
 					if (isRoute) {
 						controller.uiElements.routes.appendChild(controller.handler.flags.listReference);
 					} else {
 						controller.uiElements.places.appendChild(controller.handler.flags.listReference);
 					}
+=======
+					controller.uiElements.places.appendChild(controller.handler.flags.listReference);
+>>>>>>> refs/heads/Login
 					controller.handler.flags.listReference.focus();
 				},
 				checkAddNewFlag : function (event) {
@@ -628,13 +727,17 @@ window.Karte = (function () {
 				disableAddNewFlag : function (event) {
 					controller.uiElements.toolbar.className = "";
 					document.removeEventListener("keyup", controller.handler.flags.checkAddNewFlag, false);
+<<<<<<< HEAD
 					controller.uiElements.mapRoot.removeEventListener("click", controller.handler.flags.performAddNewRoute, false)
 					controller.uiElements.mapRoot.removeEventListener("click", controller.handler.flags.performAddNewPlace, false)
+=======
+>>>>>>> refs/heads/Login
 				},
 				enableAddNewPlace : function (event) {
 					controller.handler.flags.enableAddNewFlag();
 					controller.uiElements.mapRoot.addEventListener("click", controller.handler.flags.performAddNewPlace, false);
 				},
+<<<<<<< HEAD
 				disableAddNewPlace : function (event) {
 					controller.handler.flags.disableAddNewFlag();
 <<<<<<< HEAD
@@ -642,6 +745,8 @@ window.Karte = (function () {
 					controller.uiElements.mapRoot.removeEventListener("click", controller.handler.flags.performAddNewPlace, false);
 >>>>>>> 211109cdaec683f5bf241c71167660c05d3b2456
 				},
+=======
+>>>>>>> refs/heads/Login
 				performAddNewPlace : function (event) {
 					if (!controller.handler.flags.isAddingAllowed) {
 						return;
@@ -673,14 +778,22 @@ window.Karte = (function () {
 					if (event.keyCode === 13 || event.keyCode === 39) {
 						// Es war ein Enter. Oder ein Rechtspfeil
 						
+<<<<<<< HEAD
 						controller.handler.flags.finishAddNewFlag(event);
+=======
+						controller.handler.finishAddNewFlag(event);
+>>>>>>> refs/heads/Login
 						
 						// Neuen Ort wegschreiben
 						controller.handler.flags.flagObject = {
 							name : controller.handler.flags.listReference.textContent,
 							visible : true,
 							note : "",
+<<<<<<< HEAD
 							coordinates : units.pixelCoordinateToGeoCoordinate(controller.handler.flags.x[0], controller.handler.flags.y[0]),
+=======
+							coordinates : units.pixelCoordinateToGeoCoordinate(controller.handler.flags.x, controller.handler.flags.y),
+>>>>>>> refs/heads/Login
 							flagReference : controller.handler.flags.flagReference,
 							listReference : controller.handler.flags.listReference
 						};
@@ -689,9 +802,13 @@ window.Karte = (function () {
 						
 						// flag mit ID versehen
 						controller.handler.flags.flagReference.setAttribute("data-interimFlagID", flagID);
+<<<<<<< HEAD
 						controller.handler.flags.flagReference.setAttribute("data-type", "place");
 						event.target.setAttribute("data-interimFlagID", flagID);
 						event.target.setAttribute("data-type", "place");
+=======
+						event.target.setAttribute("data-interimFlagID", flagID);
+>>>>>>> refs/heads/Login
 						
 						controller.handler.flags.flagReference.addEventListener("mouseover", controller.handler.flags.highlightListView, false);
 						controller.handler.flags.flagReference.addEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
@@ -702,8 +819,12 @@ window.Karte = (function () {
 						controller.handler.flags.isAddingAllowed = true;
 						
 						if (!controller.handler.flags.altKey && !event.shiftKey) {
+<<<<<<< HEAD
 							
 							controller.handler.flags.disableAddNewPlace();
+=======
+							controller.handler.flags.disableAddNewFlag();
+>>>>>>> refs/heads/Login
 						}
 					}
 				},
@@ -735,6 +856,7 @@ window.Karte = (function () {
 					controller.uiElements.mapRoot.addEventListener("click", controller.handler.flags.performAddNewRoute, false);
 					document.addEventListener("keyup", controller.handler.flags.finishAddNewRoutePins, false);
 				},
+<<<<<<< HEAD
 				disableAddNewRoute : function (event) {
 					controller.handler.flags.disableAddNewFlag();
 <<<<<<< HEAD
@@ -743,6 +865,8 @@ window.Karte = (function () {
 					controller.uiElements.mapRoot.removeEventListener("click", controller.handler.flags.performAddNewRoute, false);
 >>>>>>> 211109cdaec683f5bf241c71167660c05d3b2456
 				},
+=======
+>>>>>>> refs/heads/Login
 				performAddNewRoute : function (event) {
 					if (!controller.handler.flags.isAddingAllowed) {
 						return;
@@ -755,13 +879,17 @@ window.Karte = (function () {
 				finishAddNewRoutePins : function (event) {
 					if (event.keyCode === 13) {
 						controller.handler.flags.performAddMeta(event, true);
+<<<<<<< HEAD
 						document.removeEventListener("keyup", controller.handler.flags.finishAddNewRoutePins, false);
+=======
+>>>>>>> refs/heads/Login
 					}
 				},
 				finishAddNewRoute : function (event) {
 					if (event.keyCode === 13 || event.keyCode === 39) {
 						// Es war ein Enter. Oder ein Rechtspfeil
 						
+<<<<<<< HEAD
 						controller.handler.flags.finishAddNewFlag(event);
 												
 						var pins = [];
@@ -771,15 +899,24 @@ window.Karte = (function () {
 								reference : pin
 							});
 						});
+=======
+						controller.handler.finishAddNewFlag(event);
+>>>>>>> refs/heads/Login
 						
 						// Neuen Ort wegschreiben
 						controller.handler.flags.flagObject = {
 							name : controller.handler.flags.listReference.textContent,
 							visible : true,
 							note : "",
+<<<<<<< HEAD
 							//coordinates : units.pixelCoordinateToGeoCoordinate(controller.handler.flags.x, controller.handler.flags.y),
 							flagReference : controller.handler.flags.flagReference,
 							pins : pin,
+=======
+							coordinates : units.pixelCoordinateToGeoCoordinate(controller.handler.flags.x, controller.handler.flags.y),
+							flagReference : controller.handler.flags.flagReference,
+							pinReferences : controller.handler.flags.pinReferences,
+>>>>>>> refs/heads/Login
 							listReference : controller.handler.flags.listReference
 						};
 						
@@ -787,9 +924,13 @@ window.Karte = (function () {
 						
 						// flag mit ID versehen
 						controller.handler.flags.flagReference.setAttribute("data-interimFlagID", flagID);
+<<<<<<< HEAD
 						controller.handler.flags.flagReference.setAttribute("data-type", "route");
 						event.target.setAttribute("data-interimFlagID", flagID);
 						event.target.setAttribute("data-type", "route");
+=======
+						event.target.setAttribute("data-interimFlagID", flagID);
+>>>>>>> refs/heads/Login
 						
 						controller.handler.flags.flagReference.addEventListener("mouseover", controller.handler.flags.highlightListView, false);
 						controller.handler.flags.flagReference.addEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
@@ -798,18 +939,26 @@ window.Karte = (function () {
 						controller.handler.flags.listReference.addEventListener("click", controller.handler.flags.setVisibility, false);
 						
 						controller.handler.flags.isAddingAllowed = true;
+<<<<<<< HEAD
 												
 						if (!event.shiftKey) {
 							controller.handler.flags.disableAddNewRoute();
 						}
 						
 						event.stopPropagation();						
+=======
+						
+						if (!controller.handler.flags.altKey && !event.shiftKey) {
+							controller.handler.flags.disableAddNewFlag();
+						}
+>>>>>>> refs/heads/Login
 					}
 				},
 				abortAddNewRoute : function (event) {
 				
 				},
 				highlightFlag : function (event) {
+<<<<<<< HEAD
 					var flagObject = event.currentTarget.getAttribute("data-type") === "route" ? map.routes : map.places;
 					flagObject[event.currentTarget.getAttribute("data-interimFlagID") - 1].flagReference.setAttribute("class", "hover");
 				},
@@ -824,6 +973,18 @@ window.Karte = (function () {
 				deHighlightListView : function (event) {
 					var flagObject = event.currentTarget.getAttribute("data-type") === "route" ? map.routes : map.places;
 					flagObject[event.currentTarget.getAttribute("data-interimFlagID") - 1].listReference.classList.remove("hover");
+=======
+					map.places[event.currentTarget.getAttribute("data-interimFlagID") - 1].flagReference.setAttribute("class", "hover");
+				},
+				highlightListView : function (event) {
+					map.places[event.currentTarget.getAttribute("data-interimFlagID") - 1].listReference.classList.add("hover");
+				},
+				deHighlightFlag : function (event) { // Super Funktionsname
+					map.places[event.currentTarget.getAttribute("data-interimFlagID") - 1].flagReference.removeAttribute("class");
+				},
+				deHighlightListView : function (event) {
+					map.places[event.currentTarget.getAttribute("data-interimFlagID") - 1].listReference.classList.remove("hover");
+>>>>>>> refs/heads/Login
 				},
 				enablePanning : function (event) {
 					// Aktuellen Translate ermitteln
@@ -983,6 +1144,70 @@ window.Karte = (function () {
 				perform : function (event) {
 					window.location.href = constants.locations.export;
 				}
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+			},
+			observation : function (mutations) {
+				mutations.forEach(function (event) {
+					controller.handler.detectManipulation({
+						name : event.attributeName,
+						newValue : event.target.getAttribute(event.attributeName),
+						target : event.target
+					});
+				});
+			},
+			detectManipulation : function (event) {
+				console.log(event);
+				
+				var wasManipulated = false;
+				
+				if (event.target === document.body && event.name === "data-loggedin" && event.newValue !== loggedin.toString()) {
+					// Manipulation durch Attributänderung
+					wasManipulated = true;
+				} else if (event.name === "stylesheet" && event.target === undefined) {
+					// Manipulation durch Löschen
+					wasManipulated = true;
+				} else if (event.target === controller.uiElements.aside && event.name === "style") {
+					// Manipulation durch Style-Änderung
+					wasManipulated = true;
+				}
+				
+				if (wasManipulated) {
+					alert("Netter Versuch ;)");
+					window.location.reload();
+				}
+			},
+			performLogin : function (event) {
+			
+				request = new XMLHttpRequest();
+				request.open("post", constants.loginURL, true);
+				request.send(new FormData(controller.uiElements.loginForm));
+				/*request.onreadystatechange = function () {
+					if (request.readyState === 4) {
+						// TODO: Anpassen
+						if (request.responseText) {
+							controller.handler.login(); // Zusammenführen?	
+						}
+					}
+				}*/
+				
+				controller.handler.login();
+				
+				event.preventDefault();
+				return false;
+			},
+			login : function () {
+				loggedin = true;
+				document.body.setAttribute("data-loggedin", "true");
+			},
+			finishAddNewFlag : function (event) {
+				controller.uiElements.toolbar.className = "";
+				document.removeEventListener("keyup", controller.handler.abortAddNewFlag, false);
+				controller.uiElements.mapRoot.removeEventListener("click", controller.handler.newPlace, false);
+=======
+>>>>>>> refs/heads/master
+>>>>>>> refs/heads/Login
 			}
 		},
 		loadMap : function (latitude, longitude, layers, handler) {
@@ -1167,9 +1392,12 @@ window.Karte = (function () {
 		pan : function (x, y) {
 			controller.uiElements.mapRoot.style.cssText += "left: " + x + "px; top: " + y + "px;";
 		},
+<<<<<<< HEAD
 		addPin : function () {
 			return document.createElementNS("http://www.w3.org/2000/svg", "use");
 		},
+=======
+>>>>>>> refs/heads/Login
 		drawPin : function (pin, x, y, flagReference) {
 			pin.setAttributeNS(null, "transform", "translate(" + x + " " + y + ") scale(0.1)"); 
 			pin.setAttributeNS("http://www.w3.org/1999/xlink", "href", "#pin");

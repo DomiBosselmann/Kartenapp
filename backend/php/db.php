@@ -2,16 +2,17 @@
 
 session_start();
 
-if ($_session['loggedin'] === true) {
+if ($_SESSION['loggedin'] === true) {
 
 	if ($_POST['a']) {
 
-		$action = $_post['a'];
+		$action = $_POST['a'];
 
 		$db_host = "127.0.0.1:3306";
-		$db_username = "dhbwweb";
-		$db_password = "";
-		$db_database = "";
+		$db_username = "user";
+		$db_password = "pw";
+		$db_database = "dhbwweb";
+
 
 		$link = mysql_connect($db_host, $db_username, $db_password);
 		if (!$link) {
@@ -21,13 +22,13 @@ if ($_session['loggedin'] === true) {
 			if (!$database) {
 				echo_mysql_error($link, "Database selection error");
 			} else {
-				$username = $_session['user'];
+				$username = $_SESSION['username'];
 				switch ($action) {
 					case "i":
 						{
 							// import routes as xml into the database and respond all available routes as json
 							$route_ids = array();
-							$data_xml = new simplexmlelement($_post['data']);
+							$data_xml = new simplexmlelement($_POST['data']);
 							foreach ($data_xml->children() as $route_element => $route_value) {
 								foreach ($route_value->children() as $route_node => $route_node_value) {
 									switch ($route_node) {
@@ -154,7 +155,7 @@ if ($_session['loggedin'] === true) {
 					case "s":
 						{
 							// save routes into the database
-							if ($_post['data']) {
+							if ($_POST['data']) {
 								$data = json_decode($_POST['data']);
 								$route_name = $data['name'];
 								$route_length = $data['distance'];

@@ -628,10 +628,15 @@ window.Karte = (function () {
 				disableAddNewFlag : function (event) {
 					controller.uiElements.toolbar.className = "";
 					document.removeEventListener("keyup", controller.handler.flags.checkAddNewFlag, false);
+					controller.uiElements.mapRoot.removeEventListener("click", controller.handler.flags.performAddNewRoute, false)
+					controller.uiElements.mapRoot.removeEventListener("click", controller.handler.flags.performAddNewPlace, false)
 				},
 				enableAddNewPlace : function (event) {
 					controller.handler.flags.enableAddNewFlag();
 					controller.uiElements.mapRoot.addEventListener("click", controller.handler.flags.performAddNewPlace, false);
+				},
+				disableAddNewPlace : function (event) {
+					controller.handler.flags.disableAddNewFlag();
 				},
 				performAddNewPlace : function (event) {
 					if (!controller.handler.flags.isAddingAllowed) {
@@ -693,7 +698,8 @@ window.Karte = (function () {
 						controller.handler.flags.isAddingAllowed = true;
 						
 						if (!controller.handler.flags.altKey && !event.shiftKey) {
-							controller.handler.flags.disableAddNewFlag();
+							
+							controller.handler.flags.disableAddNewPlace();
 						}
 					}
 				},
@@ -724,6 +730,9 @@ window.Karte = (function () {
 					
 					controller.uiElements.mapRoot.addEventListener("click", controller.handler.flags.performAddNewRoute, false);
 					document.addEventListener("keyup", controller.handler.flags.finishAddNewRoutePins, false);
+				},
+				disableAddNewRoute : function (event) {
+					controller.handler.flags.disableAddNewFlag();
 				},
 				performAddNewRoute : function (event) {
 					if (!controller.handler.flags.isAddingAllowed) {
@@ -780,9 +789,9 @@ window.Karte = (function () {
 						controller.handler.flags.listReference.addEventListener("click", controller.handler.flags.setVisibility, false);
 						
 						controller.handler.flags.isAddingAllowed = true;
-						
-						if (!controller.handler.flags.altKey && !event.shiftKey) {
-							controller.handler.flags.disableAddNewFlag();
+												
+						if (!event.shiftKey) {
+							controller.handler.flags.disableAddNewRoute();
 						}
 						
 						event.stopPropagation();						

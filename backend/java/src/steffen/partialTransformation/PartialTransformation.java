@@ -14,7 +14,7 @@ import steffen.layer.Layer;
 
 public class PartialTransformation {
 	
-	private static Layer		myLayer				= Layer.Counties;
+	private static Layer		myLayer				= Layer.UnnamedLakes;
 	private static boolean	myBawu				= true;
 	
 	private static int		width					= 500;
@@ -49,12 +49,6 @@ public class PartialTransformation {
 		PartialTransformation.lon2 += margin / Constants.xRatio;
 		PartialTransformation.lat1 += margin / Constants.yRatio;
 		PartialTransformation.lat2 -= margin / Constants.yRatio;
-		
-		// System.out.println(lon1);
-		// System.out.println(lon2);
-		// System.out.println(lat1);
-		// System.out.println(lat2);
-		// System.exit(1);
 		
 		String fileSource = "";
 		if (bawu) {
@@ -129,9 +123,10 @@ public class PartialTransformation {
 			xslFileSource = "part_transform.xsl";
 		}
 		
-		BufferedReader reader = new BufferedReader(new FileReader(new File(Constants.pathToInternXSLs + xslFileSource)));
+		BufferedReader reader = new BufferedReader(new FileReader(new File(Constants.pathToInternXSLs + "partial/"
+				+ xslFileSource)));
 		String newXSLFileName = xslFileSource + "2";
-		File tempXSL = new File(Constants.pathToInternXSLs + newXSLFileName);
+		File tempXSL = new File(Constants.pathToInternXSLs + "partial/" + newXSLFileName);
 		if (delete) {
 			tempXSL.deleteOnExit();
 		}

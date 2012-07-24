@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg style="position:absolute;" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
 <defs><rect id="suburb" fill="orange" x="-1" y="-1" width="2" height="2"/></defs>
 <g id="suburbs">
 <use transform="translate(160.431 177.604)" name="Durlach" xlink:href="#suburb"/>

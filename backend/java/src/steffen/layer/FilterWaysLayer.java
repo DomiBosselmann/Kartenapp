@@ -13,7 +13,7 @@ import steffen.Constants;
 public class FilterWaysLayer {
 	
 	private static String	myFileSource	= "bawu.xml";
-	private static Layer		myLayer			= Layer.Counties;
+	private static Layer		myLayer			= Layer.UnnamedLakes;
 	
 	public static void filterWaysLayer(String fileSource, Layer layer, boolean deleteOldFile) throws IOException {
 		System.out.println("Begin filtering layer " + layer.name + "...");
@@ -72,30 +72,34 @@ public class FilterWaysLayer {
 				}
 				neededValues[1] = "";
 			} else {
-				if (layer == Layer.AllLakes || layer == Layer.NamedLakes) {
+				if (layer == Layer.UnnamedLakes || layer == Layer.NamedLakes) {
 					permitEnabled = true;
-					permittedKeys = new String[2];
-					permittedValues = new String[permittedKeys.length];
-					permittedKeys[0] = "k=\"golf\"";
-					permittedKeys[1] = "k=\"waterway\"";
-					permittedValues[0] = "";
-					permittedValues[1] = "";
 					switch (layer) {
-						case AllLakes: {
-							neededKeys = new String[1];
-							neededValues = new String[neededKeys.length];
-							break;
-						}
 						case NamedLakes: {
 							neededKeys = new String[2];
 							neededValues = new String[neededKeys.length];
 							neededKeys[1] = "k=\"name\"";
 							neededValues[1] = "";
+							permittedKeys = new String[2];
+							permittedValues = new String[permittedKeys.length];
+							break;
+						}
+						case UnnamedLakes: {
+							neededKeys = new String[1];
+							neededValues = new String[neededKeys.length];
+							permittedKeys = new String[3];
+							permittedValues = new String[permittedKeys.length];
+							permittedKeys[2] = "k=\"name\"";
+							permittedValues[2] = "";
 							break;
 						}
 					}
 					neededKeys[0] = "k=\"natural\"";
 					neededValues[0] = "v=\"water\"";
+					permittedKeys[0] = "k=\"golf\"";
+					permittedKeys[1] = "k=\"waterway\"";
+					permittedValues[0] = "";
+					permittedValues[1] = "";
 				} else {
 					if (layer == Layer.Motorways || layer == Layer.Primaries || layer == Layer.Secondaries
 							|| layer == Layer.Tertiaries) {

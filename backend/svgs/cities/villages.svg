@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg style="position:absolute;" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
 <defs><rect id="village" fill="red" x="-3" y="-3" width="6" height="6"/></defs>
 <g id="villages">
 <use transform="translate(471.830 188.618)" name="Nordhausen" xlink:href="#village"/>

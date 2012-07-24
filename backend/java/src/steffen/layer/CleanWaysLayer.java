@@ -35,7 +35,7 @@ public class CleanWaysLayer {
 				CleanWaysLayer.tagsToKeep[1] = "k=\"waterway\"";
 				CleanWaysLayer.tagsToKeep[2] = "k=\"name\"";
 			} else {
-				if (layer == Layer.AllLakes || layer == Layer.NamedLakes) {
+				if (layer == Layer.UnnamedLakes || layer == Layer.NamedLakes) {
 					noNodeTags = true;
 					CleanWaysLayer.tagsToKeep = new String[3];
 					CleanWaysLayer.tagsToKeep[0] = "k=\"natural\"";

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg style="position:absolute;" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
 <g id="rivers" fill="none" stroke="black" stroke-width="1">
 <polyline points="195.002,59.760 193.265,59.850 193.166,59.860 192.554,59.856 " name="Weschnitz"/>
 <polyline points="134.961,174.084 136.980,175.260 " name="Becken V"/>

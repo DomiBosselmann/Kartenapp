@@ -1,94 +1,155 @@
 <?php
 
-// Obsolete
-
 if ($_GET) {
 	header("Content-Type: image/svg+xml");
 
+	$decimals = 3;
+	$dec_point = '.';
+	$thousands_sep = '';
+
+	$xmlHeader = '<?xml version="1.0" encoding="UTF-8"?>';
+	$xmlnsNamespace = "http://www.w3.org/2000/svg";
+	$xlinkNamespace = "http://www.w3.org/1999/xlink";
+	$newSVG = new simplexmlelement($xmlHeader . '<svg xmlns="' . $xmlnsNamespace . '" xmlns:xlink="' . $xlinkNamespace . '" />');
+
+	//	$newSVG->addAttribute("style", "position:absolute;");
+	// $newSVG->addAttribute("xmlns", $xmlnsNamespace);
+	// $newSVG->addAttribute("xlink:href", null, $xlinkNamespace);
+
 	// coordinate detection
-	$pixelsPrint = false;
-
-	$koords = "<coords ";
-	if ($pixelsPrint === true) {
-		$pixels = "<pixels ";
-	}
-
+	$coords = $newSVG->addChild("coords");
+	$originLon1 = 7.483968;
+	$originLon2 = 10.51;
+	$originLat1 = 49.8;
+	$originLat2 = 47.578901;
 	if (isset($_GET['lon1'])) {
-		$lon1 = getPixelForLon(doubleval($_GET['lon1']));
-		$koords .= 'lon1="' . $_GET['lon1'] . '" ';
-		if ($pixelsPrint === true) {
-			$pixels .= 'lon1="' . $lon1 . '" ';
+		if ($_GET['lon1'] < $originLon1) {
+			$lon1 = getPixelForLon($originLon1);
+			$lon1Attribute = $originLon1;
+		} else {
+			$lon1 = getPixelForLon($_GET['lon1']);
+			$lon1Attribute = $_GET['lon1'];
 		}
-		$region = true;
 	} else {
-		$lon1 = doubleval(-99999.0);
-		$koords .= 'lon1="7.5117461" ';
+		$lon1 = getPixelForLon($originLon1);
+		$lon1Attribute = $originLon1;
 	}
 	if (isset($_GET['lon2'])) {
-		$lon2 = getPixelForLon(doubleval($_GET['lon2']));
-		$koords .= 'lon2="' . $_GET['lon2'] . '" ';
-		if ($pixelsPrint === true) {
-			$pixels .= 'lon2="' . $lon2 . '" ';
+		if ($_GET['lon2'] > $originLon2) {
+			$lon2 = getPixelForLon($originLon2);
+			$lon2Attribute = $originLon2;
+		} else {
+			$lon2 = getPixelForLon($_GET['lon2']);
+			$lon2Attribute = $_GET['lon2'];
 		}
-		$region = true;
 	} else {
-		$lon2 = doubleval(99999.0);
-		$koords .= 'lon2="10.4954066" ';
+		$lon2 = getPixelForLon($originLon2);
+		$lon2Attribute = $originLon2;
 	}
 	if (isset($_GET['lat1'])) {
-		$lat1 = getPixelForLat(doubleval($_GET['lat1']));
-		$koords .= 'lat1="' . $_GET['lat1'] . '" ';
-		if ($pixelsPrint === true) {
-			$pixels .= 'lat1="' . $lat1 . '" ';
+		if ($_GET['lat1'] > $originLat1) {
+			$lat1 = getPixelForLat($originLat1);
+			$lat1Attribute = $originLat1;
+		} else {
+			$lat1 = getPixelForLat($_GET['lat1']);
+			$lat1Attribute = $_GET['lat1'];
 		}
-		$region = true;
 	} else {
-		$lat1 = doubleval(-99999.0);
-		$koords .= 'lat1="49.7913369" ';
+		$lat1 = getPixelForLat($originLat1);
+		$lat1Attribute = $originLat1;
 	}
 	if (isset($_GET['lat2'])) {
-		$lat2 = getPixelForLat(doubleval($_GET['lat2']));
-		$koords .= 'lat2="' . $_GET['lat2'] . '" ';
-		if ($pixelsPrint === true) {
-			$pixels .= 'lat2="' . $lat2 . '" ';
+		if ($_GET['lat2'] < $originLat2) {
+			$lat2 = getPixelForLat($originLat2);
+			$lat2Attribute = $originLat2;
+		} else {
+			$lat2 = getPixelForLat($_GET['lat2']);
+			$lat2Attribute = $_GET['lat2'];
 		}
-		$region = true;
 	} else {
-		$lat2 = doubleval(99999.0);
-		$koords .= 'lat2="47.5312706" ';
+		$lat2 = getPixelForLat($originLat2);
+		$lat2Attribute = $originLat2;
 	}
-	$koords .= "/>";
-	if ($pixelsPrint === true) {
-		$pixels .= "/>";
-	}
+	$coords->addAttribute("lon1", number_format($lon1Attribute, $decimals, $dec_point, $thousands_sep));
+	$coords->addAttribute("lon2", number_format($lon2Attribute, $decimals, $dec_point, $thousands_sep));
+	$coords->addAttribute("lat1", number_format($lat1Attribute, $decimals, $dec_point, $thousands_sep));
+	$coords->addAttribute("lat2", number_format($lat2Attribute, $decimals, $dec_point, $thousands_sep));
 
 	// width + height detection
-
+	$originWidth = 490.0;
+	$originHeight = 510.0;
+	$extraWidth = 0.0;
+	$extraHeight = 0.0;
 	if (isset($_GET['width'])) {
 		$sizing = true;
 		$width = $_GET['width'];
 	} else {
-		$width = 500.0;
+		$width = $originWidth;
 	}
 	if (isset($_GET['height'])) {
 		$sizing = true;
 		$height = $_GET['height'];
 	} else {
-		$height = 550.0;
+		$height = $originHeight;
+	}
+	if (isset($_GET['custom'])) {
+		$widthFactor = $width / $originWidth;
+		$heightFactor = $height / $originHeight;
+	} else {
+		$lonKm = 100.0;
+		$latKm = 111.32;
+
+		$tryHeight = $width * ($latKm / $lonKm);
+		if ($tryHeight <= $height) {
+			$extraHeight = abs($tryHeight - $height) / 2;
+			$height = $tryHeight;
+		} else {
+			$tryWidth = $height * ($lonKm / $latKm);
+			$extraWidth = abs($tryWidth - $width) / 2;
+			$width = $tryWidth;
+		}
+
+		$widthFactor = $width / ($lon2 - $lon1);
+		$heightFactor = $height / ($lat2 - $lat1);
 	}
 
-	// build the svg
+	// dimensions adding
+	$dimensions = $newSVG->addChild("dimensions");
+	$dimensions->addAttribute("x", number_format($extraWidth, $decimals, $dec_point, $thousands_sep));
+	$dimensions->addAttribute("y", number_format($extraHeight, $decimals, $dec_point, $thousands_sep));
+	$dimensions->addAttribute("width", number_format($width, $decimals, $dec_point, $thousands_sep));
+	$dimensions->addAttribute("height", number_format($height, $decimals, $dec_point, $thousands_sep));
 
-	$begin = '<svg style="position:absolute;" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">';
-	$end = '</svg>';
+	// border adding
+	if (isset($_GET['border'])) {
+		$rect = $newSVG->addChild("rect");
+		$rect->addAttribute("id", "outerBorder");
+		$rect->addAttribute("fill", "none");
+		$rect->addAttribute("stroke", "black");
+		if (isset($_GET['width'])) {
+			$rect->addAttribute("width", number_format($_GET['width'], $decimals, $dec_point, $thousands_sep));
+		} else {
+			$rect->addAttribute("width", number_format($originWidth, $decimals, $dec_point, $thousands_sep));
+		}
+		if (isset($_GET['height'])) {
+			$rect->addAttribute("height", number_format($_GET['height'], $decimals, $dec_point, $thousands_sep));
+		} else {
+			$rect->addAttribute("height", number_format($originHeight, $decimals, $dec_point, $thousands_sep));
+		}
 
-	$file = "";
-	$groupBeginSearchString = '<g';
-	$groupEndSearchString = '</g>';
-	$defsBeginSearchString = '<defs>';
-	$defsEndSearchString = '</defs>';
-	$defs = $defsBeginSearchString;
-	$layer = $_GET['l'];
+		if (!isset($_GET['custom'])) {
+			$rect = $newSVG->addChild("rect");
+			$rect->addAttribute("id", "innerBorder");
+			$rect->addAttribute("fill", "none");
+			$rect->addAttribute("stroke", "black");
+			$rect->addAttribute("x", number_format($extraWidth, $decimals, $dec_point, $thousands_sep));
+			$rect->addAttribute("y", number_format($extraHeight, $decimals, $dec_point, $thousands_sep));
+			$rect->addAttribute("width", number_format($width, $decimals, $dec_point, $thousands_sep));
+			$rect->addAttribute("height", number_format($height, $decimals, $dec_point, $thousands_sep));
+		}
+	}
+
+	// svg building
 	foreach ($_GET as $para => $layer) {
 		switch ($para) {
 			case "lon1":
@@ -130,7 +191,7 @@ if ($_GET) {
 					switch ($layer) {
 						case "b":
 							{
-								$filename .= "bounds/federal.svg";
+								$filename .= "bounds/federal_polygon.svg";
 								break;
 							}
 						case "b1":
@@ -200,7 +261,7 @@ if ($_GET) {
 							}
 						case "w3":
 							{
-								$filename .= "waters/allLakes.svg";
+								$filename .= "waters/unnamedLakes.svg";
 								break;
 							}
 						default:
@@ -210,141 +271,204 @@ if ($_GET) {
 							}
 					}
 					if ($nope === false) {
-						$filecontent = file_get_contents($filename);
-						$defsBegin = stripos($filecontent, $defsBeginSearchString);
-						if ($defsBegin !== false) {
-							$defsPrint = true;
-							$defsEnd = stripos($filecontent, $defsEndSearchString, $defsBegin);
-							$defs .= substr($filecontent, $defsBegin + strlen($defsBeginSearchString), $defsEnd - $defsBegin - strlen($defsBeginSearchString));
-							$filecontent = substr($filecontent, 0, $defsBegin) . substr($filecontent, $defsEnd + strlen($defsEndSearchString));
+						$oldSVG = simplexml_load_file($filename);
+						foreach ($oldSVG->children() as $node0 => $value0) {
+							switch ($node0) {
+								case "defs":
+									{
+										if (!$defs) {
+											$defs = $newSVG->addChild($node0, $value0);
+										}
+										copyAllAttributes($value0, $defs);
+										copyAllChildren($value0, $defs);
+										break;
+									}
+								case "g":
+									{
+										$group = $newSVG->addChild($node0);
+										copyAllAttributes($value0, $group);
+										foreach ($value0->attributes() as $attr0 => $attrValue0) {
+											switch ($attr0) {
+												case "id":
+													{
+														switch ($attrValue0) {
+															case "federal":
+																{
+																	$group->addAttribute("filter", "url(#dropshadow)");
+																	break;
+																}
+														}
+														break;
+													}
+											}
+										}
+										foreach ($value0->children() as $node1 => $value1) {
+											switch ($node1) {
+												case "use":
+													{
+														$keep = false;
+														foreach ($value1->attributes() as $attr1 => $attrValue1) {
+															switch ($attr1) {
+																case "transform":
+																	{
+																		$translate = $attrValue1;
+																		$keep = false;
+																		$begin = stripos($translate, "(") + 1;
+																		$space = stripos($translate, " ", $begin);
+																		$end = stripos($translate, ")", $space);
+																		$lon = doubleval(substr($translate, $begin, $space - $begin));
+																		$lat = doubleval(substr($translate, $space + 1, $end - $space - 1));
+																		unset($value1[transform]);
+																		if (($lon >= $lon1) && ($lon <= $lon2)) {
+																			if (($lat >= $lat1) && ($lat <= $lat2)) {
+																				$keep = true;
+																				$lon = (($lon - $lon1) * $widthFactor) + $extraWidth;
+																				$lat = (($lat - $lat1) * $heightFactor) + $extraHeight;
+																				$newTransform = "translate(" . number_format($lon, $decimals, $dec_point, $thousands_sep) . " " . number_format($lat, $decimals, $dec_point, $thousands_sep) . ")";
+																			}
+																		}
+																		break;
+																	}
+															}
+														}
+														if ($keep === true) {
+															$use = $group->addChild($node1, $value1);
+															copyAllAttributes($value1, $use);
+															$use->addAttribute("transform", $newTransform);
+															copyAllChildren($value1, $use);
+														}
+														break;
+													}
+												case "polyline":
+													{
+														$keep = false;
+														foreach ($value1->attributes() as $attr1 => $attrValue1) {
+															switch ($attr1) {
+																case "points":
+																	{
+																		$points = explode(" ", $attrValue1);
+																		unset($value1[points]);
+																		$newPoints = "";
+																		foreach ($points as $point) {
+																			if ($point != "") {
+																				$comma = strpos($point, ",");
+																				$lon = doubleval(substr($point, 0, $comma));
+																				if (($lon >= $lon1) && ($lon <= $lon2)) {
+																					$lat = doubleval(substr($point, $comma + 1));
+																					if (($lat >= $lat1) && ($lat <= $lat2)) {
+																						$keep = true;
+																						$lon = (($lon - $lon1) * $widthFactor) + $extraWidth;
+																						$lat = (($lat - $lat1) * $heightFactor) + $extraHeight;
+																						$newPoints .= number_format($lon, $decimals, $dec_point, $thousands_sep) . "," . number_format($lat, $decimals, $dec_point, $thousands_sep) . " ";
+																					}
+																				}
+																			}
+																		}
+																		break;
+																	}
+															}
+														}
+														if ($keep === true) {
+															$polyline = $group->addChild($node1, $value1);
+															copyAllAttributes($value1, $group);
+															$polyline->addAttribute("points", $newPoints);
+															copyAllChildren($value1, $group);
+														}
+														break;
+													}
+												case "polygon":
+													{
+														foreach ($value1->attributes() as $attr1 => $attrValue1) {
+															switch ($attr1) {
+																case "points":
+																	{
+																		$points = explode(" ", $attrValue1);
+																		unset($value1[points]);
+																		$newPoints = "";
+																		foreach ($points as $point) {
+																			if ($point != "") {
+																				$comma = strpos($point, ",");
+																				$lon = doubleval(substr($point, 0, $comma));
+																				$lat = doubleval(substr($point, $comma + 1));
+																				if ($lon < $lon1) {
+																					$lon = $lon1;
+																				}
+																				if ($lon > $lon2) {
+																					$lon = $lon2;
+																				}
+																				if ($lat < $lat1) {
+																					$lat = $lat1;
+																				}
+																				if ($lat > $lat2) {
+																					$lat = $lat2;
+																				}
+																				if ((!($lon == $oldLon)) && (!($lat == $oldLat))) {
+																					$oldLon = $lon;
+																					$oldLat = $lat;
+																					$lon = (($lon - $lon1) * $widthFactor) + $extraWidth;
+																					$lat = (($lat - $lat1) * $heightFactor) + $extraHeight;
+																					$newPoints .= number_format($lon, $decimals, $dec_point, $thousands_sep) . "," . number_format($lat, $decimals, $dec_point, $thousands_sep) . " ";
+																				}
+																			}
+																		}
+																		break;
+																	}
+															}
+														}
+														$polygon = $group->addChild($node1, $value1);
+														copyAllAttributes($value1, $group);
+														$polygon->addAttribute("points", $newPoints);
+														copyAllChildren($value1, $group);
+														break;
+													}
+											}
+										}
+										break;
+									}
+							}
 						}
-						$groupBeginn = stripos($filecontent, $groupBeginSearchString);
-						$groupEndd = stripos($filecontent, $groupEndSearchString, $groupBeginn) + strlen($groupEndSearchString);
-						$file .= substr($filecontent, $groupBeginn, $groupEndd - $groupBeginn) . PHP_EOL;
 					}
 					break;
 				}
 		}
 	}
-	$defs .= $defsEndSearchString;
 
-	$nfile = $file;
-	$file = $begin . PHP_EOL . $koords;
-	if ($pixelsPrint === true) {
-		$file .= PHP_EOL . $pixels;
+	// echoing
+	echo $newSVG->asXML();
+}
+
+function copyAllChildren($oldNodeValue, $newNode) {
+	foreach ($oldNodeValue->children() as $node => $value) {
+		$newNodeChild = $newNode->addChild($node, $value);
+		copyAllAttributes($value, $newNodeChild);
+		copyAllChildren($value, $newNodeChild);
 	}
-	$file .= PHP_EOL;
-	if ($defsPrint === true) {
-		$file .= $defs . PHP_EOL;
+	foreach ($oldNodeValue->getNamespaces(true) as $namespace => $namespaceValue) {
+		foreach ($oldNodeValue->children($namespaceValue) as $node => $value) {
+			$newNode->addAttribute($namespace . ":" . $node, $value, $namespaceValue);
+		}
 	}
-	$file .= $nfile . $end;
+}
 
-
-	// filter region of the svg
-	// TODO width+height unterstŸtzen
-	if ($region) {
-		$newfile = $begin . PHP_EOL . $koords;
-		if ($pixelsPrint === true) {
-			$newfile .= PHP_EOL . $pixels;
+function copyAllAttributes($oldNodeValue, $newNode) {
+	foreach ($oldNodeValue->attributes() as $attribute => $attributeValue) {
+		$newNode->addAttribute($attribute, $attributeValue);
+	}
+	foreach ($oldNodeValue->getNamespaces(true) as $namespace => $namespaceValue) {
+		foreach ($oldNodeValue->attributes($namespaceValue) as $attribute => $attributeValue) {
+			$newNode->addAttribute($namespace . ":" . $attribute, $attributeValue, $namespaceValue);
 		}
-		$newfile .= PHP_EOL;
-		if ($defsPrint === true) {
-			$newfile .= $defs . PHP_EOL;
-		}
-
-		$useSearchString = '<use';
-		$polylineSearchString = '<polyline';
-		$translateSearchString = 'translate(';
-		$pointsSearchString = 'points="';
-
-		// groups
-		$groupBegin = stripos($file, $groupBeginSearchString);
-		while ($groupBegin !== false) {
-			$groupEnd = stripos($file, ">", $groupBegin) + 1;
-			$newfile .= substr($file, $groupBegin, $groupEnd - $groupBegin) . PHP_EOL;
-
-			// places with uses
-			$useBegin = stripos($file, $useSearchString, $groupEnd);
-			$groupEnding = stripos($file, $groupEndSearchString, $groupEnd);
-			if (($useBegin !== false) && ($useBegin < $groupEnding)) {
-				while (($useBegin !== false) && ($useBegin < $groupEnding)) {
-					$useEnd = stripos($file, "/>", $useBegin) + 2;
-					$use = substr($file, $useBegin, $useEnd - $useBegin);
-					$print = false;
-					$translateBegin = stripos($use, $translateSearchString) + strlen($translateSearchString);
-					if ($translateBegin !== false) {
-						$translateEnd = stripos($use, ")", $translateBegin) + 1;
-						$translate = substr($use, $translateBegin, $translateEnd - $translateBegin);
-						$space = stripos($translate, " ");
-						if ($space !== false) {
-							$lonCoord = doubleval(substr($translate, 0, $space));
-							if (($lonCoord >= $lon1) && ($lonCoord <= $lon2)) {
-								$latCoord = doubleval(substr($translate, $space + 1));
-								if (($latCoord >= $lat1) && ($latCoord <= $lat2)) {
-									$print = true;
-									if ($sizing === true) {
-										// TODO $translate bearbeiten
-									}
-								}
-							}
-						}
-					}
-					if ($print === true) {
-						$newfile .= "<use " . $translate . substr($use, $translateEnd);
-						//	$newfile .= substr($file, $useBegin, $useEnd - $useBegin) . PHP_EOL;
-					}
-					$useBegin = stripos($file, $useSearchString, $useEnd);
-				}
-			} else {
-				// other with polylines
-				$polylineBegin = stripos($file, $polylineSearchString, $groupEnd);
-				while ($polylineBegin !== false) {
-					$print = false;
-					$polylineEnd = stripos($file, '/>', $polylineBegin) + 2;
-					$pointsBegin = stripos($file, $pointsSearchString, $polylineBegin) + strlen($pointsSearchString);
-					$newline = substr($file, $polylineBegin, $pointsBegin - $polylineBegin);
-					$pointsEnd = stripos($file, '"', $pointsBegin);
-					$points = substr($file, $pointsBegin, $pointsEnd - $pointsBegin);
-					$coordBegin = 0;
-					while ($coordBegin < strlen($points) - 1) {
-						$comma = stripos($points, ",", $coordBegin);
-						$lonCoord = doubleval(substr($points, $coordBegin, $comma - $coordBegin));
-						if (($lonCoord >= $lon1) && ($lonCoord <= $lon2)) {
-							$space = stripos($points, " ", $coordBegin);
-							$latCoord = doubleval(substr($points, $comma + 1, $space - $comma));
-							if (($latCoord >= $lat1) && ($latCoord <= $lat2)) {
-								$print = true;
-								if ($sizing === true) {
-									$newline .= ($lonCoord * (500 / $width)) . "," . ($latCoord * (550 / $height)) . " ";
-								} else {
-									$newline .= $lonCoord . "," . $latCoord . " ";
-								}
-							}
-						}
-						$coordBegin = stripos($points, " ", $coordBegin) + 1;
-					}
-					if ($print === true) {
-						$newline .= substr($file, $pointsEnd, $polylineEnd - $pointsEnd);
-						$newfile .= $newline . PHP_EOL;
-					}
-					$polylineBegin = stripos($file, $polylineSearchString, $polylineEnd);
-				}
-			}
-			$newfile .= $groupEndSearchString . PHP_EOL;
-			$groupBegin = stripos($file, $groupBeginSearchString, $groupEnd);
-		}
-		echo $newfile . $end;
-	} else {
-		echo $file;
 	}
 }
 
 function getPixelForLon($lon) {
-	return ($lon - 7.5) * 164.745;
+	// for 500px
+	return (doubleval($lon) - 7.483968) * 162.675;
 }
 
 function getPixelForLat($lat) {
-	return (-$lat + 49.83) * 235.445;
+	// for 500px
+	return (-1 * doubleval($lat) + 49.83) * 218.716;
 }
 
 ?>

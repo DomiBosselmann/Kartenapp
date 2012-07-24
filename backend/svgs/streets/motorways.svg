@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg style="position:absolute;" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
 <g id="motorways" fill="none" stroke="black" stroke-width="1">
 <polyline points="186.023,61.103 186.061,61.501 186.095,61.753 " mw_ref="A5"/>
 <polyline points="186.666,51.485 186.005,47.579 185.782,47.104 " mw_ref="A5"/>

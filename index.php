@@ -14,6 +14,7 @@
 	<head>
 		<title>Die Karte</title>
 		<link rel="stylesheet" href="styles/main.css" />
+		<link rel="stylesheet" href="styles/map.css" />
 		<script type="application/javascript" src="scripts/map.js"></script>
 		<script type="application/javascript" src="scripts/filter.js"></script>
 		<meta charset="utf-8" />
@@ -22,12 +23,12 @@
 		<aside>
 			<section id="flaglist">
 				<nav id="toolbar">
-					<button title="Route oder Punkt hinzufügen" accesskey="a"><img src="images/add.svg" alt="Route oder Punkt hinzufügen" height="15" /></button>
+					<button title="Route oder Punkt hinzufügen"><img src="images/add.svg" alt="Route oder Punkt hinzufügen" height="15" /></button>
 					<section class="group">
 						<button title="Sichern" class="rightside"><img src="images/save.svg" alt="Sichern" height="15" /></button>
 						<button title="Exportieren" class="rightside"><img src="images/export.svg" alt="Exportieren" height="15" /></button>
 						<button title="Importieren" class="rightside"><img src="images/import.svg" alt="Importieren" height="15" /></button>
-						<button title="Suchen" class="rightside" id="searchbutton" accesskey="f"><img src="images/search.svg" alt="Suchen" height="15" /></button>
+						<button title="Suchen" class="rightside" id="searchbutton"><img src="images/search.svg" alt="Suchen" height="15" /></button>
 					</section>
 					<input type="search" name="searchField" id="searchField" placeholder="Suchen" />
 					<p id="newFlagTooltip">Auf die Karte klicken, um Ort hinzuzufügen</p>
@@ -64,15 +65,25 @@
 			</form>
 		</aside>
 		<section id="mapcontainer">
-			<svg width="1000" height="1000"><!-- Defs clientseitig! -->
+			<svg width="1000" height="1000" id="map">
 				<defs>
+					<filter id="dropshadow">
+				    	<feGaussianBlur result="blurOut" in="SourceAlpha" stdDeviation="2" />
+				    	<feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+				    </filter>
+				    <filter id="streetShadow">
+				    	<feGaussianBlur result="blurOut" in="SourceAlpha" stdDeviation="0.2" />
+				    	<feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+				    </filter>
+				    <clippath id="borderClip">
+				    </clippath>
 					<g id="pin">
 						<path d="M 0 0 q -15 -155 -100 -175 l 200 000 q -85 20 -100 175" stroke="black" stroke-width="5" fill="silver" />
 						<ellipse cx="0" cy="-200" rx="120" ry="45" style="fill:grey;stroke:black;stroke-width:5" />
 						<ellipse cx="0" cy="-225" rx="90" ry="30" style="fill:grey;stroke:black;stroke-width:5" />
 						<ellipse cx="0" cy="-250" rx="60" ry="20" style="fill:grey;stroke:black;stroke-width:5" />
 						<ellipse cx="0" cy="-270" rx="30" ry="10" style="fill:grey;stroke:black;stroke-width:5" />			
-					</g>			
+					</g>		
 				</defs>
 				<g id="flags">
 				</g>

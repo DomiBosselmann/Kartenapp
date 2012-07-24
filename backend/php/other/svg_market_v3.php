@@ -137,11 +137,6 @@ if ($_GET) {
 					switch ($layer) {
 						case "b":
 							{
-								$filename .= "bounds/federal.svg";
-								break;
-							}
-						case "bp":
-							{
 								$filename .= "bounds/federal_polygon.svg";
 								break;
 							}
@@ -291,20 +286,14 @@ if ($_GET) {
 							}
 						}
 						if ($region === true) {
-							$newLonCoord = $lonCoord - $lon1;
-							$newLatCoord = $latCoord - $lat1;
-							$newLonCoord *= $widthFactor;
-							$newLatCoord *= $heightFactor;
-							$newLonCoord += $extraWidth;
-							$newLatCoord += $extraHeight;
+							$newLonCoord = (($lonCoord - $lon1) * $widthFactor) + $extraWidth;
+							$newLatCoord = (($latCoord - $lat1) * $heightFactor) + $extraHeight;
 							$translate = str_replace($lonCoord, number_format($newLonCoord, 3, '.', ''), $translate);
 							$translate = str_replace($latCoord, number_format($newLatCoord, 3, '.', ''), $translate);
 						} else {
 							if ($sizing === true) {
-								$newLonCoord = $lonCoord * $widthFactor;
-								$newLatCoord = $latCoord * $heightFactor;
-								$newLonCoord += $extraWidth;
-								$newLatCoord += $extraHeight;
+								$newLonCoord = ($lonCoord * $widthFactor) + $extraWidth;
+								$newLatCoord = ($latCoord * $heightFactor) + $extraHeight;
 								$translate = str_replace($lonCoord, number_format($newLonCoord, 3, '.', ''), $translate);
 								$translate = str_replace($latCoord, number_format($newLatCoord, 3, '.', ''), $translate);
 							}
@@ -337,12 +326,8 @@ if ($_GET) {
 							if (($lonCoord >= $lon1) && ($lonCoord <= $lon2)) {
 								if (($latCoord >= $lat1) && ($latCoord <= $lat2)) {
 									$print = true;
-									$newLonCoord = $lonCoord - $lon1;
-									$newLatCoord = $latCoord - $lat1;
-									$newLonCoord *= $widthFactor;
-									$newLatCoord *= $heightFactor;
-									$newLonCoord += $extraWidth;
-									$newLatCoord += $extraHeight;
+									$newLonCoord = (($lonCoord - $lon1) * $widthFactor) + $extraWidth;
+									$newLatCoord = (($latCoord - $lat1) * $heightFactor) + $extraHeight;
 									$newline .= number_format($newLonCoord, 3, '.', '') . "," . number_format($newLatCoord, 3, '.', '') . " ";
 								}
 							}
@@ -380,57 +365,73 @@ if ($_GET) {
 							$space = stripos($points, " ", $coordBegin);
 							$lonCoord = doubleval(substr($points, $coordBegin, $comma - $coordBegin));
 							$latCoord = doubleval(substr($points, $comma + 1, $space - $comma));
-							// 							if ($region === true) {
-							// 								if (($lonCoord >= $lon1) && ($lonCoord <= $lon2)) {
-							// 									if (($latCoord >= $lat1) && ($latCoord <= $lat2)) {
-							// 										$print = true;
-							// 										$newLonCoord = $lonCoord - $lon1;
-							// 										$newLatCoord = $latCoord - $lat1;
-							// 										$newLonCoord *= $widthFactor;
-							// 										$newLatCoord *= $heightFactor;
-							// 										$newLonCoord += $extraWidth;
-							// 										$newLatCoord += $extraHeight;
-							// 										$newline .= number_format($newLonCoord, 3, '.', '') . "," . number_format($newLatCoord, 3, '.', '') . " ";
-							// 									}
-							// 								}
-							// 							} else {
-							// 								if ($sizing === true) {
-							// 									$newLonCoord = ($lonCoord * $widthFactor) + $extraWidth;
-							// 									$newLatCoord = ($latCoord * $heightFactor) + $extraHeight;
-							// 									$newline .= number_format($newLonCoord, 3, '.', '') . "," . number_format($newLatCoord, 3, '.', '') . " ";
-							// 								} else {
-							// 									$newline .= $lonCoord . "," . $latCoord . " ";
-							// 								}
-							// 							}
-							$coordBegin = stripos($points, " ", $coordBegin) + 1;
+							if ($region === true) {
+								if ($lonCoord < $lon1) {
+									$newLonCoord = $lon1;
+								} else {
+									if ($lonCoord > $lon2) {
+										$newLonCoord = $lon2;
+									} else {
+										$newLonCoord = $lonCoord;
+									}
+								}
+								if ($latCoord < $lat1) {
+									$newLatCoord = $lat1;
+								} else {
+									if ($latCoord > $lat2) {
+										$newLatCoord = $lat2;
+									} else {
+										$newLatCoord = $latCoord;
+									}
+								}
+								$newLonCoord = (($newLonCoord - $lon1) * $widthFactor) + $extraWidth;
+								$newLatCoord = (($newLatCoord - $lat1) * $heightFactor) + $extraHeight;
+								$newLonCoord = number_format($newLonCoord, 3, '.', '');
+								$newLatCoord = number_format($newLatCoord, 3, '.', '');
+								if ((!($newLonCoord == $oldLonCoord) && !($newLatCoord == $oldLatCoord))) {
+									$print = true;
+									$oldLonCoord = $newLonCoord;
+									$oldLatCoord = $newLatCoord;
+									$newline .= $newLonCoord . "," . $newLatCoord . " ";
+								}
+							} else {
+								if ($sizing === true) {
+									$newLonCoord = ($lonCoord * $widthFactor) + $extraWidth;
+									$newLatCoord = ($latCoord * $heightFactor) + $extraHeight;
+									$newline .= number_format($newLonCoord, 3, '.', '') . "," . number_format($newLatCoord, 3, '.', '') . " ";
+								} else {
+									$newline .= $lonCoord . "," . $latCoord . " ";
+								}
+							}
+							$coordBegin = $space + 1;
+						}
+						if (($region === false ) || ($print === true)) {
+							$newline .= substr($file, $pointsEnd, $polygonEnd - $pointsEnd);
+							$newfile .= $newline . PHP_EOL;
+						}
+						$polygonBegin = stripos($file, $polygonSearchString, $polygonEnd);
 					}
-					if (($region === false ) || ($print === true)) {
-						$newline .= substr($file, $pointsEnd, $polygonEnd - $pointsEnd);
-						$newfile .= $newline . PHP_EOL;
-					}
-					$polygonBegin = stripos($file, $polygonSearchString, $polygonEnd);
 				}
 			}
 		}
+		$newfile .= $groupEndSearchString . PHP_EOL;
+		$groupBegin = stripos($file, $groupBeginSearchString, $groupEnd);
 	}
-	$newfile .= $groupEndSearchString . PHP_EOL;
-	$groupBegin = stripos($file, $groupBeginSearchString, $groupEnd);
-}
 
-if (isset($_GET['border'])) {
-	if (isset($_GET['custom'])) {
-		$newfile .= '<polyline id="outer" fill="none" stroke="black" points="0,0 ' . $_GET['width'] . ',0 ' . $_GET['width'] . ',' . $_GET['height'] . ' 0,' . $_GET['height'] . ' 0,0"' . ' />' . PHP_EOL;
-	} else {
-		$zeroWidth = $extraWidth;
-		$zeroHeight = $extraHeight;
-		$svgWidth = $width + $extraWidth;
-		$svgHeight = $height + $extraHeight;
-		$newfile .= '<polyline id="inner" fill="none" stroke="black" points="' . $zeroWidth . ',' . $zeroHeight . ' ' . $svgWidth . ',' . $zeroHeight . ' ' . $svgWidth . ',' . $svgHeight . ' ' . $zeroWidth . ',' . $svgHeight . ' ' . $zeroWidth . ',' . $zeroHeight . '"' . ' />' . PHP_EOL;
-		$newfile .= '<polyline id="outer" fill="none" stroke="black" points="0,0 ' . $_GET['width'] . ',0 ' . $_GET['width'] . ',' . $_GET['height'] . ' 0,' . $_GET['height'] . ' 0,0"' . ' />' . PHP_EOL;
+	if (isset($_GET['border'])) {
+		if (isset($_GET['custom'])) {
+			$newfile .= '<polyline id="outer" fill="none" stroke="black" points="0,0 ' . $_GET['width'] . ',0 ' . $_GET['width'] . ',' . $_GET['height'] . ' 0,' . $_GET['height'] . ' 0,0"' . ' />' . PHP_EOL;
+		} else {
+			$zeroWidth = $extraWidth;
+			$zeroHeight = $extraHeight;
+			$svgWidth = $width + $extraWidth;
+			$svgHeight = $height + $extraHeight;
+			$newfile .= '<polyline id="inner" fill="none" stroke="black" points="' . $zeroWidth . ',' . $zeroHeight . ' ' . $svgWidth . ',' . $zeroHeight . ' ' . $svgWidth . ',' . $svgHeight . ' ' . $zeroWidth . ',' . $svgHeight . ' ' . $zeroWidth . ',' . $zeroHeight . '"' . ' />' . PHP_EOL;
+			$newfile .= '<polyline id="outer" fill="none" stroke="black" points="0,0 ' . $_GET['width'] . ',0 ' . $_GET['width'] . ',' . $_GET['height'] . ' 0,' . $_GET['height'] . ' 0,0"' . ' />' . PHP_EOL;
+		}
 	}
-}
 
-echo $newfile . $end;
+	echo $newfile . $end;
 }
 
 function getPixelForLon($lon) {

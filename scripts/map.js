@@ -2,16 +2,31 @@ window.Karte = (function () {
 	var loggedin = undefined;
 
 	var constants = {
-		url : "http://karte.localhost/backend/php/svg_market.php",
-		loginURL : "http://karte.localhost/backend/login/login.php"
+		locations : {
+			maps : "http://karte.localhost/backend/php/svg_market.php",
+			login : "http://karte.localhost/backend/login/login.php",
+			save : "http://karte.localhost/backend/php/save.php",
+			import : "http://karte.localhost/backend/php/import.php",
+			export : "http://karte.localhost/backend/php/export.php"
+		},
+		math : {
+			epsilon : Number.MIN_VALUE // Viele Grüße Herr Gröll!
+		}
 	};
 	
 	var map = {
+		isLoaded : false,
+		inInvalid : false,
+		isInitital : true,
 		dimensions : {
 			width : undefined,
 			height : undefined,
 			maxWidth : undefined,
-			maxHeight : undefined
+			maxHeight : undefined,
+			currentWidth : undefined,
+			currentHeight : undefined,
+			x : undefined,
+			y : undefined
 		},
 		coordinates : {
 			topLeft: [],
@@ -23,41 +38,17 @@ window.Karte = (function () {
 			zoomLevelValue : undefined,
 			unit : "km",
 			scalerX : null,
-			scalablesX : []
+			scalablesX : [],
+			scaleFactor : 1,
+			scalable : true
+		},
+		panning : {
+			x : 0,
+			y : 0,
+			startX : 0,
+			startY : 0,
 		},
 		layers : {
-			roads : {
-				name : "Straßen",
-				visible : true,
-				paramName : undefined,
-				sub : {
-					motorways : {
-						name : "Autobahnen",
-						visible : true,
-						paramName : "s",
-						layerName : "motorways"
-					},
-					federal : {
-						name : "(Bundesstraßen & Kraftfahrstraßen)",
-						visible : false,
-						paramName : "s2",
-						layerName : "primaries"
-					},
-					
-					landesstrasse : {
-						name : "Landesstraße",
-						visible : false,
-						paramName : "s3",
-						layerName : "secondaries"
-					},
-					kreisstrasse : {
-						name : "Kreisstraße",
-						visible : false,
-						paramName : "s4",
-						layerName : "tertiaries"
-					}
-				}
-			},
 			places : {
 				name : "Städte",
 				visible : true,
@@ -66,31 +57,36 @@ window.Karte = (function () {
 						name : "Städte",
 						visible : true,
 						paramName : "c",
-						layerName : "cities"
+						layerName : "cities",
+						zIndex : 15
 					},
 					towns : {
 						name : "(Dörfer)",
 						visible : false,
 						paramName : "c1",
-						layerName : "towns"
+						layerName : "towns",
+						zIndex : 14
 					},
 					villages : {
 						name : "(Kuhdörfer)",
 						visible : false,
 						paramName : "c2",
-						layerName : "villages"
+						layerName : "villages",
+						zIndex : 13
 					},
 					hamlets : {
 						name : "(Kaffs)",
 						visible : false,
 						paramName : "c3",
-						layerName : "hamlets"
+						layerName : "hamlets",
+						zIndex : 12
 					},
 					suburbs : {
 						name : "(Bauernhof)",
 						visible : false,
 						paramName : "c4",
-						layerName : "suburbs"
+						layerName : "suburbs",
+						zIndex : 11
 					}
 				}
 			},
@@ -103,44 +99,86 @@ window.Karte = (function () {
 						name : "Bundesländer",
 						visible : true,
 						paramName : "b",
-						layerName : "federal"
+						layerName : "federal",
+						zIndex : 1
 					},
 					counties : {
 						name : "Landkreise",
 						visible : false,
 						paramName : "b1",
-						layerName : "counties"
+						layerName : "counties",
+						zIndex : 2
+					}
+				}
+			},
+			roads : {
+				name : "Straßen",
+				visible : true,
+				paramName : undefined,
+				sub : {
+					motorways : {
+						name : "Autobahnen",
+						visible : true,
+						paramName : "s",
+						layerName : "motorways",
+						zIndex : 10
+					},
+					federal : {
+						name : "(B&K)",
+						visible : false,
+						paramName : "s1",
+						layerName : "primaries",
+						zIndex : 9
+					},
+					
+					landesstrasse : {
+						name : "Landesstraße",
+						visible : false,
+						paramName : "s2",
+						layerName : "secondaries",
+						zIndex : 8
+					},
+					kreisstrasse : {
+						name : "Kreisstraße",
+						visible : false,
+						paramName : "s3",
+						layerName : "tertiaries",
+						zIndex : 7
 					}
 				}
 			},
 			waters : {
 				name : "Gewässer",
-				visible : true,
+				visible : false,
 				paramName : undefined,
 				sub : {
 					rivers : {
 						name : "Flüsse",
 						visible : true,
 						paramName : "w",
-						layerName : "rivers"
+						layerName : "rivers",
+						zIndex : 6
 					},
 					canals : {
 						name : "Kanäle",
 						visible : false,
 						paramName : "w1",
-						layerName : "canals"
+						layerName : "canals",
+						zIndex : 5
 					},
 					namedLakes : {
 						name : "Seen",
 						visible : false,
 						paramName : "w2",
-						layerName : "namedLakes"
+						layerName : "namedLakes",
+						zIndex : 4
 					},
 					allLakes : {
 						name : "(Seen)",
 						visible : false,
 						paramName : "w3",
-						layerName : "allLakes"
+						layerName : "allLakes",
+						zIndex : 3
 					}
 				}
 			}
@@ -151,7 +189,7 @@ window.Karte = (function () {
 				visible : true,
 				note : "Mein Zuhause",
 				coordinates : [],
-				pinReference : undefined,
+				flagReference : undefined,
 				listReference : undefined
 			},
 			{
@@ -159,7 +197,7 @@ window.Karte = (function () {
 				visible : true,
 				note : "Meine Uni",
 				coordinates : [],
-				pinReference : undefined,
+				flagReference : undefined,
 				listReference : undefined
 			},
 			{
@@ -167,7 +205,7 @@ window.Karte = (function () {
 				visible : true,
 				note : "Mein Lieblingsfernsehsender",
 				coordinates : [],
-				pinReference : undefined,
+				flagReference : undefined,
 				listReference : undefined
 			},
 			{
@@ -175,7 +213,7 @@ window.Karte = (function () {
 				visible : true,
 				note : "Mein Arbeitsplatz",
 				coordinates : [],
-				pinReference : undefined,
+				flagReference : undefined,
 				listReference : undefined
 			},
 		],
@@ -189,7 +227,7 @@ window.Karte = (function () {
 				listReference : undefined
 			}
 		]
-	}
+	};
 	
 	var controller = {
 		uiElements : {
@@ -234,11 +272,11 @@ window.Karte = (function () {
 			this.uiElements.loginForm = document.getElementById("login");
 			
 			// EventListener hinzufügen
-			this.uiElements.addButton.addEventListener("click", this.handler.enableAddSelection, false);
+			this.uiElements.addButton.addEventListener("click", this.handler.flags.enableNewFlagMask, false);
 			this.uiElements.searchButton.addEventListener("click", this.handler.handleSearch, false);
-			this.uiElements.exportButton.addEventListener("click", function (e) { console.log(e); }, false);
-			this.uiElements.importButton.addEventListener("click", function (e) { console.log(e); }, false);
-			this.uiElements.saveButton.addEventListener("click", function (e) { console.log(e); }, false);
+			this.uiElements.exportButton.addEventListener("click", this.handler.export.perform, false);
+			this.uiElements.importButton.addEventListener("click", this.handler.import.enable, false);
+			this.uiElements.saveButton.addEventListener("click", this.save, false);
 			
 			this.uiElements.searchField.addEventListener("keyup", controller.handler.handleSearchInput, false);
 			this.uiElements.searchField.addEventListener("keydown", controller.handler.handleSearchInput, false);
@@ -246,6 +284,9 @@ window.Karte = (function () {
 			this.uiElements.mapScaler.addEventListener("mousedown", this.handler.enableScaling, false);
 			
 			this.uiElements.map.addEventListener("mousedown", this.handler.enablePanning, false);
+			
+			this.uiElements.map.addEventListener("MozMousePixelScroll", this.handler.scaleViaMouse, false);
+			this.uiElements.map.addEventListener("mousewheel", this.handler.scaleViaMouse, false);
 			
 			this.uiElements.loginForm.addEventListener("submit", this.handler.performLogin, false);
 			
@@ -300,7 +341,7 @@ window.Karte = (function () {
 			
 			// Automatische UI-Änderungen
 			map.scaling.observe("value",function (event) {
-				controller.uiElements.mapScaleText.textContent = Math.round(event.data * 100) / 100 + map.scaling.unit;
+				controller.uiElements.mapScaleText.textContent = event.data === Number.POSITIVE_INFINITY ? "Ungültiger Maßstab" : event.data.toFixed(2) + map.scaling.unit;
 			});
 			
 			// Benötigte Layer bestimmen
@@ -310,7 +351,7 @@ window.Karte = (function () {
 				if (map.layers.hasOwnProperty(type) && map.layers[type].visible) {
 					for (subtype in map.layers[type].sub) {
 						if (map.layers[type].sub.hasOwnProperty(subtype) && map.layers[type].sub[subtype].visible && map.layers[type].sub[subtype].paramName !== undefined) {
-							layers.push(map.layers[type].sub[subtype].paramName);
+							layers[map.layers[type].sub[subtype].zIndex] = map.layers[type].sub[subtype].paramName;
 						}
 					}
 				}
@@ -326,6 +367,9 @@ window.Karte = (function () {
 			
 			// Ansichten anzeigen
 			sideView.render();
+			
+			// Tastatur-Navigation einrichten
+			document.addEventListener("keyup", controller.handler.keyboardNavigation, false);
 		},
 		handler : {
 			handleSearch : function (event) {
@@ -352,6 +396,7 @@ window.Karte = (function () {
 					}
 				} else if (event.type === "keyup") {
 					controller.handler.performSearch();
+					event.stopPropagation();
 				}
 			},
 			performSearch : function (event) {
@@ -396,7 +441,14 @@ window.Karte = (function () {
 			handleScaling : function (event) {
 				// Aktuellen Maßstab berechnen
 				var diff = event.pageX - map.scaling.scalerX;
-				var scaleValue = Math.round((map.scaling.value/Math.abs(100 - diff)) * 10000) / 100;
+				if (diff >= 100) {
+					map.scaling.isScalable = false;
+					diff = 100 - constants.math.epsilon;
+				} else {
+					map.scaling.isScalable = true;	
+				}
+				
+				var scaleValue = (map.scaling.value/Math.abs(100 - diff)) * 100;
 			
 				// Karte skalieren
 				
@@ -406,8 +458,10 @@ window.Karte = (function () {
 				var transform = "translate(%d)",
 					transformValue;
 				
-				console.log(scaleValue);
-				controller.uiElements.mapScaleText.textContent = scaleValue + map.scaling.unit;
+				// Zoom-Level wegschreiben
+				map.scaling.scaleFactor = map.scaling.zoomLevelValue / scaleValue;
+				
+				controller.uiElements.mapScaleText.textContent = scaleValue === Number.POSITIVE_INFINITY ? "Ungültiger Maßstab" : scaleValue.toFixed(2) + map.scaling.unit;
 				
 				var length = controller.uiElements.scalables.length;
 				
@@ -417,13 +471,22 @@ window.Karte = (function () {
 				}
 			},
 			finishScaling : function (event) {
-				var diff = event.pageX - map.scaling.scalerX
-				map.scaling.value = (map.scaling.value/Math.abs(100 - diff)) * 100;
+				if (map.scaling.isScalable) {
+					// Die Karte ist noch darstellbar und deshalb kann der Zoom-Vorgang abgeschlossen werden
+					
+					var diff = event.pageX - map.scaling.scalerX
+					map.scaling.value = (map.scaling.value/Math.abs(100 - diff)) * 100;
+					
+					// Bei Bedarf neue Daten laden — TODO: Bedarf ermitteln
+									
+				} else {
+					// Die Karte ist nicht mehr darstellbar, der Zoom-Vorgang wird unterbrochen und zurückgesetzt
+					controller.uiElements.mapScaleText.textContent = map.scaling.value.toFixed(2) + map.scaling.unit;
+					renderer.zoom(map.scaling.zoomLevelValue, map.scaling.value);
+				}
 				
-				// Bei Bedarf neue Daten laden — TODO: Bedarf ermitteln
-								
 				// Maßstab-UI anpassen
-				
+					
 				controller.uiElements.mapScale.setAttribute("class","finishScaling");
 								
 				window.setTimeout(function () {
@@ -436,27 +499,38 @@ window.Karte = (function () {
 
 				
 				document.removeEventListener("mousemove", controller.handler.handleScaling, false);
+				document.removeEventListener("mouseup", controller.handler.finishScaling, false);
+			},
+			scaleViaMouse : function (event) {
+				var delta = event.wheelDelta || -event.detail;
+				var newScaleValue = (map.scaling.value/Math.abs(100 - delta)) * 100;
+				
+				map.scaling.value = newScaleValue;
+				
+				map.scaling.scaleFactor = map.scaling.zoomLevelValue / newScaleValue;
+				renderer.zoom(map.scaling.zoomLevelValue, map.scaling.value);
+				
 			},
 			enablePanning : function (event) {
-				controller.tmp.pan.startX = event.pageX - controller.tmp.pan.left;
-				controller.tmp.pan.startY = event.pageY - controller.tmp.pan.top;
+				map.panning.startX = event.pageX - map.panning.x;
+				map.panning.startY = event.pageY - map.panning.y;
 			
 				document.addEventListener("mousemove", controller.handler.handlePanning, false);
 				document.addEventListener("mouseup", controller.handler.finishPanning, false);
 			},
 			handlePanning : function (event) {
-				controller.tmp.pan.left = event.pageX - controller.tmp.pan.startX;
-				controller.tmp.pan.top = event.pageY - controller.tmp.pan.startY;
-				
-				renderer.pan(controller.tmp.pan.left, controller.tmp.pan.top);
+				map.panning.x = event.pageX - map.panning.startX;
+				map.panning.y = event.pageY - map.panning.startY;
+								
+				renderer.pan(map.panning.x, map.panning.y);				
 			},
 			finishPanning : function (event) {
-				controller.tmp.pan.left = event.pageX - controller.tmp.pan.startX;
-				controller.tmp.pan.top = event.pageY - controller.tmp.pan.startY;
+				map.panning.x = event.pageX - map.panning.startX;
+				map.panning.y = event.pageY - map.panning.startY;
 				
 				// EventListener wieder entfernen
 				document.removeEventListener("mousemove", controller.handler.handlePanning, false);
-				document.removeEventListener("mouseup", controller.handler.finsihPanning, false);
+				document.removeEventListener("mouseup", controller.handler.finishPanning, false);
 			},
 			setVisibility : function (event, object) {
 				object.visible = object.visible ? false : true;
@@ -465,221 +539,470 @@ window.Karte = (function () {
 				renderer.filter(object, !object.visible);
 			},
 			loadMap : function (event) {
-				//console.log(event.textData);
 				var data = event.data,
-					coordinates = data.getElementsByTagName("coords")[0];
+					coordinates = data.getElementsByTagName("coords")[0],
+					dimensions = data.getElementsByTagName("dimensions")[0];
 				
-				// Koordinaten auslesen
+				// Metadaten auslesen
 				map.coordinates.topLeft = [parseFloat(coordinates.getAttribute("lat1")), parseFloat(coordinates.getAttribute("lon1"))];
 				map.coordinates.bottomRight = [parseFloat(coordinates.getAttribute("lat2")), parseFloat(coordinates.getAttribute("lon2"))];
+				map.dimensions.x = parseFloat(dimensions.getAttribute("x"));
+				map.dimensions.y = parseFloat(dimensions.getAttribute("y"));
+				map.dimensions.currentWidth = parseFloat(dimensions.getAttribute("width"));
+				map.dimensions.currentHeight = parseFloat(dimensions.getAttribute("height"));
 				//map.coordinates.center = [(map.coordinates.topLeft[0] - map.coordinates.bottomRight[0])/2 + map.coordinates.topLeft[0], (map.coordinates.topLeft[1] - map.coordinates.bottomRight[1])/2 + map.coordinates.topLeft[1]];
 				
+				if (map.isInvalid) {
+					// Detaillevel hat sich geändert, altes Kartenrendering muss entfernt werden und neu gerendert werden.
+				}
+
+				
 				// Maßstab neu berechnen
-				map.scaling.value = units.geoCoordinatesToDistance(map.coordinates.topLeft, map.coordinates.bottomRight) / map.dimensions.width * 100;
-				map.scaling.zoomLevelValue = map.scaling.value;
+				var scaleFactor = map.scaling.scaleFactor;
+				map.scaling.zoomLevelValue = units.geoCoordinatesToDistance(map.coordinates.topLeft, map.coordinates.bottomRight) / map.dimensions.currentWidth * 100;
+				map.scaling.value = map.scaling.zoomLevelValue / map.scaling.scaleFactor;
+				
+				console.log(scaleFactor, map.scaling.value);
 									
 				// Renderer anstoßen
 				renderer.start(data);
+				
+				map.isInitial = false;
 			},
-			enableAddSelection : function (event) {
-				var container = document.createElement("ul");
-				var newPlace = document.createElement("li");
-				var newRoute = document.createElement("li");
-				
-				container.id = "addSelectionMask";
-				
-				newPlace.textContent = "Neuer Ort";
-				newPlace.addEventListener("click", controller.handler.newFlag, false);
-				
-				newRoute.textContent = "Neue Route";
-				newRoute.addEventListener("click", controller.handler.newRoute, false);
-				
-				container.appendChild(newPlace);
-				container.appendChild(newRoute);
-				
-				document.body.appendChild(container); // Einbindung ändern
-				
-				event.stopPropagation();
-				
-				document.addEventListener("click", controller.handler.handleAddSelection, false);
-			},
-			newFlag : function (event) {
-				controller.uiElements.toolbar.className = "addFlagEnabled";
-				controller.uiElements.mapRoot.addEventListener("click", controller.handler.newPlace, false);
-				
-				document.addEventListener("keyup", controller.handler.abortAddNewFlag, false);
-			},
-			newPlace : function (event) {
-				if (event.currentTarget !== event.target) { // Event war im Zeichenbereich von Bawü
-					var pinObject;
-					var altKey = event.altKey;
-					var pin = document.createElementNS( "http://www.w3.org/2000/svg", "use");
+			flags : {
+				listReference : undefined,
+				flagReference : undefined,
+				pinReferences : [],
+				x : undefined,
+				y : undefined,
+				altKey : undefined,
+				flagObject : undefined,
+				panningDiffX : undefined,
+				panningDiffY : undefined,
+				isAddingAllowed : true,
+				enableNewFlagMask : function (event) {
+					var container = document.createElement("ul");
+					var newPlace = document.createElement("li");
+					var newRoute = document.createElement("li");
+					
+					container.id = "addSelectionMask";
+					
+					newPlace.textContent = "Neuer Ort";
+					newPlace.addEventListener("click", controller.handler.flags.enableAddNewPlace, false);
+					
+					newRoute.textContent = "Neue Route";
+					newRoute.addEventListener("click", controller.handler.flags.enableAddNewRoute, false);
+					
+					container.appendChild(newPlace);
+					container.appendChild(newRoute);
+					
+					document.body.appendChild(container); // Einbindung ändern
+					
+					event.stopPropagation();
+					
+					document.addEventListener("click", controller.handler.flags.checkNewFlagMask, false);
+				},
+				checkNewFlagMask : function (event) {
+					if (event.currentTarget !== document.getElementById("addSelectionMask") || event.keyCode === 27) {
+						controller.handler.flags.disableNewFlagMask();
+					}
+				},
+				disableNewFlagMask : function () {
+					document.body.removeChild(document.getElementById("addSelectionMask"));
+					document.removeEventListener("click", controller.handler.flags.checkNewFlagMask, false);
+				},
+				enableAddNewFlag : function (event) {
+					controller.uiElements.toolbar.className = "addFlagEnabled";
+					document.addEventListener("keyup", controller.handler.flags.checkAddNewFlag, false);
+				},
+				performAddNewPin : function (event, isRoute) {
+					if (event.currentTarget === event.target) { // Event war nicht im Zeichenbereich von Bawü
+						return false;
+					}
+					
+					if (("SVGElementInstance" in window && event.target instanceof SVGElementInstance && event.target.correspondingUseElement.parentNode === renderer.flags) || event.target.parentNode === renderer.flags) { // War der Klick auf einem Flag? (Variante 1 für Webkit, 2 für FF)
+						return false;
+					}
+					
+					var pinReference = isRoute ? controller.handler.flags.pinReferences[controller.handler.flags.pinReferences.length] : controller.handler.flags.flagReference;
+					
+					pinReference = document.createElementNS("http://www.w3.org/2000/svg", "use");
 					
 					// 1 Für Chrome + Safarie 2 für FF
-					var x = event.offsetX ? event.offsetX : event.layerX;
-					var y = event.offsetY ? event.offsetY : event.layerY;
+					controller.handler.flags.x = event.offsetX ? event.offsetX : event.layerX;
+					controller.handler.flags.y = event.offsetY ? event.offsetY : event.layerY;
 					
-					renderer.drawPin(pin, x, y);
+					if (isRoute) {
+						renderer.drawRoute(pinReference, controller.handler.flags.x, controller.handler.flags.y, controller.handler.flags.flagReference);
+					} else {
+						renderer.drawPin(pinReference, controller.handler.flags.x, controller.handler.flags.y);
+					}
 					
-					pin.setAttribute("class", "hover");
+					pinReference.setAttribute("class", "hover");
 					
-					/*pin.addEventListener("click", function(e) {
-						//Verhindere, dass das Event im SVG Element ausgelößt wird
-						e.stopPropagation();
-					});*/
-				
-					var newPlace = document.createElement("li");
-					newPlace.addEventListener("keypress", function (event) {
-						if (event.keyCode === 13) {
-							// Es war ein Enter
-							newPlace.blur();
-							pin.removeAttribute("class");
-							newPlace.contentEditable = false;
-							
-							// Neuen Ort wegschreiben
-							pinObject = {
-								name : newPlace.textContent,
-								visible : true,
-								note : "",
-								coordinates : units.pixelCoordinateToGeoCoordinate(x, y),
-								pinReference : pin,
-								listReference : newPlace
-							};
-							
-							var pinID = map.places.push(pinObject);
-							
-							// Pin mit ID versehen
-							pin.setAttribute("data-interimPinID", pinID);
-							event.target.setAttribute("data-interimPinID", pinID);
-							
-							pin.addEventListener("mouseover", function (event) {
-								console.log(map.places[event.currentTarget.getAttribute("data-interimPinID") - 1]);
-								map.places[event.currentTarget.getAttribute("data-interimPinID") - 1].listReference.classList.add("hover");
-							}, false);
-							
-							pin.addEventListener("mouseout", function (event) {
-								console.log(map.places[event.currentTarget.getAttribute("data-interimPinID") - 1]);
-								map.places[event.currentTarget.getAttribute("data-interimPinID") - 1].listReference.classList.remove("hover");
-							}, false);
-							
-							if (!altKey) {
-								controller.handler.finishAddNewFlag();
-							}
-						}
-					}, false);
-					newPlace.addEventListener("keyup", function (event) {
-						if (event.keyCode === 27) {
-							// Es war ein Esc
-							controller.uiElements.places.removeChild(newPlace);
-							renderer.removePin(pin);
-						}
-					}, false);
-					newPlace.addEventListener("mouseover", function (event) {
-						map.places[event.currentTarget.getAttribute("data-interimPinID") - 1].pinReference.setAttribute("class", "hover");
-					}, false);
-					newPlace.addEventListener("mouseout", function (event) {
-						map.places[event.currentTarget.getAttribute("data-interimPinID") - 1].pinReference.removeAttribute("class");
-					}, false);
-					newPlace.addEventListener("click", function (event) {
-						pinObject.visible = pinObject.visible ? false : true;
-						event.currentTarget.className = pinObject.visible ? "active" : "inactive";
-						
-						pinObject.pinReference.style.display = pinObject.visible ? "" : "none"; // Sollte eventuell in den Renderer
-					}, false);
-					newPlace.contentEditable = true;
-					controller.uiElements.places.appendChild(newPlace);
-					newPlace.focus();
-				}
-			},
-			newRoute : function (event) {
-				console.log(event);
-			},
-			handleAddSelection : function (event) {
-				// Sollte noch unbenannt werden
-				if (event.currentTarget !== document.getElementById("addSelectionMask")) {
-					controller.handler.disableAddSelection();
-				}
-			},
-			disableAddSelection : function () {
-				document.body.removeChild(document.getElementById("addSelectionMask"));
-				document.removeEventListener("click", controller.handler.handleAddSelection, false);
-			},
-			abortAddNewFlag : function (event) {
-				if (event.keyCode === 27) {
+					pinReference.addEventListener("mousedown", controller.handler.flags.enablePanning, false); // ORT?
+					
+					return true;
+				},
+				performAddMeta : function (event, isRoute) {
+					var keypressHandler = isRoute ? controller.handler.flags.finishAddNewRoute : controller.handler.flags.finishAddNewPlace;
+					var abortHandler = isRoute ? controller.handler.flags.abortAddNewRoute : controller.handler.flags.abortAddNewPlace;
+					var checkHandler = isRoute ? controller.handler.flags.checkAddNewRoute : controller.handler.flags.checkAddNewPlace;
+					
+					controller.handler.flags.listReference = document.createElement("li");
+					controller.handler.flags.listReference.contentEditable = true;
+					controller.handler.flags.listReference.addEventListener("keypress", keypressHandler, false);
+					controller.handler.flags.listReference.addEventListener("keyup", checkHandler, false);
+					controller.handler.flags.listReference.addEventListener("blur", abortHandler, false);
+					
+					controller.uiElements.places.appendChild(controller.handler.flags.listReference);
+					controller.handler.flags.listReference.focus();
+				},
+				checkAddNewFlag : function (event) {
+					if (event.keyCode === 27) {
+						controller.handler.flags.disableAddNewFlag();
+					}
+				},
+				disableAddNewFlag : function (event) {
 					controller.uiElements.toolbar.className = "";
-					document.removeEventListener("keyup", controller.handler.abortAddNewFlag, false);
-					controller.uiElements.mapRoot.removeEventListener("click", controller.handler.newPlace, false);
-				}
-			},
-			observation : function (mutations) {
-				mutations.forEach(function (event) {
-					controller.handler.detectManipulation({
-						name : event.attributeName,
-						newValue : event.target.getAttribute(event.attributeName),
-						target : event.target
-					});
-				});
-			},
-			detectManipulation : function (event) {
-				console.log(event);
-				
-				var wasManipulated = false;
-				
-				if (event.target === document.body && event.name === "data-loggedin" && event.newValue !== loggedin.toString()) {
-					// Manipulation durch Attributänderung
-					wasManipulated = true;
-				} else if (event.name === "stylesheet" && event.target === undefined) {
-					// Manipulation durch Löschen
-					wasManipulated = true;
-				} else if (event.target === controller.uiElements.aside && event.name === "style") {
-					// Manipulation durch Style-Änderung
-					wasManipulated = true;
-				}
-				
-				if (wasManipulated) {
-					alert("Netter Versuch ;)");
-					window.location.reload();
-				}
-			},
-			performLogin : function (event) {
-			
-				request = new XMLHttpRequest();
-				request.open("post", constants.loginURL, true);
-				request.send(new FormData(controller.uiElements.loginForm));
-				/*request.onreadystatechange = function () {
-					if (request.readyState === 4) {
-						// TODO: Anpassen
-						if (request.responseText) {
-							controller.handler.login(); // Zusammenführen?	
+					document.removeEventListener("keyup", controller.handler.flags.checkAddNewFlag, false);
+				},
+				enableAddNewPlace : function (event) {
+					controller.handler.flags.enableAddNewFlag();
+					controller.uiElements.mapRoot.addEventListener("click", controller.handler.flags.performAddNewPlace, false);
+				},
+				performAddNewPlace : function (event) {
+					if (!controller.handler.flags.isAddingAllowed) {
+						return;
+					}
+					
+					controller.handler.flags.isAddingAllowed = true;
+					controller.handler.flags.altKey = event.altKey;
+					
+					if (controller.handler.flags.performAddNewPin(event)) {
+						controller.handler.flags.isAddingAllowed = false;
+						controller.handler.flags.performAddMeta(event);
+					}
+				},
+				finishAddNewFlag : function (event) {
+					// Wenn der Name leer ist, abbrechen
+					if (controller.handler.flags.listReference.textContent === "") {
+						event.preventDefault();
+						return false;
+					}
+					
+					// Blur-Handler entfernen (UI-Aktion für Abbruch)
+					controller.handler.flags.listReference.removeEventListener("blur", controller.handler.flags.abortAddNewPlace, false);
+					
+					controller.handler.flags.listReference.blur();
+					controller.handler.flags.flagReference.removeAttribute("class");
+					controller.handler.flags.listReference.contentEditable = false;
+				},
+				finishAddNewPlace : function (event) {
+					if (event.keyCode === 13 || event.keyCode === 39) {
+						// Es war ein Enter. Oder ein Rechtspfeil
+						
+						controller.handler.finishAddNewFlag(event);
+						
+						// Neuen Ort wegschreiben
+						controller.handler.flags.flagObject = {
+							name : controller.handler.flags.listReference.textContent,
+							visible : true,
+							note : "",
+							coordinates : units.pixelCoordinateToGeoCoordinate(controller.handler.flags.x, controller.handler.flags.y),
+							flagReference : controller.handler.flags.flagReference,
+							listReference : controller.handler.flags.listReference
+						};
+						
+						var flagID = map.places.push(controller.handler.flags.flagObject);
+						
+						// flag mit ID versehen
+						controller.handler.flags.flagReference.setAttribute("data-interimFlagID", flagID);
+						event.target.setAttribute("data-interimFlagID", flagID);
+						
+						controller.handler.flags.flagReference.addEventListener("mouseover", controller.handler.flags.highlightListView, false);
+						controller.handler.flags.flagReference.addEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
+						controller.handler.flags.listReference.addEventListener("mouseover", controller.handler.flags.highlightFlag, false);
+						controller.handler.flags.listReference.addEventListener("mouseout", controller.handler.flags.deHighlightFlag, false);
+						controller.handler.flags.listReference.addEventListener("click", controller.handler.flags.setVisibility, false);
+						
+						controller.handler.flags.isAddingAllowed = true;
+						
+						if (!controller.handler.flags.altKey && !event.shiftKey) {
+							controller.handler.flags.disableAddNewFlag();
 						}
 					}
-				}*/
+				},
+				abortAddNewPlace : function (event) {
+					// Blur-Handler entfernen (UI-Aktion für Abbruch)
+					controller.handler.flags.listReference.removeEventListener("blur", controller.handler.flags.abortAddNewPlace, false);
+					
+					controller.uiElements.places.removeChild(controller.handler.flags.listReference);
+					renderer.removePin(controller.handler.flags.flagReference);
+					
+					controller.handler.flags.isAddingAllowed = true;
+				},
+				checkAddNewPlace : function (event) {
+					if (event.keyCode === 27) {
+						// Es war ein Esc
+						controller.handler.flags.abortAddNewPlace(event);
+					} else {
+						controller.handler.flags.finishAddNewPlace(event);
+					}
+					
+					event.stopPropagation();
+				},
+				enableAddNewRoute : function (event) {
+					controller.handler.flags.enableAddNewFlag();
+					
+					// Neue Gruppierung für Route
+					controller.handler.flags.flagReference = renderer.addRoute();
+					
+					controller.uiElements.mapRoot.addEventListener("click", controller.handler.flags.performAddNewRoute, false);
+					document.addEventListener("keyup", controller.handler.flags.finishAddNewRoutePins, false);
+				},
+				performAddNewRoute : function (event) {
+					if (!controller.handler.flags.isAddingAllowed) {
+						return;
+					}
+					
+					controller.handler.flags.isAddingAllowed = true;
+					controller.handler.flags.performAddNewPin(event, true);
+					
+				},
+				finishAddNewRoutePins : function (event) {
+					if (event.keyCode === 13) {
+						controller.handler.flags.performAddMeta(event, true);
+					}
+				},
+				finishAddNewRoute : function (event) {
+					if (event.keyCode === 13 || event.keyCode === 39) {
+						// Es war ein Enter. Oder ein Rechtspfeil
+						
+						controller.handler.finishAddNewFlag(event);
+						
+						// Neuen Ort wegschreiben
+						controller.handler.flags.flagObject = {
+							name : controller.handler.flags.listReference.textContent,
+							visible : true,
+							note : "",
+							coordinates : units.pixelCoordinateToGeoCoordinate(controller.handler.flags.x, controller.handler.flags.y),
+							flagReference : controller.handler.flags.flagReference,
+							pinReferences : controller.handler.flags.pinReferences,
+							listReference : controller.handler.flags.listReference
+						};
+						
+						var flagID = map.routes.push(controller.handler.flags.flagObject);
+						
+						// flag mit ID versehen
+						controller.handler.flags.flagReference.setAttribute("data-interimFlagID", flagID);
+						event.target.setAttribute("data-interimFlagID", flagID);
+						
+						controller.handler.flags.flagReference.addEventListener("mouseover", controller.handler.flags.highlightListView, false);
+						controller.handler.flags.flagReference.addEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
+						controller.handler.flags.listReference.addEventListener("mouseover", controller.handler.flags.highlightFlag, false);
+						controller.handler.flags.listReference.addEventListener("mouseout", controller.handler.flags.deHighlightFlag, false);
+						controller.handler.flags.listReference.addEventListener("click", controller.handler.flags.setVisibility, false);
+						
+						controller.handler.flags.isAddingAllowed = true;
+						
+						if (!controller.handler.flags.altKey && !event.shiftKey) {
+							controller.handler.flags.disableAddNewFlag();
+						}
+					}
+				},
+				abortAddNewRoute : function (event) {
 				
-				controller.handler.login();
+				},
+				highlightFlag : function (event) {
+					map.places[event.currentTarget.getAttribute("data-interimFlagID") - 1].flagReference.setAttribute("class", "hover");
+				},
+				highlightListView : function (event) {
+					map.places[event.currentTarget.getAttribute("data-interimFlagID") - 1].listReference.classList.add("hover");
+				},
+				deHighlightFlag : function (event) { // Super Funktionsname
+					map.places[event.currentTarget.getAttribute("data-interimFlagID") - 1].flagReference.removeAttribute("class");
+				},
+				deHighlightListView : function (event) {
+					map.places[event.currentTarget.getAttribute("data-interimFlagID") - 1].listReference.classList.remove("hover");
+				},
+				enablePanning : function (event) {
+					// Aktuellen Translate ermitteln
+					var transform, x = event.offsetX ? event.offsetX : event.layerX, y = event.offsetY ? event.offsetY : event.layerY;
+					
+					controller.handler.flags.flagObject = map.places[event.currentTarget.getAttribute("data-interimFlagID") - 1];
+					controller.handler.flags.listReference = controller.handler.flags.flagObject.listReference;
+					controller.handler.flags.flagReference = controller.handler.flags.flagObject.flagReference;
+					
+					transform = controller.handler.flags.flagReference.transform.baseVal.getItem(0);
+					if (transform.type == SVGTransform.SVG_TRANSFORM_TRANSLATE) {
+						controller.handler.flags.panningDiffX = x - transform.matrix.e,
+						controller.handler.flags.panningDiffY = y - transform.matrix.f;
+      				}
+      				      									
+					document.addEventListener("mousemove", controller.handler.flags.performPanning, false);
+					document.addEventListener("mouseup", controller.handler.flags.finishPanning, false);
+					
+					controller.handler.flags.flagReference.removeEventListener("mouseover", controller.handler.flags.highlightListView, false);
+					controller.handler.flags.flagReference.removeEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
+					
+					event.stopPropagation();
+					event.preventDefault();
+				},
+				performPanning : function (event) {
+					var x = (event.offsetX ? event.offsetX : event.layerX) - controller.handler.flags.panningDiffX;
+					var y = (event.offsetY ? event.offsetY : event.layerY) - controller.handler.flags.panningDiffY;
+					controller.handler.flags.flagReference.setAttribute("transform", "translate(" + x + " " + y + ") scale(0.1)");
+					
+					event.stopPropagation();
+					event.preventDefault();		
+				},
+				finishPanning : function (event) {
+					var x = (event.offsetX ? event.offsetX : event.layerX) - controller.handler.flags.panningDiffX;
+					var y = (event.offsetY ? event.offsetY : event.layerY) - controller.handler.flags.panningDiffY;
+					
+					controller.handler.flags.flagObject.coordinates = units.pixelCoordinateToGeoCoordinate(x, y);
+					
+					document.removeEventListener("mousemove", controller.handler.flags.performPanning, false);
+					document.removeEventListener("mouseup", controller.handler.flags.finishPanning, false);
+					
+					event.stopPropagation();
+					event.preventDefault();
+					
+					controller.handler.flags.listReference.classList.remove("hover");
+					
+					controller.handler.flags.flagReference.addEventListener("mouseover", controller.handler.flags.highlightListView, false);
+					controller.handler.flags.flagReference.addEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
+				},
+				setVisibility : function (event) {
+					controller.handler.flags.flagObject.visible = !controller.handler.flags.flagObject.visible;
+					event.currentTarget.className = controller.handler.flags.flagObject.visible ? "active" : "inactive";
+					
+					controller.handler.flags.flagReference.style.display = controller.handler.flags.flagObject.visible ? "" : "none"; // Sollte eventuell in den Renderer
+				}
+			},
+			keyboardNavigation : function (event) {
 				
-				event.preventDefault();
-				return false;
+				if (!map.isLoaded) { // Wenn die Karte nicht geladen ist, kann auch keine UI-Interaktion erfolgen
+					return;
+				}
+				
+				// Alle Tastaturkurzbefehle, die nicht zur Navigation in der Karte dienen (alle mit ctrl)
+				if (event.ctrlKey) {
+					switch (event.keyCode) {
+						case 70 : 
+							if (event.altKey) {
+								controller.uiElements.searchField.value = "";
+								sideView.renderFlags(true);
+								sideView.renderFlags(false);
+							} else {
+								controller.handler.enableSearch();
+							}
+							
+							break; // F
+						case 73 : controller.handler.import.enable(); break; // I
+						case 79 : controller.handler.export.perform(); break; // O
+						case 83 : controller.save(); break; // S
+						case 80 : controller.handler.flags.enableAddNewPlace(); break; // N
+						case 82 : controller.handler.flags.enableAddNewRoute(); break; // R
+					}
+					
+					return;
+				}
+			
+				// Bei Pfeiltasten: Navigation durch die Karte
+				if (event.keyCode >= 37 && event.keyCode <= 40) {
+					var panValue = event.shiftKey ? 250 : (event.altKey ? 10 : 50);
+					
+					switch (event.keyCode) {
+						case 37 : map.panning.x += panValue; break; // Links
+						case 38 : map.panning.y += panValue; break; // Oben
+						case 39 : map.panning.x -= panValue; break; // Rechts
+						case 40 : map.panning.y -= panValue; break; // Unten
+					}
+					
+					renderer.pan(map.panning.x, map.panning.y);
+					
+					return;
+				}
+				
+				if (event.keyCode === 73) { // Ein I => Zoom in die Karte
+					map.scaling.value = (map.scaling.value/Math.abs(100 + 30)) * 100;
+				
+					map.scaling.scaleFactor = map.scaling.zoomLevelValue / map.scaling.value;
+					renderer.zoom(map.scaling.zoomLevelValue, map.scaling.value);
+					
+					return;
+				}
+				
+				if (event.keyCode === 79) { // Ein O => Zoom aus der Karte
+					map.scaling.value = (map.scaling.value/Math.abs(100 - 30)) * 100;
+				
+					map.scaling.scaleFactor = map.scaling.zoomLevelValue / map.scaling.value;
+					renderer.zoom(map.scaling.zoomLevelValue, map.scaling.value);
+					
+					return;
+				}
+				
+				if (event.keyCode) { // Eine 0 => Zurücksetzung der Zoomstufe
+				
+				}
 			},
-			login : function () {
-				loggedin = true;
-				document.body.setAttribute("data-loggedin", "true");
+			import : {
+				form : undefined,
+				enable : function (event) {
+					controller.handler.import.form = document.createElement("form");
+					controller.handler.import.form.id = "importFlags";
+					
+					var fileInput = document.createElement("input");
+					fileInput.type = "file";
+					fileInput.name = "importFile";
+					fileInput.accept = "text/xml";
+					fileInput.addEventListener("change", controller.handler.import.perform, false);
+					
+					controller.handler.import.form.appendChild(fileInput);
+					controller.uiElements.toolbar.appendChild(controller.handler.import.form);
+					
+					fileInput.click();
+				},
+				perform : function (event) {
+					var data;
+					
+					if ("getFormData" in controller.handler.import.form) {
+						// Firefox macht das einfacher
+						data = controller.handler.import.form.getFormData();
+					} else {
+						data = new FormData();
+						data.append("importFile", controller.handler.import.form.firstChild);
+					}
+					
+					controller.import(data);
+				}	
 			},
-			finishAddNewFlag : function (event) {
-				controller.uiElements.toolbar.className = "";
-				document.removeEventListener("keyup", controller.handler.abortAddNewFlag, false);
-				controller.uiElements.mapRoot.removeEventListener("click", controller.handler.newPlace, false);
+			export : {
+				downloader : null,
+				perform : function (event) {
+					window.location.href = constants.locations.export;
+				}
 			}
 		},
 		loadMap : function (latitude, longitude, layers, handler) {
 			
-			var parameters, params = [], requestURL = constants.url, request,
+			var parameters, params = [], requestURL = constants.locations.maps, request,
 				key;
+				
+			map.isLoaded = false;
 						
 			// Parameter für die Übergabe zusammenschustern
 			
+			latitude = [49.79, 47.579];
+			longitude = [7.484, 10.51];
+			
 			parameters = {
-				lat : latitude,
-				lon : longitude,
+				/*lat1 : latitude[0],
+				lat2 : latitude[1],
+				lon1 : longitude[0],
+				lon2 : longitude[1],*/
 				width: map.dimensions.width,
 				height : map.dimensions.height
 			};
@@ -705,6 +1028,7 @@ window.Karte = (function () {
 			request.send(null);
 			request.onreadystatechange = function () {
 				if (request.readyState === 4) {
+					map.isLoaded = true;
 					handler.onSuccess({
 						statusCode : request.statusCode,
 						data: request.responseXML,
@@ -713,41 +1037,111 @@ window.Karte = (function () {
 				}
 			}	
 		},
-		tmp : {
-			pan : {
-				startX : undefined,
-				startY : undefined,
-				left : 0,
-				top : 0
+		save : function () {			
+			// Daten aufbereiten
+			var data = new FormData();
+			var places = [];
+			var routes = [];
+			
+			// DOM-Referenzen entfernen
+			map.places.forEach(function (place) {
+				places.push({
+					name : place.name,
+					visible : place.visible,
+					note : place.note,
+					coordinates : place.coordinates
+				});
+			});
+			
+			data.append("places", encodeURIComponent(JSON.stringify(places)));
+			//data.append("routes", JSON.stringify(map.routes));
+			
+			console.log(data);
+			
+			// Request absetzen
+			request = new XMLHttpRequest();
+			request.open("post", constants.locations.save, true);
+			request.send(data);
+			request.onreadystatechange = function () {
+				if (request.readyState === 4) {
+					console.log(request.responseText);
+				}
 			}
+		},
+		import : function (data) {
+			console.log(data);
+			// Request absetzen
+			request = new XMLHttpRequest();
+			request.open("post", constants.locations.import, true);
+			request.send(data);
+			request.onreadystatechange = function () {
+				if (request.readyState === 4) {
+					console.log(request.responseText);
+				}
+			}
+		},
+		export : function () {
+			
 		}
 	};
 	
 	var renderer = {
+		root : undefined,
 		data : undefined,
 		map : undefined,
 		layers : undefined,
 		flags : undefined,
+		defs : undefined,
+		clipPath : undefined,
+		hasClipPath : false,
 		start : function (data) {
 			// Verwaltungsmethode für den Renderer
 			this.data = data;
 			this.map = controller.uiElements.mapRoot;
+			this.flags = controller.uiElements.mapRoot.getElementById("flags");
+			this.clipPath = controller.uiElements.mapRoot.getElementById("borderClip");
+			this.defs = controller.uiElements.mapRoot.getElementsByTagName("defs")[0];
 			
 			this.parse();
 			this.render();
 			this.optimize();
 			
 			this.layers = controller.uiElements.mapRoot.getElementsByTagName("g"); // Notwendigkeit?
-			this.flags = controller.uiElements.mapRoot.getElementById("flags");
 		},
 		parse : function () {
-			this.data = this.data.getElementsByTagName("svg")[0].childNodes;
+			this.root = this.data.getElementsByTagName("svg")[0];
+			this.data = this.root.childNodes;
+			
+			var defs = this.root.getElementsByTagName("defs")[0];
+			if (defs !== undefined) {
+				for (var i = 0; i < defs.childNodes.length; i++) {
+					renderer.defs.appendChild(defs.childNodes[i]);
+				}
+				
+				this.root.removeChild(defs);
+			}
+			
+			
+			if (this.root.getElementById("federal") !== null) {
+				var path = this.root.getElementById("federal").childNodes[0].cloneNode();
+				this.clipPath.appendChild(path);
+				
+				renderer.hasClipPath = true;
+			}
 		},
 		render : function () {
 			var data = Array.prototype.slice.call(this.data);
 			
 			data.forEach(function (node) {
-				controller.uiElements.mapRoot.appendChild(node);
+				if (!map.isInitial && (node.nodeName === "dimensions" || node.nodeName === "coords")) {
+					return;
+				}
+				
+				if (renderer.hasClipPath && node.nodeName === "g" && node.id !== "federal") {
+					node.setAttribute("clip-path", "url(#borderClip)");
+				}
+				
+				controller.uiElements.mapRoot.insertBefore(node, renderer.flags);
 			});
 		},
 		optimize : function () {
@@ -774,14 +1168,41 @@ window.Karte = (function () {
 		pan : function (x, y) {
 			controller.uiElements.mapRoot.style.cssText += "left: " + x + "px; top: " + y + "px;";
 		},
-		drawPin : function (pin, x, y) {
+		drawPin : function (pin, x, y, flagReference) {
 			pin.setAttributeNS(null, "transform", "translate(" + x + " " + y + ") scale(0.1)"); 
 			pin.setAttributeNS("http://www.w3.org/1999/xlink", "href", "#pin");
 			
-			renderer.flags.appendChild(pin);
+			if (flagReference) {
+				flagReference.appendChild(pin);
+			} else {
+				renderer.flags.appendChild(pin);
+			}
 		},
-		drawRoute : function (pins) {
+		addRoute : function () {
+			// Pfad und Gruppe generieren
+			var flagReference = document.createElementNS("http://www.w3.org/2000/svg", "g");
+			var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
 			
+			flagReference.appendChild(path);
+			renderer.flags.appendChild(flagReference);
+			
+			return flagReference;
+		},
+		drawRoute : function (newPin, x, y, flagReference) {
+			// Pfad zum aktuellen Punkt verlängern
+			var pathElement = flagReference.getElementsByTagName("path")[0];
+			var path = pathElement.getAttribute("d");
+			
+			if (path === null) {
+				// Pfad ist initial und wird zum ersten Mal gezeichnet
+				path = "M " + x + " " + y;
+			} else {
+				path += " L " + x + " " + y;
+			}
+			
+			pathElement.setAttribute("d", path)
+			
+			renderer.drawPin(newPin, x, y, flagReference);
 		},
 		removePin : function (pin) {
 			renderer.flags.removeChild(pin);
@@ -881,14 +1302,20 @@ window.Karte = (function () {
 			return [newTopLeft, newBottomRight];
 		},
 		geoCoordinateToPixelCoordinate : function (latitude, longitude) {
-			x = (latitude - map.coordinates.topLeft[0]) / (map.coordinates.bottomRight[0] - map.coordinates.topLeft[0]) * map.dimensions.width;
-			y = (longitude - map.coordinates.topLeft[1]) / (map.coordinates.bottomRight[1] - map.coordinates.topLeft[1]) * map.dimensions.height;
+			var y = (latitude - map.coordinates.topLeft[0]) / (map.coordinates.bottomRight[0] - map.coordinates.topLeft[0]) * map.dimensions.height;
+			var x = (longitude - map.coordinates.topLeft[1]) / (map.coordinates.bottomRight[1] - map.coordinates.topLeft[1]) * map.dimensions.width;
 			
-			return [x,y];
+			x = (x - map.panning.x + map.dimensions.x) * map.scaling.scaleFactor;
+			y = (y - map.panning.y + map.dimensions.y) * map.scaling.scaleFactor;
+			
+			return [x, y];
 		},
-		pixelCoordinateToGeoCoordinate : function (x, y) { //TODO: Sascha
-			latitude = ((x*(map.coordinates.bottomRight[0] - map.coordinates.topLeft[0]))/map.dimensions.width)+map.coordinates.topLeft[0];
-			longitude = ((y*(map.coordinates.bottomRight[1] - map.coordinates.topLeft[1]))/map.dimensions.height)+map.coordinates.topLeft[1];
+		pixelCoordinateToGeoCoordinate : function (x, y, topLeft, topRight, witdh, height) {
+			var newX = (x + map.panning.x - map.dimensions.x) * map.scaling.scaleFactor; // Skalierung noch fehlerhaft!
+			var newY = (y + map.panning.y - map.dimensions.y) * map.scaling.scaleFactor;
+		
+			latitude = ((newY * (map.coordinates.bottomRight[0] - map.coordinates.topLeft[0])) / map.dimensions.currentHeight) + map.coordinates.topLeft[0];
+			longitude = ((newX * (map.coordinates.bottomRight[1] - map.coordinates.topLeft[1])) / map.dimensions.currentWidth) + map.coordinates.topLeft[1];
 			
 			return [latitude, longitude];
 		}
@@ -904,8 +1331,24 @@ window.Karte = (function () {
 		zoom : function (oldDistance, newDistance) {
 			renderer.zoom(oldDistance, newDistance);
 		},
-		units : units
-	,
+		units : units,
+		getPlaces : function () {
+			var value = [];
+			
+			map.places.forEach(function (place) {
+				if (place.coordinates.length !== 0) {
+					value.push(place.coordinates.join(","));
+				}
+			});
+			
+			return {
+				topLeft : map.coordinates.topLeft,
+				bottomRight : map.coordinates.bottomRight,
+				width : map.dimensions.currentWidth,
+				height : map.dimensions.currentHeight,
+				places : value
+			};
+		},
 		filter : function (filters) {
 			renderer.filter(filters);
 		}

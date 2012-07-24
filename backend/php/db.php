@@ -4,7 +4,7 @@ session_start();
 
 if ($_SESSION['loggedin'] === true) {
 
-	if ($_POST['a']) {
+	if (isset($_POST['a'])) {
 
 		$action = $_POST['a'];
 

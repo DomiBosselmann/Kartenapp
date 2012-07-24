@@ -188,7 +188,7 @@ window.Karte = (function () {
 				visible : true,
 				note : "Mein Zuhause",
 				coordinates : [],
-				pinReference : undefined,
+				flagReference : undefined,
 				listReference : undefined
 			},
 			{
@@ -196,7 +196,7 @@ window.Karte = (function () {
 				visible : true,
 				note : "Meine Uni",
 				coordinates : [],
-				pinReference : undefined,
+				flagReference : undefined,
 				listReference : undefined
 			},
 			{
@@ -204,7 +204,7 @@ window.Karte = (function () {
 				visible : true,
 				note : "Mein Lieblingsfernsehsender",
 				coordinates : [],
-				pinReference : undefined,
+				flagReference : undefined,
 				listReference : undefined
 			},
 			{
@@ -212,7 +212,7 @@ window.Karte = (function () {
 				visible : true,
 				note : "Mein Arbeitsplatz",
 				coordinates : [],
-				pinReference : undefined,
+				flagReference : undefined,
 				listReference : undefined
 			},
 		],
@@ -267,7 +267,7 @@ window.Karte = (function () {
 			this.uiElements.routes = document.getElementById("routes");
 			
 			// EventListener hinzufügen
-			this.uiElements.addButton.addEventListener("click", this.handler.flags.enableAddSelection, false);
+			this.uiElements.addButton.addEventListener("click", this.handler.flags.enableNewFlagMask, false);
 			this.uiElements.searchButton.addEventListener("click", this.handler.handleSearch, false);
 			this.uiElements.exportButton.addEventListener("click", this.handler.export.perform, false);
 			this.uiElements.importButton.addEventListener("click", this.handler.import.enable, false);
@@ -528,43 +528,78 @@ window.Karte = (function () {
 				map.isInitial = false;
 			},
 			flags : {
-				viewList : undefined,
-				pin : undefined,
+				listReference : undefined,
+				flagReference : undefined,
 				x : undefined,
 				y : undefined,
 				altKey : undefined,
-				pinObject : undefined,
+				flagObject : undefined,
 				panningDiffX : undefined,
 				panningDiffY : undefined,
 				isAdding : false,
-				newPlace : function (event) {
-					console.log(event);
-					if (event.currentTarget === event.target || controller.handler.flags.isAdding) { // Event war nicht im Zeichenbereich von Bawü
-						return;
+				enableNewFlagMask : function (event) {
+					var container = document.createElement("ul");
+					var newPlace = document.createElement("li");
+					var newRoute = document.createElement("li");
+					
+					container.id = "addSelectionMask";
+					
+					newPlace.textContent = "Neuer Ort";
+					newPlace.addEventListener("click", controller.handler.flags.enableAddNewPlace, false);
+					
+					newRoute.textContent = "Neue Route";
+					newRoute.addEventListener("click", controller.handler.flags.enableAddNewRoute, false);
+					
+					container.appendChild(newPlace);
+					container.appendChild(newRoute);
+					
+					document.body.appendChild(container); // Einbindung ändern
+					
+					event.stopPropagation();
+					
+					document.addEventListener("click", controller.handler.flags.checkNewFlagMask, false);
+				},
+				checkNewFlagMask : function (event) {
+					if (event.currentTarget !== document.getElementById("addSelectionMask") || event.keyCode === 27) {
+						controller.handler.flags.disableNewFlagMask();
+					}
+				},
+				disableNewFlagMask : function () {
+					document.body.removeChild(document.getElementById("addSelectionMask"));
+					document.removeEventListener("click", controller.handler.flags.checkNewFlagMask, false);
+				},
+				enableAddNewFlag : function (event) {
+					controller.uiElements.toolbar.className = "addFlagEnabled";
+					document.addEventListener("keyup", controller.handler.flags.checkAddNewFlag, false);
+				},
+				performAddNewPin : function (event) {
+					if (event.currentTarget === event.target) { // Event war nicht im Zeichenbereich von Bawü
+						return false;
 					}
 					
-					if (("SVGElementInstance" in window && event.target instanceof SVGElementInstance && event.target.correspondingUseElement.parentNode === renderer.flags) || event.target.parentNode === renderer.flags) { // War der Klick auf einem Pin? (Variante 1 für Webkit, 2 für FF)
-						return;
+					if (("SVGElementInstance" in window && event.target instanceof SVGElementInstance && event.target.correspondingUseElement.parentNode === renderer.flags) || event.target.parentNode === renderer.flags) { // War der Klick auf einem Flag? (Variante 1 für Webkit, 2 für FF)
+						return false;
 					}
-						
-					controller.handler.flags.isAdding = true;
 					
-					controller.handler.flags.altKey = event.altKey;
-					controller.handler.flags.pin = document.createElementNS( "http://www.w3.org/2000/svg", "use");
+					controller.handler.flags.flagReference = document.createElementNS( "http://www.w3.org/2000/svg", "use");
 					
 					// 1 Für Chrome + Safarie 2 für FF
 					controller.handler.flags.x = event.offsetX ? event.offsetX : event.layerX;
 					controller.handler.flags.y = event.offsetY ? event.offsetY : event.layerY;
 					
-					renderer.drawPin(controller.handler.flags.pin, controller.handler.flags.x, controller.handler.flags.y);
+					renderer.drawPin(controller.handler.flags.flagReference, controller.handler.flags.x, controller.handler.flags.y);
 					
-					controller.handler.flags.pin.setAttribute("class", "hover");
-					controller.handler.flags.pin.addEventListener("mousedown", controller.handler.flags.enablePanning, false);
-				
-					controller.handler.flags.viewList = document.createElement("li");
-					controller.handler.flags.viewList.contentEditable = true;
-					controller.handler.flags.viewList.addEventListener("keypress", controller.handler.flags.finishAddNewPlace, false);
-					controller.handler.flags.viewList.addEventListener("keyup", function (event) {
+					controller.handler.flags.flagReference.setAttribute("class", "hover");
+					
+					controller.handler.flags.flagReference.addEventListener("mousedown", controller.handler.flags.enablePanning, false);
+					
+					return true;
+				},
+				performAddMeta : function (event) {
+					controller.handler.flags.listReference = document.createElement("li");
+					controller.handler.flags.listReference.contentEditable = true;
+					controller.handler.flags.listReference.addEventListener("keypress", controller.handler.flags.finishAddNewPlace, false);
+					controller.handler.flags.listReference.addEventListener("keyup", function (event) {
 						if (event.keyCode === 27) {
 							// Es war ein Esc
 							controller.handler.flags.abortAddNewPlace(event);
@@ -574,84 +609,129 @@ window.Karte = (function () {
 						
 						event.stopPropagation();
 					}, false);
-					controller.handler.flags.viewList.addEventListener("mouseover", controller.handler.flags.highlightPin, false);
-					controller.handler.flags.viewList.addEventListener("mouseout", controller.handler.flags.deHighlightPin, false);
-					controller.handler.flags.viewList.addEventListener("click", controller.handler.flags.setVisibility, false);
-					controller.handler.flags.viewList.addEventListener("blur", controller.handler.flags.abortAddNewPlace, false);
+					controller.handler.flags.listReference.addEventListener("blur", controller.handler.flags.abortAddNewPlace, false);
 					
-					controller.uiElements.places.appendChild(controller.handler.flags.viewList);
-					controller.handler.flags.viewList.focus();
+					controller.uiElements.places.appendChild(controller.handler.flags.listReference);
+					controller.handler.flags.listReference.focus();
 				},
-				highlightPin : function (event) {
-					map.places[event.currentTarget.getAttribute("data-interimPinID") - 1].pinReference.setAttribute("class", "hover");
+				checkAddNewFlag : function (event) {
+					if (event.keyCode === 27) {
+						controller.handler.flags.disableAddNewFlag();
+					}
 				},
-				highlightListView : function (event) {
-					map.places[event.currentTarget.getAttribute("data-interimPinID") - 1].listReference.classList.add("hover");
+				disableAddNewFlag : function (event) {
+					controller.uiElements.toolbar.className = "";
+					document.removeEventListener("keyup", controller.handler.flags.checkAddNewFlag, false);
 				},
-				deHighlightPin : function (event) { // Super Funktionsname
-					map.places[event.currentTarget.getAttribute("data-interimPinID") - 1].pinReference.removeAttribute("class");
+				enableAddNewPlace : function (event) {
+					controller.handler.flags.enableAddNewFlag();
+					controller.uiElements.mapRoot.addEventListener("click", controller.handler.flags.performAddNewPlace, false);
 				},
-				deHighlightListView : function (event) {
-					map.places[event.currentTarget.getAttribute("data-interimPinID") - 1].listReference.classList.remove("hover");
+				performAddNewPlace : function (event) {
+					if (controller.handler.flags.isAdding) {
+						return;
+					}
+					
+					controller.handler.flags.isAdding = true;
+					controller.handler.flags.altKey = event.altKey;
+					
+					if (controller.handler.flags.performAddNewPin(event)) {
+						controller.handler.flags.performAddMeta(event);
+					}
 				},
 				finishAddNewPlace : function (event) {
 					if (event.keyCode === 13 || event.keyCode === 39) {
 						// Es war ein Enter. Oder ein Rechtspfeil
 						
 						// Wenn der Name leer ist, abbrechen
-						if (controller.handler.flags.viewList.textContent === "") {
+						if (controller.handler.flags.listReference.textContent === "") {
 							event.preventDefault();
 							return false;
 						}
 						
 						// Blur-Handler entfernen (UI-Aktion für Abbruch)
-						controller.handler.flags.viewList.removeEventListener("blur", controller.handler.flags.abortAddNewPlace, false);
+						controller.handler.flags.listReference.removeEventListener("blur", controller.handler.flags.abortAddNewPlace, false);
 						
-						controller.handler.flags.viewList.blur();
-						controller.handler.flags.pin.removeAttribute("class");
-						controller.handler.flags.viewList.contentEditable = false;
+						controller.handler.flags.listReference.blur();
+						controller.handler.flags.flagReference.removeAttribute("class");
+						controller.handler.flags.listReference.contentEditable = false;
 						
 						// Neuen Ort wegschreiben
-						controller.handler.flags.pinObject = {
-							name : controller.handler.flags.viewList.textContent,
+						controller.handler.flags.flagObject = {
+							name : controller.handler.flags.listReference.textContent,
 							visible : true,
 							note : "",
 							coordinates : units.pixelCoordinateToGeoCoordinate(controller.handler.flags.x, controller.handler.flags.y),
-							pinReference : controller.handler.flags.pin,
-							listReference : controller.handler.flags.viewList
+							flagReference : controller.handler.flags.flagReference,
+							listReference : controller.handler.flags.listReference
 						};
 						
-						var pinID = map.places.push(controller.handler.flags.pinObject);
+						var flagID = map.places.push(controller.handler.flags.flagObject);
 						
-						// Pin mit ID versehen
-						controller.handler.flags.pin.setAttribute("data-interimPinID", pinID);
-						event.target.setAttribute("data-interimPinID", pinID);
+						// flag mit ID versehen
+						controller.handler.flags.flagReference.setAttribute("data-interimFlagID", flagID);
+						event.target.setAttribute("data-interimFlagID", flagID);
 						
-						controller.handler.flags.pin.addEventListener("mouseover", controller.handler.flags.highlightListView, false);
-						controller.handler.flags.pin.addEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
+						controller.handler.flags.flagReference.addEventListener("mouseover", controller.handler.flags.highlightListView, false);
+						controller.handler.flags.flagReference.addEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
+						controller.handler.flags.listReference.addEventListener("mouseover", controller.handler.flags.highlightFlag, false);
+						controller.handler.flags.listReference.addEventListener("mouseout", controller.handler.flags.deHighlightFlag, false);
+						controller.handler.flags.listReference.addEventListener("click", controller.handler.flags.setVisibility, false);
 						
 						controller.handler.flags.isAdding = false;
 						
 						if (!controller.handler.flags.altKey && !event.shiftKey) {
-							controller.handler.flags.finishAddNewFlag();
+							controller.handler.flags.disableAddNewFlag();
 						}
 					}
 				},
 				abortAddNewPlace : function (event) {
-					controller.uiElements.places.removeChild(controller.handler.flags.viewList);
-					renderer.removePin(controller.handler.flags.pin);
+					// Blur-Handler entfernen (UI-Aktion für Abbruch)
+					controller.handler.flags.listReference.removeEventListener("blur", controller.handler.flags.abortAddNewPlace, false);
+					
+					controller.uiElements.places.removeChild(controller.handler.flags.listReference);
+					renderer.removePin(controller.handler.flags.flagReference);
 					
 					controller.handler.flags.isAdding = false;
+				},
+				enableAddNewRoute : function (event) {
+					controller.handler.flags.enableAddNewFlag();
+					console.log(event);
+				},
+				performAddNewRoute : function (event) {
+					if (!controller.handler.flags.performAddNewPin(event)) {
+						return;
+					}
+					
+					
+				},
+				finishAddNewRoute : function (event) {
+				
+				},
+				abortAddNewRoute : function (event) {
+				
+				},
+				highlightFlag : function (event) {
+					map.places[event.currentTarget.getAttribute("data-interimFlagID") - 1].flagReference.setAttribute("class", "hover");
+				},
+				highlightListView : function (event) {
+					map.places[event.currentTarget.getAttribute("data-interimFlagID") - 1].listReference.classList.add("hover");
+				},
+				deHighlightFlag : function (event) { // Super Funktionsname
+					map.places[event.currentTarget.getAttribute("data-interimFlagID") - 1].flagReference.removeAttribute("class");
+				},
+				deHighlightListView : function (event) {
+					map.places[event.currentTarget.getAttribute("data-interimFlagID") - 1].listReference.classList.remove("hover");
 				},
 				enablePanning : function (event) {
 					// Aktuellen Translate ermitteln
 					var transform, x = event.offsetX ? event.offsetX : event.layerX, y = event.offsetY ? event.offsetY : event.layerY;
 					
-					controller.handler.flags.pinObject = map.places[event.currentTarget.getAttribute("data-interimPinID") - 1];
-					controller.handler.flags.viewList = controller.handler.flags.pinObject.listReference;
-					controller.handler.flags.pin = controller.handler.flags.pinObject.pinReference;
+					controller.handler.flags.flagObject = map.places[event.currentTarget.getAttribute("data-interimFlagID") - 1];
+					controller.handler.flags.listReference = controller.handler.flags.flagObject.listReference;
+					controller.handler.flags.flagReference = controller.handler.flags.flagObject.flagReference;
 					
-					transform = controller.handler.flags.pin.transform.baseVal.getItem(0);
+					transform = controller.handler.flags.flagReference.transform.baseVal.getItem(0);
 					if (transform.type == SVGTransform.SVG_TRANSFORM_TRANSLATE) {
 						controller.handler.flags.panningDiffX = x - transform.matrix.e,
 						controller.handler.flags.panningDiffY = y - transform.matrix.f;
@@ -660,8 +740,8 @@ window.Karte = (function () {
 					document.addEventListener("mousemove", controller.handler.flags.performPanning, false);
 					document.addEventListener("mouseup", controller.handler.flags.finishPanning, false);
 					
-					controller.handler.flags.pin.removeEventListener("mouseover", controller.handler.flags.highlightListView, false);
-					controller.handler.flags.pin.removeEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
+					controller.handler.flags.flagReference.removeEventListener("mouseover", controller.handler.flags.highlightListView, false);
+					controller.handler.flags.flagReference.removeEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
 					
 					event.stopPropagation();
 					event.preventDefault();
@@ -669,7 +749,7 @@ window.Karte = (function () {
 				performPanning : function (event) {
 					var x = (event.offsetX ? event.offsetX : event.layerX) - controller.handler.flags.panningDiffX;
 					var y = (event.offsetY ? event.offsetY : event.layerY) - controller.handler.flags.panningDiffY;
-					controller.handler.flags.pin.setAttribute("transform", "translate(" + x + " " + y + ") scale(0.1)");
+					controller.handler.flags.flagReference.setAttribute("transform", "translate(" + x + " " + y + ") scale(0.1)");
 					
 					event.stopPropagation();
 					event.preventDefault();		
@@ -678,7 +758,7 @@ window.Karte = (function () {
 					var x = (event.offsetX ? event.offsetX : event.layerX) - controller.handler.flags.panningDiffX;
 					var y = (event.offsetY ? event.offsetY : event.layerY) - controller.handler.flags.panningDiffY;
 					
-					controller.handler.flags.pinObject.coordinates = units.pixelCoordinateToGeoCoordinate(x, y);
+					controller.handler.flags.flagObject.coordinates = units.pixelCoordinateToGeoCoordinate(x, y);
 					
 					document.removeEventListener("mousemove", controller.handler.flags.performPanning, false);
 					document.removeEventListener("mouseup", controller.handler.flags.finishPanning, false);
@@ -686,70 +766,17 @@ window.Karte = (function () {
 					event.stopPropagation();
 					event.preventDefault();
 					
-					controller.handler.flags.viewList.classList.remove("hover");
+					controller.handler.flags.listReference.classList.remove("hover");
 					
-					controller.handler.flags.pin.addEventListener("mouseover", controller.handler.flags.highlightListView, false);
-					controller.handler.flags.pin.addEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
+					controller.handler.flags.flagReference.addEventListener("mouseover", controller.handler.flags.highlightListView, false);
+					controller.handler.flags.flagReference.addEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
 				},
 				setVisibility : function (event) {
-					controller.handler.flags.pinObject.visible = controller.handler.flags.pinObject.visible ? false : true;
-					event.currentTarget.className = controller.handler.flags.pinObject.visible ? "active" : "inactive";
+					controller.handler.flags.flagObject.visible = !controller.handler.flags.flagObject.visible;
+					event.currentTarget.className = controller.handler.flags.flagObject.visible ? "active" : "inactive";
 					
-					controller.handler.flags.pinObject.pinReference.style.display = controller.handler.flags.pinObject.visible ? "" : "none"; // Sollte eventuell in den Renderer
-				},
-				enableAddSelection : function (event) {
-					var container = document.createElement("ul");
-					var newPlace = document.createElement("li");
-					var newRoute = document.createElement("li");
-					
-					container.id = "addSelectionMask";
-					
-					newPlace.textContent = "Neuer Ort";
-					newPlace.addEventListener("click", controller.handler.flags.newFlag, false);
-					
-					newRoute.textContent = "Neue Route";
-					newRoute.addEventListener("click", controller.handler.flags.newRoute, false);
-					
-					container.appendChild(newPlace);
-					container.appendChild(newRoute);
-					
-					document.body.appendChild(container); // Einbindung ändern
-					
-					event.stopPropagation();
-					
-					document.addEventListener("click", controller.handler.flags.handleAddSelection, false);
-				},
-				newFlag : function (event) {
-					controller.uiElements.toolbar.className = "addFlagEnabled";
-					controller.uiElements.mapRoot.addEventListener("click", controller.handler.flags.newPlace, false);
-					
-					document.addEventListener("keyup", controller.handler.flags.abortAddNewFlag, false);
-				},
-				newRoute : function (event) {
-					console.log(event);
-				},
-				handleAddSelection : function (event) {
-					// Sollte noch unbenannt werden
-					if (event.currentTarget !== document.getElementById("addSelectionMask")) {
-						controller.handler.flags.disableAddSelection();
-					}
-				},
-				disableAddSelection : function () {
-					document.body.removeChild(document.getElementById("addSelectionMask"));
-					document.removeEventListener("click", controller.handler.flags.handleAddSelection, false);
-				},
-				abortAddNewFlag : function (event) {
-					if (event.keyCode === 27) {
-						controller.uiElements.toolbar.className = "";
-						document.removeEventListener("keyup", controller.handler.flags.abortAddNewFlag, false);
-						controller.uiElements.mapRoot.removeEventListener("click", controller.handler.flags.newPlace, false);
-					}
-				},
-				finishAddNewFlag : function (event) {
-					controller.uiElements.toolbar.className = "";
-					document.removeEventListener("keyup", controller.handler.flags.abortAddNewFlag, false);
-					controller.uiElements.mapRoot.removeEventListener("click", controller.handler.flags.newPlace, false);
-				},
+					controller.handler.flags.flagReference.style.display = controller.handler.flags.flagObject.visible ? "" : "none"; // Sollte eventuell in den Renderer
+				}
 			},
 			keyboardNavigation : function (event) {
 				
@@ -773,8 +800,8 @@ window.Karte = (function () {
 						case 73 : controller.handler.import.enable(); break; // I
 						case 79 : controller.handler.export.perform(); break; // O
 						case 83 : controller.save(); break; // S
-						case 80 : controller.handler.flags.newFlag(); break; // N
-						case 82 : controller.handler.flags.newRoute(); break; // R
+						case 80 : controller.handler.flags.enableAddNewPlace(); break; // N
+						case 82 : controller.handler.flags.enableAddNewRoute(); break; // R
 					}
 					
 					return;

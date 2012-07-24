@@ -2,7 +2,7 @@
 
 session_start();
 
-if ($_GET) {
+if ($_POST) {
 
 	$db_host = "127.0.0.1:3306";
 	$db_username = "dhbwweb";
@@ -21,8 +21,8 @@ if ($_GET) {
 				echo_mysql_error($link, "Database selection error");
 			} else {
 
-				$username = mysql_real_escape_string($_GET['username']);
-				$password = md5($_GET['password']);
+				$username = mysql_real_escape_string($_POST['username']);
+				$password = md5($_POST['password']);
 
 				if ($username && $password) {
 					$query = "select `CPASSWORD` from `TUSER` where ( `CNAME` = '$username' )";

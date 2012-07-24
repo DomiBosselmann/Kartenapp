@@ -304,20 +304,20 @@ body[data-loggedin=false] #login::after {
 }
 
 body[data-loggedin=false] aside, body[data-loggedin=false] #mapcontainer {
-	z-index: -2
+	z-index: -2;
+	-webkit-transform: inherit;
 }
 
-body[data-loggedin=false] #mapcontainer svg, body[data-loggedin=false] #flags .container, body[data-loggedin=false] #visibilities, body[data-loggedin=false] #mapscaler {
-	-webkit-transition: -webkit-filter 1s ease-in-out;
+body[data-loggedin=false] #mapcontainer svg, body[data-loggedin=false] #flaglist .container, body[data-loggedin=false] #visibilities, body[data-loggedin=false] #mapscaler {
 	-webkit-filter: blur(10px);
 }
 
-body[data-loggedin=false] #flags button {
+body[data-loggedin=false] #flaglist button {
 	-webkit-filter: blur(2px);
 }
 
 #flags *:not(:hover) {
-	opacity: 0.2;
+	opacity: 0.7;
 }
 
 #flags >.hover, #flags >:active {

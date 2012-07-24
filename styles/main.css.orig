@@ -89,8 +89,14 @@ aside {
 	left: 320px;
 	right: 0;
 	bottom: 0;
+<<<<<<< HEAD
 	background: #83ab39;
 	overflow: hidden;
+=======
+	background: #e9e6df url("../images/textur.png") repeat;
+	overflow: hidden;
+	-webkit-transform: translateZ(0);
+>>>>>>> refs/heads/master
 }
 
 #mapcontainer svg {
@@ -236,13 +242,28 @@ aside {
 	padding: 10px;
 	-webkit-column-count: 2;
 	-moz-column-count: 2;
+<<<<<<< HEAD
 	-webkit-transition: -webkit-filter 1s ease-in-out;
+=======
+	column-count: 2;
+>>>>>>> refs/heads/master
 }
 
 #visibilities ul {
 	list-style: none;
 	padding: 0;
+	margin-top: 0;
 	-webkit-column-break-inside: avoid;
+	-moz-column-break-inside: avoid;
+	break-inside: avoid;
+}
+
+#visibilities ul:nth-child(4) li:last-child::after {
+	/* Ekelhafter Fix, damit beide Spalten etwa gleichlang sind. Leider sind die Umbrüche der Browser wenig durchdacht. */
+	content: "Bla";
+	display: block;
+	position: relative;
+	visibility: hidden;
 }
 
 #visibilities h1 {
@@ -250,6 +271,11 @@ aside {
 	font-weight: bold;
 	text-transform: uppercase;
 	-webkit-column-break-after: avoid;
+<<<<<<< HEAD
+=======
+	-moz-column-break-after: avoid;
+	break-after: avoid;
+>>>>>>> refs/heads/master
 	margin-top: 0;
 }
 
@@ -299,12 +325,20 @@ body[data-loggedin=false] #mapcontainer svg, body[data-loggedin=false] #flags .c
 
 body[data-loggedin=false] #flags button {
 	-webkit-filter: blur(2px);
-=======
-#flags *:not(:hover) {
-	opacity: 0.2;
 }
 
-#flags .hover {
-	opacity: 1;
+#flags *:not(:hover) {
+	opacity: 0.2;
+=======
+#flags >:not(:hover) {
+	opacity: 0.7;
 >>>>>>> refs/heads/master
+}
+
+#flags >.hover, #flags >:active {
+	opacity: 1;
+}
+
+#importFlags {
+	display: none;
 }

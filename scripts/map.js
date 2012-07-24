@@ -984,6 +984,59 @@ window.Karte = (function () {
 				perform : function (event) {
 					window.location.href = constants.locations.export;
 				}
+			},
+			observation : function (mutations) {
+				mutations.forEach(function (event) {
+					controller.handler.detectManipulation({
+						name : event.attributeName,
+						newValue : event.target.getAttribute(event.attributeName),
+						target : event.target
+					});
+				});
+			},
+			detectManipulation : function (event) {
+				console.log(event);
+				
+				var wasManipulated = false;
+				
+				if (event.target === document.body && event.name === "data-loggedin" && event.newValue !== loggedin.toString()) {
+					// Manipulation durch Attributänderung
+					wasManipulated = true;
+				} else if (event.name === "stylesheet" && event.target === undefined) {
+					// Manipulation durch Löschen
+					wasManipulated = true;
+				} else if (event.target === controller.uiElements.aside && event.name === "style") {
+					// Manipulation durch Style-Änderung
+					wasManipulated = true;
+				}
+				
+				if (wasManipulated) {
+					alert("Netter Versuch ;)");
+					window.location.reload();
+				}
+			},
+			performLogin : function (event) {
+			
+				request = new XMLHttpRequest();
+				request.open("post", constants.loginURL, true);
+				request.send(new FormData(controller.uiElements.loginForm));
+				/*request.onreadystatechange = function () {
+					if (request.readyState === 4) {
+						// TODO: Anpassen
+						if (request.responseText) {
+							controller.handler.login(); // Zusammenführen?	
+						}
+					}
+				}*/
+				
+				controller.handler.login();
+				
+				event.preventDefault();
+				return false;
+			},
+			login : function () {
+				loggedin = true;
+				document.body.setAttribute("data-loggedin", "true");
 			}
 		},
 		loadMap : function (latitude, longitude, layers, handler) {

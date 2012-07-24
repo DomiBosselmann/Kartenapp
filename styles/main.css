@@ -2,6 +2,11 @@ body {
 	height: 100%;
 	overflow: hidden;
 	font-family: "Corbel";
+	cursor: default;
+}
+
+[type=search], :focus {
+	cursor: auto;
 }
 
 aside {
@@ -165,6 +170,7 @@ aside {
 	background: transparent;
 	color: white;
 	opacity: 0;
+	z-index: -1;
 	-webkit-transition: opacity 0.2s ease-in-out;
 	-moz-transition: opacity 0.2s ease-in-out;
 	outline: none;
@@ -200,6 +206,7 @@ aside {
 }
 
 #toolbar.searchEnabled #searchField {
+	z-index: 0;
 	opacity: 1;
 	right: 10px;
 	-webkit-transition-delay: 0.7s;
@@ -266,6 +273,12 @@ aside {
 	padding: 5px;
 }
 
+#flags > *, #scaler, #map > g {
+	cursor: default;
+	cursor: -webkit-grab;
+	cursor: -moz-grab;
+}
+
 #flags >:not(:hover) {
 	opacity: 0.7;
 }
@@ -276,4 +289,13 @@ aside {
 
 #importFlags {
 	display: none;
+}
+
+body.dragging * {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	cursor: move !important;
+	cursor: -webkit-grabbing !important;
+	cursor: -moz-grabbing !important;
 }

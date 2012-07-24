@@ -16,7 +16,7 @@ window.Karte = (function () {
 	var map = {
 		isLoaded : false,
 		inInvalid : false,
-		isInitital : true,
+		isInitial : true,
 		dimensions : {
 			width : undefined,
 			height : undefined,
@@ -282,11 +282,6 @@ window.Karte = (function () {
 			
 			this.uiElements.mapScaler.addEventListener("mousedown", this.handler.enableScaling, false);
 			
-			this.uiElements.map.addEventListener("mousedown", this.handler.enablePanning, false);
-			
-			this.uiElements.map.addEventListener("MozMousePixelScroll", this.handler.scaleViaMouse, false);
-			this.uiElements.map.addEventListener("mousewheel", this.handler.scaleViaMouse, false);
-			
 			// Attribute für Geschwindigkeit zwischenspeichern
 			var length = controller.uiElements.scalables.length;
 			for (var i = 0; i < length; i++) {
@@ -397,6 +392,8 @@ window.Karte = (function () {
 				
 				controller.uiElements.mapScale.setAttribute("class","");
 				
+				document.body.classList.add("dragging");
+				
 				document.addEventListener("mousemove", controller.handler.handleScaling, false);
 				document.addEventListener("mouseup", controller.handler.finishScaling, false);
 			},
@@ -458,7 +455,8 @@ window.Karte = (function () {
 						controller.uiElements.scalables[i].removeAttribute("transform");
 					}
 				}, 20);
-
+				
+				document.body.classList.remove("dragging");
 				
 				document.removeEventListener("mousemove", controller.handler.handleScaling, false);
 				document.removeEventListener("mouseup", controller.handler.finishScaling, false);
@@ -476,6 +474,8 @@ window.Karte = (function () {
 			enablePanning : function (event) {
 				map.panning.startX = event.pageX - map.panning.x;
 				map.panning.startY = event.pageY - map.panning.y;
+				
+				document.body.classList.add("dragging");
 			
 				document.addEventListener("mousemove", controller.handler.handlePanning, false);
 				document.addEventListener("mouseup", controller.handler.finishPanning, false);
@@ -490,11 +490,17 @@ window.Karte = (function () {
 				map.panning.x = event.pageX - map.panning.startX;
 				map.panning.y = event.pageY - map.panning.startY;
 				
+				document.body.classList.remove("dragging");
+				
 				// EventListener wieder entfernen
 				document.removeEventListener("mousemove", controller.handler.handlePanning, false);
 				document.removeEventListener("mouseup", controller.handler.finishPanning, false);
 			},
 			setVisibility : function (event, object) {
+				if (object.zIndex === 1) {
+					return;
+				}
+				
 				object.visible = object.visible ? false : true;
 				event.currentTarget.className = object.visible ? "active" : "inactive";
 				
@@ -528,6 +534,13 @@ window.Karte = (function () {
 									
 				// Renderer anstoßen
 				renderer.start(data);
+				
+				if (map.isInitial) {
+					document.getElementById("federal").addEventListener("mousedown", controller.handler.enablePanning, false);
+			
+					controller.uiElements.map.addEventListener("MozMousePixelScroll", controller.handler.scaleViaMouse, false);
+					controller.uiElements.map.addEventListener("mousewheel", controller.handler.scaleViaMouse, false);
+				}
 				
 				map.isInitial = false;
 			},
@@ -823,6 +836,8 @@ window.Karte = (function () {
 					flagObject[event.currentTarget.getAttribute("data-interimFlagID") - 1].listReference.classList.remove("hover");
 				},
 				enablePanning : function (event) {
+					document.body.classList.add("dragging");
+					
 					// Aktuellen Translate ermitteln
 					var transform, x = event.offsetX ? event.offsetX : event.layerX, y = event.offsetY ? event.offsetY : event.layerY;
 					
@@ -866,6 +881,7 @@ window.Karte = (function () {
 					event.preventDefault();
 					
 					controller.handler.flags.listReference.classList.remove("hover");
+					document.body.classList.remove("dragging");
 					
 					controller.handler.flags.flagReference.addEventListener("mouseover", controller.handler.flags.highlightListView, false);
 					controller.handler.flags.flagReference.addEventListener("mouseout", controller.handler.flags.deHighlightListView, false);

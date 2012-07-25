@@ -14,7 +14,7 @@ import steffen.layer.Layer;
 
 public class PartialTransformation {
 	
-	private static Layer		myLayer				= Layer.Motorways;
+	private static Layer		myLayer				= Layer.Tertiaries;
 	private static boolean	myBawu				= true;
 	
 	private static int		width					= 500;

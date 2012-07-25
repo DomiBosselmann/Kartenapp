@@ -1,5 +1,5 @@
 
-package steffen.peucker;
+package steffen.waysConcatenation;
 
 public class Node {
 	public double	lon;

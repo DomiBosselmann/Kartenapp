@@ -25,7 +25,7 @@ public class SplitIntoSimplierFiles {
 	public static void splitThisFile(String fileSource, Layer layer) throws IOException {
 		System.out.println("Begin splitting " + layer.name + " file...");
 		
-		int splitCount = 1;
+		int splitCount = 5;
 		if (layer.nodeLayer) {
 			splitCount = 250;
 		}

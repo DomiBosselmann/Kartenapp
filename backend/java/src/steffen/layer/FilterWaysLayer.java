@@ -13,7 +13,7 @@ import steffen.Constants;
 public class FilterWaysLayer {
 	
 	private static String	myFileSource	= "bawu.xml";
-	private static Layer		myLayer			= Layer.Motorways;
+	private static Layer		myLayer			= Layer.Tertiaries;
 	
 	public static void filterWaysLayer(String fileSource, Layer layer, boolean deleteOldFile) throws IOException {
 		System.out.println("Begin filtering layer " + layer.name + "...");
@@ -298,6 +298,6 @@ public class FilterWaysLayer {
 	}
 	
 	public static void main(String[] args) throws IOException {
-		FilterWaysLayer.filterWaysLayer(FilterWaysLayer.myFileSource, FilterWaysLayer.myLayer, false);
+		FilterWaysLayer.filterWaysLayer(FilterWaysLayer.myFileSource, FilterWaysLayer.myLayer, true);
 	}
 }

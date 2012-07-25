@@ -12,10 +12,6 @@ if ($_GET) {
 	$xlinkNamespace = "http://www.w3.org/1999/xlink";
 	$newSVG = new simplexmlelement($xmlHeader . '<svg xmlns="' . $xmlnsNamespace . '" xmlns:xlink="' . $xlinkNamespace . '" />');
 
-	//	$newSVG->addAttribute("style", "position:absolute;");
-	// $newSVG->addAttribute("xmlns", $xmlnsNamespace);
-	// $newSVG->addAttribute("xlink:href", null, $xlinkNamespace);
-
 	// coordinate detection
 	$coords = $newSVG->addChild("coords");
 	$originLon1 = 7.483968;
@@ -452,9 +448,26 @@ if ($_GET) {
 															}
 														}
 														$polygon = $group->addChild($node1, $value1);
-														copyAllAttributes($value1, $group);
-														$polygon->addAttribute("points", $newPoints);
-														copyAllChildren($value1, $group);
+														foreach ($value1->attributes() as $att => $attValue) {
+															switch ($att) {
+																case "points":
+																	{
+																		$polygon->addAttribute($att, $newPoints);
+																		break;
+																	}
+																default:
+																	{
+																		$polygon->addAttribute($att, $attValue);
+																		break;
+																	}
+															}
+														}
+														foreach ($value1->getNamespaces(true) as $namespace => $namespaceValue) {
+															foreach ($value1->attributes($namespaceValue) as $att => $attValue) {
+																$polygon->addAttribute($namespace . ":" . $att, $attValue, $namespaceValue);
+															}
+														}
+														copyAllChildren($value1, $polygon);
 														break;
 													}
 											}

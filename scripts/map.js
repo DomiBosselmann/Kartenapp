@@ -840,6 +840,10 @@ window.Karte = (function () {
 					var flag = isRoute ? map.routes : map.places;
 					var flagID = isRoute ? event.currentTarget.parentNode.getAttribute("data-interimFlagID") : event.currentTarget.getAttribute("data-interimFlagID");
 					
+					controller.handler.flags.flagObject = flag[flagID - 1];
+					controller.handler.flags.listReference = controller.handler.flags.flagObject.listReference;
+					controller.handler.flags.flagReference = controller.handler.flags.flagObject.flagReference;
+					
 					if (isRoute) {
 						event.currentTarget.setAttribute("data-was-dragged", true);
 						// Pfad referenzieren
@@ -849,9 +853,6 @@ window.Karte = (function () {
 					// Aktuellen Translate ermitteln
 					var transform, x = event.offsetX ? event.offsetX : event.layerX, y = event.offsetY ? event.offsetY : event.layerY;
 					
-					controller.handler.flags.flagObject = flag[flagID - 1];
-					controller.handler.flags.listReference = controller.handler.flags.flagObject.listReference;
-					controller.handler.flags.flagReference = controller.handler.flags.flagObject.flagReference;
 					
 					transform = event.currentTarget.transform.baseVal.getItem(0);
 					if (transform.type == SVGTransform.SVG_TRANSFORM_TRANSLATE) {
@@ -872,7 +873,7 @@ window.Karte = (function () {
 				performPanning : function (event) {
 					var x = (event.offsetX ? event.offsetX : event.layerX) - controller.handler.flags.panningDiffX;
 					var y = (event.offsetY ? event.offsetY : event.layerY) - controller.handler.flags.panningDiffY;
-					
+										
 					if (controller.handler.flags.flagObject.pins !== undefined) {
 						for (var i = 0; i < controller.handler.flags.flagObject.pins.length; i++) {
 							if (controller.handler.flags.flagObject.pins[i].reference.getAttribute("data-was-dragged") === "true") {
@@ -1085,11 +1086,13 @@ window.Karte = (function () {
 														
 							var pinReference = renderer.addPin();
 							renderer.drawRoute(pinReference, position[0], position[1], flagReference);
+							pinReference.setAttribute("data-type", "route");
 					
 							pins.push({ reference : pinReference, coordinates : position });
+							
+							pinReference.addEventListener("mousedown", controller.handler.flags.enablePanning, false);
 						}
 						
-						flagReference.addEventListener("mousedown", controller.handler.flags.enablePanning, false);
 						flagReference.addEventListener("mouseover", controller.handler.flags.highlightListView, false);
 						flagReference.addEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
 						

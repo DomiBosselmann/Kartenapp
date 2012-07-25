@@ -293,6 +293,51 @@ if ($_SESSION['loggedin'] === true) {
 							}
 							break;
 						}
+					case "g":
+						{
+							$json = array();
+							// get routes
+							$query = "select `CID`, `CNAME`, `CLENGTH`, `CVISIBLE` from `TROUTES` where ( `CUSER` = '$username')";
+							$result = mysql_query($query);
+							if (!$result) {
+								echo_mysql_error("Routes selection error");
+							} else {
+								$routes = array()
+								while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+									$route_id = $row['CID'];
+									$route_name = $row['CNAME'];
+									$route_length = $row['CLENGTH'];
+									$query = "select `CXKOORD`, `CYKOORD`, `CORDER` from `TWAYPOINTS` where ( `CRELROUTEID` = $route_id) order by `CORDER`";
+									$result = mysql_query($query);
+									if (!$result) {
+										echo_mysql_error("Waypoint selection error");
+									} else {
+										$coordinates = array();
+										while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+											array_push(array($row['CXKOORD'], $row['CYKOORD']));
+										}
+										array_push($routes, array("name"=>$route_name, "distance"=>$route_length, "coordinates"=>$coordinates));
+									}
+								}
+								array_push($json, $routes);
+							}
+							// get places
+							$query = "select `CNAME`, `CXKOORD`, `CYKOORD` from `TLOCATIONS` where ( `CUSER` = '$username')";
+							$result = mysql_query($query);
+							if (!$result) {
+								echo_mysql_error("Routes selection error");
+							} else {
+								$places = array();
+								while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+									array_push($places, array("user"=>$username, "name"=>$row['CNAME'], "coordinates"=>array($row['CXKOORD'], $row['CYKOORD'])));
+								}
+								array_push($json, $places);
+							}
+
+							// respond the json
+							exit(json_encode($json));
+							break;
+						}
 					default:
 						{
 							exit(json_encode(array("success"=>false, "message"=>"Wrong action submitted!")));

@@ -19,7 +19,7 @@
 		<script type="application/javascript" src="scripts/filter.js"></script>
 		<meta charset="utf-8" />
 	</head>
-	<body data-loggedin="<?=$loggedin?>">
+	<body data-loggedin="<?php echo $loggedin; ?>">
 		<aside>
 			<section id="flaglist">
 				<nav id="toolbar">
@@ -35,11 +35,9 @@
 				</nav>
 				<div class="container">
 					<h1>Strecken</h1>
-					<ul id="routes">
-					</ul>
+					<ul id="routes"></ul>
 					<h1>Orte</h1>
-					<ul id="places">
-					</ul>
+					<ul id="places"></ul>
 				</div>
 			</section>
 			<form id="viewpreferences" name="viewpreferences">

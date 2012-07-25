@@ -53,8 +53,30 @@ aside {
 #flaglist div.container {
 	-webkit-box-flex: 1;
 	overflow: auto;
-	padding: 0 10px;
 	-webkit-transition: -webkit-filter 1s ease-in-out;
+}
+
+#flaglist h1 {
+	padding: 0 10px;
+}
+
+#flaglist ul {
+	margin: 0;
+	padding: 0;
+}
+
+#flaglist li {
+	padding: 0 10px;
+}
+
+#flaglist #routes:empty::after {
+	content: "Du hast bisher noch keine Strecken eingezeichnet";
+	padding: 0 10px;
+}
+
+#flaglist #places:empty::after {
+	content: "Du hast bisher noch keine Orte eingezeichnet";
+	padding: 0 10px;
 }
 
 #flaglist li::after {
@@ -77,6 +99,7 @@ aside {
 	position: relative;
 	border-top: 1px solid rgba(255,255,255,0.2);
 	background: rgb(202, 219, 229);
+	padding-bottom: 10px;
 }
 
 #viewpreferences::after {
@@ -285,6 +308,7 @@ aside {
 }
 
 #mapscaler {
+	padding: 10px 0;
 	-webkit-transition: -webkit-filter 1s ease-in-out;
 }
 

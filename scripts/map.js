@@ -561,7 +561,7 @@ window.Karte = (function () {
 					newPlace.textContent = "Neuer Ort";
 					newPlace.addEventListener("click", controller.handler.flags.enableAddNewPlace, false);
 					
-					newRoute.textContent = "Neue Route";
+					newRoute.textContent = "Neue Strecke";
 					newRoute.addEventListener("click", controller.handler.flags.enableAddNewRoute, false);
 					
 					container.appendChild(newPlace);

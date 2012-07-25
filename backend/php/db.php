@@ -72,7 +72,7 @@ if ($_SESSION['loggedin'] === true) {
 														$query = "insert into `TROUTES` ( `CNAME`, `CLENGTH`, `CUSER` ) values ( '$route_name', $route_length, '$username' )";
 														$result = mysql_query($query);
 														if (!$result) {
-															echo_mysql_error("Route insertion error");
+															//	echo_mysql_error("Route insertion error");
 														} else {
 															$route_id = mysql_insert_id();
 															array_push($route_ids, $route_id);
@@ -128,7 +128,7 @@ if ($_SESSION['loggedin'] === true) {
 																$query = "insert into `TLOCATIONS` ( `CNAME`, `CUSER`, `CXKOORD`, `CYKOORD` ) values ( '$place_name', '$username', $longitude, $latitude )";
 																$result = mysql_query($query);
 																if (!$result) {
-																	echo_mysql_error("Location insertion error");
+																	//	echo_mysql_error("Location insertion error");
 																}
 															}
 														}
@@ -278,7 +278,7 @@ if ($_SESSION['loggedin'] === true) {
 										$query = "insert into `TLOCATIONS` ( `CNAME`, `CUSER`, `CVISIBLE`, `CXKOORD`, `CYKOORD` ) values ( '$place_name', '$username', $place_visible, $longitude, $latitude )";
 										$result = mysql_query($query);
 										if (!$result) {
-											echo_mysql_error("Route insertion error");
+											//	echo_mysql_error("Place insertion error");
 										} else {
 											$places_json = json_encode(array("success"=>true, "message"=>"Places successfully added!"));
 										}

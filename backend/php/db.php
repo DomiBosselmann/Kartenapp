@@ -302,7 +302,7 @@ if ($_SESSION['loggedin'] === true) {
 							if (!$result) {
 								echo_mysql_error("Routes selection error");
 							} else {
-								$routes = array()
+								$routes = array();
 								while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 									$route_id = $row['CID'];
 									$route_name = $row['CNAME'];
@@ -314,22 +314,22 @@ if ($_SESSION['loggedin'] === true) {
 									} else {
 										$coordinates = array();
 										while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-											array_push(array($row['CXKOORD'], $row['CYKOORD']));
+											array_push($coordinates, array($row['CXKOORD'], $row['CYKOORD']));
 										}
-										array_push($routes, array("name"=>$route_name, "distance"=>$route_length, "coordinates"=>$coordinates));
+										array_push($routes, array("name"=>$route_name, "distance"=>$route_length, "visible"=>$row['CVISIBLE'], "coordinates"=>$coordinates));
 									}
 								}
 								array_push($json, $routes);
 							}
 							// get places
-							$query = "select `CNAME`, `CXKOORD`, `CYKOORD` from `TLOCATIONS` where ( `CUSER` = '$username')";
+							$query = "select `CNAME`, `CXKOORD`, `CYKOORD`, `CVISIBLE` from `TLOCATIONS` where ( `CUSER` = '$username')";
 							$result = mysql_query($query);
 							if (!$result) {
 								echo_mysql_error("Routes selection error");
 							} else {
 								$places = array();
 								while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-									array_push($places, array("user"=>$username, "name"=>$row['CNAME'], "coordinates"=>array($row['CXKOORD'], $row['CYKOORD'])));
+									array_push($places, array("user"=>$username, "name"=>$row['CNAME'], "visible"=>$row['CVISIBLE'], "coordinates"=>array($row['CXKOORD'], $row['CYKOORD'])));
 								}
 								array_push($json, $places);
 							}

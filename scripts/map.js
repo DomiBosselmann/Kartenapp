@@ -6,8 +6,8 @@ window.Karte = (function () {
 			maps : "http://karte.localhost/backend/php/svg_market.php",
 			login : "http://karte.localhost/backend/php/login.php",
 			save : "http://karte.localhost/backend/php/db.php?a=s",
-			import : "http://karte.localhost/backend/php/import.php",
-			export : "http://karte.localhost/backend/php/export.php"
+			import : "http://karte.localhost/backend/php/db.php?a=i",
+			export : "http://karte.localhost/backend/php/db.php?a=e"
 		},
 		math : {
 			epsilon : Number.MIN_VALUE // Viele Grüße Herr Gröll!

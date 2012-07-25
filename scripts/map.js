@@ -888,7 +888,12 @@ window.Karte = (function () {
 					controller.handler.flags.flagReference.addEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
 				},
 				setVisibility : function (event) {
-					isRoute = controller.handler.flags.flagObject.pins !== undefined ? true : false;
+					var isRoute = event.currentTarget.getAttribute("data-type") === "route" ? true : false;
+					var flag = isRoute ? map.routes : map.places;
+					
+					controller.handler.flags.flagObject = flag[event.currentTarget.getAttribute("data-interimFlagID") - 1];
+					controller.handler.flags.listReference = controller.handler.flags.flagObject.listReference;
+					controller.handler.flags.flagReference = controller.handler.flags.flagObject.flagReference;
 					
 					controller.handler.flags.flagObject.visible = !controller.handler.flags.flagObject.visible;
 					controller.handler.flags.listReference.title = "Klicken, um " + (isRoute ? "diese Strecke" : "diesen Ort") + " zu " + (controller.handler.flags.flagObject.visible ? "verbergen" : "anzuzeigen");

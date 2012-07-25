@@ -57,6 +57,10 @@ aside {
 	-webkit-transition: -webkit-filter 1s ease-in-out;
 }
 
+#flaglist li::after {
+	content: attr(data-route-distance);
+}
+
 #flaglist div.container li.hover, #flaglist div.container li:hover {
 	background: violet;
 }

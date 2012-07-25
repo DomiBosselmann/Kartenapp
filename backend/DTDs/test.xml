@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<locations>
+	<route>
+		<user>user1</user>
+		<name>route1</name>
+		<length>50</length>
+		<coordinates>
+			<coord lon="8.0" lat="48.0" />
+			<coord lon="8.0" lat="47.0" />
+			<coord lon="9.0" lat="47.5" />
+			<coord lon="9.3" lat="48.0" />
+			<coord lon="8.7" lat="48.5" />
+		</coordinates>
+	</route>
+	<route>
+		<user>user2</user>
+		<name>route2</name>
+		<length>100</length>
+		<coordinates>
+			<coord lon="9.0" lat="47.0" />
+			<coord lon="8.1" lat="48.8" />
+			<coord lon="8.6" lat="48.2" />
+			<coord lon="7.9" lat="47.9" />
+			<coord lon="9.3" lat="47.5" />
+		</coordinates>
+	</route>
+	<place>
+		<user>user3</user>
+		<name>place1</name>
+		<coord lon="8.3" lat="48.3" />
+	</place>
+	<place>
+		<user>user4</user>
+		<name>place2</name>
+		<coord lon="9.1" lat="47.9" />
+	</place>
+</locations>

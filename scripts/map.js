@@ -1607,26 +1607,26 @@ window.Karte = (function () {
 			return [newTopLeft, newBottomRight];
 		},
 		geoCoordinateToPixelCoordinate : function (latitude, longitude) {
-            var longitudeDiff = map.coordinates.bottomRight[1] - map.coordinates.topLeft[1];
-            var newX = (longitude - map.coordinates.topLeft[1]) / longitudeDiff;
-            var x = newX * map.dimensions.currentWidth + map.dimensions.x;
-            
-            var latitudeDiff = map.coordinates.topLeft[0] - map.coordinates.bottomRight[0];
-            var newY = (map.coordinates.topLeft[0] - latitude) / latitudeDiff;
-            var y = newY * map.dimensions.currentHeight + map.dimensions.y;
-            
-            return [x, y];
+			var longitudeDiff = map.coordinates.bottomRight[1] - map.coordinates.topLeft[1];
+			var newX = (longitude - map.coordinates.topLeft[1]) / longitudeDiff;
+			var x = newX * map.dimensions.currentWidth + map.dimensions.x;
+
+			var latitudeDiff = map.coordinates.topLeft[0] - map.coordinates.bottomRight[0];
+			var newY = (map.coordinates.topLeft[0] - latitude) / latitudeDiff;
+			var y = newY * map.dimensions.currentHeight + map.dimensions.y;
+			
+			return [x, y];
 		},
 		pixelCoordinateToGeoCoordinate : function (x, y) {			
 			var newX = (x - map.dimensions.x) / map.dimensions.currentWidth;
-            var longitudeDiff = map.coordinates.bottomRight[1] - map.coordinates.topLeft[1];
-            var longitude = map.coordinates.topLeft[1] + (longitudeDiff * newX);
+			var longitudeDiff = map.coordinates.bottomRight[1] - map.coordinates.topLeft[1];
+			var longitude = map.coordinates.topLeft[1] + (longitudeDiff * newX);
 
-            var newY = (y - map.dimensions.y) / map.dimensions.currentHeight;
-            var latitudeDiff = map.coordinates.topLeft[0] - map.coordinates.bottomRight[0];
-            var latitude = map.coordinates.topLeft[0] - (latitudeDiff * newY);
+			var newY = (y - map.dimensions.y) / map.dimensions.currentHeight;
+			var latitudeDiff = map.coordinates.topLeft[0] - map.coordinates.bottomRight[0];
+			var latitude = map.coordinates.topLeft[0] - (latitudeDiff * newY);
 
-            return [latitude, longitude];			
+			return [latitude, longitude];			
 		}
 	};
 	

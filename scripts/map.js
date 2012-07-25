@@ -1601,13 +1601,15 @@ window.Karte = (function () {
 			return [newTopLeft, newBottomRight];
 		},
 		geoCoordinateToPixelCoordinate : function (latitude, longitude) {
-			var y = (latitude - map.coordinates.topLeft[0]) / (map.coordinates.bottomRight[0] - map.coordinates.topLeft[0]) * map.dimensions.height;
-			var x = (longitude - map.coordinates.topLeft[1]) / (map.coordinates.bottomRight[1] - map.coordinates.topLeft[1]) * map.dimensions.width;
-			
-			x = (x - map.panning.x + map.dimensions.x) * map.scaling.scaleFactor;
-			y = (y - map.panning.y + map.dimensions.y) * map.scaling.scaleFactor;
-			
-			return [x, y];
+            var longitudeDiff = map.coordinates.bottomRight[1] - map.coordinates.topLeft[1];
+            var newX = (longitude - map.coordinates.topLeft[1]) / longitudeDiff;
+            var x = newX * map.dimensions.currentWidth + map.dimensions.x;
+            
+            var latitudeDiff = map.coordinates.topLeft[0] - map.coordinates.bottomRight[0];
+            var newY = (map.coordinates.topLeft[0] - latitude) / latitudeDiff;
+            var y = newY * map.dimensions.currentHeight + map.dimensions.y;
+            
+            return [x, y];
 		},
 		pixelCoordinateToGeoCoordinate : function (x, y) {			
 			var newX = (x - map.dimensions.x) / map.dimensions.currentWidth;

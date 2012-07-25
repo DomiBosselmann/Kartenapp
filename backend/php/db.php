@@ -82,9 +82,10 @@ if ($_SESSION['loggedin'] === true) {
 												array_push($route_ids, $route_id);
 												$order = 0;
 												foreach ($route_coordinates as $coordinate) {
-													$longitude = $coordinate[0];
-													$latitude = $coordinate[1];
+													$longitude = $coordinate[1];
+													$latitude = $coordinate[0];
 													$query = "insert into `TWAYPOINTS` ( `CRELROUTEID`, `CORDER`, `CXKOORD`, `CYKOORD` ) values ($route_id, $order, $longitude, $latitude)";
+													echo $query;
 													$result = mysql_query($query);
 													if (!$result) {
 														echo_mysql_error("Waypoint insertion error");
@@ -174,16 +175,17 @@ if ($_SESSION['loggedin'] === true) {
 						}
 					case "e":
 						{
-							// export routes as xml
+							$locations_xml = new simplexmlelement('<?xml version="1.0" encoding="UTF-8"?><locations/>');
+							// export routes
 							$query = "select `CID`, `CNAME`, `CLENGTH` from `TROUTES` where ( `CUSER` = '$username')";
 							$result = mysql_query($query);
 							if (!$result) {
 								echo_mysql_error("Routes selection error");
 							} else {
-								$routes_xml = new simplexmlelement('<?xml version="1.0" encoding="UTF-8"?><routes/>');
 								while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-									$route_element = $routes_xml->addChild("route");
+									$route_element = $locations_xml->addChild("route");
 									$route_id = $row['CID'];
+									$route_element->addChild("user", $username);
 									$route_element->addChild("name", $row['CNAME']);
 									$route_element->addChild("length", $row['CLENGTH']);
 									$query = "select `CXKOORD`, `CYKOORD`, `CORDER` from `TWAYPOINTS` where ( `CRELROUTEID` = $route_id) order by `CORDER`";
@@ -191,66 +193,97 @@ if ($_SESSION['loggedin'] === true) {
 									if (!$result) {
 										echo_mysql_error("Waypoint selection error");
 									} else {
+										$coordinates_element = $route_element->addChild("coordinates");
 										while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-											$node_element = $route_element->addChild("node");
-											$node_element->addChild("longitude", $row['CXKOORD']);
-											$node_element->addChild("latitude", $row['CYKOORD']);
+											$coord_element = $coordinates_element->addChild("coord");
+											$coord_element->addAttribute("lon", $row['CXKOORD']);
+											$coord_element->addAttribute("lat", $row['CYKOORD']);
 										}
 									}
 								}
-								header("Content-Type: application/octet-stream");
-								header("Content-Disposition: attachment; filename=export.xml");
-								exit(json_encode(array("success"=>true, "data"=>$routes_xml->asXML())));
 							}
+							// export places
+							$query = "select `CNAME`, `CXKOORD`, `CYKOORD` from `TLOCATIONS` where ( `CUSER` = '$username')";
+							$result = mysql_query($query);
+							if (!$result) {
+								echo_mysql_error("Routes selection error");
+							} else {
+								while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+									$place_element = $locations_xml->addChild("place");
+									$place_element->addChild("user", $username);
+									$place_element->addChild("name", $row['CNAME']);
+									$coord_element = $place_element->addChild("coord");
+									$coord_element->addAttribute("lon", $row['CXKOORD']);
+									$coord_element->addAttribute("lat", $row['CYKOORD']);
+								}
+							}
+
+							// respond the xml
+							header("Content-Type: application/octet-stream");
+							header("Content-Disposition: attachment; filename=export.xml");
+							exit($locations_xml->asXML());
 							break;
 						}
 					case "s":
 						{
-							// save routes
 							if ($_POST['routes'] && $_POST['places']) {
 								$json = array();
+								// save routes
 								if ($_POST['routes']) {
-									$data = json_decode($_POST['data']);
-									$route_name = $data['name'];
-									$route_length = $data['distance'];
-									$route_coordinates = $data['coordinates'];
-
-									$query = "insert into `TROUTES` ( `CNAME`, `CLENGTH`, `CUSER` ) values ( '$route_name', $route_length, '$username' )";
-									$result = mysql_query($query);
-									if (!$result) {
-										echo_mysql_error("Route insertion error");
-									} else {
-										$route_id = mysql_insert_id();
-										$order = 0;
-										foreach ($route_coordinates as $coordinate) {
-											$longitude = $coordinate[0];
-											$latitude = $coordinate[1];
-											$query = "insert into `TWAYPOINTS` ( `CRELROUTEID`, `CORDER`, `CXKOORD`, `CYKOORD` ) values ($route_id, $order, $longitude, $latitude)";
-											$result = mysql_query($query);
-											if (!$result) {
-												echo_mysql_error("Waypoint insertion error");
-											} else {
-												$order++;
-											}
+									$data = json_decode($_POST['routes'], true);
+									foreach ($data as $data_element) {
+										$route_name = $data_element['name'];
+										$route_length = $data_element['distance'];
+										if ($data_element['visible'] == true) {
+											$route_visible = 1;
+										} else {
+											$route_visible = 0;
 										}
-										$routes_json = json_encode(array("success"=>true, "message"=>"Routes successfully added!"));
+										$route_coordinates = $data_element['coordinates'];
+
+										$query = "insert into `TROUTES` ( `CNAME`, `CLENGTH`, `CUSER` ) values ( '$route_name', '$route_length', '$username' )";
+										$result = mysql_query($query);
+										if (!$result) {
+											//	echo_mysql_error("Route insertion error");
+										} else {
+											$route_id = mysql_insert_id();
+											$order = 0;
+											foreach ($route_coordinates as $coordinate) {
+												$longitude = $coordinate[1];
+												$latitude = $coordinate[0];
+												$query = "insert into `TWAYPOINTS` ( `CRELROUTEID`, `CORDER`, `CXKOORD`, `CYKOORD` ) values ($route_id, $order, $longitude, $latitude )";
+												$result = mysql_query($query);
+												if (!$result) {
+													echo_mysql_error("Waypoint insertion error");
+												} else {
+													$order++;
+												}
+											}
+											$routes_json = json_encode(array("success"=>true, "message"=>"Routes successfully added!"));
+										}
 									}
 								}
 								// saving places
 								if ($_POST['places']) {
-									$data = json_decode($_POST['places']);
-									$place_name = $data['name'];
-									$place_visible = $data['visible'];
-									$place_coordinates = $data['coordinates'];
-									$longitude = $place_coordinates[0];
-									$latitude = $place_coordinates[1];
+									$data = json_decode($_POST['places'], true);
+									foreach ($data as $data_element) {
+										$place_name = $data_element['name'];
+										if ($data_element['visible'] == true) {
+											$place_visible = 1;
+										} else {
+											$place_visible = 0;
+										}
+										$place_coordinates = $data_element['coordinates'];
+										$longitude = $place_coordinates[1];
+										$latitude = $place_coordinates[0];
 
-									$query = "insert into `TLOCATIONS` ( `CNAME`, `CUSER`, `CVISIBLE`, `CXKOORD`, `CYKOORD` ) values ( '$place_name', '$username', $place_visible, $longitude, $latitude )";
-									$result = mysql_query($query);
-									if (!$result) {
-										echo_mysql_error("Route insertion error");
-									} else {
-										$places_json = json_encode(array("success"=>true, "message"=>"Places successfully added!"));
+										$query = "insert into `TLOCATIONS` ( `CNAME`, `CUSER`, `CVISIBLE`, `CXKOORD`, `CYKOORD` ) values ( '$place_name', '$username', $place_visible, $longitude, $latitude )";
+										$result = mysql_query($query);
+										if (!$result) {
+											echo_mysql_error("Route insertion error");
+										} else {
+											$places_json = json_encode(array("success"=>true, "message"=>"Places successfully added!"));
+										}
 									}
 								}
 								exit(json_encode(array("routes"=>$routes_json, "places"=>$places_json)));

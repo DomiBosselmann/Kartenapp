@@ -12,13 +12,13 @@ import java.util.Hashtable;
 import steffen.Constants;
 
 public class Peuckern {
-	private static String								myFileSource		= "bawu motorways.xml";
+	private static String								myFileSource		= "bawu tertiaries.xml";
 	private static Hashtable<Integer, Node>		nodes					= null;
 	private static Hashtable<Integer, Boolean>	neededNodes			= null;
-	private static double								myPeuckerDistance	= 0.01;
+	private static double								myPeuckerDistance	= 0.05;
 	
 	public static void main(String[] args) throws IOException {
-		Peuckern.peuckern(Peuckern.myFileSource, Peuckern.myPeuckerDistance, false);
+		Peuckern.peuckern(Peuckern.myFileSource, Peuckern.myPeuckerDistance, true);
 	}
 	
 	public static void peuckern(String fileSource, double peuckerDistance, boolean deleteOldFile) throws IOException {
@@ -167,8 +167,8 @@ public class Peuckern {
 				break;
 			}
 			default: {
-				Peuckern.neededNodes.put(refs[begin], new Boolean(true));
-				Peuckern.neededNodes.put(refs[end], new Boolean(true));
+//				Peuckern.neededNodes.put(refs[begin], new Boolean(true));
+//				Peuckern.neededNodes.put(refs[end], new Boolean(true));
 				Node beginNode = Peuckern.nodes.get(refs[begin]);
 				Node endNode = Peuckern.nodes.get(refs[end]);
 				Line iLine = new Line(beginNode.lon, beginNode.lat, endNode.lon, endNode.lat);
@@ -187,8 +187,8 @@ public class Peuckern {
 					Peuckern.markRelevantNodes(refs, begin, most_distant, peuckerDistance);
 					Peuckern.markRelevantNodes(refs, most_distant, end, peuckerDistance);
 				} else {
-					// Peuckern.neededNodes.put(refs[begin], new Boolean(true));
-					// Peuckern.neededNodes.put(refs[end], new Boolean(true));
+					Peuckern.neededNodes.put(refs[begin], new Boolean(true));
+					Peuckern.neededNodes.put(refs[end], new Boolean(true));
 				}
 				break;
 			}

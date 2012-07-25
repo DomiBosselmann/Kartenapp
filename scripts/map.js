@@ -297,9 +297,7 @@ window.Karte = (function () {
 			map.dimensions.height = window.innerHeight;
 			map.dimensions.maxWidth = screen.availWidth - 320;
 			map.dimensions.maxHeight = screen.availHeight;
-			
-			console.log(map);
-			
+						
 			// Automatische UI-Änderungen
 			map.scaling.observe("value",function (event) {
 				controller.uiElements.mapScaleText.textContent = event.data === Number.POSITIVE_INFINITY ? "Ungültiger Maßstab" : event.data.toFixed(2) + map.scaling.unit;
@@ -525,9 +523,7 @@ window.Karte = (function () {
 				var scaleFactor = map.scaling.scaleFactor;
 				map.scaling.zoomLevelValue = units.geoCoordinatesToDistance(map.coordinates.topLeft, map.coordinates.bottomRight) / map.dimensions.currentWidth * 100;
 				map.scaling.value = map.scaling.zoomLevelValue / map.scaling.scaleFactor;
-				
-				console.log(scaleFactor, map.scaling.value);
-									
+													
 				// Renderer anstoßen
 				renderer.start(data);
 				
@@ -606,13 +602,14 @@ window.Karte = (function () {
 					if (isRoute) {
 						controller.handler.flags.pinReferences.push(pinReference);
 						renderer.drawRoute(pinReference, controller.handler.flags.x[pinCounter - 1], controller.handler.flags.y[pinCounter - 1], controller.handler.flags.flagReference);
+						pinReference.setAttribute("data-type", "route");
 					} else {
 						controller.handler.flags.flagReference = pinReference;
 						renderer.drawPin(pinReference, controller.handler.flags.x[pinCounter - 1], controller.handler.flags.y[pinCounter - 1]);
+						pinReference.setAttribute("data-type", "place");
 					}
 					
 					pinReference.setAttribute("class", "hover");
-					
 					pinReference.addEventListener("mousedown", controller.handler.flags.enablePanning, false); // ORT?
 					
 					return true;
@@ -693,7 +690,7 @@ window.Karte = (function () {
 							name : controller.handler.flags.listReference.textContent,
 							visible : true,
 							note : "",
-							coordinates : units.pixelCoordinateToGeoCoordinate(controller.handler.flags.x[0], controller.handler.flags.y[0]),
+							coordinates : [controller.handler.flags.x[0], controller.handler.flags.y[0]],
 							flagReference : controller.handler.flags.flagReference,
 							listReference : controller.handler.flags.listReference
 						};
@@ -790,7 +787,7 @@ window.Karte = (function () {
 							pins : pins,
 							listReference : controller.handler.flags.listReference
 						};
-												
+																		
 						var flagID = map.routes.push(controller.handler.flags.flagObject);
 						
 						// Distanz anzeigen
@@ -839,18 +836,29 @@ window.Karte = (function () {
 				enablePanning : function (event) {
 					document.body.classList.add("dragging");
 					
+					var isRoute = event.currentTarget.getAttribute("data-type") === "route" ? true : false;
+					var flag = isRoute ? map.routes : map.places;
+					var flagID = isRoute ? event.currentTarget.parentNode.getAttribute("data-interimFlagID") : event.currentTarget.getAttribute("data-interimFlagID");
+					
+					if (isRoute) {
+						event.currentTarget.setAttribute("data-was-dragged", true);
+						// Pfad referenzieren
+	      				controller.handler.flags.flagObject.path = event.currentTarget.parentNode.getElementsByTagName("path")[0];
+					}
+					
 					// Aktuellen Translate ermitteln
 					var transform, x = event.offsetX ? event.offsetX : event.layerX, y = event.offsetY ? event.offsetY : event.layerY;
 					
-					controller.handler.flags.flagObject = map.places[event.currentTarget.getAttribute("data-interimFlagID") - 1];
+					controller.handler.flags.flagObject = flag[flagID - 1];
 					controller.handler.flags.listReference = controller.handler.flags.flagObject.listReference;
 					controller.handler.flags.flagReference = controller.handler.flags.flagObject.flagReference;
 					
-					transform = controller.handler.flags.flagReference.transform.baseVal.getItem(0);
+					transform = event.currentTarget.transform.baseVal.getItem(0);
 					if (transform.type == SVGTransform.SVG_TRANSFORM_TRANSLATE) {
 						controller.handler.flags.panningDiffX = x - transform.matrix.e,
 						controller.handler.flags.panningDiffY = y - transform.matrix.f;
       				}
+      				
       				      									
 					document.addEventListener("mousemove", controller.handler.flags.performPanning, false);
 					document.addEventListener("mouseup", controller.handler.flags.finishPanning, false);
@@ -864,8 +872,19 @@ window.Karte = (function () {
 				performPanning : function (event) {
 					var x = (event.offsetX ? event.offsetX : event.layerX) - controller.handler.flags.panningDiffX;
 					var y = (event.offsetY ? event.offsetY : event.layerY) - controller.handler.flags.panningDiffY;
-					controller.handler.flags.flagReference.setAttribute("transform", "translate(" + x + " " + y + ") scale(0.1)");
 					
+					if (controller.handler.flags.flagObject.pins !== undefined) {
+						for (var i = 0; i < controller.handler.flags.flagObject.pins.length; i++) {
+							if (controller.handler.flags.flagObject.pins[i].reference.getAttribute("data-was-dragged") === "true") {
+								controller.handler.flags.flagObject.pins[i].reference.setAttribute("transform", "translate(" + x + " " + y + ") scale(0.1)");
+								
+								controller.handler.flags.flagObject.path.setAttribute("d",renderer.changePath(controller.handler.flags.flagObject.pins));
+							}
+						}
+					} else {
+						controller.handler.flags.flagObject.setAttribute("transform", "translate(" + x + " " + y + ") scale(0.1)");
+					}
+															
 					event.stopPropagation();
 					event.preventDefault();		
 				},
@@ -873,7 +892,23 @@ window.Karte = (function () {
 					var x = (event.offsetX ? event.offsetX : event.layerX) - controller.handler.flags.panningDiffX;
 					var y = (event.offsetY ? event.offsetY : event.layerY) - controller.handler.flags.panningDiffY;
 					
-					controller.handler.flags.flagObject.coordinates = units.pixelCoordinateToGeoCoordinate(x, y);
+					if (controller.handler.flags.flagObject.pins !== undefined) {
+						for (var i = 0; i < controller.handler.flags.flagObject.pins.length; i++) {
+							if (controller.handler.flags.flagObject.pins[i].reference.getAttribute("data-was-dragged") === "true") {
+								controller.handler.flags.flagObject.pins[i].coordinates = [x, y];
+								controller.handler.flags.flagObject.pins[i].reference.removeAttribute("data-was-dragged");
+								
+								var newDistance = controller.handler.calculateDistance(controller.handler.flags.flagObject.pins);
+								
+								controller.handler.flags.flagObject.listReference.setAttribute("data-route-distance", "— " + newDistance.toFixed(1) + "km");
+								
+								// Pfad dereferenzieren
+			      				controller.handler.flags.flagObject.path = null;
+							}
+						}
+					} else {
+						controller.handler.flags.flagObject.coordinates = [x, y];
+					}
 					
 					document.removeEventListener("mousemove", controller.handler.flags.performPanning, false);
 					document.removeEventListener("mouseup", controller.handler.flags.finishPanning, false);
@@ -1144,7 +1179,6 @@ window.Karte = (function () {
 				});
 			},
 			detectManipulation : function (event) {
-				console.log(event);
 				
 				var wasManipulated = false;
 				
@@ -1287,7 +1321,6 @@ window.Karte = (function () {
 			}
 		},
 		import : function (data) {
-			console.log(data);
 			// Request absetzen
 			request = new XMLHttpRequest();
 			request.open("post", constants.locations.import, true);
@@ -1425,6 +1458,20 @@ window.Karte = (function () {
 			
 			renderer.drawPin(newPin, x, y, flagReference);
 		},
+		changePath : function (pins) {
+			var path = "";
+			pins.forEach(function (pin, index) {
+				var transform = pin.reference.transform.baseVal.getItem(0);
+  				
+				if (index === 0) {
+					path = "M " + transform.matrix.e + " " + transform.matrix.f;
+				} else {
+					path += " L " + transform.matrix.e + " " + transform.matrix.f;
+				}
+			});
+						
+			return path;
+		},
 		removePin : function (pin) {
 			renderer.flags.removeChild(pin);
 		}
@@ -1530,12 +1577,7 @@ window.Karte = (function () {
 	var units = {
 		geoCoordinatesToDistance : function (topLeft, bottomRight) { // nur waagrecht oder senkrecht
 			var topY = topLeft[0], bottomY = bottomRight[0];
-			var leftX = topLeft[1], rightX = bottomRight[1];
-			
-			// TODO: Zwei Arten zur Berechnung des Maßstabs. Welche?
-			console.log("Ausgerechnet anhand Breite: " + (111.32 * (topY - bottomY)));
-			console.log("Ausgerechnet anhand Länge: " + (2 * Math.PI * 6371 * Math.cos((topY - (topY - bottomY) / 2) * Math.PI / 180)/360 * (rightX - leftX)));
-			
+			var leftX = topLeft[1], rightX = bottomRight[1];			
 
 			return 2 * Math.PI * 6371 * Math.cos((topY - (topY - bottomY) / 2) * Math.PI / 180)/360 * (rightX - leftX);
 		},

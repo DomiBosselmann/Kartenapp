@@ -1,36 +1,23 @@
 window.Karte = (function () {
-<<<<<<< HEAD
-
-	var constants = {
-=======
 	var loggedin = undefined;
 
 	var constants = {
-<<<<<<< HEAD
-		url : "http://karte.localhost/backend/php/svg_market.php",
-		loginURL : "http://karte.localhost/backend/login/login.php"
-=======
->>>>>>> refs/heads/Login
 		locations : {
-			maps : "http://karte.localhost/backend/php/svg_market.php",
-			login : "http://karte.localhost/backend/login/login.php",
-			save : "http://karte.localhost/backend/php/save.php",
-			import : "http://karte.localhost/backend/php/import.php",
-			export : "http://karte.localhost/backend/php/export.php"
+			maps : "http://localhost/backend/php/svg_market.php",
+			login : "http://localhost/backend/php/login.php",
+			save : "http://localhost/backend/php/db.php?a=s",
+			import : "http://localhost/backend/php/db.php?a=i",
+			export : "http://localhost/backend/php/db.php?a=e"
 		},
 		math : {
 			epsilon : Number.MIN_VALUE // Viele Grüße Herr Gröll!
 		}
-<<<<<<< HEAD
-=======
->>>>>>> refs/heads/master
->>>>>>> refs/heads/Login
 	};
 	
 	var map = {
 		isLoaded : false,
 		inInvalid : false,
-		isInitital : true,
+		isInitial : true,
 		dimensions : {
 			width : undefined,
 			height : undefined,
@@ -67,35 +54,39 @@ window.Karte = (function () {
 				visible : true,
 				sub : {
 					cities : {
-						name : "Städte",
+						name : "Großstadt",
 						visible : true,
 						paramName : "c",
 						layerName : "cities",
-						zIndex : 15
+						zIndex : 15,
+						tooltip : "> 100.000 Einwohner"
 					},
 					towns : {
-						name : "(Dörfer)",
+						name : "Kleinstadt",
 						visible : false,
 						paramName : "c1",
 						layerName : "towns",
-						zIndex : 14
+						zIndex : 14,
+						tooltip : "> 10.000 Einwohner"
 					},
 					villages : {
-						name : "(Kuhdörfer)",
+						name : "Dorf",
 						visible : false,
 						paramName : "c2",
 						layerName : "villages",
-						zIndex : 13
+						zIndex : 13,
+						tooltip : "≤ 10.000 Einwohner"
 					},
 					hamlets : {
-						name : "(Kaffs)",
+						name : "Kleines Dorf",
 						visible : false,
 						paramName : "c3",
 						layerName : "hamlets",
-						zIndex : 12
+						zIndex : 12,
+						tooltip : "< 1.000 Einwohner"
 					},
 					suburbs : {
-						name : "(Bauernhof)",
+						name : "Stadtteile",
 						visible : false,
 						paramName : "c4",
 						layerName : "suburbs",
@@ -109,14 +100,14 @@ window.Karte = (function () {
 				paramName : undefined,
 				sub : {
 					federal : {
-						name : "Bundesländer",
+						name : "Bundesland",
 						visible : true,
 						paramName : "b",
 						layerName : "federal",
 						zIndex : 1
 					},
 					counties : {
-						name : "Landkreise",
+						name : "Landkreis",
 						visible : false,
 						paramName : "b1",
 						layerName : "counties",
@@ -130,14 +121,14 @@ window.Karte = (function () {
 				paramName : undefined,
 				sub : {
 					motorways : {
-						name : "Autobahnen",
+						name : "Autobahn",
 						visible : true,
 						paramName : "s",
 						layerName : "motorways",
 						zIndex : 10
 					},
 					federal : {
-						name : "(B&K)",
+						name : "Bundesstraße",
 						visible : false,
 						paramName : "s1",
 						layerName : "primaries",
@@ -162,92 +153,47 @@ window.Karte = (function () {
 			},
 			waters : {
 				name : "Gewässer",
-				visible : false,
+				visible : true,
 				paramName : undefined,
 				sub : {
 					rivers : {
-						name : "Flüsse",
+						name : "Fluss",
 						visible : true,
 						paramName : "w",
 						layerName : "rivers",
 						zIndex : 6
 					},
 					canals : {
-						name : "Kanäle",
+						name : "Kanal",
 						visible : false,
 						paramName : "w1",
 						layerName : "canals",
 						zIndex : 5
 					},
 					namedLakes : {
-						name : "Seen",
+						name : "See",
 						visible : false,
 						paramName : "w2",
 						layerName : "namedLakes",
 						zIndex : 4
 					},
 					allLakes : {
-						name : "(Seen)",
+						name : "Wasserstelle",
 						visible : false,
 						paramName : "w3",
-						layerName : "allLakes",
+						layerName : "unnamedLakes",
 						zIndex : 3
 					}
 				}
 			}
 		},
-		places : [
-			{
-				name : "Feierabendweg 17",
-				visible : true,
-				note : "Mein Zuhause",
-				coordinates : [],
-				flagReference : undefined,
-				listReference : undefined
-			},
-			{
-				name : "Erzbergerstraße 121",
-				visible : true,
-				note : "Meine Uni",
-				coordinates : [],
-				flagReference : undefined,
-				listReference : undefined
-			},
-			{
-				name : "Medienallee 1",
-				visible : true,
-				note : "Mein Lieblingsfernsehsender",
-				coordinates : [],
-				flagReference : undefined,
-				listReference : undefined
-			},
-			{
-				name : "Dietmar-Hopp-Alle 2",
-				visible : true,
-				note : "Mein Arbeitsplatz",
-				coordinates : [],
-				flagReference : undefined,
-				listReference : undefined
-			},
-		],
-		routes : [
-			{
-				name : "Weg zur Hochschule",
-				distance : "3km",
-				note : "Blafaselblubber",
-				points : [],
-				visible : true,
-				listReference : undefined
-			}
-		]
+		places : [],
+		routes : []
 	};
 	
 	var controller = {
 		uiElements : {
-<<<<<<< HEAD
-=======
 			aside : null,
->>>>>>> refs/heads/Login
 			toolbar : null,
 			addButton : null,
 			searchButton: null,
@@ -262,20 +208,14 @@ window.Karte = (function () {
 			mapScaleText : null,
 			scalables : null,
 			visibilities : null,
+			flaglist : null,
 			places : null,
-<<<<<<< HEAD
-			routes : null
-		},
-		init : function () {
-			// UI-Elemente mit Referenzen versehen
-=======
 			routes : null,
 			loginForm : null
 		},
 		init : function () {
 			// UI-Elemente mit Referenzen versehen
 			this.uiElements.aside = document.getElementsByTagName("aside")[0];
->>>>>>> refs/heads/Login
 			this.uiElements.toolbar = document.getElementById("toolbar");
 			this.uiElements.addButton = document.querySelector("button[title='Route oder Punkt hinzufügen']");
 			this.uiElements.searchButton = document.querySelector("button[title='Suchen']");
@@ -290,12 +230,10 @@ window.Karte = (function () {
 			this.uiElements.mapScaleText = document.getElementById("scalevalue");
 			this.uiElements.scalables = this.uiElements.mapScale.getElementsByClassName("scalable");
 			this.uiElements.visibilities = document.getElementById("visibilities");
+			this.uiElements.flaglist = document.getElementById("flaglist");
 			this.uiElements.places = document.getElementById("places");
 			this.uiElements.routes = document.getElementById("routes");
-<<<<<<< HEAD
-=======
 			this.uiElements.loginForm = document.getElementById("login");
->>>>>>> refs/heads/Login
 			
 			// EventListener hinzufügen
 			this.uiElements.addButton.addEventListener("click", this.handler.flags.enableNewFlagMask, false);
@@ -309,13 +247,8 @@ window.Karte = (function () {
 			
 			this.uiElements.mapScaler.addEventListener("mousedown", this.handler.enableScaling, false);
 			
-			this.uiElements.map.addEventListener("mousedown", this.handler.enablePanning, false);
+			this.uiElements.flaglist.addEventListener("drop", this.handler.import.viaDrop , false);
 			
-<<<<<<< HEAD
-			this.uiElements.map.addEventListener("MozMousePixelScroll", this.handler.scaleViaMouse, false);
-			this.uiElements.map.addEventListener("mousewheel", this.handler.scaleViaMouse, false);
-=======
-<<<<<<< HEAD
 			this.uiElements.loginForm.addEventListener("submit", this.handler.performLogin, false);
 			
 			
@@ -352,11 +285,6 @@ window.Karte = (function () {
 					newValue : document.styleSheets[0].cssRules[2]
 				});
 			});*/
-=======
-			this.uiElements.map.addEventListener("MozMousePixelScroll", this.handler.scaleViaMouse, false);
-			this.uiElements.map.addEventListener("mousewheel", this.handler.scaleViaMouse, false);
->>>>>>> refs/heads/master
->>>>>>> refs/heads/Login
 			
 			// Attribute für Geschwindigkeit zwischenspeichern
 			var length = controller.uiElements.scalables.length;
@@ -408,8 +336,8 @@ window.Karte = (function () {
 			handleSearch : function (event) {
 				if (event.altKey) {
 					controller.uiElements.searchField.value = "";
-					sideView.renderFlags(true);
-					sideView.renderFlags(false);
+					sideView.renderFlags(undefined, true);
+					sideView.renderFlags(undefined, true);
 				} else {
 					controller.handler.enableSearch(event);
 				}
@@ -437,25 +365,17 @@ window.Karte = (function () {
 				
 				if (controller.uiElements.searchField.value === "") {
 					// Wenn Suchfeld leer ist, kann die ganze View gerendert werden
-					sideView.renderFlags(false);
-					sideView.renderFlags(true);
+					sideView.renderFlags(undefined, true);
+					sideView.renderFlags(undefined, false);
 				} else {
 					// Suchausdruck durchsucht Namen und Notitz
 					// Zunächst werden die Orte durchsucht
-					filteredData = Sort.filter(map.places, [{ attribute : "note", type : "contains", value : controller.uiElements.searchField.value }]);
-					filteredData = filteredData.concat(Sort.filter(map.places, [{ attribute : "name", type : "contains", value : controller.uiElements.searchField.value }]));
-					
-					filteredData = filteredData.unique();
-										
-					sideView.renderFlags(false, filteredData);
+					filteredData = Sort.filter(map.places, [{ attribute : "name", type : "contains", value : controller.uiElements.searchField.value }]);
+					sideView.renderFlags(filteredData, false);
 					
 					// Jetzt werden die Strecken durchsucht
-					filteredData = Sort.filter(map.routes, [{ attribute : "note", type : "contains", value : controller.uiElements.searchField.value }]);
-					filteredData = filteredData.concat(Sort.filter(map.routes, [{ attribute : "name", type : "contains", value : controller.uiElements.searchField.value }]));
-					
-					filteredData = filteredData.unique();
-					
-					sideView.renderFlags(true, filteredData);
+					filteredData = Sort.filter(map.routes, [{ attribute : "name", type : "contains", value : controller.uiElements.searchField.value }]);
+					sideView.renderFlags(filteredData, true);
 				}			
 			},
 			disableSearch : function () {
@@ -467,6 +387,8 @@ window.Karte = (function () {
 				map.scaling.scalerY = event.pageY;
 				
 				controller.uiElements.mapScale.setAttribute("class","");
+				
+				document.body.classList.add("dragging");
 				
 				document.addEventListener("mousemove", controller.handler.handleScaling, false);
 				document.addEventListener("mouseup", controller.handler.finishScaling, false);
@@ -529,14 +451,15 @@ window.Karte = (function () {
 						controller.uiElements.scalables[i].removeAttribute("transform");
 					}
 				}, 20);
-
+				
+				document.body.classList.remove("dragging");
 				
 				document.removeEventListener("mousemove", controller.handler.handleScaling, false);
 				document.removeEventListener("mouseup", controller.handler.finishScaling, false);
 			},
 			scaleViaMouse : function (event) {
-				var delta = event.wheelDelta || -event.detail;
-				var newScaleValue = (map.scaling.value/Math.abs(100 - delta)) * 100;
+				var delta = event.wheelDelta / 45 || -event.detail / 90;
+				var newScaleValue = (map.scaling.value/Math.abs(100 + delta)) * 100;
 				
 				map.scaling.value = newScaleValue;
 				
@@ -547,6 +470,8 @@ window.Karte = (function () {
 			enablePanning : function (event) {
 				map.panning.startX = event.pageX - map.panning.x;
 				map.panning.startY = event.pageY - map.panning.y;
+				
+				document.body.classList.add("dragging");
 			
 				document.addEventListener("mousemove", controller.handler.handlePanning, false);
 				document.addEventListener("mouseup", controller.handler.finishPanning, false);
@@ -561,11 +486,17 @@ window.Karte = (function () {
 				map.panning.x = event.pageX - map.panning.startX;
 				map.panning.y = event.pageY - map.panning.startY;
 				
+				document.body.classList.remove("dragging");
+				
 				// EventListener wieder entfernen
 				document.removeEventListener("mousemove", controller.handler.handlePanning, false);
 				document.removeEventListener("mouseup", controller.handler.finishPanning, false);
 			},
 			setVisibility : function (event, object) {
+				if (object.zIndex === 1) {
+					return;
+				}
+				
 				object.visible = object.visible ? false : true;
 				event.currentTarget.className = object.visible ? "active" : "inactive";
 				
@@ -600,19 +531,21 @@ window.Karte = (function () {
 				// Renderer anstoßen
 				renderer.start(data);
 				
+				if (map.isInitial) {
+					document.getElementById("federal").addEventListener("mousedown", controller.handler.enablePanning, false);
+			
+					controller.uiElements.map.addEventListener("MozMousePixelScroll", controller.handler.scaleViaMouse, false);
+					controller.uiElements.map.addEventListener("mousewheel", controller.handler.scaleViaMouse, false);
+				}
+				
 				map.isInitial = false;
 			},
 			flags : {
 				listReference : undefined,
 				flagReference : undefined,
 				pinReferences : [],
-<<<<<<< HEAD
 				x : [],
 				y : [],
-=======
-				x : undefined,
-				y : undefined,
->>>>>>> refs/heads/Login
 				altKey : undefined,
 				flagObject : undefined,
 				panningDiffX : undefined,
@@ -628,7 +561,7 @@ window.Karte = (function () {
 					newPlace.textContent = "Neuer Ort";
 					newPlace.addEventListener("click", controller.handler.flags.enableAddNewPlace, false);
 					
-					newRoute.textContent = "Neue Route";
+					newRoute.textContent = "Neue Strecke";
 					newRoute.addEventListener("click", controller.handler.flags.enableAddNewRoute, false);
 					
 					container.appendChild(newPlace);
@@ -639,6 +572,7 @@ window.Karte = (function () {
 					event.stopPropagation();
 					
 					document.addEventListener("click", controller.handler.flags.checkNewFlagMask, false);
+					document.addEventListener("keyup", controller.handler.flags.checkNewFlagMask, false);
 				},
 				checkNewFlagMask : function (event) {
 					if (event.currentTarget !== document.getElementById("addSelectionMask") || event.keyCode === 27) {
@@ -648,6 +582,7 @@ window.Karte = (function () {
 				disableNewFlagMask : function () {
 					document.body.removeChild(document.getElementById("addSelectionMask"));
 					document.removeEventListener("click", controller.handler.flags.checkNewFlagMask, false);
+					document.removeEventListener("keyup", controller.handler.flags.checkNewFlagMask, false);
 				},
 				enableAddNewFlag : function (event) {
 					controller.uiElements.toolbar.className = "addFlagEnabled";
@@ -662,7 +597,6 @@ window.Karte = (function () {
 						return false;
 					}
 					
-<<<<<<< HEAD
 					var pinReference = renderer.addPin();
 										
 					// 1 Für Chrome + Safarie 2 für FF
@@ -675,20 +609,6 @@ window.Karte = (function () {
 					} else {
 						controller.handler.flags.flagReference = pinReference;
 						renderer.drawPin(pinReference, controller.handler.flags.x[pinCounter - 1], controller.handler.flags.y[pinCounter - 1]);
-=======
-					var pinReference = isRoute ? controller.handler.flags.pinReferences[controller.handler.flags.pinReferences.length] : controller.handler.flags.flagReference;
-					
-					pinReference = document.createElementNS("http://www.w3.org/2000/svg", "use");
-					
-					// 1 Für Chrome + Safarie 2 für FF
-					controller.handler.flags.x = event.offsetX ? event.offsetX : event.layerX;
-					controller.handler.flags.y = event.offsetY ? event.offsetY : event.layerY;
-					
-					if (isRoute) {
-						renderer.drawRoute(pinReference, controller.handler.flags.x, controller.handler.flags.y, controller.handler.flags.flagReference);
-					} else {
-						renderer.drawPin(pinReference, controller.handler.flags.x, controller.handler.flags.y);
->>>>>>> refs/heads/Login
 					}
 					
 					pinReference.setAttribute("class", "hover");
@@ -703,20 +623,18 @@ window.Karte = (function () {
 					var checkHandler = isRoute ? controller.handler.flags.checkAddNewRoute : controller.handler.flags.checkAddNewPlace;
 					
 					controller.handler.flags.listReference = document.createElement("li");
+					controller.handler.flags.listReference.title = "Klicken, um " + (isRoute ? "diese Strecke" : "diesen Ort") + " zu verbergen";
 					controller.handler.flags.listReference.contentEditable = true;
 					controller.handler.flags.listReference.addEventListener("keypress", keypressHandler, false);
 					controller.handler.flags.listReference.addEventListener("keyup", checkHandler, false);
 					controller.handler.flags.listReference.addEventListener("blur", abortHandler, false);
 					
-<<<<<<< HEAD
 					if (isRoute) {
 						controller.uiElements.routes.appendChild(controller.handler.flags.listReference);
 					} else {
 						controller.uiElements.places.appendChild(controller.handler.flags.listReference);
 					}
-=======
-					controller.uiElements.places.appendChild(controller.handler.flags.listReference);
->>>>>>> refs/heads/Login
+
 					controller.handler.flags.listReference.focus();
 				},
 				checkAddNewFlag : function (event) {
@@ -727,26 +645,16 @@ window.Karte = (function () {
 				disableAddNewFlag : function (event) {
 					controller.uiElements.toolbar.className = "";
 					document.removeEventListener("keyup", controller.handler.flags.checkAddNewFlag, false);
-<<<<<<< HEAD
 					controller.uiElements.mapRoot.removeEventListener("click", controller.handler.flags.performAddNewRoute, false)
 					controller.uiElements.mapRoot.removeEventListener("click", controller.handler.flags.performAddNewPlace, false)
-=======
->>>>>>> refs/heads/Login
 				},
 				enableAddNewPlace : function (event) {
 					controller.handler.flags.enableAddNewFlag();
 					controller.uiElements.mapRoot.addEventListener("click", controller.handler.flags.performAddNewPlace, false);
 				},
-<<<<<<< HEAD
 				disableAddNewPlace : function (event) {
 					controller.handler.flags.disableAddNewFlag();
-<<<<<<< HEAD
-=======
-					controller.uiElements.mapRoot.removeEventListener("click", controller.handler.flags.performAddNewPlace, false);
->>>>>>> 211109cdaec683f5bf241c71167660c05d3b2456
 				},
-=======
->>>>>>> refs/heads/Login
 				performAddNewPlace : function (event) {
 					if (!controller.handler.flags.isAddingAllowed) {
 						return;
@@ -778,22 +686,14 @@ window.Karte = (function () {
 					if (event.keyCode === 13 || event.keyCode === 39) {
 						// Es war ein Enter. Oder ein Rechtspfeil
 						
-<<<<<<< HEAD
 						controller.handler.flags.finishAddNewFlag(event);
-=======
-						controller.handler.finishAddNewFlag(event);
->>>>>>> refs/heads/Login
 						
 						// Neuen Ort wegschreiben
 						controller.handler.flags.flagObject = {
 							name : controller.handler.flags.listReference.textContent,
 							visible : true,
 							note : "",
-<<<<<<< HEAD
 							coordinates : units.pixelCoordinateToGeoCoordinate(controller.handler.flags.x[0], controller.handler.flags.y[0]),
-=======
-							coordinates : units.pixelCoordinateToGeoCoordinate(controller.handler.flags.x, controller.handler.flags.y),
->>>>>>> refs/heads/Login
 							flagReference : controller.handler.flags.flagReference,
 							listReference : controller.handler.flags.listReference
 						};
@@ -802,13 +702,9 @@ window.Karte = (function () {
 						
 						// flag mit ID versehen
 						controller.handler.flags.flagReference.setAttribute("data-interimFlagID", flagID);
-<<<<<<< HEAD
 						controller.handler.flags.flagReference.setAttribute("data-type", "place");
 						event.target.setAttribute("data-interimFlagID", flagID);
 						event.target.setAttribute("data-type", "place");
-=======
-						event.target.setAttribute("data-interimFlagID", flagID);
->>>>>>> refs/heads/Login
 						
 						controller.handler.flags.flagReference.addEventListener("mouseover", controller.handler.flags.highlightListView, false);
 						controller.handler.flags.flagReference.addEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
@@ -819,12 +715,8 @@ window.Karte = (function () {
 						controller.handler.flags.isAddingAllowed = true;
 						
 						if (!controller.handler.flags.altKey && !event.shiftKey) {
-<<<<<<< HEAD
 							
 							controller.handler.flags.disableAddNewPlace();
-=======
-							controller.handler.flags.disableAddNewFlag();
->>>>>>> refs/heads/Login
 						}
 					}
 				},
@@ -856,17 +748,9 @@ window.Karte = (function () {
 					controller.uiElements.mapRoot.addEventListener("click", controller.handler.flags.performAddNewRoute, false);
 					document.addEventListener("keyup", controller.handler.flags.finishAddNewRoutePins, false);
 				},
-<<<<<<< HEAD
 				disableAddNewRoute : function (event) {
 					controller.handler.flags.disableAddNewFlag();
-<<<<<<< HEAD
-=======
-					
-					controller.uiElements.mapRoot.removeEventListener("click", controller.handler.flags.performAddNewRoute, false);
->>>>>>> 211109cdaec683f5bf241c71167660c05d3b2456
 				},
-=======
->>>>>>> refs/heads/Login
 				performAddNewRoute : function (event) {
 					if (!controller.handler.flags.isAddingAllowed) {
 						return;
@@ -879,17 +763,13 @@ window.Karte = (function () {
 				finishAddNewRoutePins : function (event) {
 					if (event.keyCode === 13) {
 						controller.handler.flags.performAddMeta(event, true);
-<<<<<<< HEAD
 						document.removeEventListener("keyup", controller.handler.flags.finishAddNewRoutePins, false);
-=======
->>>>>>> refs/heads/Login
 					}
 				},
 				finishAddNewRoute : function (event) {
 					if (event.keyCode === 13 || event.keyCode === 39) {
 						// Es war ein Enter. Oder ein Rechtspfeil
 						
-<<<<<<< HEAD
 						controller.handler.flags.finishAddNewFlag(event);
 												
 						var pins = [];
@@ -899,38 +779,28 @@ window.Karte = (function () {
 								reference : pin
 							});
 						});
-=======
-						controller.handler.finishAddNewFlag(event);
->>>>>>> refs/heads/Login
 						
-						// Neuen Ort wegschreiben
+						// Neuen Route wegschreiben
 						controller.handler.flags.flagObject = {
 							name : controller.handler.flags.listReference.textContent,
 							visible : true,
 							note : "",
-<<<<<<< HEAD
-							//coordinates : units.pixelCoordinateToGeoCoordinate(controller.handler.flags.x, controller.handler.flags.y),
+							distance : controller.handler.calculateDistance(pins).toFixed(1) + "km",
 							flagReference : controller.handler.flags.flagReference,
-							pins : pin,
-=======
-							coordinates : units.pixelCoordinateToGeoCoordinate(controller.handler.flags.x, controller.handler.flags.y),
-							flagReference : controller.handler.flags.flagReference,
-							pinReferences : controller.handler.flags.pinReferences,
->>>>>>> refs/heads/Login
+							pins : pins,
 							listReference : controller.handler.flags.listReference
 						};
-						
+												
 						var flagID = map.routes.push(controller.handler.flags.flagObject);
+						
+						// Distanz anzeigen
+						controller.handler.flags.listReference.setAttribute("data-route-distance", "— " + controller.handler.flags.flagObject.distance);
 						
 						// flag mit ID versehen
 						controller.handler.flags.flagReference.setAttribute("data-interimFlagID", flagID);
-<<<<<<< HEAD
 						controller.handler.flags.flagReference.setAttribute("data-type", "route");
 						event.target.setAttribute("data-interimFlagID", flagID);
 						event.target.setAttribute("data-type", "route");
-=======
-						event.target.setAttribute("data-interimFlagID", flagID);
->>>>>>> refs/heads/Login
 						
 						controller.handler.flags.flagReference.addEventListener("mouseover", controller.handler.flags.highlightListView, false);
 						controller.handler.flags.flagReference.addEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
@@ -939,26 +809,18 @@ window.Karte = (function () {
 						controller.handler.flags.listReference.addEventListener("click", controller.handler.flags.setVisibility, false);
 						
 						controller.handler.flags.isAddingAllowed = true;
-<<<<<<< HEAD
 												
 						if (!event.shiftKey) {
 							controller.handler.flags.disableAddNewRoute();
 						}
 						
 						event.stopPropagation();						
-=======
-						
-						if (!controller.handler.flags.altKey && !event.shiftKey) {
-							controller.handler.flags.disableAddNewFlag();
-						}
->>>>>>> refs/heads/Login
 					}
 				},
 				abortAddNewRoute : function (event) {
 				
 				},
 				highlightFlag : function (event) {
-<<<<<<< HEAD
 					var flagObject = event.currentTarget.getAttribute("data-type") === "route" ? map.routes : map.places;
 					flagObject[event.currentTarget.getAttribute("data-interimFlagID") - 1].flagReference.setAttribute("class", "hover");
 				},
@@ -973,20 +835,10 @@ window.Karte = (function () {
 				deHighlightListView : function (event) {
 					var flagObject = event.currentTarget.getAttribute("data-type") === "route" ? map.routes : map.places;
 					flagObject[event.currentTarget.getAttribute("data-interimFlagID") - 1].listReference.classList.remove("hover");
-=======
-					map.places[event.currentTarget.getAttribute("data-interimFlagID") - 1].flagReference.setAttribute("class", "hover");
-				},
-				highlightListView : function (event) {
-					map.places[event.currentTarget.getAttribute("data-interimFlagID") - 1].listReference.classList.add("hover");
-				},
-				deHighlightFlag : function (event) { // Super Funktionsname
-					map.places[event.currentTarget.getAttribute("data-interimFlagID") - 1].flagReference.removeAttribute("class");
-				},
-				deHighlightListView : function (event) {
-					map.places[event.currentTarget.getAttribute("data-interimFlagID") - 1].listReference.classList.remove("hover");
->>>>>>> refs/heads/Login
 				},
 				enablePanning : function (event) {
+					document.body.classList.add("dragging");
+					
 					// Aktuellen Translate ermitteln
 					var transform, x = event.offsetX ? event.offsetX : event.layerX, y = event.offsetY ? event.offsetY : event.layerY;
 					
@@ -1030,16 +882,40 @@ window.Karte = (function () {
 					event.preventDefault();
 					
 					controller.handler.flags.listReference.classList.remove("hover");
+					document.body.classList.remove("dragging");
 					
 					controller.handler.flags.flagReference.addEventListener("mouseover", controller.handler.flags.highlightListView, false);
 					controller.handler.flags.flagReference.addEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
 				},
 				setVisibility : function (event) {
+					var isRoute = event.currentTarget.getAttribute("data-type") === "route" ? true : false;
+					var flag = isRoute ? map.routes : map.places;
+					
+					controller.handler.flags.flagObject = flag[event.currentTarget.getAttribute("data-interimFlagID") - 1];
+					controller.handler.flags.listReference = controller.handler.flags.flagObject.listReference;
+					controller.handler.flags.flagReference = controller.handler.flags.flagObject.flagReference;
+					
 					controller.handler.flags.flagObject.visible = !controller.handler.flags.flagObject.visible;
+					controller.handler.flags.listReference.title = "Klicken, um " + (isRoute ? "diese Strecke" : "diesen Ort") + " zu " + (controller.handler.flags.flagObject.visible ? "verbergen" : "anzuzeigen");
 					event.currentTarget.className = controller.handler.flags.flagObject.visible ? "active" : "inactive";
 					
 					controller.handler.flags.flagReference.style.display = controller.handler.flags.flagObject.visible ? "" : "none"; // Sollte eventuell in den Renderer
 				}
+			},
+			calculateDistance : function (pins) {
+				var distance = 0;
+				
+				pins.forEach(function (pin, index) {
+					// Zunächst wird der Abstand in Pixeln gemessen
+					if (pins[index + 1] !== undefined) {
+						distance += Math.sqrt(Math.pow(Math.abs(pin.coordinates[0] - pins[index + 1].coordinates[0]), 2) + Math.pow(Math.abs(pin.coordinates[1] - pins[index + 1].coordinates[1]), 2));
+					}
+				});
+				
+				// Jetzt erfolgt die Umrechnung in Kilometer
+				distance = distance / 100 * map.scaling.value;
+				
+				return distance;
 			},
 			keyboardNavigation : function (event) {
 				
@@ -1137,16 +1013,126 @@ window.Karte = (function () {
 					}
 					
 					controller.import(data);
-				}	
+				},
+				viaDrop : function (event) {
+					event.preventDefault();
+					event.stopPropagation();
+					
+					var files = event.dataTransfer.files;
+					var length = files.length;
+					
+					for (var i = 0; i < length; i++) {
+						var file = new FileReader();
+						file.addEventListener("load", controller.handler.import.addFlags, false);
+						file.readAsText(files[i]);
+					}
+				},
+				addFlags : function (event) {
+					var flags = new DOMParser().parseFromString(event.target.result, "text/xml");
+					var routes = flags.getElementsByTagName("route");
+					var places = flags.getElementsByTagName("place");
+					var noRoutes = routes.length;
+					var noPlaces = places.length;
+					var i = 0;
+					
+					for (i; i < noRoutes; i++) {
+						var name = routes[i].getElementsByTagName("name")[0].textContent;
+						var length = routes[i].getElementsByTagName("length")[0].textContent
+						var nodes = routes[i].getElementsByTagName("coord");
+						var pins = [];
+						
+						var flagReference = renderer.addRoute();
+						
+						for (var j = 0; j < nodes.length; j++) {
+							var latitude = parseFloat(nodes[j].getAttribute("lat"));
+							var longitude = parseFloat(nodes[j].getAttribute("lon"));
+							var position = units.geoCoordinateToPixelCoordinate(latitude, longitude);
+														
+							var pinReference = renderer.addPin();
+							renderer.drawRoute(pinReference, position[0], position[1], flagReference);
+					
+							pins.push({ reference : pinReference, coordinates : position });
+						}
+						
+						flagReference.addEventListener("mousedown", controller.handler.flags.enablePanning, false);
+						flagReference.addEventListener("mouseover", controller.handler.flags.highlightListView, false);
+						flagReference.addEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
+						
+						// Zugehöriges Listen-Element erstellen
+						var listItem = document.createElement("li");
+								
+						listItem.className = "active";
+						listItem.textContent = name;
+						listItem.setAttribute("data-route-distance", "— " + length);
+						listItem.addEventListener("mouseover", controller.handler.flags.highlightFlag, false);
+						listItem.addEventListener("mouseout", controller.handler.flags.deHighlightFlag, false);
+						listItem.addEventListener("click", controller.handler.flags.setVisibility, false);
+						//listItem.title = "Klicken, um " + (routes ? "diese Strecke" : "diesen Ort") + " zu " + (place.visible ? "verbergen" : "anzuzeigen");
+						
+						var flagID = map.routes.push({
+							name : name,
+							distance : length,
+							pins : pins,
+							visible : true,
+							listReference : listItem,
+							flagReference : flagReference
+						});
+																		
+						// flag und Liste mit ID versehen
+						listItem.setAttribute("data-interimFlagID", flagID);
+						listItem.setAttribute("data-type", "route");
+						flagReference.setAttribute("data-interimFlagID", flagID);
+						flagReference.setAttribute("data-type", "route");
+						
+						controller.uiElements.routes.appendChild(listItem);
+					}
+					for (i = 0; i < noPlaces; i++) {
+						var name = places[i].getElementsByTagName("name")[0].textContent;
+						var latitude = parseFloat(places[i].getElementsByTagName("coord")[0].getAttribute("lat"));
+						var longitude = parseFloat(places[i].getElementsByTagName("coord")[0].getAttribute("lon"));
+						var position = units.geoCoordinateToPixelCoordinate(latitude, longitude);
+						
+						
+						var flagReference = renderer.addPin();
+						renderer.drawPin(flagReference, position[0], position[1]);
+						
+						flagReference.addEventListener("mousedown", controller.handler.flags.enablePanning, false);
+						flagReference.addEventListener("mouseover", controller.handler.flags.highlightListView, false);
+						flagReference.addEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
+						
+						// Zugehöriges Listen-Element erstellen
+						var listItem = document.createElement("li");
+								
+						listItem.className = "active";
+						listItem.textContent = name;
+						listItem.addEventListener("mouseover", controller.handler.flags.highlightFlag, false);
+						listItem.addEventListener("mouseout", controller.handler.flags.deHighlightFlag, false);
+						listItem.addEventListener("click", controller.handler.flags.setVisibility, false);
+						
+						var flagID = map.places.push({
+							name : name,
+							coordinates : position,
+							visible : true,
+							listReference : listItem,
+							flagReference : flagReference
+						});
+						
+						// flag und Liste mit ID versehen
+						listItem.setAttribute("data-interimFlagID", flagID);
+						listItem.setAttribute("data-type", "place");
+						flagReference.setAttribute("data-interimFlagID", flagID);
+						flagReference.setAttribute("data-type", "place");
+						
+						controller.uiElements.places.appendChild(listItem);
+					}
+					//sideView.renderFlags(true);
+				}
 			},
 			export : {
 				downloader : null,
 				perform : function (event) {
 					window.location.href = constants.locations.export;
 				}
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
 			},
 			observation : function (mutations) {
 				mutations.forEach(function (event) {
@@ -1181,33 +1167,28 @@ window.Karte = (function () {
 			performLogin : function (event) {
 			
 				request = new XMLHttpRequest();
-				request.open("post", constants.loginURL, true);
+				request.open("post", constants.locations.login, true);
 				request.send(new FormData(controller.uiElements.loginForm));
-				/*request.onreadystatechange = function () {
+				request.onreadystatechange = function () {
 					if (request.readyState === 4) {
-						// TODO: Anpassen
 						if (request.responseText) {
-							controller.handler.login(); // Zusammenführen?	
+							var response = JSON.parse(request.responseText);
+							
+							if (response.success === true) {
+								controller.handler.login();
+							} else {
+								alert(response.error);
+							}
 						}
 					}
-				}*/
-				
-				controller.handler.login();
-				
+				}
+								
 				event.preventDefault();
 				return false;
 			},
 			login : function () {
 				loggedin = true;
 				document.body.setAttribute("data-loggedin", "true");
-			},
-			finishAddNewFlag : function (event) {
-				controller.uiElements.toolbar.className = "";
-				document.removeEventListener("keyup", controller.handler.abortAddNewFlag, false);
-				controller.uiElements.mapRoot.removeEventListener("click", controller.handler.newPlace, false);
-=======
->>>>>>> refs/heads/master
->>>>>>> refs/heads/Login
 			}
 		},
 		loadMap : function (latitude, longitude, layers, handler) {
@@ -1277,11 +1258,24 @@ window.Karte = (function () {
 				});
 			});
 			
-			data.append("places", encodeURIComponent(JSON.stringify(places)));
-			//data.append("routes", JSON.stringify(map.routes));
+			map.routes.forEach(function (route) {
+				var coordinates = [];
+				route.pins.forEach(function (pin) {
+					coordinates.push(units.pixelCoordinateToGeoCoordinate(pin.coordinates[0], pin.coordinates[1]));
+				});
+				
+				routes.push({
+					name : route.name,
+					visible : route.visible,
+					coordinates : coordinates,
+					distance : "0km",
+					note : route.note
+				});
+			});
 			
-			console.log(data);
-			
+			data.append("places", JSON.stringify(places));
+			data.append("routes", JSON.stringify(routes));
+						
 			// Request absetzen
 			request = new XMLHttpRequest();
 			request.open("post", constants.locations.save, true);
@@ -1392,12 +1386,9 @@ window.Karte = (function () {
 		pan : function (x, y) {
 			controller.uiElements.mapRoot.style.cssText += "left: " + x + "px; top: " + y + "px;";
 		},
-<<<<<<< HEAD
 		addPin : function () {
 			return document.createElementNS("http://www.w3.org/2000/svg", "use");
 		},
-=======
->>>>>>> refs/heads/Login
 		drawPin : function (pin, x, y, flagReference) {
 			pin.setAttributeNS(null, "transform", "translate(" + x + " " + y + ") scale(0.1)"); 
 			pin.setAttributeNS("http://www.w3.org/1999/xlink", "href", "#pin");
@@ -1459,6 +1450,10 @@ window.Karte = (function () {
 							item = document.createElement("li");
 							item.className = value.visible ? "active" : "inactive";
 							
+							if (value.tooltip) {
+								item.title = value.tooltip;
+							}
+							
 							(function (subtype) {
 								item.addEventListener("click", function (event) { controller.handler.setVisibility(event, subtype); }, false);
 							})(value);
@@ -1470,32 +1465,64 @@ window.Karte = (function () {
 				}
 			}
 		},
-		renderFlags : function (routes, data) {
-			var item, note, name,
-				list = routes ? controller.uiElements.routes : controller.uiElements.places,
-				content = data ? data : (routes ? map.routes : map.places);
-				
-			list.innerHTML = "";
+		renderFlags : function (data, renderRoute) {			
+			// Alle Pins unsichtbar setzen
+			var flags = renderer.flags.childNodes;
 			
-			content.forEach(function (place) {
-				item = document.createElement("li");
+			for (var i = 0; i < flags.length; i++) {
+				if (flags[i].nodeType !== 3 && (renderRoute === true && flags[i].getAttribute("data-type") === "route" || renderRoute === false & flags[i].getAttribute("data-type") === "place")) {
+					flags[i].style.display = "none";
+				}
+			}
+			
+			if (renderRoute === true) {
+				controller.uiElements.routes.innerHTML = "";
 				
-				note = document.createElement("span");
-				name = document.createElement("span");
+				var data = data || map.routes;
 				
-				item.className = place.visible ? "active" : "inactive";
+				data.forEach(function (route, index) {
+					item = document.createElement("li");
+									
+					item.className = route.visible ? "active" : "inactive";
+					item.textContent = route.name;
+					item.setAttribute("data-interimFlagID", index + 1);
+					item.setAttribute("data-type", "route");
+					item.setAttribute("data-route-distance", "— " + route.distance);
+					item.addEventListener("mouseover", controller.handler.flags.highlightFlag, false);
+					item.addEventListener("mouseout", controller.handler.flags.deHighlightFlag, false);
+					item.addEventListener("click", controller.handler.flags.setVisibility, false);
+					item.title = "Klicken, um diese Strecke zu " + (route.visible ? "verbergen" : "anzuzeigen");
+					
+					route.flagReference.style.display = route.visible ? "" : "none";
+					
+					controller.uiElements.routes.appendChild(item);
+				});
+			} else {
+				controller.uiElements.places.innerHTML = "";
 				
-				name.textContent = place.name;
-				note.textContent = place.note;
+				var data = data || map.places;
 				
-				item.appendChild(name);
-				item.appendChild(note);
-				list.appendChild(item);
-			});
+				data.forEach(function (place, index) {
+					item = document.createElement("li");
+									
+					item.className = place.visible ? "active" : "inactive";
+					item.textContent = place.name;
+					item.setAttribute("data-interimFlagID", index + 1);
+					item.setAttribute("data-type", "place");
+					item.addEventListener("mouseover", controller.handler.flags.highlightFlag, false);
+					item.addEventListener("mouseout", controller.handler.flags.deHighlightFlag, false);
+					item.addEventListener("click", controller.handler.flags.setVisibility, false);
+					item.title = "Klicken, um diesen Ort zu " + (place.visible ? "verbergen" : "anzuzeigen");
+					
+					place.flagReference.style.display = place.visible ? "" : "none";
+					
+					controller.uiElements.places.appendChild(item);
+				});
+			}
 		},
 		render : function () {
-			this.renderFlags(true);
-			this.renderFlags(false);
+			//this.renderFlags(true);
+			//this.renderFlags(false);
 			this.renderVisibilities();
 		}
 	};
@@ -1540,14 +1567,35 @@ window.Karte = (function () {
 			
 			return [x, y];
 		},
+<<<<<<< HEAD
+		pixelCoordinateToGeoCoordinate : function (x, y) {			
+			var newX = (x - map.dimensions.x) / map.dimensions.currentWidth;
+            var longitudeDiff = map.coordinates.bottomRight[1] - map.coordinates.topLeft[1];
+            var longitude = map.coordinates.topLeft[1] + (longitudeDiff * newX);
+
+            var newY = (y - map.dimensions.y) / map.dimensions.currentHeight;
+            var latitudeDiff = map.coordinates.topLeft[0] - map.coordinates.bottomRight[0];
+            var latitude = map.coordinates.topLeft[0] - (latitudeDiff * newY);
+
+            return [latitude, longitude];			
+=======
 		pixelCoordinateToGeoCoordinate : function (x, y, topLeft, topRight, witdh, height) {
-			var newX = (x + map.panning.x - map.dimensions.x) * map.scaling.scaleFactor; // Skalierung noch fehlerhaft!
-			var newY = (y + map.panning.y - map.dimensions.y) * map.scaling.scaleFactor;
-		
-			latitude = ((newY * (map.coordinates.bottomRight[0] - map.coordinates.topLeft[0])) / map.dimensions.currentHeight) + map.coordinates.topLeft[0];
-			longitude = ((newX * (map.coordinates.bottomRight[1] - map.coordinates.topLeft[1])) / map.dimensions.currentWidth) + map.coordinates.topLeft[1];
-			
+//			var newX = (x + map.panning.x - map.dimensions.x) * map.scaling.scaleFactor; // Skalierung noch fehlerhaft!
+//			var newY = (y + map.panning.y - map.dimensions.y) * map.scaling.scaleFactor;
+//		
+//			latitude = ((newY * (map.coordinates.bottomRight[0] - map.coordinates.topLeft[0])) / map.dimensions.currentHeight) + map.coordinates.topLeft[0];
+//			longitude = ((newX * (map.coordinates.bottomRight[1] - map.coordinates.topLeft[1])) / map.dimensions.currentWidth) + map.coordinates.topLeft[1];
+//			
+//			return [latitude, longitude];
+			var x_loc = map.dimensions.currentWidth / (x - map.panning.x);
+			var lon_diff = map.coordinates.bottomRight[1] - map.coordinates.topLeft[1];
+			var longitude = map.coordinates.bottomRight[1] + (lon_diff * x_loc);
+			var y_loc = map.dimensions.currentHeight / (y - map.panning.y);
+			var lat_diff = map.coordinates.bottomRight[0] - map.coordinates.topLeft[0];
+			var latitude = map.coordinates.bottomRight[0] + (lat_diff * y_loc);
+
 			return [latitude, longitude];
+>>>>>>> cb4f6e330abb93870ed10f6603a6f0830558cdba
 		}
 	};
 	

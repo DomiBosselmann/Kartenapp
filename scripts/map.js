@@ -7,7 +7,8 @@ window.Karte = (function () {
 			login : "http://karte.localhost/backend/php/login.php",
 			save : "http://karte.localhost/backend/php/db.php?a=s",
 			import : "http://karte.localhost/backend/php/db.php?a=i",
-			export : "http://karte.localhost/backend/php/db.php?a=e"
+			export : "http://karte.localhost/backend/php/db.php?a=e",
+			get : "http://karte.localhost/backend/php/db.php?a=g"
 		},
 		math : {
 			epsilon : Number.MIN_VALUE // Viele Grüße Herr Gröll!
@@ -278,13 +279,10 @@ window.Karte = (function () {
 					});
 				}, false);
 			}
-			/*document.styleSheets[0].cssRules[2].observe("style", function (event) {
-				controller.handler.detectManipulation({
-					name : "stylesheet",
-					target : undefined,
-					newValue : document.styleSheets[0].cssRules[2]
-				});
-			});*/
+			
+			// Login-Formular Keyboard-Events verhindern
+			controller.uiElements.loginForm.username.addEventListener("keyup", function (event) { event.stopPropagation(); }, false);
+			controller.uiElements.loginForm.password.addEventListener("keyup", function (event) { event.stopPropagation(); }, false);
 			
 			// Attribute für Geschwindigkeit zwischenspeichern
 			var length = controller.uiElements.scalables.length;
@@ -532,6 +530,9 @@ window.Karte = (function () {
 			
 					controller.uiElements.map.addEventListener("MozMousePixelScroll", controller.handler.scaleViaMouse, false);
 					controller.uiElements.map.addEventListener("mousewheel", controller.handler.scaleViaMouse, false);
+					
+					// Routen/Orte laden
+					controller.getFlags();
 				}
 				
 				map.isInitial = false;
@@ -757,6 +758,16 @@ window.Karte = (function () {
 					controller.handler.flags.performAddNewPin(event, true);
 					
 				},
+				checkAddNewRoute : function (event) {
+					if (event.keyCode === 27) {
+						// Es war ein Esc
+						controller.handler.flags.abortAddNewRoute(event);
+					} else {
+						controller.handler.flags.finishAddNewRoute(event);
+					}
+					
+					event.stopPropagation();
+				},
 				finishAddNewRoutePins : function (event) {
 					if (event.keyCode === 13) {
 						controller.handler.flags.performAddMeta(event, true);
@@ -815,7 +826,15 @@ window.Karte = (function () {
 					}
 				},
 				abortAddNewRoute : function (event) {
-				
+					// Blur-Handler entfernen (UI-Aktion für Abbruch)
+					controller.handler.flags.listReference.removeEventListener("blur", controller.handler.flags.abortAddNewPlace, false);
+					
+					controller.uiElements.places.removeChild(controller.handler.flags.listReference);
+					renderer.removeRoute(controller.handler.flags.flagReference);
+					
+					controller.handler.flags.isAddingAllowed = true;
+					
+					event.stopPropagation();
 				},
 				highlightFlag : function (event) {
 					var flagObject = event.currentTarget.getAttribute("data-type") === "route" ? map.routes : map.places;
@@ -883,7 +902,7 @@ window.Karte = (function () {
 							}
 						}
 					} else {
-						controller.handler.flags.flagObject.setAttribute("transform", "translate(" + x + " " + y + ") scale(0.1)");
+						controller.handler.flags.flagObject.flagReference.setAttribute("transform", "translate(" + x + " " + y + ") scale(0.1)");
 					}
 															
 					event.stopPropagation();
@@ -1048,7 +1067,7 @@ window.Karte = (function () {
 						data = controller.handler.import.form.getFormData();
 					} else {
 						data = new FormData();
-						data.append("importFile", controller.handler.import.form.firstChild);
+						data.append("importFile", controller.handler.import.form.firstChild.files[0]);
 					}
 					
 					controller.import(data);
@@ -1062,11 +1081,11 @@ window.Karte = (function () {
 					
 					for (var i = 0; i < length; i++) {
 						var file = new FileReader();
-						file.addEventListener("load", controller.handler.import.addFlags, false);
+						file.addEventListener("load", controller.handler.import.addFlagsViaXML, false);
 						file.readAsText(files[i]);
 					}
 				},
-				addFlags : function (event) {
+				addFlagsViaXML : function (event) {
 					var flags = new DOMParser().parseFromString(event.target.result, "text/xml");
 					var routes = flags.getElementsByTagName("route");
 					var places = flags.getElementsByTagName("place");
@@ -1074,28 +1093,63 @@ window.Karte = (function () {
 					var noPlaces = places.length;
 					var i = 0;
 					
+					var JSONRoute = [];
+					var JSONPlace = [];
+					
 					for (i; i < noRoutes; i++) {
 						var name = routes[i].getElementsByTagName("name")[0].textContent;
 						var length = routes[i].getElementsByTagName("length")[0].textContent
 						var nodes = routes[i].getElementsByTagName("coord");
 						var pins = [];
 						
-						var flagReference = renderer.addRoute();
+						var coordinates = [];
 						
 						for (var j = 0; j < nodes.length; j++) {
 							var latitude = parseFloat(nodes[j].getAttribute("lat"));
 							var longitude = parseFloat(nodes[j].getAttribute("lon"));
 							var position = units.geoCoordinateToPixelCoordinate(latitude, longitude);
-														
-							var pinReference = renderer.addPin();
-							renderer.drawRoute(pinReference, position[0], position[1], flagReference);
-							pinReference.setAttribute("data-type", "route");
-					
-							pins.push({ reference : pinReference, coordinates : position });
 							
-							pinReference.addEventListener("mousedown", controller.handler.flags.enablePanning, false);
+							coordinates.push(position);
 						}
 						
+						JSONRoute.push({
+							name : name,
+							distance : length,
+							coordinates : coordinates,
+							visible : true
+						});
+					}
+					for (i = 0; i < noPlaces; i++) {
+						var name = places[i].getElementsByTagName("name")[0].textContent;
+						var latitude = parseFloat(places[i].getElementsByTagName("coord")[0].getAttribute("lat"));
+						var longitude = parseFloat(places[i].getElementsByTagName("coord")[0].getAttribute("lon"));
+						var position = units.geoCoordinateToPixelCoordinate(latitude, longitude);
+						
+						JSONPlace.push({
+							name : name,
+							coordinates : position,
+							visible : true
+						});
+					}
+					
+					controller.handler.import.addFlags(JSONRoute, JSONPlace);
+					//sideView.renderFlags(true);
+				},
+				addFlags : function (routes, places) {
+					routes.forEach(function (route) {
+						var flagReference = renderer.addRoute();
+						var pins = [];
+
+						route.coordinates.forEach(function (coordinate) {
+							var pinReference = renderer.addPin();
+							renderer.drawRoute(pinReference, coordinate[0], coordinate[1], flagReference);
+							pinReference.setAttribute("data-type", "route");
+					
+							pins.push({ reference : pinReference, coordinates : coordinate });
+							
+							pinReference.addEventListener("mousedown", controller.handler.flags.enablePanning, false);
+						});
+												
 						flagReference.addEventListener("mouseover", controller.handler.flags.highlightListView, false);
 						flagReference.addEventListener("mouseout", controller.handler.flags.deHighlightListView, false);
 						
@@ -1103,18 +1157,18 @@ window.Karte = (function () {
 						var listItem = document.createElement("li");
 								
 						listItem.className = "active";
-						listItem.textContent = name;
-						listItem.setAttribute("data-route-distance", "— " + length);
+						listItem.textContent = route.name;
+						listItem.setAttribute("data-route-distance", "— " + route.distance);
 						listItem.addEventListener("mouseover", controller.handler.flags.highlightFlag, false);
 						listItem.addEventListener("mouseout", controller.handler.flags.deHighlightFlag, false);
 						listItem.addEventListener("click", controller.handler.flags.setVisibility, false);
 						//listItem.title = "Klicken, um " + (routes ? "diese Strecke" : "diesen Ort") + " zu " + (place.visible ? "verbergen" : "anzuzeigen");
 						
 						var flagID = map.routes.push({
-							name : name,
-							distance : length,
+							name : route.name,
+							distance : route.distance,
 							pins : pins,
-							visible : true,
+							visible : route.visible,
 							listReference : listItem,
 							flagReference : flagReference
 						});
@@ -1126,16 +1180,11 @@ window.Karte = (function () {
 						flagReference.setAttribute("data-type", "route");
 						
 						controller.uiElements.routes.appendChild(listItem);
-					}
-					for (i = 0; i < noPlaces; i++) {
-						var name = places[i].getElementsByTagName("name")[0].textContent;
-						var latitude = parseFloat(places[i].getElementsByTagName("coord")[0].getAttribute("lat"));
-						var longitude = parseFloat(places[i].getElementsByTagName("coord")[0].getAttribute("lon"));
-						var position = units.geoCoordinateToPixelCoordinate(latitude, longitude);
-						
-						
+					});
+					
+					places.forEach(function (place) {
 						var flagReference = renderer.addPin();
-						renderer.drawPin(flagReference, position[0], position[1]);
+						renderer.drawPin(flagReference, place.coordinates[0], place.coordinates[1]);
 						
 						flagReference.addEventListener("mousedown", controller.handler.flags.enablePanning, false);
 						flagReference.addEventListener("mouseover", controller.handler.flags.highlightListView, false);
@@ -1145,15 +1194,15 @@ window.Karte = (function () {
 						var listItem = document.createElement("li");
 								
 						listItem.className = "active";
-						listItem.textContent = name;
+						listItem.textContent = place.name;
 						listItem.addEventListener("mouseover", controller.handler.flags.highlightFlag, false);
 						listItem.addEventListener("mouseout", controller.handler.flags.deHighlightFlag, false);
 						listItem.addEventListener("click", controller.handler.flags.setVisibility, false);
 						
 						var flagID = map.places.push({
-							name : name,
-							coordinates : position,
-							visible : true,
+							name : place.name,
+							coordinates : place.coordinates,
+							visible : place.visible,
 							listReference : listItem,
 							flagReference : flagReference
 						});
@@ -1165,8 +1214,7 @@ window.Karte = (function () {
 						flagReference.setAttribute("data-type", "place");
 						
 						controller.uiElements.places.appendChild(listItem);
-					}
-					//sideView.renderFlags(true);
+					});
 				}
 			},
 			export : {
@@ -1337,8 +1385,40 @@ window.Karte = (function () {
 				}
 			}
 		},
-		export : function () {
-			
+		getFlags : function (data) {
+			request = new XMLHttpRequest();
+			request.open("get", constants.locations.get, true);
+			request.send(null);
+			request.onreadystatechange = function () {
+				if (request.readyState === 4) {
+					var response = JSON.parse(request.responseText);
+					
+					if (response.success === false) {
+						alert(response.message);
+					} else {
+						var routeResponse = response[0];
+						var places = response[1];
+						
+						
+						var coordinates = [];
+						
+						routeResponse.forEach(function (route) {
+							route.coordinates.forEach(function (coords) {
+								coordinates.push(units.geoCoordinateToPixelCoordinate(parseFloat(coords[1]), parseFloat(coords[0])));
+							});
+							
+							route.coordinates = coordinates;
+						});
+						
+						places.forEach(function (place) {
+							place.coordinates = units.geoCoordinateToPixelCoordinate(parseFloat(place.coordinates[1]), parseFloat(place.coordinates[0]));
+						});
+						
+						
+						controller.handler.import.addFlags(routeResponse, places);
+					}
+				}
+			}
 		}
 	};
 	
@@ -1480,6 +1560,9 @@ window.Karte = (function () {
 		},
 		removePin : function (pin) {
 			renderer.flags.removeChild(pin);
+		},
+		removeRoute : function (route) {
+			renderer.flags.removeChild(route);
 		}
 	};
 	

@@ -336,8 +336,8 @@ window.Karte = (function () {
 			handleSearch : function (event) {
 				if (event.altKey) {
 					controller.uiElements.searchField.value = "";
-					sideView.renderFlags(true);
-					sideView.renderFlags(false);
+					sideView.renderFlags(undefined, true);
+					sideView.renderFlags(undefined, true);
 				} else {
 					controller.handler.enableSearch(event);
 				}
@@ -365,25 +365,17 @@ window.Karte = (function () {
 				
 				if (controller.uiElements.searchField.value === "") {
 					// Wenn Suchfeld leer ist, kann die ganze View gerendert werden
-					sideView.renderFlags(false);
-					sideView.renderFlags(true);
+					sideView.renderFlags(undefined, true);
+					sideView.renderFlags(undefined, false);
 				} else {
 					// Suchausdruck durchsucht Namen und Notitz
 					// Zunächst werden die Orte durchsucht
-					filteredData = Sort.filter(map.places, [{ attribute : "note", type : "contains", value : controller.uiElements.searchField.value }]);
-					filteredData = filteredData.concat(Sort.filter(map.places, [{ attribute : "name", type : "contains", value : controller.uiElements.searchField.value }]));
-					
-					filteredData = filteredData.unique();
-										
-					sideView.renderFlags(false, filteredData);
+					filteredData = Sort.filter(map.places, [{ attribute : "name", type : "contains", value : controller.uiElements.searchField.value }]);
+					sideView.renderFlags(filteredData, false);
 					
 					// Jetzt werden die Strecken durchsucht
-					filteredData = Sort.filter(map.routes, [{ attribute : "note", type : "contains", value : controller.uiElements.searchField.value }]);
-					filteredData = filteredData.concat(Sort.filter(map.routes, [{ attribute : "name", type : "contains", value : controller.uiElements.searchField.value }]));
-					
-					filteredData = filteredData.unique();
-					
-					sideView.renderFlags(true, filteredData);
+					filteredData = Sort.filter(map.routes, [{ attribute : "name", type : "contains", value : controller.uiElements.searchField.value }]);
+					sideView.renderFlags(filteredData, true);
 				}			
 			},
 			disableSearch : function () {
@@ -1115,7 +1107,7 @@ window.Karte = (function () {
 						var flagID = map.places.push({
 							name : name,
 							coordinates : position,
-							visibile : true,
+							visible : true,
 							listReference : listItem,
 							flagReference : flagReference
 						});
@@ -1468,26 +1460,64 @@ window.Karte = (function () {
 				}
 			}
 		},
-		renderFlags : function (routes, data) {
-			var item, note, name,
-				list = routes ? controller.uiElements.routes : controller.uiElements.places,
-				content = data ? data : (routes ? map.routes : map.places);
-				
-			list.innerHTML = "";
+		renderFlags : function (data, renderRoute) {			
+			// Alle Pins unsichtbar setzen
+			var flags = renderer.flags.childNodes;
 			
-			content.forEach(function (place) {
-				item = document.createElement("li");
-								
-				item.className = place.visible ? "active" : "inactive";
-				item.textContent = place.name;
-				item.title = "Klicken, um " + (routes ? "diese Strecke" : "diesen Ort") + " zu " + (place.visible ? "verbergen" : "anzuzeigen");
+			for (var i = 0; i < flags.length; i++) {
+				if (flags[i].nodeType !== 3 && (renderRoute === true && flags[i].getAttribute("data-type") === "route" || renderRoute === false & flags[i].getAttribute("data-type") === "place")) {
+					flags[i].style.display = "none";
+				}
+			}
+			
+			if (renderRoute === true) {
+				controller.uiElements.routes.innerHTML = "";
 				
-				list.appendChild(item);
-			});
+				var data = data || map.routes;
+				
+				data.forEach(function (route, index) {
+					item = document.createElement("li");
+									
+					item.className = route.visible ? "active" : "inactive";
+					item.textContent = route.name;
+					item.setAttribute("data-interimFlagID", index + 1);
+					item.setAttribute("data-type", "route");
+					item.setAttribute("data-route-distance", "— " + route.distance);
+					item.addEventListener("mouseover", controller.handler.flags.highlightFlag, false);
+					item.addEventListener("mouseout", controller.handler.flags.deHighlightFlag, false);
+					item.addEventListener("click", controller.handler.flags.setVisibility, false);
+					item.title = "Klicken, um diese Strecke zu " + (route.visible ? "verbergen" : "anzuzeigen");
+					
+					route.flagReference.style.display = route.visible ? "" : "none";
+					
+					controller.uiElements.routes.appendChild(item);
+				});
+			} else {
+				controller.uiElements.places.innerHTML = "";
+				
+				var data = data || map.places;
+				
+				data.forEach(function (place, index) {
+					item = document.createElement("li");
+									
+					item.className = place.visible ? "active" : "inactive";
+					item.textContent = place.name;
+					item.setAttribute("data-interimFlagID", index + 1);
+					item.setAttribute("data-type", "place");
+					item.addEventListener("mouseover", controller.handler.flags.highlightFlag, false);
+					item.addEventListener("mouseout", controller.handler.flags.deHighlightFlag, false);
+					item.addEventListener("click", controller.handler.flags.setVisibility, false);
+					item.title = "Klicken, um diesen Ort zu " + (place.visible ? "verbergen" : "anzuzeigen");
+					
+					place.flagReference.style.display = place.visible ? "" : "none";
+					
+					controller.uiElements.places.appendChild(item);
+				});
+			}
 		},
 		render : function () {
-			this.renderFlags(true);
-			this.renderFlags(false);
+			//this.renderFlags(true);
+			//this.renderFlags(false);
 			this.renderVisibilities();
 		}
 	};

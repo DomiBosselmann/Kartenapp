@@ -3,11 +3,11 @@ window.Karte = (function () {
 
 	var constants = {
 		locations : {
-			maps : "http://karte.localhost/backend/php/svg_market.php",
-			login : "http://karte.localhost/backend/php/login.php",
-			save : "http://karte.localhost/backend/php/db.php?a=s",
-			import : "http://karte.localhost/backend/php/import.php",
-			export : "http://karte.localhost/backend/php/export.php"
+			maps : "http://localhost/backend/php/svg_market.php",
+			login : "http://localhost/backend/php/login.php",
+			save : "http://localhost/backend/php/db.php?a=s",
+			import : "http://localhost/backend/php/db.php?a=i",
+			export : "http://localhost/backend/php/db.php?a=e"
 		},
 		math : {
 			epsilon : Number.MIN_VALUE // Viele Grüße Herr Gröll!

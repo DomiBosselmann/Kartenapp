@@ -318,7 +318,6 @@ if ($_GET) {
 																		$end = stripos($translate, ")", $space);
 																		$lon = doubleval(substr($translate, $begin, $space - $begin));
 																		$lat = doubleval(substr($translate, $space + 1, $end - $space - 1));
-																		unset($value1[transform]);
 																		if (($lon >= $lon1) && ($lon <= $lon2)) {
 																			if (($lat >= $lat1) && ($lat <= $lat2)) {
 																				$keep = true;
@@ -333,8 +332,25 @@ if ($_GET) {
 														}
 														if ($keep === true) {
 															$use = $group->addChild($node1, $value1);
-															copyAllAttributes($value1, $use);
-															$use->addAttribute("transform", $newTransform);
+															foreach ($value1->attributes() as $att => $attValue) {
+																switch ($att) {
+																	case "transform":
+																		{
+																			$use->addAttribute($att, $newTransform);
+																			break;
+																		}
+																	default:
+																		{
+																			$use->addAttribute($att, $attValue);
+																			break;
+																		}
+																}
+															}
+															foreach ($value1->getNamespaces(true) as $namespace => $namespaceValue) {
+																foreach ($value1->attributes($namespaceValue) as $att => $attValue) {
+																	$use->addAttribute($namespace . ":" . $att, $attValue, $namespaceValue);
+																}
+															}
 															copyAllChildren($value1, $use);
 														}
 														break;
@@ -347,7 +363,6 @@ if ($_GET) {
 																case "points":
 																	{
 																		$points = explode(" ", $attrValue1);
-																		unset($value1[points]);
 																		$newPoints = "";
 																		foreach ($points as $point) {
 																			if ($point != "") {
@@ -370,8 +385,30 @@ if ($_GET) {
 														}
 														if ($keep === true) {
 															$polyline = $group->addChild($node1, $value1);
-															copyAllAttributes($value1, $group);
-															$polyline->addAttribute("points", $newPoints);
+															foreach ($value1->attributes() as $att => $attValue) {
+																switch ($att) {
+																	case "transform":
+																		{
+																			$polyline->addAttribute($att, $newTransform);
+																			break;
+																		}
+																	case "points":
+																		{
+																			$polyline->addAttribute($att, $newPoints);
+																			break;
+																		}
+																	default:
+																		{
+																			$polyline->addAttribute($att, $attValue);
+																			break;
+																		}
+																}
+															}
+															foreach ($value1->getNamespaces(true) as $namespace => $namespaceValue) {
+																foreach ($value1->attributes($namespaceValue) as $att => $attValue) {
+																	$polyline->addAttribute($namespace . ":" . $att, $attValue, $namespaceValue);
+																}
+															}
 															copyAllChildren($value1, $group);
 														}
 														break;
@@ -383,7 +420,6 @@ if ($_GET) {
 																case "points":
 																	{
 																		$points = explode(" ", $attrValue1);
-																		unset($value1[points]);
 																		$newPoints = "";
 																		foreach ($points as $point) {
 																			if ($point != "") {
@@ -445,7 +481,17 @@ function copyAllChildren($oldNodeValue, $newNode) {
 	}
 	foreach ($oldNodeValue->getNamespaces(true) as $namespace => $namespaceValue) {
 		foreach ($oldNodeValue->children($namespaceValue) as $node => $value) {
-			$newNode->addAttribute($namespace . ":" . $node, $value, $namespaceValue);
+			switch ($namespaceValue) {
+				case "http://www.w3.org/2000/svg":
+					{
+						break;
+					}
+				default:
+					{
+						$newNode->addAttribute($namespace . ":" . $node, $value, $namespaceValue);
+						break;
+					}
+			}
 		}
 	}
 }

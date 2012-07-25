@@ -1291,7 +1291,7 @@ window.Karte = (function () {
 					name : place.name,
 					visible : place.visible,
 					note : place.note,
-					coordinates : place.coordinates
+					coordinates : units.pixelCoordinateToGeoCoordinate(coordinates[0], coordinates[1])
 				});
 			});
 			
@@ -1305,7 +1305,7 @@ window.Karte = (function () {
 					name : route.name,
 					visible : route.visible,
 					coordinates : coordinates,
-					distance : "0km",
+					distance : route.distance,
 					note : route.note
 				});
 			});

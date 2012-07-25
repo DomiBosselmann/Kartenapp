@@ -3,11 +3,11 @@ window.Karte = (function () {
 
 	var constants = {
 		locations : {
-			maps : "http://karte.localhost/backend/php/svg_market.php",
-			login : "http://karte.localhost/backend/php/login.php",
-			save : "http://karte.localhost/backend/php/db.php?a=s",
-			import : "http://karte.localhost/backend/php/import.php",
-			export : "http://karte.localhost/backend/php/export.php"
+			maps : "http://localhost/backend/php/svg_market.php",
+			login : "http://localhost/backend/php/login.php",
+			save : "http://localhost/backend/php/db.php?a=s",
+			import : "http://localhost/backend/php/db.php?a=i",
+			export : "http://localhost/backend/php/db.php?a=e"
 		},
 		math : {
 			epsilon : Number.MIN_VALUE // Viele Grüße Herr Gröll!
@@ -1515,12 +1515,20 @@ window.Karte = (function () {
 			return [x, y];
 		},
 		pixelCoordinateToGeoCoordinate : function (x, y, topLeft, topRight, witdh, height) {
-			var newX = (x + map.panning.x - map.dimensions.x) * map.scaling.scaleFactor; // Skalierung noch fehlerhaft!
-			var newY = (y + map.panning.y - map.dimensions.y) * map.scaling.scaleFactor;
-		
-			latitude = ((newY * (map.coordinates.bottomRight[0] - map.coordinates.topLeft[0])) / map.dimensions.currentHeight) + map.coordinates.topLeft[0];
-			longitude = ((newX * (map.coordinates.bottomRight[1] - map.coordinates.topLeft[1])) / map.dimensions.currentWidth) + map.coordinates.topLeft[1];
-			
+//			var newX = (x + map.panning.x - map.dimensions.x) * map.scaling.scaleFactor; // Skalierung noch fehlerhaft!
+//			var newY = (y + map.panning.y - map.dimensions.y) * map.scaling.scaleFactor;
+//		
+//			latitude = ((newY * (map.coordinates.bottomRight[0] - map.coordinates.topLeft[0])) / map.dimensions.currentHeight) + map.coordinates.topLeft[0];
+//			longitude = ((newX * (map.coordinates.bottomRight[1] - map.coordinates.topLeft[1])) / map.dimensions.currentWidth) + map.coordinates.topLeft[1];
+//			
+//			return [latitude, longitude];
+			var x_loc = map.dimensions.currentWidth / (x - map.panning.x);
+			var lon_diff = map.coordinates.bottomRight[1] - map.coordinates.topLeft[1];
+			var longitude = map.coordinates.bottomRight[1] + (lon_diff * x_loc);
+			var y_loc = map.dimensions.currentHeight / (y - map.panning.y);
+			var lat_diff = map.coordinates.bottomRight[0] - map.coordinates.topLeft[0];
+			var latitude = map.coordinates.bottomRight[0] + (lat_diff * y_loc);
+
 			return [latitude, longitude];
 		}
 	};

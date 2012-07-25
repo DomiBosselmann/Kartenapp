@@ -4,11 +4,11 @@ session_start();
 
 if ($_SESSION['loggedin'] === true) {
 
-	if (isset($_POST['a'])) {
+	if (isset($_GET['a'])) {
 
-		$action = $_POST['a'];
+		$action = $_GET['a'];
 
-		$db_host = "127.0.0.1:3306";
+		$db_host = "localhost:3306";
 		$db_username = "dhbwweb";
 		$db_password = "VeadojcobcinbebWadod";
 		$db_database = "dhbwweb";
@@ -27,7 +27,7 @@ if ($_SESSION['loggedin'] === true) {
 						{
 							// import routes as xml into the database and respond all new routes as json
 							$route_ids = array();
-							$data_xml = new simplexmlelement($_POST['data']);
+							$data_xml = new simplexmlelement($_GET['data']);
 							foreach ($data_xml->children() as $data_element => $data_value) {
 								switch ($data_element) {
 									case "routes":
@@ -164,20 +164,18 @@ if ($_SESSION['loggedin'] === true) {
 												$latitude = $row['CYKOORD'];
 												array_push($coordinates, array($longitude, $latitude));
 											}
-											array_push($routes, array("name"=>$route_name, "length"=>$route_length), "coordinates"=>$coordinates);
+											array_push($routes, array("name"=>$route_name, "length"=>$route_length, "coordinates"=>$coordinates));
 										}
 									}
 								}
-								echo json_encode($routes);
+								exit(json_encode($routes));
 							}
 							break;
 						}
 					case "e":
 						{
 							// export routes as xml
-							header("Content-Type: application/octet-stream");
-							header("Content-Disposition: attachment; filename=export.xml");
-							$query = "select `CID`, `CNAME`, `CLENGTH` from `TROUTES` where ( `CUSER` = $username)";
+							$query = "select `CID`, `CNAME`, `CLENGTH` from `TROUTES` where ( `CUSER` = '$username')";
 							$result = mysql_query($query);
 							if (!$result) {
 								echo_mysql_error("Routes selection error");
@@ -200,7 +198,9 @@ if ($_SESSION['loggedin'] === true) {
 										}
 									}
 								}
-								echo json_encode("success"=>true, "data"=>$routes_xml->asXML());
+								header("Content-Type: application/octet-stream");
+								header("Content-Disposition: attachment; filename=export.xml");
+								exit(json_encode(array("success"=>true, "data"=>$routes_xml->asXML())));
 							}
 							break;
 						}
@@ -253,16 +253,16 @@ if ($_SESSION['loggedin'] === true) {
 										$places_json = json_encode(array("success"=>true, "message"=>"Places successfully added!"));
 									}
 								}
-								exit(json_encode("routes"=>$routes_json, "places"=>$places_json));
+								exit(json_encode(array("routes"=>$routes_json, "places"=>$places_json)));
 							} else {
 								// neither routes nor places submitted
-								exit(json_encode("success"=>false, "message"=>"No routes or places submitted!");
+								exit(json_encode(array("success"=>false, "message"=>"No routes or places submitted!")));
 							}
 							break;
 						}
 					default:
 						{
-							exit(json_encode("success"=>false, "message"=>"Wrong action submitted!");
+							exit(json_encode(array("success"=>false, "message"=>"Wrong action submitted!")));
 							break;
 						}
 				}
@@ -270,17 +270,17 @@ if ($_SESSION['loggedin'] === true) {
 			}
 		}
 	} else {
-		exit(json_encode("success"=>false, "message"=>"No action submitted!");
+		exit(json_encode(array("success"=>false, "message"=>"No action submitted!")));
 	}
 } else {
-	exit(json_encode("success"=>false, "message"=>"Not logged in!");
+	exit(json_encode(array("success"=>false, "message"=>"Not logged in!")));
 }
 
 function echo_mysql_error($error) {
 	if ($link) {
 		mysql_close($link);
 	}
-	exit(json_encode("success"=>false, "message"=>$error . ": " . mysql_error());
+	exit(json_encode(array("success"=>false, "message"=>$error . ": " . mysql_error())));
 }
 
 ?>

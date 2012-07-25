@@ -2,18 +2,18 @@
 
 if ($_GET) {
 
-	$db_host = "127.0.0.1:3306";
+	$db_host = "localhost:3306";
 	$db_username = "dhbwweb";
 	$db_password = "VeadojcobcinbebWadod";
 	$db_database = "dhbwweb";
 
 	$link = mysql_connect($db_host, $db_username, $db_password);
 	if (!$link) {
-		echo_mysql_error($link, "Database connection error");
+		echo_mysql_error("Database connection error");
 	} else {
 		$database = mysql_select_db($db_database, $link);
 		if (!$database) {
-			echo_mysql_error($link, "Database selection error");
+			echo_mysql_error("Database selection error");
 		} else {
 			if (isset($_GET['new'])) {
 				$username = $_GET['username'];
@@ -49,11 +49,11 @@ if ($_GET) {
 	}
 }
 
-function echo_mysql_error($link, $error) {
+function echo_mysql_error($error) {
 	if ($link) {
 		mysql_close($link);
 	}
-	exit(json_encode(array("success"=>false, "message"=>$error . " " . mysql_error())));
+	exit(json_encode(array("success"=>false, "message"=>$error . ": " . mysql_error())));
 }
 
 ?>

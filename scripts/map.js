@@ -905,6 +905,9 @@ window.Karte = (function () {
 								
 								// Pfad dereferenzieren
 			      				controller.handler.flags.flagObject.path = null;
+							} else {
+								/*var dimensions = controller.handler.flags.flagObject.pins[i].reference.getBoundingClientRect();
+								controller.handler.flags.flagObject.pins[i].coordinates = [dimensions.bottom, dimensions.left + dimensions.width/2 - 320];*/
 							}
 						}
 					} else {
@@ -1291,7 +1294,7 @@ window.Karte = (function () {
 					name : place.name,
 					visible : place.visible,
 					note : place.note,
-					coordinates : units.pixelCoordinateToGeoCoordinate(coordinates[0], coordinates[1])
+					coordinates : units.pixelCoordinateToGeoCoordinate(place.coordinates[0], place.coordinates[1])
 				});
 			});
 			

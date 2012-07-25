@@ -6,7 +6,7 @@ body {
 	height: 100%;
 	width: 100%;
 	overflow: hidden;
-	font-family: "Corbel";
+	font-family: "Lucida Grande", sans-serif;
 	cursor: default;
 	display: -webkit-box;
 	-webkit-box-align: center;
@@ -58,15 +58,22 @@ aside {
 
 #flaglist h1 {
 	padding: 0 10px;
+	text-transform: uppercase;
+	font-size: 12px;
+	margin-top: 20px;
 }
 
 #flaglist ul {
-	margin: 0;
+	margin: 0 0 40px 0;
 	padding: 0;
 }
 
 #flaglist li {
 	padding: 0 10px;
+	line-height: 1.5;
+	border-top: 1px solid;
+	border-bottom: 1px solid;
+	border-color: transparent;
 }
 
 #flaglist #routes:empty::after {
@@ -84,7 +91,14 @@ aside {
 }
 
 #flaglist div.container li.hover, #flaglist div.container li:hover {
-	background: violet;
+	border-color: #557592;
+	background: #8daabe;
+}
+
+#flaglist div.container li:focus {
+	border-color: #d49a25;
+	background: rgba(255, 203, 96, 0.5);
+	outline: none;
 }
 
 #flaglist div.container li.inactive {
@@ -308,17 +322,19 @@ aside {
 }
 
 #mapscaler {
-	padding: 10px 0;
+	padding: 0 10px;
 	-webkit-transition: -webkit-filter 1s ease-in-out;
 }
 
 #addSelectionMask {
 	position: absolute;
-	background: white;
-	top: 10px;
-	left: 0;
+	background: rgba(255, 255, 255, 0.95);
+	top: 17px;
+	left: 5px;
 	list-style: none;
 	padding: 5px;
+	font-size: 12px;
+	border-radius: 5px;
 }
 
 body[data-loggedin=false] #login {

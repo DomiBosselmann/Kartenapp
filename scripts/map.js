@@ -793,13 +793,16 @@ window.Karte = (function () {
 							name : controller.handler.flags.listReference.textContent,
 							visible : true,
 							note : "",
-							//coordinates : units.pixelCoordinateToGeoCoordinate(controller.handler.flags.x, controller.handler.flags.y),
+							distance : controller.handler.calculateDistance(pins).toFixed(1) + "km",
 							flagReference : controller.handler.flags.flagReference,
 							pins : pins,
 							listReference : controller.handler.flags.listReference
 						};
-						
+												
 						var flagID = map.routes.push(controller.handler.flags.flagObject);
+						
+						// Distanz anzeigen
+						controller.handler.flags.listReference.setAttribute("data-route-distance", "— " + controller.handler.flags.flagObject.distance);
 						
 						// flag mit ID versehen
 						controller.handler.flags.flagReference.setAttribute("data-interimFlagID", flagID);
@@ -901,6 +904,21 @@ window.Karte = (function () {
 					
 					controller.handler.flags.flagReference.style.display = controller.handler.flags.flagObject.visible ? "" : "none"; // Sollte eventuell in den Renderer
 				}
+			},
+			calculateDistance : function (pins) {
+				var distance = 0;
+				
+				pins.forEach(function (pin, index) {
+					// Zunächst wird der Abstand in Pixeln gemessen
+					if (pins[index + 1] !== undefined) {
+						distance += Math.sqrt(Math.pow(Math.abs(pin.coordinates[0] - pins[index + 1].coordinates[0]), 2) + Math.pow(Math.abs(pin.coordinates[1] - pins[index + 1].coordinates[1]), 2));
+					}
+				});
+				
+				// Jetzt erfolgt die Umrechnung in Kilometer
+				distance = distance / 100 * map.scaling.value;
+				
+				return distance;
 			},
 			keyboardNavigation : function (event) {
 				
@@ -1021,7 +1039,6 @@ window.Karte = (function () {
 					var i = 0;
 					
 					for (i; i < noRoutes; i++) {
-						debugger;
 						var name = routes[i].getElementsByTagName("name")[0].textContent;
 						var length = routes[i].getElementsByTagName("length")[0].textContent
 						var nodes = routes[i].getElementsByTagName("coord");
@@ -1049,6 +1066,7 @@ window.Karte = (function () {
 								
 						listItem.className = "active";
 						listItem.textContent = name;
+						listItem.setAttribute("data-route-distance", "— " + length);
 						listItem.addEventListener("mouseover", controller.handler.flags.highlightFlag, false);
 						listItem.addEventListener("mouseout", controller.handler.flags.deHighlightFlag, false);
 						listItem.addEventListener("click", controller.handler.flags.setVisibility, false);

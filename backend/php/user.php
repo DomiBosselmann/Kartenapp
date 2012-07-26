@@ -1,11 +1,8 @@
 <?php
 
 if ($_GET) {
-
-	$db_host = "localhost:3306";
-	$db_username = "dhbwweb";
-	$db_password = "VeadojcobcinbebWadod";
-	$db_database = "dhbwweb";
+	
+	include "database_access.php";
 
 	$link = mysql_connect($db_host, $db_username, $db_password);
 	if (!$link) {

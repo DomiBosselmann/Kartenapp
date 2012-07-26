@@ -8,10 +8,10 @@ if ($_SESSION['loggedin'] === true) {
 
 		$action = $_GET['a'];
 
-		$db_host = "localhost:3306";
-		$db_username = "dhbwweb";
-		$db_password = "VeadojcobcinbebWadod";
-		$db_database = "dhbwweb";
+		include "database_access.php";
+
+		$json_communication_log_enabled = false;
+		$json_communication_log_email = "webmaster@schteffens.de";
 
 		$link = mysql_connect($db_host, $db_username, $db_password);
 		if (!$link) {
@@ -26,11 +26,13 @@ if ($_SESSION['loggedin'] === true) {
 					case "i":
 						{
 							// import routes as xml into the database and respond all new routes as json
-							$route_ids = array();
 							if (isset($_FILES['importFile'])) {
 								foreach ($_FILES['importFile'] as $file) {
 									if ($content = file_get_contents($_FILES['importFile']['tmp_name'])) {
+										$json = array();
 										$data_xml = new simplexmlelement($content);
+										$route_ids = array();
+										$place_ids = array();
 										foreach ($data_xml->children() as $data_element => $data_value) {
 											switch ($data_element) {
 												case "route":
@@ -54,13 +56,16 @@ if ($_SESSION['loggedin'] === true) {
 																			switch ($node_element) {
 																				case "coord":
 																					{
-																						$node_coordinate = array();
 																						foreach ($node_element_value->attributes() as $node_attribute => $node_attribute_value) {
-																							if (($node_attribute == "lon") || ($node_attribute == "lat")) {
-																								array_push($node_coordinate, $node_attribute_value);
+																							if ($node_attribute == "lon") {
+																								$lon = $node_attribute_value;
+																							} else {
+																								if ($node_attribute == "lat") {
+																									$lat = $node_attribute_value;
+																								}
 																							}
 																						}
-																						array_push($route_coordinates, $node_coordinate);
+																						array_push($route_coordinates, array($lat, $lon));
 																						break;
 																					}
 																			}
@@ -72,7 +77,7 @@ if ($_SESSION['loggedin'] === true) {
 														$query = "insert into `TROUTES` ( `CNAME`, `CLENGTH`, `CUSER` ) values ( '$route_name', $route_length, '$username' )";
 														$result = mysql_query($query);
 														if (!$result) {
-															//	echo_mysql_error("Route insertion error");
+															array_push($json, array("error"=>"Route insertion error on route ". $route_name));
 														} else {
 															$route_id = mysql_insert_id();
 															array_push($route_ids, $route_id);
@@ -83,7 +88,7 @@ if ($_SESSION['loggedin'] === true) {
 																$query = "insert into `TWAYPOINTS` ( `CRELROUTEID`, `CORDER`, `CXKOORD`, `CYKOORD` ) values ($route_id, $order, $longitude, $latitude)";
 																$result = mysql_query($query);
 																if (!$result) {
-																	echo_mysql_error("Waypoint insertion error");
+																	array_push($json, array("error"=>"Waypoint insertion error on waypoint ". $order . " of route " . $route_name));
 																} else {
 																	$order++;
 																}
@@ -128,7 +133,9 @@ if ($_SESSION['loggedin'] === true) {
 																$query = "insert into `TLOCATIONS` ( `CNAME`, `CUSER`, `CXKOORD`, `CYKOORD` ) values ( '$place_name', '$username', $longitude, $latitude )";
 																$result = mysql_query($query);
 																if (!$result) {
-																	//	echo_mysql_error("Location insertion error");
+																	array_push($json, array("error"=>"Location insertion error on location ". $place_name));
+																} else {
+																	array_push($place_ids, mysql_insert_id());
 																}
 															}
 														}
@@ -138,10 +145,11 @@ if ($_SESSION['loggedin'] === true) {
 										}
 
 										// json response
-										$query = "select `CID`, `CNAME`, `CLENGTH` from `TROUTES` where ( `CUSER` = '$username' )";
+										// get saved routes
+										$query = "select `CID`, `CNAME`, `CLENGTH`, `CVISIBLE` from `TROUTES` where ( `CUSER` = '$username' )";
 										$result = mysql_query($query);
 										if (!$result) {
-											echo_mysql_error("Routes selection error");
+											array_push($json, array("error"=>"Routes selection error on routes of user ". $username));
 										} else {
 											$routes = array();
 											while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
@@ -149,23 +157,59 @@ if ($_SESSION['loggedin'] === true) {
 												if (in_array($route_id, $route_ids)) {
 													$route_name = $row['CNAME'];
 													$route_length = $row['CLENGTH'];
+													if ($row['CVISIBLE'] == 0) {
+														$route_visible = false;
+													} else {
+														if ($row['CVISIBLE'] == 1) {
+															$route_visible = true;
+														} else {
+															$route_visible = null;
+														}
+													}
 													$query = "select `CXKOORD`, `CYKOORD`, `CORDER` from `TWAYPOINTS` where ( `CRELROUTEID` = $route_id) order by `CORDER`";
 													$result = mysql_query($query);
 													if (!$result) {
-														echo_mysql_error("Waypoint selection error");
+														array_push($json, array("error"=>"Waypoint selection error on waypoints of route with id ". $route_id));
 													} else {
 														$coordinates = array();
 														while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-															$longitude = $row['CXKOORD'];
-															$latitude = $row['CYKOORD'];
-															array_push($coordinates, array($longitude, $latitude));
+															array_push($coordinates, array($row['CYKOORD'], $row['CXKOORD']));
 														}
-														array_push($routes, array("name"=>$route_name, "length"=>$route_length, "coordinates"=>$coordinates));
+														array_push($routes, array("name"=>$route_name, "distance"=>$route_length, "visible"=>$route_visible, "coordinates"=>$coordinates));
 													}
 												}
 											}
-											exit(json_encode($routes));
+											array_push($json, $routes);
 										}
+										// get places
+										$query = "select `CID`, `CNAME`, `CXKOORD`, `CYKOORD`, `CVISIBLE` from `TLOCATIONS` where ( `CUSER` = '$username')";
+										$result = mysql_query($query);
+										if (!$result) {
+											array_push($json, array("error"=>"Locations selection error on locations of user ". $username));
+										} else {
+											$places = array();
+											while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+												$place_id = $row['CID'];
+												if (in_array($place_id, $place_ids)) {
+													if ($row['CVISIBLE'] == 0) {
+														$place_visible = false;
+													} else {
+														if ($row['CVISIBLE'] == 1) {
+															$place_visible = true;
+														} else {
+															$place_visible = null;
+														}
+													}
+													array_push($places, array("name"=>$row['CNAME'], "visible"=>$place_visible, "coordinates"=>array($row['CYKOORD'], $row['CXKOORD'])));
+												}
+											}
+											array_push($json, $places);
+										}
+										$json_string = json_encode($json);
+										if ($json_communication_log_enabled) {
+											mail($json_communication_log_email, $username . " returned import json", $json_string);
+										}
+										exit($json_string);
 									}
 								}
 							}
@@ -178,7 +222,7 @@ if ($_SESSION['loggedin'] === true) {
 							$query = "select `CID`, `CNAME`, `CLENGTH` from `TROUTES` where ( `CUSER` = '$username')";
 							$result = mysql_query($query);
 							if (!$result) {
-								echo_mysql_error("Routes selection error");
+								//	echo_mysql_error("Routes selection error");
 							} else {
 								while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 									$route_element = $locations_xml->addChild("route");
@@ -186,10 +230,10 @@ if ($_SESSION['loggedin'] === true) {
 									$route_element->addChild("user", $username);
 									$route_element->addChild("name", $row['CNAME']);
 									$route_element->addChild("length", $row['CLENGTH']);
-									$query = "select `CXKOORD`, `CYKOORD`, `CORDER` from `TWAYPOINTS` where ( `CRELROUTEID` = $route_id) order by `CORDER`";
+									$query = "select `CXKOORD`, `CYKOORD`, `CORDER` from `TWAYPOINTS` where ( `CRELROUTEID` = $route_id ) order by `CORDER`";
 									$result = mysql_query($query);
 									if (!$result) {
-										echo_mysql_error("Waypoint selection error");
+										//	echo_mysql_error("Waypoint selection error");
 									} else {
 										$coordinates_element = $route_element->addChild("coordinates");
 										while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
@@ -204,7 +248,7 @@ if ($_SESSION['loggedin'] === true) {
 							$query = "select `CNAME`, `CXKOORD`, `CYKOORD` from `TLOCATIONS` where ( `CUSER` = '$username')";
 							$result = mysql_query($query);
 							if (!$result) {
-								echo_mysql_error("Routes selection error");
+								//	echo_mysql_error("Routes selection error");
 							} else {
 								while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 									$place_element = $locations_xml->addChild("place");
@@ -226,8 +270,38 @@ if ($_SESSION['loggedin'] === true) {
 						{
 							if ($_POST['routes'] && $_POST['places']) {
 								$json = array();
+
 								// save routes
 								if ($_POST['routes']) {
+									if ($json_communication_log_enabled) {
+										mail($json_communication_log_enabled, $username . " posted routes json", $_POST['routes']);
+									}
+
+									// delete old routes and it's waypoints
+									// retrieve old routes to delete it's waypoints
+									$query = "select `CID` from `TROUTES` where ( `CUSER` = '$username' )";
+									$result = mysql_query($query);
+									if (!$result) {
+										array_push($json, array("error"=>"Routes selection error"));
+									} else {
+										// delete old waypoints of the routes
+										while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+											$route_id = $row['CID'];
+											$query = "delete from `TLOCATIONS` where ( `CRELROUTEID` = $route_id )";
+											$result = mysql_query($query);
+											if (!$result) {
+												array_push($json, array("error"=>"Waypoints deletion error"));
+											}
+										}
+									}
+									// delete old routes
+									$query = "delete from `TROUTES` where ( `CUSER` = '$username' )";
+									$result = mysql_query($query);
+									if (!$result) {
+										array_push($json, array("error"=>"Routes deletion error"));
+									}
+
+									//	save new data
 									$data = json_decode($_POST['routes'], true);
 									foreach ($data as $data_element) {
 										$route_name = $data_element['name'];
@@ -242,27 +316,39 @@ if ($_SESSION['loggedin'] === true) {
 										$query = "insert into `TROUTES` ( `CNAME`, `CLENGTH`, `CUSER` ) values ( '$route_name', '$route_length', '$username' )";
 										$result = mysql_query($query);
 										if (!$result) {
-											//	echo_mysql_error("Route insertion error");
+											array_push($json, array("error"=>"Routes insertion error on route ". $route_name));
 										} else {
 											$route_id = mysql_insert_id();
 											$order = 0;
 											foreach ($route_coordinates as $coordinate) {
-												$longitude = $coordinate[1];
 												$latitude = $coordinate[0];
+												$longitude = $coordinate[1];
 												$query = "insert into `TWAYPOINTS` ( `CRELROUTEID`, `CORDER`, `CXKOORD`, `CYKOORD` ) values ($route_id, $order, $longitude, $latitude )";
 												$result = mysql_query($query);
 												if (!$result) {
-													echo_mysql_error("Waypoint insertion error");
+													array_push($json, array("error"=>"Waypoint insertion error on waypoint $order of route ". $route_name));
 												} else {
 													$order++;
 												}
 											}
-											$routes_json = json_encode(array("success"=>true, "message"=>"Routes successfully added!"));
 										}
+										array_push($json, array("success"=>true, "message"=>"Routes successfully added!"));
 									}
 								}
 								// saving places
 								if ($_POST['places']) {
+									if ($json_communication_log_enabled) {
+										mail($json_communication_log_email, $username . " posted places json", $_POST['places']);
+									}
+
+									// delete old places
+									$query = "delete from `TLOCATIONS` where ( `CUSER` = '$username' )";
+									$result = mysql_query($query);
+									if (!$result) {
+										array_push($json, array("error"=>"Places deletion error"));
+									}
+
+									//	save new data
 									$data = json_decode($_POST['places'], true);
 									foreach ($data as $data_element) {
 										$place_name = $data_element['name'];
@@ -272,19 +358,22 @@ if ($_SESSION['loggedin'] === true) {
 											$place_visible = 0;
 										}
 										$place_coordinates = $data_element['coordinates'];
-										$longitude = $place_coordinates[1];
 										$latitude = $place_coordinates[0];
+										$longitude = $place_coordinates[1];
 
 										$query = "insert into `TLOCATIONS` ( `CNAME`, `CUSER`, `CVISIBLE`, `CXKOORD`, `CYKOORD` ) values ( '$place_name', '$username', $place_visible, $longitude, $latitude )";
 										$result = mysql_query($query);
 										if (!$result) {
-											//	echo_mysql_error("Place insertion error");
-										} else {
-											$places_json = json_encode(array("success"=>true, "message"=>"Places successfully added!"));
+											array_push($json, array("error"=>"Location insertion error on location ". $place_name));
 										}
 									}
+									array_push($json, array("success"=>true, "message"=>"Places successfully added!"));
 								}
-								exit(json_encode(array("routes"=>$routes_json, "places"=>$places_json)));
+								$json_string = json_encode($json);
+								if ($json_communication_log_enabled) {
+									mail($json_communication_log_email, $username . " returned save json", $json_string);
+								}
+								exit($json_string);
 							} else {
 								// neither routes nor places submitted
 								exit(json_encode(array("success"=>false, "message"=>"No routes or places submitted!")));
@@ -298,23 +387,32 @@ if ($_SESSION['loggedin'] === true) {
 							$query = "select `CID`, `CNAME`, `CLENGTH`, `CVISIBLE` from `TROUTES` where ( `CUSER` = '$username')";
 							$result = mysql_query($query);
 							if (!$result) {
-								echo_mysql_error("Routes selection error");
+								array_push($json, array("error"=>"Routes selection error on routes of user ". $username));
 							} else {
 								$routes = array();
 								while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 									$route_id = $row['CID'];
 									$route_name = $row['CNAME'];
 									$route_length = $row['CLENGTH'];
+									if ($row['CVISIBLE'] == 0) {
+										$route_visible = false;
+									} else {
+										if ($row['CVISIBLE'] == 1) {
+											$route_visible = true;
+										} else {
+											$route_visible = null;
+										}
+									}
 									$query = "select `CXKOORD`, `CYKOORD`, `CORDER` from `TWAYPOINTS` where ( `CRELROUTEID` = $route_id) order by `CORDER`";
 									$result = mysql_query($query);
 									if (!$result) {
-										echo_mysql_error("Waypoint selection error");
+										array_push($json, array("error"=>"Waypoints selection error on waypoints of route with id ". $route_id));
 									} else {
 										$coordinates = array();
 										while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-											array_push($coordinates, array($row['CXKOORD'], $row['CYKOORD']));
+											array_push($coordinates, array($row['CYKOORD'], $row['CXKOORD']));
 										}
-										array_push($routes, array("name"=>$route_name, "distance"=>$route_length, "visible"=>$row['CVISIBLE'], "coordinates"=>$coordinates));
+										array_push($routes, array("name"=>$route_name, "distance"=>$route_length, "visible"=>$route_visible, "coordinates"=>$coordinates));
 									}
 								}
 								array_push($json, $routes);
@@ -323,17 +421,30 @@ if ($_SESSION['loggedin'] === true) {
 							$query = "select `CNAME`, `CXKOORD`, `CYKOORD`, `CVISIBLE` from `TLOCATIONS` where ( `CUSER` = '$username')";
 							$result = mysql_query($query);
 							if (!$result) {
-								echo_mysql_error("Routes selection error");
+								array_push($json, array("error"=>"Routes selection error on routes of user ". $username));
 							} else {
 								$places = array();
 								while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-									array_push($places, array("user"=>$username, "name"=>$row['CNAME'], "visible"=>$row['CVISIBLE'], "coordinates"=>array($row['CXKOORD'], $row['CYKOORD'])));
+									if ($row['CVISIBLE'] == 0) {
+										$place_visible = false;
+									} else {
+										if ($row['CVISIBLE'] == 1) {
+											$place_visible = true;
+										} else {
+											$place_visible = null;
+										}
+									}
+									array_push($places, array("name"=>$row['CNAME'], "visible"=>$place_visible, "coordinates"=>array($row['CYKOORD'], $row['CXKOORD'])));
 								}
 								array_push($json, $places);
 							}
 
 							// respond the json
-							exit(json_encode($json));
+							$json_string = json_encode($json);
+							if ($json_communication_log_enabled) {
+								mail($json_communication_log_email, $username . " returned get json", $json_string);
+							}
+							exit($json_string);
 							break;
 						}
 					default:
@@ -358,7 +469,11 @@ function echo_mysql_error($error) {
 	if ($link) {
 		mysql_close($link);
 	}
-	exit(json_encode(array("success"=>false, "message"=>$error . ": " . mysql_error())));
+	$json_string = json_encode(array("success"=>false, "message"=>$error . ": " . mysql_error()));
+	if ($json_communication_log_enabled) {
+		mail($json_communication_log_email, $username . " mysql error", $json_string);
+	}
+	exit($json_string);
 }
 
 ?>

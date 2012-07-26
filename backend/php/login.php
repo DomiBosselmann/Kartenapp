@@ -4,12 +4,10 @@ session_start();
 
 if ($_POST) {
 
-	$db_host = "localhost:3306";
-	$db_username = "dhbwweb";
-	$db_password = "VeadojcobcinbebWadod";
-	$db_database = "dhbwweb";
-
 	if (!$_SESSION['loggedin']) {
+
+		include "database_access.php";
+
 		$link = mysql_connect($db_host, $db_username, $db_password);
 
 		if (!$link) {

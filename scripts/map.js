@@ -1381,7 +1381,7 @@ window.Karte = (function () {
 			request.send(data);
 			request.onreadystatechange = function () {
 				if (request.readyState === 4) {
-					console.log(request.responseText);
+					controller.parseAJAXResponse(request);
 				}
 			}
 		},
@@ -1391,33 +1391,36 @@ window.Karte = (function () {
 			request.send(null);
 			request.onreadystatechange = function () {
 				if (request.readyState === 4) {
-					var response = JSON.parse(request.responseText);
-					
-					if (response.success === false) {
-						alert(response.message);
-					} else {
-						var routeResponse = response[0];
-						var places = response[1];
-						
-						
-						var coordinates = [];
-						
-						routeResponse.forEach(function (route) {
-							route.coordinates.forEach(function (coords) {
-								coordinates.push(units.geoCoordinateToPixelCoordinate(parseFloat(coords[1]), parseFloat(coords[0])));
-							});
-							
-							route.coordinates = coordinates;
-						});
-						
-						places.forEach(function (place) {
-							place.coordinates = units.geoCoordinateToPixelCoordinate(parseFloat(place.coordinates[1]), parseFloat(place.coordinates[0]));
-						});
-						
-						
-						controller.handler.import.addFlags(routeResponse, places);
-					}
+					controller.parseAJAXResponse(request);
 				}
+			}
+		},
+		parseAJAXResponse : function (request) {
+			var response = JSON.parse(request.responseText);
+					
+			if (response.success === false) {
+				alert(response.message);
+			} else {
+				var routeResponse = response[0];
+				var places = response[1];
+				
+				
+				var coordinates = [];
+				
+				routeResponse.forEach(function (route) {
+					route.coordinates.forEach(function (coords) {
+						coordinates.push(units.geoCoordinateToPixelCoordinate(parseFloat(coords[0]), parseFloat(coords[1])));
+					});
+					
+					route.coordinates = coordinates;
+				});
+				
+				places.forEach(function (place) {
+					place.coordinates = units.geoCoordinateToPixelCoordinate(parseFloat(place.coordinates[0]), parseFloat(place.coordinates[1]));
+				});
+				
+				
+				controller.handler.import.addFlags(routeResponse, places);
 			}
 		}
 	};
@@ -1460,7 +1463,7 @@ window.Karte = (function () {
 			
 			
 			if (this.root.getElementById("federal") !== null) {
-				var path = this.root.getElementById("federal").childNodes[0].cloneNode();
+				var path = this.root.getElementById("federal").childNodes[0].cloneNode(false);
 				this.clipPath.appendChild(path);
 				
 				renderer.hasClipPath = true;

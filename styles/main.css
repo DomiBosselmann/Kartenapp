@@ -11,10 +11,6 @@ body {
 	display: -webkit-box;
 	-webkit-box-align: center;
 	-webkit-box-pack: center;
-	display: -moz-box;
-	-moz-box-align: center;
-	-moz-box-pack: center;
-	-moz-box-orient: horizontal;
 }
 
 [type=search], :focus {
@@ -87,6 +83,8 @@ aside {
 }
 
 #flaglist li::after {
+	padding-left: 5px;
+	color: rgba(0, 0, 0, 0.4);
 	content: attr(data-route-distance);
 }
 
